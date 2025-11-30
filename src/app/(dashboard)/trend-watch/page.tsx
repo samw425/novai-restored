@@ -63,14 +63,15 @@ export default function TrendWatchPage() {
         const recentCounts = getKeywords(recentArticles);
         const olderCounts = getKeywords(olderArticles);
 
-        // Calculate velocity (rising topics)
+        // Calculate velocity (rising topics) - RELAXED from 3 to 2 mentions
         const velocities: { topic: string, velocity: number, count: number }[] = [];
 
         Object.entries(recentCounts).forEach(([topic, recentCount]) => {
             const olderCount = olderCounts[topic] || 0;
             const velocity = recentCount - olderCount;
 
-            if (velocity > 0 && recentCount >= 3) {
+            // RELAXED: Show if 2+ mentions OR positive velocity
+            if ((velocity > 0 && recentCount >= 2) || recentCount >= 3) {
                 velocities.push({ topic, velocity, count: recentCount });
             }
         });
@@ -79,9 +80,9 @@ export default function TrendWatchPage() {
             .sort((a, b) => b.velocity - a.velocity)
             .slice(0, 8);
 
-        // Stable topics (consistently mentioned)
+        // Stable topics (consistently mentioned) - RELAXED from 4 to 3
         const stableTopics = Object.entries(recentCounts)
-            .filter(([topic, count]) => count >= 4 && !risingTopics.find(r => r.topic === topic))
+            .filter(([topic, count]) => count >= 3 && !risingTopics.find(r => r.topic === topic))
             .sort(([, a], [, b]) => b - a)
             .slice(0, 6)
             .map(([topic, count]) => ({ topic, count }));
@@ -89,7 +90,7 @@ export default function TrendWatchPage() {
         setTrends({
             rising: risingTopics,
             stable: stableTopics,
-            recent: recentArticles.slice(0, 10)
+            recent: data.slice(0, 10) // Show most recent 10 regardless of time
         });
     };
 

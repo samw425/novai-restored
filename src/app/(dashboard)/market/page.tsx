@@ -124,7 +124,21 @@ export default function MarketPage() {
                                     ))}
                                 </div>
                             ) : (
-                                <p className="text-gray-400 text-center py-8 text-sm">No funding news detected.</p>
+                                <div className="space-y-2">
+                                    {articles.slice(0, 3).map((article, i) => (
+                                        <a
+                                            key={i}
+                                            href={article.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="block p-3 bg-gray-50 rounded-lg hover:bg-emerald-50 transition-colors group text-xs"
+                                        >
+                                            <h3 className="font-bold text-gray-900 group-hover:text-emerald-700 line-clamp-2">
+                                                {article.title}
+                                            </h3>
+                                        </a>
+                                    ))}
+                                </div>
                             )}
                         </div>
 
@@ -153,7 +167,21 @@ export default function MarketPage() {
                                     ))}
                                 </div>
                             ) : (
-                                <p className="text-gray-400 text-center py-8 text-sm">No IPO news detected.</p>
+                                <div className="space-y-2">
+                                    {articles.slice(3, 6).map((article, i) => (
+                                        <a
+                                            key={i}
+                                            href={article.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="block p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors group text-xs"
+                                        >
+                                            <h3 className="font-bold text-gray-900 group-hover:text-blue-700 line-clamp-2">
+                                                {article.title}
+                                            </h3>
+                                        </a>
+                                    ))}
+                                </div>
                             )}
                         </div>
 
@@ -182,7 +210,21 @@ export default function MarketPage() {
                                     ))}
                                 </div>
                             ) : (
-                                <p className="text-gray-400 text-center py-8 text-sm">No M&A news detected.</p>
+                                <div className="space-y-2">
+                                    {articles.slice(6, 9).map((article, i) => (
+                                        <a
+                                            key={i}
+                                            href={article.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="block p-3 bg-gray-50 rounded-lg hover:bg-purple-50 transition-colors group text-xs"
+                                        >
+                                            <h3 className="font-bold text-gray-900 group-hover:text-purple-700 line-clamp-2">
+                                                {article.title}
+                                            </h3>
+                                        </a>
+                                    ))}
+                                </div>
                             )}
                         </div>
                     </div>

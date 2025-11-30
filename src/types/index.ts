@@ -32,7 +32,6 @@ export interface Article {
     summary: string;
     description?: string;
     publishedAt: string; // ISO string
-    publishedAt: string; // ISO string
     category: string;
     topicSlug: string;
     importanceScore: number;

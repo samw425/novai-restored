@@ -25,7 +25,15 @@ export default function DeepSignalsPage() {
                 const researchData = await researchRes.json();
                 const aiData = await aiRes.json();
 
-                const allArticles = [...(researchData.articles || []), ...(aiData.articles || [])];
+                let allArticles = [...(researchData.articles || []), ...(aiData.articles || [])];
+
+                // FALLBACK: If insufficient data, fetch from ALL categories
+                if (allArticles.length < 10) {
+                    const fallbackRes = await fetch('/api/feed/live?limit=50');
+                    const fallbackData = await fallbackRes.json();
+                    allArticles = [...allArticles, ...(fallbackData.articles || [])];
+                }
+
                 const uniqueArticles = Array.from(new Map(allArticles.map(item => [item.id, item])).values());
 
                 setArticles(uniqueArticles);
@@ -219,8 +227,8 @@ export default function DeepSignalsPage() {
                                                 </div>
                                             </div>
                                             <span className={`px-2 py-1 text-[10px] font-bold rounded border ${item.sentiment === 'positive' ? 'bg-emerald-950/30 text-emerald-400 border-emerald-900/50' :
-                                                    item.sentiment === 'negative' ? 'bg-red-950/30 text-red-400 border-red-900/50' :
-                                                        'bg-gray-800 text-gray-400 border-gray-700'
+                                                item.sentiment === 'negative' ? 'bg-red-950/30 text-red-400 border-red-900/50' :
+                                                    'bg-gray-800 text-gray-400 border-gray-700'
                                                 }`}>
                                                 {item.sentiment.toUpperCase()}
                                             </span>

@@ -26,11 +26,18 @@ export default function DailySnapshotPage() {
                 const researchData = await researchRes.json();
 
                 // Combine and deduplicate
-                const allArticles = [
+                let allArticles = [
                     ...(researchData.articles || []), // Prioritize research for lead
                     ...(aiData.articles || []),
                     ...(roboticsData.articles || [])
                 ];
+
+                // FALLBACK: If no articles, fetch from ALL
+                if (allArticles.length === 0) {
+                    const fallbackRes = await fetch('/api/feed/live?limit=30');
+                    const fallbackData = await fallbackRes.json();
+                    allArticles = fallbackData.articles || [];
+                }
 
                 // Remove duplicates based on ID
                 const uniqueArticles = Array.from(new Map(allArticles.map(item => [item.id, item])).values());

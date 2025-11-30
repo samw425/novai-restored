@@ -22,7 +22,7 @@ async function checkFeeds() {
                 console.log(`- [${item.pubDate}] ${item.title}`);
             });
         } catch (e) {
-            console.error(`Failed to fetch ${url}:`, e.message);
+            console.error(`Failed to fetch ${url}:`, (e as Error).message);
         }
     }
 }
