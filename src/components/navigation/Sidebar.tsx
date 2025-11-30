@@ -3,13 +3,23 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Logo } from '@/components/ui/Logo';
-import { Calendar, Activity, Radio, FlaskConical, TrendingUp, Shield, Info, Hexagon, Bot, Scale, Wrench } from 'lucide-react';
+import { Calendar, Activity, Radio, FlaskConical, TrendingUp, Shield, Info, Hexagon, Bot, Scale, Wrench, Brain } from 'lucide-react';
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip";
+
+const intelligenceLinks = [
+    {
+        id: 'intelligence-brief',
+        label: 'Intelligence Brief',
+        icon: Brain,
+        href: '/intelligence-brief',
+        tooltip: "AI-synthesized insights: what happened, what it means, and why it matters."
+    },
+];
 
 const platformLinks = [
     {
@@ -121,6 +131,40 @@ export function Sidebar() {
             </div>
 
             <TooltipProvider delayDuration={300}>
+
+                {/* INTELLIGENCE GROUP */}
+                <div className="mb-8">
+                    <h3 className="text-[11px] font-medium text-[#9CA3AF] uppercase tracking-wider mb-2 px-4 mt-2">
+                        INTELLIGENCE
+                    </h3>
+                    <nav className="space-y-1">
+                        {intelligenceLinks.map((link) => {
+                            const isActive = pathname === link.href;
+                            return (
+                                <Tooltip key={link.id}>
+                                    <TooltipTrigger asChild>
+                                        <Link
+                                            href={link.href}
+                                            className={`flex items-center gap-3 px-4 h-10 rounded-full text-sm transition-all group relative overflow-hidden ${isActive
+                                                ? 'bg-[#E0ECFF] text-[#1D4ED8] font-medium'
+                                                : 'text-[#4B5563] hover:bg-[#E5F0FF] hover:text-[#1D4ED8]'
+                                                }`}
+                                        >
+                                            {isActive && (
+                                                <div className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-[3px] bg-[#2563EB] rounded-r-full" />
+                                            )}
+                                            <link.icon className={`h-4 w-4 ${isActive ? 'text-[#2563EB]' : 'text-[#9CA3AF] group-hover:text-[#2563EB]'}`} />
+                                            {link.label}
+                                        </Link>
+                                    </TooltipTrigger>
+                                    <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none">
+                                        {link.tooltip}
+                                    </TooltipContent>
+                                </Tooltip>
+                            );
+                        })}
+                    </nav>
+                </div>
 
                 {/* PLATFORM GROUP */}
                 <div className="mb-8">
