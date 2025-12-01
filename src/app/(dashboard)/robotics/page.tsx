@@ -1,14 +1,13 @@
-import { CategoryFeed } from '@/components/feed/CategoryFeed';
+import { ComingSoon } from '@/components/ui/ComingSoon';
 import { Bot } from 'lucide-react';
 
 export default function RoboticsPage() {
     return (
-        <CategoryFeed
-            category="robotics"
-            title="Robotics & Hardware"
-            description="Developments in embodied AI, humanoid robots, drones, and the hardware powering the AI revolution."
-            insight="Embodied AI is the next trillion-dollar wave. Watch for convergence between LLMs and physical control systems."
-            icon={<Bot className="w-8 h-8 text-[#2563EB]" />}
+        <ComingSoon
+            title="Robotics Tracker"
+            description="Real-time tracking of humanoid robotics, embodied AI, and autonomous systems. We are integrating video feeds and hardware specs."
+            eta="Initializing Q1 2025"
+            icon={<Bot className="w-10 h-10 text-blue-400" />}
         />
     );
 }

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Mail, MessageSquare, User, Send, Check } from 'lucide-react';
+import { PageHeader } from '@/components/ui/PageHeader';
 
 export default function FeedbackPage() {
     const [formData, setFormData] = useState({
@@ -48,12 +49,12 @@ export default function FeedbackPage() {
 
     return (
         <div className="max-w-2xl mx-auto py-12 px-6">
-            <div className="mb-8">
-                <h1 className="text-3xl font-bold text-[#0F172A] mb-3">Contact Us</h1>
-                <p className="text-[#64748B]">
-                    Have feedback, questions, or suggestions? We'd love to hear from you.
-                </p>
-            </div>
+            <PageHeader
+                title="Contact Us"
+                description="Have feedback, questions, or suggestions? We'd love to hear from you."
+                insight="Your input shapes our intelligence. We read every message to improve our signal-to-noise ratio."
+                icon={<MessageSquare className="w-8 h-8 text-blue-600" />}
+            />
 
             <div className="bg-white rounded-2xl shadow-lg border border-[#E5E7EB] p-8">
                 <form onSubmit={handleSubmit} className="space-y-6">

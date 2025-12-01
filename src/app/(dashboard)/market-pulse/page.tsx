@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { TrendingUp, TrendingDown, Activity, ArrowRight, Zap, DollarSign, BarChart3, Loader2 } from 'lucide-react';
+import { PageHeader } from '@/components/ui/PageHeader';
 import { Article } from '@/types';
 
 export default function MarketPulsePage() {
@@ -103,24 +104,12 @@ export default function MarketPulsePage() {
     return (
         <div className="space-y-8 min-h-screen bg-gray-950 text-gray-100 p-6 lg:p-8 font-sans selection:bg-blue-500/30">
             {/* Header */}
-            <div className="border-b border-blue-900/30 pb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
-                <div>
-                    <h1 className="text-3xl font-bold text-white tracking-tight flex items-center gap-3">
-                        <DollarSign className="h-8 w-8 text-blue-500" />
-                        MARKET PULSE
-                    </h1>
-                    <p className="text-blue-400/60 mt-2 text-sm font-mono uppercase tracking-widest">
-                        Sector Analysis // Financial Signals // Entity Tracking
-                    </p>
-                </div>
-                <div className="flex items-center gap-3 px-4 py-2 bg-blue-950/30 border border-blue-900/50 rounded-full">
-                    <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                    </span>
-                    <span className="text-xs font-bold text-blue-200 tracking-wider">LIVE MARKET DATA</span>
-                </div>
-            </div>
+            <PageHeader
+                title="Market Pulse"
+                description="Sector Analysis // Financial Signals // Entity Tracking"
+                insight="Real-time financial intelligence tracking the intersection of AI technology and market movements. We filter the noise to find the signal in the data."
+                icon={<DollarSign className="w-8 h-8 text-blue-500" />}
+            />
 
             {/* Intelligence Dashboard */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -151,8 +140,8 @@ export default function MarketPulsePage() {
                             <div className="space-y-1">
                                 <div className="text-5xl font-black text-white tracking-tighter tabular-nums">{stats.sentimentScore}</div>
                                 <div className={`text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full border ${stats.sentimentScore > 60 ? 'text-emerald-400 border-emerald-900/50 bg-emerald-950/30' :
-                                        stats.sentimentScore < 40 ? 'text-red-400 border-red-900/50 bg-red-950/30' :
-                                            'text-amber-400 border-amber-900/50 bg-amber-950/30'
+                                    stats.sentimentScore < 40 ? 'text-red-400 border-red-900/50 bg-red-950/30' :
+                                        'text-amber-400 border-amber-900/50 bg-amber-950/30'
                                     }`}>{stats.sentimentLabel}</div>
                             </div>
 

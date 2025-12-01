@@ -1,14 +1,13 @@
-import { CategoryFeed } from '@/components/feed/CategoryFeed';
+import { ComingSoon } from '@/components/ui/ComingSoon';
 import { Scale } from 'lucide-react';
 
 export default function PolicyPage() {
     return (
-        <CategoryFeed
-            category="policy"
-            title="Policy & Regulation"
-            description="AI policy developments, regulation updates, EU AI Act, and government initiatives shaping the future of AI governance."
-            insight="Regulation is the new innovation frontier. Tracking the EU AI Act and global governance is critical for compliance."
-            icon={<Scale className="w-8 h-8 text-[#2563EB]" />}
+        <ComingSoon
+            title="Global Policy Monitor"
+            description="A dedicated dashboard for tracking AI regulation, the EU AI Act, and global governance initiatives. Compliance tracking module included."
+            eta="Initializing Q1 2025"
+            icon={<Scale className="w-10 h-10 text-blue-400" />}
         />
     );
 }
