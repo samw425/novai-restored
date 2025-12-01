@@ -182,11 +182,12 @@ export default function WarRoomPage() {
 
             {/* Global Threat Map (Visual Only) */}
             <div className="bg-gray-950 rounded-xl border border-gray-800 p-6 shadow-2xl relative overflow-hidden min-h-[600px]">
-                <div className="absolute inset-0 opacity-20 bg-[url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg')] bg-no-repeat bg-center bg-cover pointer-events-none invert"></div>
+                {/* Map Background - Brightened and Contained to show full world */}
+                <div className="absolute inset-0 opacity-50 bg-[url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg')] bg-no-repeat bg-center bg-contain pointer-events-none invert"></div>
 
                 {/* Grid Overlay */}
                 <div className="absolute inset-0 bg-[linear-gradient(rgba(0,50,0,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(0,50,0,0.1)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)] pointer-events-none"></div>
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.4)_100%)] pointer-events-none"></div>
 
                 <div className="relative z-10 flex justify-between items-start mb-12">
                     <h2 className="text-lg font-bold text-white flex items-center gap-2 font-mono tracking-tight">
