@@ -163,32 +163,34 @@ export default function RoboticsPage() {
                                             className="w-full h-full object-cover absolute inset-0 mix-blend-multiply opacity-80 group-hover:opacity-100 transition-opacity"
                                         />
                                     </div>
-                                    <div className="w-2/3 p-4">
-                                        <div className="flex justify-between items-start mb-2">
-                                            <div>
-                                                <h4 className="text-lg font-bold text-slate-900 leading-none">{robot.name}</h4>
-                                                <span className="text-xs font-bold text-slate-500 uppercase">{robot.company}</span>
+                                    <div className="w-2/3 p-4 flex flex-col justify-between">
+                                        <div>
+                                            <div className="flex justify-between items-start mb-2 gap-2">
+                                                <div>
+                                                    <h4 className="text-lg font-bold text-slate-900 leading-none mb-1">{robot.name}</h4>
+                                                    <span className="text-xs font-bold text-slate-500 uppercase block leading-tight">{robot.company}</span>
+                                                </div>
+                                                <span className={`shrink-0 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${robot.status === 'PRODUCTION' ? 'bg-emerald-100 text-emerald-700' :
+                                                        robot.status === 'PROTOTYPE' ? 'bg-amber-100 text-amber-700' :
+                                                            'bg-blue-100 text-blue-700'
+                                                    }`}>
+                                                    {robot.status}
+                                                </span>
                                             </div>
-                                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${robot.status === 'PRODUCTION' ? 'bg-emerald-100 text-emerald-700' :
-                                                    robot.status === 'PROTOTYPE' ? 'bg-amber-100 text-amber-700' :
-                                                        'bg-blue-100 text-blue-700'
-                                                }`}>
-                                                {robot.status}
-                                            </span>
-                                        </div>
 
-                                        <div className="grid grid-cols-2 gap-y-2 gap-x-4 text-xs mb-3">
-                                            <div>
-                                                <span className="text-slate-400 block text-[10px] uppercase font-bold">Height</span>
-                                                <span className="font-mono text-slate-700">{robot.height}</span>
-                                            </div>
-                                            <div>
-                                                <span className="text-slate-400 block text-[10px] uppercase font-bold">Weight</span>
-                                                <span className="font-mono text-slate-700">{robot.weight}</span>
-                                            </div>
-                                            <div className="col-span-2">
-                                                <span className="text-slate-400 block text-[10px] uppercase font-bold">Compute</span>
-                                                <span className="font-mono text-slate-700 truncate">{robot.compute}</span>
+                                            <div className="grid grid-cols-2 gap-y-3 gap-x-2 text-xs mb-3">
+                                                <div>
+                                                    <span className="text-slate-400 block text-[10px] uppercase font-bold mb-0.5">Height</span>
+                                                    <span className="font-mono text-slate-700 font-medium">{robot.height}</span>
+                                                </div>
+                                                <div>
+                                                    <span className="text-slate-400 block text-[10px] uppercase font-bold mb-0.5">Weight</span>
+                                                    <span className="font-mono text-slate-700 font-medium">{robot.weight}</span>
+                                                </div>
+                                                <div className="col-span-2">
+                                                    <span className="text-slate-400 block text-[10px] uppercase font-bold mb-0.5">Compute</span>
+                                                    <span className="font-mono text-slate-700 font-medium block leading-snug">{robot.compute}</span>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -196,7 +198,7 @@ export default function RoboticsPage() {
                                             href={robot.website}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="text-[10px] font-bold text-blue-600 hover:text-blue-800 uppercase tracking-wider flex items-center gap-1"
+                                            className="text-[10px] font-bold text-blue-600 hover:text-blue-800 uppercase tracking-wider flex items-center gap-1 mt-auto"
                                         >
                                             View Specs <ExternalLink size={10} />
                                         </a>
