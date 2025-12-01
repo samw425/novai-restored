@@ -174,14 +174,23 @@ export async function fetchConflictIncidents(): Promise<WarRoomIncident[]> {
     try {
         const incidents: WarRoomIncident[] = [];
 
-        // Fetch from defense/conflict RSS feeds
-        for (const feedUrl of CONFLICT_FEEDS) {
+        // Helper to fetch with timeout
+        const fetchFeed = async (url: string) => {
             try {
-                const feed = await parser.parseURL(feedUrl);
+                // Create a timeout promise
+                const timeout = new Promise((_, reject) =>
+                    setTimeout(() => reject(new Error('Timeout')), 2000) // Reduced to 2s for faster UX
+                );
+
+                // Race parser against timeout
+                const feed: any = await Promise.race([
+                    parser.parseURL(url),
+                    timeout
+                ]);
 
                 // Filter for recent (last 14 days) - Relaxed from 7
                 // BUT for specific "Agency" feeds, we allow a longer lookback (30 days) to ensure we get "Intel" hits
-                const isAgencyFeed = feedUrl.includes('Mossad') || feedUrl.includes('CIA') || feedUrl.includes('FSB') || feedUrl.includes('IDF') || feedUrl.includes('Shin+Bet') || feedUrl.includes('MI6');
+                const isAgencyFeed = url.includes('Mossad') || url.includes('CIA') || url.includes('FSB') || url.includes('IDF') || url.includes('Shin+Bet') || url.includes('MI6');
 
                 const lookbackDays = isAgencyFeed ? 30 : 14;
                 const cutoffDate = new Date();
@@ -264,27 +273,27 @@ export async function fetchConflictIncidents(): Promise<WarRoomIncident[]> {
 
                         if (!found) {
                             // Agency-specific default locations (Fallback if no city found)
-                            if (feedUrl.includes('Mossad') || feedUrl.includes('Shin+Bet') || feedUrl.includes('IDF')) {
+                            if (url.includes('Mossad') || url.includes('Shin+Bet') || url.includes('IDF')) {
                                 assignedLoc = { lat: 32.0853, lng: 34.7818, region: 'Tel Aviv (Mossad HQ)' };
-                            } else if (feedUrl.includes('CIA') || feedUrl.includes('FBI') || feedUrl.includes('NSA')) {
+                            } else if (url.includes('CIA') || url.includes('FBI') || url.includes('NSA')) {
                                 assignedLoc = { lat: 38.9472, lng: -77.1461, region: 'Langley/Ft. Meade' };
-                            } else if (feedUrl.includes('FSB') || feedUrl.includes('SVR') || feedUrl.includes('GRU')) {
+                            } else if (url.includes('FSB') || url.includes('SVR') || url.includes('GRU')) {
                                 assignedLoc = { lat: 55.7558, lng: 37.6173, region: 'Moscow (Lubyanka)' };
-                            } else if (feedUrl.includes('MI6') || feedUrl.includes('GCHQ')) {
+                            } else if (url.includes('MI6') || url.includes('GCHQ')) {
                                 assignedLoc = { lat: 51.4872, lng: -0.1243, region: 'London (Vauxhall Cross)' };
-                            } else if (feedUrl.includes('DGSE')) {
+                            } else if (url.includes('DGSE')) {
                                 assignedLoc = { lat: 48.8744, lng: 2.4074, region: 'Paris (DGSE HQ)' };
-                            } else if (feedUrl.includes('BND')) {
+                            } else if (url.includes('BND')) {
                                 assignedLoc = { lat: 52.5352, lng: 13.3768, region: 'Berlin (BND HQ)' };
-                            } else if (feedUrl.includes('MSS')) {
+                            } else if (url.includes('MSS')) {
                                 assignedLoc = { lat: 39.9042, lng: 116.4074, region: 'Beijing (MSS HQ)' };
-                            } else if (feedUrl.includes('RAW')) {
+                            } else if (url.includes('RAW')) {
                                 assignedLoc = { lat: 28.6139, lng: 77.2090, region: 'New Delhi (RAW HQ)' };
-                            } else if (feedUrl.includes('ISI')) {
+                            } else if (url.includes('ISI')) {
                                 assignedLoc = { lat: 33.7294, lng: 73.0931, region: 'Islamabad (ISI HQ)' };
-                            } else if (feedUrl.includes('CSIS')) {
+                            } else if (url.includes('CSIS')) {
                                 assignedLoc = { lat: 45.4215, lng: -75.6972, region: 'Ottawa (CSIS HQ)' };
-                            } else if (feedUrl.includes('ASIS')) {
+                            } else if (url.includes('ASIS')) {
                                 assignedLoc = { lat: -35.2809, lng: 149.1300, region: 'Canberra (ASIS HQ)' };
                             } else if (text.includes('us') || text.includes('usa') || text.includes('america') || text.includes('biden') || text.includes('trump')) {
                                 assignedLoc = { lat: 39.8283, lng: -98.5795, region: 'USA (General)' };
@@ -303,33 +312,33 @@ export async function fetchConflictIncidents(): Promise<WarRoomIncident[]> {
 
                         // Determine source name for "Insider" styling
                         let sourceName = 'Defense News';
-                        if (feedUrl.includes('defense.gov')) sourceName = 'US DEPT OF DEFENSE';
-                        else if (feedUrl.includes('state.gov')) sourceName = 'US STATE DEPT';
-                        else if (feedUrl.includes('gov.uk')) sourceName = 'UK MINISTRY OF DEFENCE';
-                        else if (feedUrl.includes('nato.int')) sourceName = 'NATO COMMAND';
-                        else if (feedUrl.includes('understandingwar')) sourceName = 'ISW (WAR STUDY)';
-                        else if (feedUrl.includes('bellingcat')) sourceName = 'BELLINGCAT OSINT';
-                        else if (feedUrl.includes('csis')) sourceName = 'CSIS STRATEGY';
-                        else if (feedUrl.includes('rand.org')) sourceName = 'RAND CORP';
-                        else if (feedUrl.includes('Mossad')) sourceName = 'MOSSAD';
-                        else if (feedUrl.includes('CIA')) sourceName = 'CIA';
-                        else if (feedUrl.includes('NSA')) sourceName = 'NSA';
-                        else if (feedUrl.includes('FSB')) sourceName = 'FSB';
-                        else if (feedUrl.includes('SVR')) sourceName = 'SVR';
-                        else if (feedUrl.includes('GRU')) sourceName = 'GRU';
-                        else if (feedUrl.includes('IDF')) sourceName = 'IDF';
-                        else if (feedUrl.includes('Shin+Bet')) sourceName = 'SHIN BET';
-                        else if (feedUrl.includes('MI6')) sourceName = 'MI6';
-                        else if (feedUrl.includes('GCHQ')) sourceName = 'GCHQ';
-                        else if (feedUrl.includes('DGSE')) sourceName = 'DGSE';
-                        else if (feedUrl.includes('BND')) sourceName = 'BND';
-                        else if (feedUrl.includes('MSS')) sourceName = 'MSS';
-                        else if (feedUrl.includes('RAW')) sourceName = 'RAW';
-                        else if (feedUrl.includes('ISI')) sourceName = 'ISI';
-                        else if (feedUrl.includes('CSIS')) sourceName = 'CSIS';
-                        else if (feedUrl.includes('ASIS')) sourceName = 'ASIS';
-                        else if (feedUrl.includes('timesofisrael')) sourceName = 'Times of Israel';
-                        else if (feedUrl.includes('jpost')) sourceName = 'Jerusalem Post';
+                        if (url.includes('defense.gov')) sourceName = 'US DEPT OF DEFENSE';
+                        else if (url.includes('state.gov')) sourceName = 'US STATE DEPT';
+                        else if (url.includes('gov.uk')) sourceName = 'UK MINISTRY OF DEFENCE';
+                        else if (url.includes('nato.int')) sourceName = 'NATO COMMAND';
+                        else if (url.includes('understandingwar')) sourceName = 'ISW (WAR STUDY)';
+                        else if (url.includes('bellingcat')) sourceName = 'BELLINGCAT OSINT';
+                        else if (url.includes('csis')) sourceName = 'CSIS STRATEGY';
+                        else if (url.includes('rand.org')) sourceName = 'RAND CORP';
+                        else if (url.includes('Mossad')) sourceName = 'MOSSAD';
+                        else if (url.includes('CIA')) sourceName = 'CIA';
+                        else if (url.includes('NSA')) sourceName = 'NSA';
+                        else if (url.includes('FSB')) sourceName = 'FSB';
+                        else if (url.includes('SVR')) sourceName = 'SVR';
+                        else if (url.includes('GRU')) sourceName = 'GRU';
+                        else if (url.includes('IDF')) sourceName = 'IDF';
+                        else if (url.includes('Shin+Bet')) sourceName = 'SHIN BET';
+                        else if (url.includes('MI6')) sourceName = 'MI6';
+                        else if (url.includes('GCHQ')) sourceName = 'GCHQ';
+                        else if (url.includes('DGSE')) sourceName = 'DGSE';
+                        else if (url.includes('BND')) sourceName = 'BND';
+                        else if (url.includes('MSS')) sourceName = 'MSS';
+                        else if (url.includes('RAW')) sourceName = 'RAW';
+                        else if (url.includes('ISI')) sourceName = 'ISI';
+                        else if (url.includes('CSIS')) sourceName = 'CSIS';
+                        else if (url.includes('ASIS')) sourceName = 'ASIS';
+                        else if (url.includes('timesofisrael')) sourceName = 'Times of Israel';
+                        else if (url.includes('jpost')) sourceName = 'Jerusalem Post';
                         else if (item.source?.title) sourceName = item.source.title; // Use RSS source if available
 
                         // Determine Incident Type
@@ -378,8 +387,16 @@ export async function fetchConflictIncidents(): Promise<WarRoomIncident[]> {
                     }
                 });
             } catch (feedError) {
-                console.error(`Failed to fetch conflict feed ${feedUrl}:`, feedError);
+                // console.error(`Failed to fetch conflict feed ${url}:`, feedError);
+                // Silent fail for individual feeds to keep the stream moving
             }
+        };
+
+        // Execute in chunks to avoid overwhelming network/CPU
+        const CHUNK_SIZE = 50; // Increased chunk size for faster parallel execution
+        for (let i = 0; i < CONFLICT_FEEDS.length; i += CHUNK_SIZE) {
+            const chunk = CONFLICT_FEEDS.slice(i, i + CHUNK_SIZE);
+            await Promise.all(chunk.map(url => fetchFeed(url)));
         }
 
         // --- BALANCED FEED LOGIC ---

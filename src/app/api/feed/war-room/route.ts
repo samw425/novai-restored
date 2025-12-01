@@ -10,25 +10,24 @@ export async function GET(request: Request) {
         const page = parseInt(searchParams.get('page') || '1');
         const limit = parseInt(searchParams.get('limit') || '20');
 
-        const allIncidents = await getWarRoomData();
+        const incidents = await getWarRoomData();
 
         // Pagination logic
         const startIndex = (page - 1) * limit;
         const endIndex = startIndex + limit;
-        const paginatedIncidents = allIncidents.slice(startIndex, endIndex);
+        const paginatedIncidents = incidents.slice(startIndex, endIndex);
 
         return NextResponse.json({
             incidents: paginatedIncidents,
-            total: allIncidents.length,
+            total: incidents.length,
             page,
-            hasMore: endIndex < allIncidents.length,
-            lastUpdate: new Date().toISOString()
+            totalPages: Math.ceil(incidents.length / limit)
         });
-    } catch (error: any) {
+    } catch (error) {
         console.error('War Room API Error:', error);
-        return NextResponse.json({
-            incidents: [],
-            error: error.message
-        }, { status: 500 });
+        return NextResponse.json(
+            { error: 'Failed to fetch War Room data' },
+            { status: 500 }
+        );
     }
 }

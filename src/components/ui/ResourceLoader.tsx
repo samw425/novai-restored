@@ -9,6 +9,7 @@ interface ResourceLoaderProps {
 
 export function ResourceLoader({ message = "Initializing intelligence stream..." }: ResourceLoaderProps) {
     const [statusText, setStatusText] = useState("Initializing secure connection...");
+    const [showDisclaimer, setShowDisclaimer] = useState(false);
 
     const statusMessages = [
         "Connecting to satellite feeds...",
@@ -20,14 +21,31 @@ export function ResourceLoader({ message = "Initializing intelligence stream..."
     ];
 
     useEffect(() => {
+        // Progressive loading: Only show detailed disclaimer if it takes > 1.5s
+        const timer = setTimeout(() => {
+            setShowDisclaimer(true);
+        }, 1500);
+
         let currentIndex = 0;
         const interval = setInterval(() => {
             currentIndex = (currentIndex + 1) % statusMessages.length;
             setStatusText(statusMessages[currentIndex]);
         }, 3000);
 
-        return () => clearInterval(interval);
+        return () => {
+            clearTimeout(timer);
+            clearInterval(interval);
+        };
     }, []);
+
+    if (!showDisclaimer) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-[200px] p-8 animate-in fade-in duration-300">
+                <Loader2 className="h-8 w-8 text-indigo-600 animate-spin mb-4" />
+                <p className="text-sm text-gray-500 font-mono animate-pulse">Establishing Uplink...</p>
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-col items-center justify-center min-h-[500px] p-8 text-center animate-in fade-in duration-700">

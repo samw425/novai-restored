@@ -9,7 +9,7 @@ import { MonthlyIntelBrief } from '@/components/dashboard/MonthlyIntelBrief';
 import { getWarRoomData } from '@/lib/osint';
 import { Article } from '@/types';
 
-export const runtime = 'edge';
+// export const runtime = 'edge'; // Removed to fix Vercel deployment size limit
 // Prevent static generation for this page to ensure real-time data
 export const dynamic = 'force-dynamic';
 
