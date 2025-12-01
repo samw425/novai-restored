@@ -88,10 +88,10 @@ export function Footer() {
 
                     <div className="flex items-center gap-6">
                         <div className="flex items-center gap-4 text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                            <span className="flex items-center gap-1.5 text-blue-600">
+                            <a href="https://aether-architect.vercel.app/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-blue-600 hover:text-blue-700 transition-colors">
                                 <Zap className="w-3 h-3" />
-                                Powered by Novai Live
-                            </span>
+                                Powered by Aether
+                            </a>
                             <span className="w-1 h-1 rounded-full bg-slate-300"></span>
                             <span>Los Angeles, CA</span>
                         </div>
