@@ -32,7 +32,8 @@ export function WaitlistModal({ isOpen, onClose, source = 'General' }: WaitlistM
                     email: email,
                     source: source,
                     message: `New user joined the waitlist from ${source}.`,
-                    _template: 'table'
+                    _template: 'table',
+                    _captcha: "false"
                 }),
             });
 
@@ -90,7 +91,7 @@ export function WaitlistModal({ isOpen, onClose, source = 'General' }: WaitlistM
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     placeholder="Enter your email"
-                                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all"
+                                    className="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-900 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none transition-all"
                                     disabled={status === 'loading'}
                                 />
                             </div>
