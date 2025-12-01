@@ -19,6 +19,9 @@ interface Theme {
 
 export default function IntelligenceBriefPage() {
     const [themes, setThemes] = useState<Theme[]>([]);
+    const [globalSentiment, setGlobalSentiment] = useState(50);
+    const [topKeywords, setTopKeywords] = useState<any[]>([]);
+    const [articleCount, setArticleCount] = useState(0);
     const [loading, setLoading] = useState(true);
     const [selectedTerm, setSelectedTerm] = useState<string | null>(null);
     const [generatedAt, setGeneratedAt] = useState<string>('');
@@ -35,6 +38,9 @@ export default function IntelligenceBriefPage() {
             const response = await fetch('/api/intelligence/synthesize');
             const data = await response.json();
             setThemes(data.themes || []);
+            setGlobalSentiment(data.globalSentiment || 50);
+            setTopKeywords(data.topKeywords || []);
+            setArticleCount(data.articleCount || 0);
             setGeneratedAt(data.generatedAt || new Date().toISOString());
         } catch (error) {
             console.error('Failed to fetch intelligence brief:', error);
@@ -85,21 +91,26 @@ export default function IntelligenceBriefPage() {
                     {/* Visual Synthesis Section */}
                     {!loading && themes.length > 0 && (
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                            <SentimentGauge value={65} label="Global Stability" />
+                            <SentimentGauge value={globalSentiment} label="Global Stability Index" />
                             <div onClick={() => setSelectedTerm("Global Intelligence Trends")} className="cursor-pointer">
-                                <KeywordCloud keywords={[
-                                    { text: "AI Regulation", weight: 5 },
-                                    { text: "Cyberwarfare", weight: 4 },
-                                    { text: "Semiconductors", weight: 5 },
-                                    { text: "Quantum", weight: 3 },
-                                    { text: "Drones", weight: 4 },
-                                    { text: "Energy", weight: 2 }
-                                ]} />
+                                <KeywordCloud keywords={topKeywords} />
                             </div>
-                            <div className="p-4 bg-gradient-to-br from-indigo-600 to-purple-700 rounded-xl text-white flex flex-col justify-center shadow-lg transform hover:scale-[1.02] transition-transform cursor-default">
-                                <span className="text-xs font-bold opacity-70 uppercase tracking-wider mb-1">Total Sources</span>
-                                <span className="text-3xl font-black">72</span>
-                                <span className="text-[10px] opacity-70 mt-1">Verified Intelligence Streams</span>
+                            <div className="p-4 bg-gradient-to-br from-indigo-900 to-blue-900 rounded-xl text-white flex flex-col justify-center shadow-lg transform hover:scale-[1.02] transition-transform cursor-default border border-indigo-700/50 relative overflow-hidden group">
+                                <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10"></div>
+                                <div className="absolute -right-4 -top-4 w-24 h-24 bg-blue-500/20 rounded-full blur-2xl group-hover:bg-blue-500/30 transition-all"></div>
+
+                                <span className="text-[10px] font-bold text-blue-300 uppercase tracking-widest mb-1 relative z-10">Active Sensors</span>
+                                <div className="flex items-baseline gap-1 relative z-10">
+                                    <span className="text-4xl font-black text-white tracking-tight">{articleCount}</span>
+                                    <span className="text-xs font-bold text-blue-400">SOURCES</span>
+                                </div>
+                                <div className="mt-2 flex items-center gap-2 relative z-10">
+                                    <span className="relative flex h-2 w-2">
+                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                                    </span>
+                                    <span className="text-[10px] font-mono text-emerald-400">SYSTEM ONLINE</span>
+                                </div>
                             </div>
                         </div>
                     )}

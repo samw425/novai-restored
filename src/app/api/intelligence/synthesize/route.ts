@@ -77,8 +77,13 @@ export async function GET() {
             }];
         }
 
+        // Generate Global Metrics (Sentiment & Keywords)
+        const globalMetrics = await generateGlobalMetrics(articles);
+
         const result = {
             themes: finalThemes,
+            globalSentiment: globalMetrics?.sentiment || 50,
+            topKeywords: globalMetrics?.keywords || [],
             generatedAt: new Date().toISOString(),
             articleCount: articles.length
         };
@@ -192,6 +197,37 @@ Respond in JSON format:
 
     } catch (error) {
         console.error(`Failed to synthesize theme "${theme.title}":`, error);
+        return null;
+    }
+}
+
+async function generateGlobalMetrics(articles: any[]): Promise<{ sentiment: number, keywords: { text: string, weight: number }[] } | null> {
+    try {
+        // Sample top 10 articles for global context
+        const sample = articles.slice(0, 10).map(a => `${a.title}: ${a.summary}`).join('\n');
+
+        const prompt = `Analyze these top AI news headlines and provide:
+1. A Global Sentiment Score (0-100) where 0 is catastrophic/fearful, 50 is neutral, and 100 is euphoric/optimistic.
+2. Top 6 keywords or entities driving the news cycle, with a weight (1-5).
+
+Headlines:
+${sample}
+
+Respond in JSON format:
+{
+  "sentiment": number,
+  "keywords": [{ "text": "string", "weight": number }]
+}`;
+
+        const result = await model.generateContent(prompt);
+        const text = result.response.text();
+        const jsonMatch = text.match(/\{[\s\S]*\}/);
+
+        if (!jsonMatch) return null;
+
+        return JSON.parse(jsonMatch[0]);
+    } catch (error) {
+        console.error('Failed to generate global metrics:', error);
         return null;
     }
 }

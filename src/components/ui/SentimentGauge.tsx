@@ -29,8 +29,9 @@ export function SentimentGauge({ value, label = "Global Sentiment" }: SentimentG
     const strokeDashoffset = circumference - (score / 100) * (circumference / 2);
 
     return (
-        <div className="flex flex-col items-center justify-center p-4 bg-white rounded-xl border border-gray-200 shadow-sm">
-            <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">{label}</h3>
+        <div className="flex flex-col items-center justify-center p-4 bg-white rounded-xl border border-gray-200 shadow-sm relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 via-blue-500 to-emerald-500 opacity-20"></div>
+            <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">{label}</h3>
             <div className="relative w-32 h-16 overflow-hidden">
                 <svg className="w-32 h-32 transform -rotate-90" viewBox="0 0 100 100">
                     {/* Background Track */}
@@ -39,10 +40,10 @@ export function SentimentGauge({ value, label = "Global Sentiment" }: SentimentG
                         cy="50"
                         r={radius}
                         fill="none"
-                        stroke="#E5E7EB"
-                        strokeWidth="10"
+                        stroke="#F1F5F9"
+                        strokeWidth="8"
                         strokeDasharray={`${circumference / 2} ${circumference}`}
-                        className="transition-all duration-1000 ease-out"
+                        strokeLinecap="round"
                     />
                     {/* Value Arc */}
                     <circle
@@ -51,20 +52,20 @@ export function SentimentGauge({ value, label = "Global Sentiment" }: SentimentG
                         r={radius}
                         fill="none"
                         stroke={color}
-                        strokeWidth="10"
+                        strokeWidth="8"
                         strokeDasharray={strokeDasharray}
                         strokeDashoffset={strokeDashoffset}
                         strokeLinecap="round"
-                        className="transition-all duration-1000 ease-out"
+                        className="transition-all duration-1000 ease-out drop-shadow-sm"
                     />
                 </svg>
                 <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 text-center">
-                    <span className="text-2xl font-black text-gray-900">{score}</span>
+                    <span className="text-3xl font-black text-gray-900 tracking-tighter">{score}</span>
                 </div>
             </div>
-            <div className="flex justify-between w-full px-2 mt-1 text-[10px] font-bold text-gray-400">
-                <span>FEAR</span>
-                <span>GREED</span>
+            <div className="flex justify-between w-full px-4 mt-2 text-[9px] font-bold text-gray-400 tracking-widest">
+                <span className="text-red-400">CRITICAL</span>
+                <span className="text-emerald-400">STABLE</span>
             </div>
         </div>
     );
