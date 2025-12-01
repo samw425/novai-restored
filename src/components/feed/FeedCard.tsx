@@ -23,77 +23,116 @@ export function FeedCard({ article }: FeedCardProps) {
     const isLive = new Date(article.publishedAt).getTime() > Date.now() - 1000 * 60 * 60 * 4; // 4 hours
 
     return (
-        <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all group relative overflow-hidden">
-            {isLive && (
-                <div className="absolute top-0 right-0 bg-red-600 text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg z-10 animate-pulse flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 bg-white rounded-full animate-ping" />
-                    LIVE
-                </div>
-            )}
-            <article className="group transform hover:-translate-y-[2px]">
-                <div className="flex items-start justify-between mb-3">
-                    <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-2 py-1 rounded">
+        <article className="group relative">
+            {/* Hover Glow Effect */}
+            <div className="absolute -inset-3 bg-gradient-to-r from-blue-50/0 via-blue-50/50 to-purple-50/0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-2xl -z-10" />
+
+            {/* Card */}
+            <div className="relative bg-white border border-gray-100 rounded-2xl p-8 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-500 group-hover:-translate-y-1">
+
+                {/* Live Indicator */}
+                {isLive && (
+                    <div className="absolute top-6 right-6 flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-red-500 to-rose-500 text-white text-[10px] font-bold tracking-wider uppercase rounded-full shadow-lg">
+                        <span className="flex h-1.5 w-1.5 relative">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-white"></span>
+                        </span>
+                        Live
+                    </div>
+                )}
+
+                {/* Meta */}
+                <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-4">
+                        <span className="text-xs font-bold text-gray-900 tracking-wide uppercase">
                             {article.source}
                         </span>
-                        <span className="text-xs text-gray-400 flex items-center gap-1">
-                            <Clock size={12} />
-                            {/* Handle potential date parsing errors safely */}
+                        <span className="w-1 h-1 rounded-full bg-gray-300" />
+                        <span className="text-xs text-gray-400 font-medium">
                             {article.publishedAt ? formatDistanceToNow(new Date(article.publishedAt)) : 'Just now'} ago
                         </span>
                     </div>
-                    <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button className="p-1.5 hover:bg-gray-100 rounded text-gray-400 hover:text-gray-900"><Bookmark size={16} /></button>
+
+                    {/* Actions */}
+                    <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <button
+                            className="p-2.5 hover:bg-gray-50 rounded-xl text-gray-400 hover:text-gray-900 transition-all duration-200"
+                            aria-label="Bookmark"
+                        >
+                            <Bookmark size={16} strokeWidth={2} />
+                        </button>
                         <button
                             onClick={() => setIsShareOpen(true)}
-                            className="p-1.5 hover:bg-gray-100 rounded text-gray-400 hover:text-gray-900"
+                            className="p-2.5 hover:bg-gray-50 rounded-xl text-gray-400 hover:text-gray-900 transition-all duration-200"
+                            aria-label="Share"
                         >
-                            <Share2 size={16} />
+                            <Share2 size={16} strokeWidth={2} />
                         </button>
                     </div>
                 </div>
 
-                {/* Title is now a Real Link */}
+                {/* Title */}
                 <a
                     href={article.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block group-hover:text-blue-600 transition-colors"
+                    className="block mb-4 group/title"
                 >
-                    <h3 className="text-lg font-bold text-gray-900 mb-2 leading-tight flex items-start gap-2">
+                    <h3 className="text-2xl font-bold text-gray-900 leading-[1.2] tracking-tight mb-3 group-hover/title:text-blue-600 transition-colors duration-300">
                         {article.title}
-                        <ExternalLink size={14} className="mt-1 opacity-0 group-hover:opacity-100 transition-opacity text-blue-600" />
                     </h3>
                 </a>
 
-                <p className="text-gray-600 text-sm leading-relaxed line-clamp-2 mb-4">
+                {/* Summary */}
+                <p className="text-base text-gray-600 leading-relaxed mb-6 line-clamp-2">
                     {article.summary}
                 </p>
 
+                {/* Deep Dive */}
                 {article.relatedLinks && article.relatedLinks.length > 0 && (
-                    <div className="mt-4 pt-3 border-t border-gray-100">
-                        <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide mb-2 block">Deep Dive</span>
-                        <div className="space-y-1">
-                            {article.relatedLinks.map((link, i) => (
-                                <a key={i} href={link.url} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-xs text-blue-600 hover:underline">
-                                    <ExternalLink size={10} />
-                                    {link.title}
+                    <div className="mb-6 pt-6 border-t border-gray-50">
+                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 block">
+                            Related Intelligence
+                        </span>
+                        <div className="space-y-2">
+                            {article.relatedLinks?.map((link, i) => (
+                                <a
+                                    key={i}
+                                    href={link.url}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="flex items-center gap-2.5 text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors duration-200 group/link"
+                                >
+                                    <div className="w-1.5 h-1.5 rounded-full bg-blue-400 group-hover/link:scale-125 transition-transform" />
+                                    <span className="group-hover/link:underline underline-offset-2">{link.title}</span>
                                 </a>
                             ))}
                         </div>
                     </div>
                 )}
 
-                {/* Similarity Tags */}
-                <div className="mt-4 flex gap-2">
-                    <span className="text-[10px] text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">
-                        #{article.topicSlug}
-                    </span>
-                    <span className="text-[10px] text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">
-                        {article.category}
-                    </span>
+                {/* Footer */}
+                <div className="flex items-center justify-between pt-6 border-t border-gray-50">
+                    <div className="flex gap-2">
+                        <span className="text-[11px] font-semibold text-gray-500 bg-gray-50 border border-gray-100 px-3 py-1.5 rounded-full uppercase tracking-wide">
+                            {article.category}
+                        </span>
+                        <span className="text-[11px] font-semibold text-gray-500 bg-gray-50 border border-gray-100 px-3 py-1.5 rounded-full">
+                            #{article.topicSlug}
+                        </span>
+                    </div>
+
+                    <a
+                        href={article.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-sm font-bold text-gray-900 hover:text-blue-600 transition-colors duration-200 group/read"
+                    >
+                        <span>Read</span>
+                        <ExternalLink size={14} className="group-hover/read:translate-x-0.5 group-hover/read:-translate-y-0.5 transition-transform duration-200" strokeWidth={2.5} />
+                    </a>
                 </div>
-            </article>
-        </div>
+            </div>
+        </article>
     );
 }

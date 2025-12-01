@@ -125,8 +125,8 @@ export function Sidebar() {
     const pathname = usePathname();
 
     return (
-        <div className="sticky top-24 w-full bg-[#F3F4F6] min-h-[calc(100vh-6rem)] rounded-xl p-4 border border-[#E5E7EB]">
-            <div className="mb-6 px-4">
+        <div className="sticky top-24 w-full bg-white/80 backdrop-blur-xl min-h-[calc(100vh-6rem)] rounded-2xl p-4 border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
+            <div className="mb-8 px-4 pt-2">
                 <Logo />
             </div>
 
@@ -134,7 +134,7 @@ export function Sidebar() {
 
                 {/* INTELLIGENCE GROUP */}
                 <div className="mb-8">
-                    <h3 className="text-[11px] font-medium text-[#9CA3AF] uppercase tracking-wider mb-2 px-4 mt-2">
+                    <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 px-4 mt-2">
                         INTELLIGENCE
                     </h3>
                     <nav className="space-y-1">
@@ -145,19 +145,16 @@ export function Sidebar() {
                                     <TooltipTrigger asChild>
                                         <Link
                                             href={link.href}
-                                            className={`flex items-center gap-3 px-4 h-10 rounded-full text-sm transition-all group relative overflow-hidden ${isActive
-                                                ? 'bg-[#E0ECFF] text-[#1D4ED8] font-medium'
-                                                : 'text-[#4B5563] hover:bg-[#E5F0FF] hover:text-[#1D4ED8]'
+                                            className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${isActive
+                                                ? 'bg-gray-900 text-white shadow-md'
+                                                : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
                                                 }`}
                                         >
-                                            {isActive && (
-                                                <div className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-[3px] bg-[#2563EB] rounded-r-full" />
-                                            )}
-                                            <link.icon className={`h-4 w-4 ${isActive ? 'text-[#2563EB]' : 'text-[#9CA3AF] group-hover:text-[#2563EB]'}`} />
+                                            <link.icon className={`h-4 w-4 ${isActive ? 'text-white' : 'text-gray-400 group-hover:text-gray-600'}`} />
                                             {link.label}
                                         </Link>
                                     </TooltipTrigger>
-                                    <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none">
+                                    <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
                                         {link.tooltip}
                                     </TooltipContent>
                                 </Tooltip>
@@ -168,7 +165,7 @@ export function Sidebar() {
 
                 {/* PLATFORM GROUP */}
                 <div className="mb-8">
-                    <h3 className="text-[11px] font-medium text-[#9CA3AF] uppercase tracking-wider mb-2 px-4 mt-2">
+                    <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 px-4 mt-2">
                         PLATFORM
                     </h3>
                     <nav className="space-y-1">
@@ -179,19 +176,19 @@ export function Sidebar() {
                                     <TooltipTrigger asChild>
                                         <Link
                                             href={link.href}
-                                            className={`flex items-center gap-3 px-4 h-10 rounded-full text-sm transition-all group relative overflow-hidden ${isActive
-                                                ? 'bg-[#E0ECFF] text-[#1D4ED8] font-medium'
-                                                : 'text-[#4B5563] hover:bg-[#E5F0FF] hover:text-[#1D4ED8]'
+                                            className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${isActive
+                                                ? 'bg-gray-50 text-gray-900 font-semibold'
+                                                : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
                                                 }`}
                                         >
                                             {isActive && (
-                                                <div className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-[3px] bg-[#2563EB] rounded-r-full" />
+                                                <div className="absolute left-0 top-1/2 -translate-y-1/2 h-4 w-[2px] bg-gray-900 rounded-r-full" />
                                             )}
-                                            <link.icon className={`h-4 w-4 ${isActive ? 'text-[#2563EB]' : 'text-[#9CA3AF] group-hover:text-[#2563EB]'}`} />
+                                            <link.icon className={`h-4 w-4 ${isActive ? 'text-gray-900' : 'text-gray-400 group-hover:text-gray-600'}`} />
                                             {link.label}
                                         </Link>
                                     </TooltipTrigger>
-                                    <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none">
+                                    <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
                                         {link.tooltip}
                                     </TooltipContent>
                                 </Tooltip>
@@ -202,7 +199,7 @@ export function Sidebar() {
 
                 {/* CATEGORIES GROUP */}
                 <div className="mb-8">
-                    <h3 className="text-[11px] font-medium text-[#9CA3AF] uppercase tracking-wider mb-2 px-4">
+                    <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 px-4">
                         CATEGORIES
                     </h3>
                     <nav className="space-y-1">
@@ -213,19 +210,19 @@ export function Sidebar() {
                                     <TooltipTrigger asChild>
                                         <Link
                                             href={link.href}
-                                            className={`flex items-center gap-3 px-4 h-10 rounded-full text-sm transition-all group relative overflow-hidden ${isActive
-                                                ? 'bg-[#E0ECFF] text-[#1D4ED8] font-medium'
-                                                : 'text-[#4B5563] hover:bg-[#E5F0FF] hover:text-[#1D4ED8]'
+                                            className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${isActive
+                                                ? 'bg-gray-50 text-gray-900 font-semibold'
+                                                : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
                                                 }`}
                                         >
                                             {isActive && (
-                                                <div className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-[3px] bg-[#2563EB] rounded-r-full" />
+                                                <div className="absolute left-0 top-1/2 -translate-y-1/2 h-4 w-[2px] bg-gray-900 rounded-r-full" />
                                             )}
-                                            <link.icon className={`h-4 w-4 ${isActive ? 'text-[#2563EB]' : 'text-[#9CA3AF] group-hover:text-[#2563EB]'}`} />
+                                            <link.icon className={`h-4 w-4 ${isActive ? 'text-gray-900' : 'text-gray-400 group-hover:text-gray-600'}`} />
                                             {link.label}
                                         </Link>
                                     </TooltipTrigger>
-                                    <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none">
+                                    <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
                                         {link.tooltip}
                                     </TooltipContent>
                                 </Tooltip>
@@ -236,7 +233,7 @@ export function Sidebar() {
 
                 {/* KNOWLEDGE GROUP */}
                 <div className="mb-8">
-                    <h3 className="text-[11px] font-medium text-[#9CA3AF] uppercase tracking-wider mb-2 px-4">
+                    <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 px-4">
                         KNOWLEDGE
                     </h3>
                     <nav className="space-y-1">
@@ -247,19 +244,19 @@ export function Sidebar() {
                                     <TooltipTrigger asChild>
                                         <Link
                                             href={link.href}
-                                            className={`flex items-center gap-3 px-4 h-10 rounded-full text-sm transition-all group relative overflow-hidden ${isActive
-                                                ? 'bg-[#E0ECFF] text-[#1D4ED8] font-medium'
-                                                : 'text-[#4B5563] hover:bg-[#E5F0FF] hover:text-[#1D4ED8]'
+                                            className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${isActive
+                                                ? 'bg-gray-50 text-gray-900 font-semibold'
+                                                : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
                                                 }`}
                                         >
                                             {isActive && (
-                                                <div className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-[3px] bg-[#2563EB] rounded-r-full" />
+                                                <div className="absolute left-0 top-1/2 -translate-y-1/2 h-4 w-[2px] bg-gray-900 rounded-r-full" />
                                             )}
-                                            <link.icon className={`h-4 w-4 ${isActive ? 'text-[#2563EB]' : 'text-[#9CA3AF] group-hover:text-[#2563EB]'}`} />
+                                            <link.icon className={`h-4 w-4 ${isActive ? 'text-gray-900' : 'text-gray-400 group-hover:text-gray-600'}`} />
                                             {link.label}
                                         </Link>
                                     </TooltipTrigger>
-                                    <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none">
+                                    <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
                                         {link.tooltip}
                                     </TooltipContent>
                                 </Tooltip>
@@ -270,7 +267,7 @@ export function Sidebar() {
 
                 {/* MARKETS GROUP */}
                 <div className="mb-8">
-                    <h3 className="text-[11px] font-medium text-[#9CA3AF] uppercase tracking-wider mb-2 px-4">
+                    <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 px-4">
                         MARKETS
                     </h3>
                     <nav className="space-y-1">
@@ -278,19 +275,19 @@ export function Sidebar() {
                             <TooltipTrigger asChild>
                                 <Link
                                     href="/market-pulse"
-                                    className={`flex items-center gap-3 px-4 h-10 rounded-full text-sm transition-all group relative overflow-hidden ${pathname === '/market-pulse'
-                                        ? 'bg-[#E0ECFF] text-[#1D4ED8] font-medium'
-                                        : 'text-[#4B5563] hover:bg-[#E5F0FF] hover:text-[#1D4ED8]'
+                                    className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === '/market-pulse'
+                                        ? 'bg-gray-50 text-gray-900 font-semibold'
+                                        : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
                                         }`}
                                 >
                                     {pathname === '/market-pulse' && (
-                                        <div className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-[3px] bg-[#2563EB] rounded-r-full" />
+                                        <div className="absolute left-0 top-1/2 -translate-y-1/2 h-4 w-[2px] bg-gray-900 rounded-r-full" />
                                     )}
-                                    <TrendingUp className={`h-4 w-4 ${pathname === '/market-pulse' ? 'text-[#2563EB]' : 'text-[#9CA3AF] group-hover:text-[#2563EB]'}`} />
+                                    <TrendingUp className={`h-4 w-4 ${pathname === '/market-pulse' ? 'text-gray-900' : 'text-gray-400 group-hover:text-gray-600'}`} />
                                     Market Pulse
                                 </Link>
                             </TooltipTrigger>
-                            <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none">
+                            <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
                                 Live AI & Robotics market data.
                             </TooltipContent>
                         </Tooltip>
@@ -299,15 +296,15 @@ export function Sidebar() {
 
                 {/* SYSTEM GROUP */}
                 <div className="mb-auto">
-                    <h3 className="text-[11px] font-medium text-[#9CA3AF] uppercase tracking-wider mb-2 px-4">
+                    <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 px-4">
                         SYSTEM
                     </h3>
                     <nav className="space-y-1">
                         <Link
                             href="/feedback"
-                            className="flex items-center gap-3 px-4 h-10 rounded-full text-sm text-[#4B5563] hover:bg-[#E5F0FF] hover:text-[#1D4ED8] transition-all"
+                            className="flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-all"
                         >
-                            <Info className="h-4 w-4 text-[#9CA3AF]" />
+                            <Info className="h-4 w-4 text-gray-400" />
                             Feedback
                         </Link>
                     </nav>
@@ -316,13 +313,13 @@ export function Sidebar() {
                 {/* FOOTER */}
                 <div className="mt-8 px-4 space-y-6">
                     <div className="flex flex-wrap gap-x-4 gap-y-2 text-[10px] font-medium text-gray-400">
-                        <Link href="/about" className="hover:text-gray-600">Docs</Link>
-                        <Link href="/about" className="hover:text-gray-600">API</Link>
-                        <Link href="/about" className="hover:text-gray-600">Status</Link>
-                        <Link href="/about" className="hover:text-gray-600">Privacy</Link>
+                        <Link href="/about" className="hover:text-gray-600 transition-colors">Docs</Link>
+                        <Link href="/about" className="hover:text-gray-600 transition-colors">API</Link>
+                        <Link href="/about" className="hover:text-gray-600 transition-colors">Status</Link>
+                        <Link href="/about" className="hover:text-gray-600 transition-colors">Privacy</Link>
                     </div>
 
-                    <Link href="/signup" className="w-full bg-[#0F172A] text-white text-xs font-bold py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-800 transition-colors shadow-sm">
+                    <Link href="/signup" className="w-full bg-gray-900 text-white text-[11px] font-bold py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-black transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
                         <span className="text-gray-400">→</span>
                         GET DAILY BRIEFS
                     </Link>

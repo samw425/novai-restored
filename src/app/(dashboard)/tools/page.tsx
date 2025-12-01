@@ -6,7 +6,7 @@ export default function ToolsPage() {
         <ComingSoon
             title="AI Tools Database"
             description="A comprehensive, curated directory of the latest AI tools, frameworks, and SDKs. We are currently indexing over 500+ developer resources."
-            eta="Initializing Q1 2025"
+            eta="Initializing Q1 2026"
             icon={<Wrench className="w-10 h-10 text-blue-400" />}
         />
     );

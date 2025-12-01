@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Logo } from '@/components/ui/Logo';
-import { Menu, X, Calendar, Activity, Radio, FlaskConical, TrendingUp, Shield, Info, Hexagon, Bot, Scale, Wrench } from 'lucide-react';
+import { Menu, X, Calendar, Activity, Radio, FlaskConical, TrendingUp, Shield, Info, Hexagon, Bot, Scale, Wrench, Brain } from 'lucide-react';
 
 export function MobileNav() {
     const [isOpen, setIsOpen] = useState(false);
@@ -58,6 +58,7 @@ export function MobileNav() {
                         <div>
                             <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 px-4">Platform</h3>
                             <div className="space-y-1">
+                                <NavLink href="/intelligence-brief" icon={Brain} label="Intelligence Brief" />
                                 <NavLink href="/daily-snapshot" icon={Calendar} label="Daily Snapshot" />
                                 <NavLink href="/global-feed" icon={Activity} label="Global Feed" />
                                 <NavLink href="/deep-signals" icon={Radio} label="Deep Signals" />

@@ -67,94 +67,100 @@ export default function DailySnapshotPage() {
     }, []);
 
     return (
-        <div className="space-y-8">
-            {/* Header */}
+        <div className="space-y-10 max-w-6xl mx-auto">
             {/* Header */}
             <PageHeader
                 title={today}
-                description="Curated intelligence on AI & Robotics."
-                insight="Your daily executive summary. We process thousands of articles to highlight the few that actually matter."
-                icon={<Clock className="w-8 h-8 text-blue-600" />}
+                description="Daily Intelligence Briefing"
+                insight="Your executive summary of the AI landscape. We process thousands of signals to highlight the few that truly matter."
+                icon={<Clock className="w-8 h-8 text-gray-900" />}
             />
 
             {loading ? (
                 <ResourceLoader message="Compiling daily intelligence snapshot..." />
             ) : (
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
 
-                    {/* Main Column (2/3) */}
-                    <div className="lg:col-span-2 space-y-8">
+                    {/* Main Column (8/12) */}
+                    <div className="lg:col-span-8 space-y-10">
 
                         {/* 1. The Lead Story (Hero) */}
                         {leadStory && (
-                            <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                                <div className="bg-gradient-to-r from-blue-600 to-indigo-700 px-6 py-3 flex justify-between items-center">
-                                    <span className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                                        <Globe className="h-4 w-4" />
-                                        The Lead Story
-                                    </span>
-                                    <span className="px-2 py-0.5 bg-white/20 text-white text-[10px] font-bold rounded">
-                                        MUST READ
-                                    </span>
-                                </div>
-                                <div className="p-8">
-                                    <div className="flex gap-2 mb-4">
-                                        <span className="px-2 py-1 bg-blue-50 text-blue-700 text-xs font-bold uppercase rounded">
-                                            {leadStory.category}
-                                        </span>
-                                        <span className="text-xs text-gray-500 flex items-center">
-                                            {new Date(leadStory.publishedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            <div className="group relative">
+                                <div className="absolute -inset-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                <div className="relative bg-white rounded-2xl border border-gray-100 p-8 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] transition-all duration-300">
+                                    <div className="flex items-center justify-between mb-6">
+                                        <div className="flex items-center gap-3">
+                                            <span className="flex h-2 w-2 relative">
+                                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                                                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                                            </span>
+                                            <span className="text-xs font-bold tracking-widest text-gray-500 uppercase">Lead Story</span>
+                                        </div>
+                                        <span className="px-2.5 py-1 bg-gray-900 text-white text-[10px] font-bold tracking-wider uppercase rounded-md">
+                                            Must Read
                                         </span>
                                     </div>
-                                    <a href={leadStory.url} target="_blank" rel="noopener noreferrer" className="group">
-                                        <h2 className="text-3xl font-bold text-gray-900 mb-4 leading-tight group-hover:text-blue-700 transition-colors">
-                                            {leadStory.title}
-                                        </h2>
-                                    </a>
-                                    <p className="text-lg text-gray-600 leading-relaxed mb-6">
+
+                                    <div className="mb-6">
+                                        <a href={leadStory.url} target="_blank" rel="noopener noreferrer" className="block group/title">
+                                            <h2 className="text-4xl font-bold text-gray-900 mb-4 leading-[1.1] tracking-tight group-hover/title:text-blue-600 transition-colors duration-300">
+                                                {leadStory.title}
+                                            </h2>
+                                        </a>
+                                        <div className="flex items-center gap-4 text-sm text-gray-500 font-medium border-l-2 border-gray-100 pl-4">
+                                            <span className="text-gray-900 font-bold">{leadStory.source}</span>
+                                            <span>•</span>
+                                            <span>{new Date(leadStory.publishedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                            <span>•</span>
+                                            <span className="uppercase tracking-wide text-xs">{leadStory.category}</span>
+                                        </div>
+                                    </div>
+
+                                    <p className="text-lg text-gray-600 leading-relaxed mb-8 font-serif antialiased">
                                         {leadStory.summary}
                                     </p>
-                                    <div className="flex items-center justify-between border-t border-gray-100 pt-6">
-                                        <div className="flex items-center gap-2 text-sm font-bold text-gray-700">
-                                            <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-xs">
-                                                {leadStory.source.substring(0, 2).toUpperCase()}
-                                            </div>
-                                            {leadStory.source}
+
+                                    <div className="flex items-center justify-between pt-6 border-t border-gray-50">
+                                        <div className="flex gap-2">
+                                            {/* Placeholder for tags if needed */}
                                         </div>
-                                        <a href={leadStory.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 font-bold text-sm hover:underline flex items-center gap-1">
-                                            Read Full Analysis <TrendingUp className="h-4 w-4" />
+                                        <a href={leadStory.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-bold text-gray-900 hover:text-blue-600 transition-colors group/link">
+                                            Read Full Analysis
+                                            <TrendingUp className="h-4 w-4 transition-transform group-hover/link:translate-x-1 group-hover/link:-translate-y-1" />
                                         </a>
                                     </div>
                                 </div>
                             </div>
                         )}
 
-                        {/* 2. Key Developments (Row of 3) */}
+                        {/* 2. Key Developments */}
                         <div>
-                            <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                <Zap className="h-5 w-5 text-amber-500" />
-                                Key Developments
-                            </h3>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div className="flex items-center gap-3 mb-6">
+                                <Zap className="h-5 w-5 text-gray-400" />
+                                <h3 className="text-sm font-bold text-gray-400 uppercase tracking-widest">
+                                    Key Developments
+                                </h3>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 {keyDevelopments.map((article) => (
                                     <a
                                         key={article.id}
                                         href={article.url}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="bg-white p-5 rounded-xl border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all group flex flex-col h-full"
+                                        className="flex flex-col bg-white p-6 rounded-xl border border-gray-100 hover:border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 group h-full"
                                     >
-                                        <div className="flex justify-between items-start mb-3">
-                                            <span className="text-[10px] font-bold text-gray-500 uppercase bg-gray-100 px-2 py-0.5 rounded">
+                                        <div className="mb-4">
+                                            <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded-md uppercase tracking-wide">
                                                 {article.category}
                                             </span>
                                         </div>
-                                        <h4 className="text-sm font-bold text-gray-900 leading-snug group-hover:text-blue-600 mb-2 line-clamp-3 flex-1">
+                                        <h4 className="text-lg font-bold text-gray-900 leading-snug mb-3 group-hover:text-blue-600 transition-colors line-clamp-3">
                                             {article.title}
                                         </h4>
-                                        <div className="flex items-center gap-2 text-xs text-gray-400 mt-auto pt-3 border-t border-gray-50">
-                                            <span className="truncate max-w-[100px]">{article.source}</span>
-                                            <span className="w-1 h-1 rounded-full bg-gray-300"></span>
+                                        <div className="mt-auto pt-4 flex items-center justify-between text-xs font-medium text-gray-400 border-t border-gray-50">
+                                            <span className="text-gray-600">{article.source}</span>
                                             <span>{new Date(article.publishedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                                         </div>
                                     </a>
@@ -163,36 +169,48 @@ export default function DailySnapshotPage() {
                         </div>
                     </div>
 
-                    {/* Right Column (1/3) - Rapid Fire */}
-                    <div>
-                        <div className="bg-gray-50 rounded-xl border border-gray-200 p-6 sticky top-6">
-                            <div className="flex items-center gap-2 mb-6 text-gray-900">
-                                <Activity className="h-5 w-5 text-indigo-600" />
-                                <h2 className="text-lg font-bold">Rapid Fire</h2>
+                    {/* Right Column (4/12) - Rapid Fire */}
+                    <div className="lg:col-span-4">
+                        <div className="bg-gray-50/50 rounded-2xl border border-gray-100 p-6 sticky top-28 backdrop-blur-sm">
+                            <div className="flex items-center gap-2 mb-6 text-gray-900 pb-4 border-b border-gray-100">
+                                <Activity className="h-4 w-4 text-blue-600" />
+                                <h2 className="text-sm font-bold uppercase tracking-widest">Rapid Fire</h2>
                             </div>
 
-                            <div className="space-y-4">
+                            <div className="space-y-1 relative">
+                                {/* Timeline line */}
+                                <div className="absolute left-[5px] top-2 bottom-2 w-[1px] bg-gray-200" />
+
                                 {rapidFire.map((article) => (
                                     <a
                                         key={article.id}
                                         href={article.url}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="block p-3 bg-white rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-sm transition-all group"
+                                        className="block pl-6 py-3 relative group hover:bg-white hover:rounded-lg hover:shadow-sm transition-all duration-200 -ml-2 pr-2"
                                     >
-                                        <div className="flex justify-between items-start mb-1">
-                                            <span className="text-[10px] font-bold text-gray-400 uppercase">
+                                        {/* Timeline dot */}
+                                        <div className="absolute left-[2px] top-5 w-[7px] h-[7px] rounded-full bg-gray-300 border-2 border-gray-50 group-hover:bg-blue-500 group-hover:scale-125 transition-all" />
+
+                                        <div className="flex justify-between items-baseline mb-1">
+                                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wide group-hover:text-blue-600 transition-colors">
                                                 {article.category}
                                             </span>
-                                            <span className="text-[10px] text-gray-400">
+                                            <span className="text-[10px] text-gray-400 font-mono">
                                                 {new Date(article.publishedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                             </span>
                                         </div>
-                                        <h3 className="text-sm font-semibold text-gray-900 leading-snug group-hover:text-blue-600 line-clamp-2">
+                                        <h3 className="text-[13px] font-semibold text-gray-700 leading-snug group-hover:text-gray-900 transition-colors line-clamp-2">
                                             {article.title}
                                         </h3>
                                     </a>
                                 ))}
+                            </div>
+
+                            <div className="mt-6 pt-4 border-t border-gray-100 text-center">
+                                <button className="text-xs font-bold text-gray-500 hover:text-gray-900 transition-colors">
+                                    View All Updates →
+                                </button>
                             </div>
                         </div>
                     </div>

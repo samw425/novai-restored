@@ -7,7 +7,7 @@ interface ResourceLoaderProps {
     message?: string;
 }
 
-export function ResourceLoader({ message = "Gathering global resources..." }: ResourceLoaderProps) {
+export function ResourceLoader({ message = "Initializing intelligence stream..." }: ResourceLoaderProps) {
     const [statusText, setStatusText] = useState("Initializing secure connection...");
 
     const statusMessages = [

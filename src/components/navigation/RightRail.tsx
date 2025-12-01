@@ -112,8 +112,11 @@ function SystemStatusWidget() {
                     <span className="font-medium text-gray-900">6</span>
                 </div>
                 <div className="flex justify-between items-center text-sm">
-                    <span className="text-gray-500">Update Frequency</span>
-                    <span className="font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded text-xs">5 min</span>
+                    <span className="text-gray-500">Daily Growth</span>
+                    <span className="font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded text-xs flex items-center gap-1">
+                        <TrendingUp className="h-3 w-3" />
+                        Active
+                    </span>
                 </div>
             </div>
 
@@ -253,10 +256,20 @@ function AboutNovaiWidget() {
                 <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">About Novai</span>
             </div>
 
-            <p className="text-xs text-gray-600 leading-relaxed mb-4 font-medium">
-                Novai is a real-time intelligence engine for the AI era.
-                We aggregate, analyze, and rank global AI activity so you can separate signal from noise.
-            </p>
+            <div className="mb-4">
+                <div className="flex items-center gap-2 mb-2">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">
+                        70+ Verified Sources
+                    </span>
+                    <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-100">
+                        Growing Daily
+                    </span>
+                </div>
+                <p className="text-xs text-gray-600 leading-relaxed font-medium">
+                    Novai is a living intelligence engine. We aggregate verified global sources and evolve daily,
+                    continuously integrating new signals so you can separate signal from noise.
+                </p>
+            </div>
 
             <ul className="space-y-2 mb-5">
                 {[

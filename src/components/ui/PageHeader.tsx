@@ -3,7 +3,7 @@ import { Sparkles } from 'lucide-react';
 interface PageHeaderProps {
     title: string;
     description: string;
-    insight?: string;
+    insight?: React.ReactNode;
     icon?: React.ReactNode;
 }
 
@@ -43,9 +43,9 @@ export function PageHeader({ title, description, insight, icon }: PageHeaderProp
                         </div>
                         <div>
                             <h3 className="text-sm font-bold text-blue-900 uppercase tracking-wider mb-1">Novai Intelligence</h3>
-                            <p className="text-blue-800 leading-relaxed font-medium">
+                            <div className="text-blue-800 leading-relaxed font-medium">
                                 {insight}
-                            </p>
+                            </div>
                         </div>
                     </div>
                 </div>
