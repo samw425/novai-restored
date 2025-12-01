@@ -5,6 +5,7 @@ import { Radio, TrendingUp, AlertTriangle, Brain, Target, ArrowRight, Activity, 
 import { Article } from '@/types';
 import { ResourceLoader } from '@/components/ui/ResourceLoader';
 import { FeedContainer } from '@/components/feed/FeedContainer';
+import { PageHeader } from '@/components/ui/PageHeader';
 
 export default function DeepSignalsPage() {
     const [loading, setLoading] = useState(true);
@@ -156,23 +157,20 @@ export default function DeepSignalsPage() {
     return (
         <div className="space-y-8 min-h-screen bg-gray-50/50 text-gray-900 p-6 lg:p-8 font-sans">
             {/* Header */}
-            <div className="border-b border-gray-200 pb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
-                <div>
-                    <h1 className="text-3xl font-bold text-gray-900 tracking-tight flex items-center gap-3">
-                        <Radio className="h-8 w-8 text-indigo-600" />
-                        DEEP SIGNALS
-                    </h1>
-                    <p className="text-gray-500 mt-2 text-sm font-mono uppercase tracking-widest">
-                        Cross-Source Analysis // Pattern Detection // Conflict Zones
-                    </p>
-                </div>
-                <div className="flex items-center gap-3 px-4 py-2 bg-indigo-50 border border-indigo-100 rounded-full">
-                    <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-600"></span>
-                    </span>
-                    <span className="text-xs font-bold text-indigo-700 tracking-wider">SCANNING FREQUENCIES</span>
-                </div>
+            {/* Header */}
+            <PageHeader
+                title="Deep Signals"
+                description="Cross-Source Analysis // Pattern Detection // Conflict Zones"
+                insight="Emerging patterns often start as weak signals. We amplify these early indicators to give you a strategic edge."
+                icon={<Radio className="w-8 h-8 text-indigo-600" />}
+            />
+
+            <div className="flex items-center gap-3 px-4 py-2 bg-indigo-50 border border-indigo-100 rounded-full w-fit mb-8">
+                <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-600"></span>
+                </span>
+                <span className="text-xs font-bold text-indigo-700 tracking-wider">SCANNING FREQUENCIES</span>
             </div>
 
             {loading ? (

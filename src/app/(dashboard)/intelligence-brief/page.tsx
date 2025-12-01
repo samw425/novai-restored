@@ -7,6 +7,7 @@ import { SentimentGauge } from '@/components/ui/SentimentGauge';
 import { KeywordCloud } from '@/components/ui/KeywordCloud';
 import { DeepDiveModal } from '@/components/ui/DeepDiveModal';
 import { WaitlistModal } from '@/components/ui/WaitlistModal';
+import { PageHeader } from '@/components/ui/PageHeader';
 
 interface Theme {
     title: string;
@@ -59,8 +60,8 @@ export default function IntelligenceBriefPage() {
             <div className="border-b border-gray-200 bg-white/80 backdrop-blur-sm sticky top-0 z-10 shadow-sm">
                 <div className="max-w-5xl mx-auto px-6 py-8">
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
-                        <div>
-                            <div className="flex items-center gap-2 mb-2">
+                        <div className="w-full">
+                            <div className="flex items-center gap-2 mb-4">
                                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
                                     <Sparkles className="w-3 h-3 mr-1" />
                                     LIVE SYNTHESIS
@@ -72,10 +73,12 @@ export default function IntelligenceBriefPage() {
                                     </span>
                                 )}
                             </div>
-                            <h1 className="text-3xl font-bold text-gray-900">Intelligence Brief</h1>
-                            <p className="text-gray-600 mt-1">
-                                AI-synthesized analysis from <span className="font-semibold text-indigo-600">70+ global sources</span>.
-                            </p>
+                            <PageHeader
+                                title="Intelligence Brief"
+                                description="AI-synthesized analysis from 70+ global sources."
+                                insight="This isn't just news aggregation. Our AI connects the dots to explain NOT just what happened, but why it matters."
+                                icon={<Brain className="w-8 h-8 text-indigo-600" />}
+                            />
                         </div>
                     </div>
 

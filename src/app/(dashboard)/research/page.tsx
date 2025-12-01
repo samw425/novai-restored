@@ -5,8 +5,9 @@ export default function ResearchPage() {
     return (
         <CategoryFeed
             category="research"
-            title="Research"
-            description="Cutting-edge AI research papers, model architectures, and breakthroughs from OpenAI, Google DeepMind, Anthropic, and academia."
+            title="Research Papers"
+            description="Latest AI research papers, pre-prints, and technical breakthroughs from top labs and conferences."
+            insight="The pace of research is accelerating. We track pre-prints to spot breakthroughs before they hit the mainstream."
             icon={<FlaskConical className="w-8 h-8 text-[#2563EB]" />}
         />
     );

@@ -7,6 +7,7 @@ export default function AIPage() {
             category="ai"
             title="AI News"
             description="General AI news, developments, and updates from leading tech publishers including Wired, The Verge, Ars Technica, and more."
+            insight="AI is moving faster than any technology in history. We curate the noise so you don't miss the signal."
             icon={<Sparkles className="w-8 h-8 text-[#2563EB]" />}
         />
     );

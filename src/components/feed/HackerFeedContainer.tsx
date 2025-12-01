@@ -10,6 +10,7 @@ import { Loader2, ArrowUp, Shield, Terminal } from 'lucide-react';
 import { LiveTicker } from '@/components/dashboard/LiveTicker';
 import { SystemStatus } from '@/components/dashboard/SystemStatus';
 import { MonthlyIntelBrief } from '@/components/dashboard/MonthlyIntelBrief';
+import { PageHeader } from '@/components/ui/PageHeader';
 
 export function HackerFeedContainer() {
     const [articles, setArticles] = useState<Article[]>([]);
@@ -111,6 +112,12 @@ export function HackerFeedContainer() {
             </div>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+                <PageHeader
+                    title="Hacker News & Security"
+                    description="Real-time cybersecurity threats, vulnerabilities, and engineering discussions."
+                    insight="In the age of AI, security is the new baseline. We track the exploits and patches that define the digital battlefield."
+                    icon={<Shield className="w-8 h-8 text-blue-600" />}
+                />
 
                 {/* LIVE TAB CONTENT */}
                 {activeTab === 'live' && (

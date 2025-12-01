@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Clock, Globe, TrendingUp, Zap, Activity, Brain, Cpu, FileText } from 'lucide-react';
 import { Article } from '@/types';
 import { ResourceLoader } from '@/components/ui/ResourceLoader';
+import { PageHeader } from '@/components/ui/PageHeader';
 
 export default function DailySnapshotPage() {
     const today = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -68,14 +69,13 @@ export default function DailySnapshotPage() {
     return (
         <div className="space-y-8">
             {/* Header */}
-            <div className="border-b border-gray-200 pb-6">
-                <div className="flex items-center gap-2 text-blue-600 mb-2">
-                    <Clock className="h-4 w-4" />
-                    <span className="text-xs font-bold uppercase tracking-wider">Executive Briefing</span>
-                </div>
-                <h1 className="text-3xl font-bold text-gray-900">{today}</h1>
-                <p className="text-gray-500 mt-2 text-lg">Curated intelligence on AI & Robotics.</p>
-            </div>
+            {/* Header */}
+            <PageHeader
+                title={today}
+                description="Curated intelligence on AI & Robotics."
+                insight="Your daily executive summary. We process thousands of articles to highlight the few that actually matter."
+                icon={<Clock className="w-8 h-8 text-blue-600" />}
+            />
 
             {loading ? (
                 <ResourceLoader message="Compiling daily intelligence snapshot..." />

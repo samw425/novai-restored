@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Wrench, Terminal, Cpu, ArrowUpRight, GitFork, Star, Loader2, Box, Sparkles } from 'lucide-react';
 import { Tool } from '@/types';
 import { FeedContainer } from '@/components/feed/FeedContainer';
+import { PageHeader } from '@/components/ui/PageHeader';
 
 export default function LabToolsPage() {
     const [tools, setTools] = useState<Tool[]>([]);
@@ -28,17 +29,17 @@ export default function LabToolsPage() {
     return (
         <div className="space-y-8 min-h-screen bg-gray-50/50 text-gray-900 p-6 lg:p-8 font-sans">
             {/* Header */}
-            <div className="border-b border-gray-200 pb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
-                <div>
-                    <h1 className="text-3xl font-bold text-gray-900 tracking-tight flex items-center gap-3">
-                        <Wrench className="h-8 w-8 text-indigo-600" />
-                        LAB & TOOLS
-                    </h1>
-                    <p className="text-gray-500 mt-2 font-mono text-sm uppercase tracking-widest">
-                        FRAMEWORKS // LIBRARIES // MODELS // UTILITIES
-                    </p>
+            {/* Header */}
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+                <div className="flex-1">
+                    <PageHeader
+                        title="Lab & Tools"
+                        description="FRAMEWORKS // LIBRARIES // MODELS // UTILITIES"
+                        insight="The right tool stack is a competitive advantage. Curating the most effective AI utilities for enterprise and research."
+                        icon={<Wrench className="w-8 h-8 text-indigo-600" />}
+                    />
                 </div>
-                <div className="flex items-center gap-3 px-4 py-2 bg-indigo-50 border border-indigo-100 rounded-full">
+                <div className="flex items-center gap-3 px-4 py-2 bg-indigo-50 border border-indigo-100 rounded-full mb-8 md:mb-0">
                     <Terminal className="h-4 w-4 text-indigo-600" />
                     <span className="text-xs font-bold text-indigo-700 tracking-wider">REPO SCAN ACTIVE</span>
                 </div>

@@ -5,6 +5,7 @@ import { Shield, Globe, Activity, Lock, Eye, AlertOctagon, Loader2, Ship, Plane 
 import { Article } from '@/types';
 import { FeedCard } from '@/components/feed/FeedCard';
 import { ResourceLoader } from '@/components/ui/ResourceLoader';
+import { PageHeader } from '@/components/ui/PageHeader';
 
 export default function WarRoomPage() {
     const [articles, setArticles] = useState<Article[]>([]);
@@ -89,16 +90,17 @@ export default function WarRoomPage() {
             </div>
 
             {/* Header */}
-            <div className="border-b border-gray-200 pb-6 flex justify-between items-end">
-                <div>
-                    <div className="flex items-center gap-2 text-red-600 mb-2">
-                        <Shield className="h-4 w-4" />
-                        <span className="text-xs font-bold uppercase tracking-wider">Risk & Security Monitor</span>
-                    </div>
-                    <h1 className="text-3xl font-bold text-gray-900">War Room</h1>
-                    <p className="text-gray-500 mt-2 text-lg">Global incident tracking and threat assessment.</p>
+            {/* Header */}
+            <div className="flex justify-between items-end mb-6">
+                <div className="flex-1">
+                    <PageHeader
+                        title="War Room"
+                        description="Global incident tracking and threat assessment."
+                        insight="AI is reshaping modern warfare. Monitoring autonomous systems and cyber-kinetic threats in real-time."
+                        icon={<Shield className="w-8 h-8 text-red-600" />}
+                    />
                 </div>
-                <div className={`flex items-center gap-2 px-4 py-2 rounded-lg border ${defconColor}`}>
+                <div className={`flex items-center gap-2 px-4 py-2 rounded-lg border mb-8 ml-4 ${defconColor}`}>
                     <span className="relative flex h-3 w-3">
                         <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${defconLevel === 2 ? 'bg-red-400' : 'bg-orange-400'}`}></span>
                         <span className={`relative inline-flex rounded-full h-3 w-3 ${defconLevel === 2 ? 'bg-red-500' : 'bg-orange-500'}`}></span>

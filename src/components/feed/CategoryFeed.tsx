@@ -4,15 +4,17 @@ import { useState, useEffect } from 'react';
 import { FeedCard } from '@/components/feed/FeedCard';
 import { Article } from '@/types';
 import { Loader2 } from 'lucide-react';
+import { PageHeader } from '@/components/ui/PageHeader';
 
 interface CategoryFeedProps {
     category: string;
     title: string;
     description: string;
+    insight?: string;
     icon?: React.ReactNode;
 }
 
-export function CategoryFeed({ category, title, description, icon }: CategoryFeedProps) {
+export function CategoryFeed({ category, title, description, insight, icon }: CategoryFeedProps) {
     const [articles, setArticles] = useState<Article[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -36,13 +38,12 @@ export function CategoryFeed({ category, title, description, icon }: CategoryFee
 
     return (
         <div className="max-w-3xl mx-auto pb-12">
-            <div className="mb-8">
-                <div className="flex items-center gap-3 mb-3">
-                    {icon}
-                    <h1 className="text-3xl font-bold text-[#0F172A]">{title}</h1>
-                </div>
-                <p className="text-[#64748B]">{description}</p>
-            </div>
+            <PageHeader
+                title={title}
+                description={description}
+                insight={insight}
+                icon={icon}
+            />
 
             <div className="space-y-6">
                 {loading ? (

@@ -5,6 +5,7 @@ import { TrendingUp, ArrowUpRight, Minus, ArrowDownRight, Flame, Clock, Hash, Ar
 import { Article } from '@/types';
 import { ResourceLoader } from '@/components/ui/ResourceLoader';
 import { FeedContainer } from '@/components/feed/FeedContainer';
+import { PageHeader } from '@/components/ui/PageHeader';
 
 export default function TrendWatchPage() {
     const [loading, setLoading] = useState(true);
@@ -112,14 +113,13 @@ export default function TrendWatchPage() {
     return (
         <div className="space-y-8">
             {/* Header */}
-            <div className="border-b border-gray-200 pb-6">
-                <div className="flex items-center gap-2 text-orange-600 mb-2">
-                    <Flame className="h-4 w-4" />
-                    <span className="text-xs font-bold uppercase tracking-wider">Velocity Analysis</span>
-                </div>
-                <h1 className="text-3xl font-bold text-gray-900">Trend Watch</h1>
-                <p className="text-gray-500 mt-2 text-lg">Real-time topic momentum and trending patterns.</p>
-            </div>
+            {/* Header */}
+            <PageHeader
+                title="Trend Watch"
+                description="Real-time topic momentum and trending patterns."
+                insight="Distinguishing hype from reality. We track velocity and sentiment to identify sustainable technological shifts."
+                icon={<Flame className="w-8 h-8 text-orange-600" />}
+            />
 
             {loading ? (
                 <ResourceLoader message="Analyzing global trend velocity..." />
