@@ -38,6 +38,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
                 </div>
             </div>
+            <div className="h-1 bg-blue-500 w-full" aria-hidden="true" /> {/* Layout Boundary Check */}
             <Footer />
         </div>
     );

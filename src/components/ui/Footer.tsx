@@ -76,7 +76,7 @@ export function Footer() {
 
                 <div className="border-t border-slate-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
                     <div className="text-slate-400 text-xs font-mono">
-                        © 2026 NOVAI INTELLIGENCE. ALL RIGHTS RESERVED.
+                        © 2026 NOVAI INTELLIGENCE. ALL RIGHTS RESERVED. (v2.0)
                     </div>
 
                     <div className="flex items-center gap-6">
