@@ -20,10 +20,17 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                     </aside>
 
                     {/* Main Content Area */}
+<<<<<<< HEAD
                     <div className="col-span-12 lg:col-span-9 flex flex-col">
                         <BreadcrumbHeader />
 
                         <div className="grid grid-cols-12 gap-8 flex-grow">
+=======
+                    <div className="col-span-12 lg:col-span-9 flex flex-col min-h-[calc(100vh-4rem)]">
+                        <BreadcrumbHeader />
+
+                        <div className="grid grid-cols-12 gap-8 flex-1">
+>>>>>>> 83bec03 (feat: redesign footer, add legal pages, revert global feed header)
                             {/* Feed / Main */}
                             <main className="col-span-12 lg:col-span-8">
                                 {children}
@@ -38,7 +45,10 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
                 </div>
             </div>
+<<<<<<< HEAD
             <div className="h-1 bg-blue-500 w-full" aria-hidden="true" /> {/* Layout Boundary Check */}
+=======
+>>>>>>> 83bec03 (feat: redesign footer, add legal pages, revert global feed header)
             <Footer />
         </div>
     );

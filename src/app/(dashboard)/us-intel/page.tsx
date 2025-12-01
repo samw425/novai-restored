@@ -141,12 +141,16 @@ export default function USIntelPage() {
             <PageHeader
                 title="US INTEL"
                 description="DOMESTIC & FOREIGN OPERATIONS"
+<<<<<<< HEAD
                 insight="Aggregating real-time AI updates, directives, and reports from 16+ US Intelligence Community agencies. Our AI vector engine isolates critical national security and emerging technology threats."
+=======
+>>>>>>> 83bec03 (feat: redesign footer, add legal pages, revert global feed header)
             />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-10">
 
                 {/* AGENCY SELECTOR - Apple Style Segmented Control */}
+<<<<<<< HEAD
                 <div className="flex overflow-x-auto pb-4 mb-8 sm:mb-10 no-scrollbar">
                     <div className="flex items-center gap-1 p-1 bg-slate-100/80 backdrop-blur-md rounded-xl border border-slate-200/50 mx-auto sm:mx-0 min-w-max">
                         <button
@@ -155,10 +159,38 @@ export default function USIntelPage() {
                                 setViewMode('FEED');
                             }}
                             className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 ${activeAgency === 'ALL'
+=======
+                <div className="flex flex-wrap items-center gap-2 mb-10 p-1.5 bg-slate-100/80 backdrop-blur-md rounded-2xl w-fit border border-slate-200/50 mx-auto sm:mx-0">
+                    <button
+                        onClick={() => {
+                            setActiveAgency('ALL');
+                            setViewMode('FEED');
+                        }}
+                        className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center gap-2 ${activeAgency === 'ALL'
+                            ? 'bg-white text-slate-900 shadow-sm ring-1 ring-black/5'
+                            : 'text-slate-500 hover:text-slate-700 hover:bg-white/50'
+                            }`}
+                    >
+                        <Activity size={16} className={activeAgency === 'ALL' ? 'text-blue-500' : 'opacity-50'} />
+                        Global Wire
+                    </button>
+
+                    <div className="w-px h-6 bg-slate-200 mx-1 hidden sm:block" />
+
+                    {Object.entries(AGENCY_PROFILES).map(([key, profile]) => (
+                        <button
+                            key={key}
+                            onClick={() => {
+                                setActiveAgency(key);
+                                setViewMode('FEED');
+                            }}
+                            className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 ${activeAgency === key
+>>>>>>> 83bec03 (feat: redesign footer, add legal pages, revert global feed header)
                                 ? 'bg-white text-slate-900 shadow-sm ring-1 ring-black/5'
                                 : 'text-slate-500 hover:text-slate-700 hover:bg-white/50'
                                 }`}
                         >
+<<<<<<< HEAD
                             <Activity size={14} className={activeAgency === 'ALL' ? 'text-blue-500' : 'opacity-50'} />
                             Global Wire
                         </button>
@@ -181,6 +213,11 @@ export default function USIntelPage() {
                             </button>
                         ))}
                     </div>
+=======
+                            {profile.acronym}
+                        </button>
+                    ))}
+>>>>>>> 83bec03 (feat: redesign footer, add legal pages, revert global feed header)
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
@@ -259,6 +296,7 @@ export default function USIntelPage() {
                                                                         {item.agency}
                                                                     </span>
                                                                     <span className="text-[10px] font-mono text-slate-400 whitespace-nowrap">
+<<<<<<< HEAD
                                                                         {(() => {
                                                                             try {
                                                                                 const date = new Date(item.pubDate);
@@ -268,6 +306,9 @@ export default function USIntelPage() {
                                                                                 return 'Unknown Date';
                                                                             }
                                                                         })()}
+=======
+                                                                        {new Date(item.pubDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+>>>>>>> 83bec03 (feat: redesign footer, add legal pages, revert global feed header)
                                                                     </span>
                                                                     {isLive && (
                                                                         <span className="flex items-center gap-1 px-1.5 py-0.5 bg-red-50 text-red-600 rounded text-[9px] font-bold uppercase tracking-wider animate-pulse border border-red-100">
@@ -419,6 +460,7 @@ export default function USIntelPage() {
                                                 </div>
 
                                                 {/* Classified Annex */}
+<<<<<<< HEAD
                                                 <div className="mt-12 pt-8 border-t border-slate-200">
                                                     <div className="bg-slate-950 rounded-xl overflow-hidden border border-slate-800 shadow-2xl relative">
                                                         {/* Header - Digital Terminal Style */}
@@ -499,12 +541,100 @@ export default function USIntelPage() {
                                                                             Source: Declassified <ExternalLink size={10} />
                                                                         </a>
                                                                         <span className="text-[10px] text-slate-600 font-mono uppercase">Verified: {new Date().getFullYear()}</span>
+=======
+                                                {activeProfile.classified_annex && (
+                                                    <div className="mt-12 pt-8 border-t border-slate-200">
+                                                        <div className="bg-slate-950 rounded-lg overflow-hidden border border-slate-800 shadow-2xl relative">
+                                                            {/* Header - Digital Terminal Style */}
+                                                            <div className="px-6 py-3 bg-slate-900 border-b border-slate-800 flex flex-wrap justify-between items-center gap-2">
+                                                                <div className="flex items-center gap-2">
+                                                                    <Lock size={14} className="text-red-500 animate-pulse" />
+                                                                    <span className="text-[10px] font-mono font-bold text-red-500 tracking-widest uppercase">
+                                                                        RESTRICTED ACCESS // LEVEL 5
+                                                                    </span>
+                                                                </div>
+                                                                <div className="text-[10px] font-mono text-slate-500">
+                                                                    ID: {activeProfile.classified_annex.codename}
+                                                                </div>
+                                                            </div>
+
+                                                            <div className="p-6 sm:p-8 relative z-20">
+                                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12">
+                                                                    {/* Left Column: Financials & Projects */}
+                                                                    <div className="space-y-8">
+                                                                        <div>
+                                                                            <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4 flex items-center gap-2">
+                                                                                <Activity size={14} />
+                                                                                Fiscal Analysis (Classified Programs)
+                                                                            </h4>
+
+                                                                            {/* Budget Visualization */}
+                                                                            <div className="space-y-4">
+                                                                                <div>
+                                                                                    <div className="flex justify-between text-[10px] uppercase font-bold text-slate-400 mb-1">
+                                                                                        <span>Official Funding</span>
+                                                                                        <span className="text-emerald-500">{activeProfile.budget}</span>
+                                                                                    </div>
+                                                                                    <div className="h-2 w-full bg-slate-900 rounded-full overflow-hidden">
+                                                                                        <div className="h-full bg-emerald-600 w-3/4 rounded-full opacity-80" />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <div className="flex justify-between text-[10px] uppercase font-bold text-slate-400 mb-1">
+                                                                                        <span>Est. Classified Funding</span>
+                                                                                        <span className="text-red-500">{activeProfile.classified_annex.shadow_budget}</span>
+                                                                                    </div>
+                                                                                    <div className="h-2 w-full bg-slate-900 rounded-full overflow-hidden">
+                                                                                        <div className="h-full bg-red-600 w-1/2 rounded-full opacity-60 pattern-diagonal-lines" />
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div>
+                                                                            <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3 flex items-center gap-2">
+                                                                                <Terminal size={14} />
+                                                                                Notable Classified Operations
+                                                                            </h4>
+                                                                            <ul className="space-y-3">
+                                                                                {activeProfile.classified_annex.unacknowledged_projects.map((proj: string, i: number) => (
+                                                                                    <li key={i} className="flex items-start gap-3 text-sm text-slate-300 font-mono group cursor-help">
+                                                                                        <span className="text-red-900 mt-1 group-hover:text-red-500 transition-colors shrink-0">►</span>
+                                                                                        <span className="border-b border-transparent group-hover:border-red-900/50 transition-colors break-words">{proj}</span>
+                                                                                    </li>
+                                                                                ))}
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    {/* Right Column: Deep Analysis */}
+                                                                    <div className="bg-slate-900/50 rounded-lg border border-slate-800 p-6 relative">
+                                                                        <div className="absolute top-0 right-0 p-2">
+                                                                            <Eye size={16} className="text-slate-700" />
+                                                                        </div>
+                                                                        <div className="text-xs font-bold text-red-500 uppercase tracking-wider mb-4">
+                                                                            Strategic Context
+                                                                        </div>
+                                                                        <p className="text-sm text-slate-300 leading-loose font-medium font-serif italic opacity-90 break-words">
+                                                                            "{activeProfile.classified_annex.deep_fact}"
+                                                                        </p>
+                                                                        <div className="mt-6 pt-4 border-t border-slate-800 flex flex-wrap justify-between items-center gap-2">
+                                                                            <a href={activeProfile.classified_annex.source_url} target="_blank" rel="noopener noreferrer" className="text-[10px] text-slate-500 hover:text-red-400 font-mono uppercase transition-colors flex items-center gap-2">
+                                                                                Source: Declassified <ExternalLink size={10} />
+                                                                            </a>
+                                                                            <span className="text-[10px] text-slate-600 font-mono uppercase">Verified: {new Date().getFullYear()}</span>
+                                                                        </div>
+>>>>>>> 83bec03 (feat: redesign footer, add legal pages, revert global feed header)
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
+<<<<<<< HEAD
                                                 </div>
+=======
+                                                )}
+>>>>>>> 83bec03 (feat: redesign footer, add legal pages, revert global feed header)
                                             </div>
                                         ) : (
                                             <div className="flex flex-col items-center justify-center h-[600px] text-slate-400 p-8 text-center">

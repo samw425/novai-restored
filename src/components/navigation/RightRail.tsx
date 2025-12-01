@@ -143,84 +143,46 @@ function ProVersionAdWidget() {
 
     return (
         <>
-            <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm relative overflow-hidden group">
-                {/* Subtle accent */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-50 to-purple-50 rounded-full -mr-16 -mt-16 opacity-50"></div>
+            <div className="bg-white rounded-xl border border-[#E5E7EB] p-5 shadow-sm relative overflow-hidden group">
+                <div className="absolute top-0 right-0 p-3 opacity-5 group-hover:opacity-10 transition-opacity">
+                    <Zap className="h-24 w-24 -rotate-12 text-blue-600" />
+                </div>
 
                 <div className="relative z-10">
                     <div className="flex items-center gap-2 mb-3">
-                        <span className="h-2 w-2 bg-blue-600 rounded-full animate-pulse" />
-                        <span className="text-xs font-black uppercase tracking-wider text-blue-600">
+                        <span className="flex h-2 w-2 relative">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                        </span>
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600">
                             Coming Soon
                         </span>
                     </div>
 
-                    <h4 className="text-2xl font-black mb-2 leading-tight text-gray-900">Novai Pro</h4>
-                    <p className="text-sm text-gray-600 mb-6 leading-relaxed">
-                        Unlock enterprise-grade intelligence tools for power users and organizations.
+                    <h4 className="text-lg font-bold mb-2 text-gray-900 leading-tight">Novai Pro</h4>
+                    <p className="text-xs text-gray-500 mb-5 leading-relaxed">
+                        The ultimate intelligence suite for professionals.
                     </p>
 
                     <div className="space-y-3 mb-6">
-                        <div className="flex items-start gap-3">
-                            <div className="w-5 h-5 rounded-full bg-blue-50 flex items-center justify-center shrink-0 mt-0.5">
-                                <span className="text-blue-600 text-xs font-bold">✓</span>
-                            </div>
-                            <div>
-                                <div className="text-sm font-bold text-gray-900">Unlimited Access</div>
-                                <div className="text-xs text-gray-500">Full article history and advanced search</div>
-                            </div>
-                        </div>
-
-                        <div className="flex items-start gap-3">
-                            <div className="w-5 h-5 rounded-full bg-blue-50 flex items-center justify-center shrink-0 mt-0.5">
-                                <span className="text-blue-600 text-xs font-bold">✓</span>
-                            </div>
-                            <div>
-                                <div className="text-sm font-bold text-gray-900">Export & Share</div>
-                                <div className="text-xs text-gray-500">PDF/CSV exports, team collaboration</div>
-                            </div>
-                        </div>
-
-                        <div className="flex items-start gap-3">
-                            <div className="w-5 h-5 rounded-full bg-blue-50 flex items-center justify-center shrink-0 mt-0.5">
-                                <span className="text-blue-600 text-xs font-bold">✓</span>
-                            </div>
-                            <div>
-                                <div className="text-sm font-bold text-gray-900">Custom Alerts</div>
-                                <div className="text-xs text-gray-500">Personalized notifications for your topics</div>
-                            </div>
-                        </div>
-
-                        <div className="flex items-start gap-3">
-                            <div className="w-5 h-5 rounded-full bg-blue-50 flex items-center justify-center shrink-0 mt-0.5">
-                                <span className="text-blue-600 text-xs font-bold">✓</span>
-                            </div>
-                            <div>
-                                <div className="text-sm font-bold text-gray-900">AI Analysis</div>
-                                <div className="text-xs text-gray-500">Deep synthesis and trend forecasting</div>
-                            </div>
-                        </div>
-
-                        <div className="flex items-start gap-3">
-                            <div className="w-5 h-5 rounded-full bg-blue-50 flex items-center justify-center shrink-0 mt-0.5">
-                                <span className="text-blue-600 text-xs font-bold">✓</span>
-                            </div>
-                            <div>
-                                <div className="text-sm font-bold text-gray-900">Priority Support</div>
-                                <div className="text-xs text-gray-500">Direct line to our intelligence team</div>
-                            </div>
-                        </div>
+                        <FeatureRow label="Unlimited History Search" />
+                        <FeatureRow label="PDF & CSV Data Exports" />
+                        <FeatureRow label="Custom Threat Alerts" />
+                        <FeatureRow label="Deep Synthesis Reports" />
+                        <FeatureRow label="API Access" />
+                        <FeatureRow label="Team Collaboration" />
                     </div>
 
                     <button
                         onClick={() => setIsModalOpen(true)}
-                        className="w-full flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-800 text-white text-sm font-bold py-3 rounded-xl transition-all shadow-sm hover:shadow-md"
+                        className="w-full flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-800 text-white text-xs font-bold py-3 rounded-lg transition-all shadow-sm hover:shadow-md"
                     >
-                        Join Waitlist
-                        <ArrowRight className="w-4 h-4" />
+                        Join Pro Waitlist
+                        <ArrowRight className="w-3 h-3" />
                     </button>
                 </div>
             </div>
+
 
             <WaitlistModal
                 isOpen={isModalOpen}
@@ -228,6 +190,17 @@ function ProVersionAdWidget() {
                 source="Right Rail Widget"
             />
         </>
+    );
+}
+
+function FeatureRow({ label }: { label: string }) {
+    return (
+        <div className="flex items-center gap-2.5">
+            <div className="h-4 w-4 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
+                <Zap className="w-2.5 h-2.5 text-blue-600" fill="currentColor" />
+            </div>
+            <span className="text-xs font-medium text-gray-700">{label}</span>
+        </div>
     );
 }
 

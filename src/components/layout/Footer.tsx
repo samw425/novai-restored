@@ -1,105 +1,137 @@
 import Link from 'next/link';
-import { Shield, Activity, Lock, Globe, Github, Twitter } from 'lucide-react';
+import { Shield, Activity, Lock, Globe, Github, Twitter, ArrowRight, Zap, MapPin, Mail } from 'lucide-react';
 
 export function Footer() {
     return (
-        <footer className="bg-slate-950 border-t border-slate-900 text-slate-400 py-12 mt-auto">
-            <div className="max-w-7xl mx-auto px-6">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-                    {/* Brand Column */}
-                    <div className="space-y-4">
-                        <div className="flex items-center gap-2 text-white">
-                            <Shield className="w-6 h-6 text-blue-600" />
-                            <span className="font-bold text-lg tracking-tight">NOVAI INTELLIGENCE</span>
+        <footer className="bg-white border-t border-slate-200 text-slate-600 py-16 mt-auto relative overflow-hidden">
+            {/* Background decorative elements */}
+
+
+            <div className="max-w-7xl mx-auto px-6 relative z-10">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 mb-16">
+
+                    {/* Brand Column (Span 4) */}
+                    <div className="lg:col-span-4 space-y-6">
+                        <div className="flex items-center gap-3 text-slate-900">
+                            <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-blue-50 border border-blue-100">
+                                <Shield className="w-5 h-5 text-blue-600" />
+                            </div>
+                            <div>
+                                <span className="block font-bold text-lg tracking-tight leading-none">NOVAI</span>
+                                <span className="block text-[10px] font-mono text-blue-600 tracking-widest uppercase">Intelligence</span>
+                            </div>
                         </div>
-                        <p className="text-sm leading-relaxed text-slate-500">
-                            Global intelligence synthesis for the information age.
-                            Connecting 70+ real-time data streams to provide
-                            actionable situational awareness.
+                        <p className="text-sm leading-relaxed text-slate-500 max-w-sm">
+                            AI-First Global Intelligence Platform. Synthesizing 70+ real-time data streams to empower decision-makers with global intelligence.
                         </p>
+
                         <div className="flex items-center gap-4 pt-2">
-                            <a href="#" className="hover:text-white transition-colors"><Twitter className="w-5 h-5" /></a>
-                            <a href="#" className="hover:text-white transition-colors"><Github className="w-5 h-5" /></a>
+                            <SocialLink href="#" icon={<Twitter className="w-4 h-4" />} label="Twitter" />
+                            <SocialLink href="#" icon={<Github className="w-4 h-4" />} label="GitHub" />
+                            <SocialLink href="mailto:contact@novai.com" icon={<Mail className="w-4 h-4" />} label="Email" />
                         </div>
                     </div>
 
-                    {/* Intelligence Sources */}
-                    <div>
-                        <h3 className="text-white font-bold text-sm uppercase tracking-wider mb-4">Intelligence Sources</h3>
-                        <ul className="space-y-2 text-sm">
-                            <li className="flex items-center gap-2">
-                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                US Dept of Defense
-                            </li>
-                            <li className="flex items-center gap-2">
-                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                CISA Cyber Alerts
-                            </li>
-                            <li className="flex items-center gap-2">
-                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                Institute for Study of War
-                            </li>
-                            <li className="flex items-center gap-2">
-                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                Global Markets (AlphaVantage)
-                            </li>
+                    {/* Platform Links (Span 2) */}
+                    <div className="lg:col-span-2">
+                        <h3 className="text-slate-900 font-semibold text-sm mb-6 flex items-center gap-2">
+                            Platform
+                        </h3>
+                        <ul className="space-y-3 text-sm">
+                            <FooterLink href="/global-feed">Global Feed</FooterLink>
+                            <FooterLink href="/war-room">War Room</FooterLink>
+                            <FooterLink href="/us-intel">US Intel</FooterLink>
+                            <FooterLink href="/deep-signals">Deep Signals</FooterLink>
+                            <FooterLink href="/daily-snapshot">Daily Snapshot</FooterLink>
+                            <FooterLink href="/intelligence-brief">Intel Brief</FooterLink>
                         </ul>
                     </div>
 
-                    {/* System Status */}
-                    <div>
-                        <h3 className="text-white font-bold text-sm uppercase tracking-wider mb-4">System Status</h3>
-                        <div className="space-y-3">
-                            <div className="flex items-center justify-between text-sm border-b border-slate-900 pb-2">
-                                <span>Global Feed</span>
-                                <span className="text-emerald-500 font-mono text-xs">ONLINE</span>
-                            </div>
-                            <div className="flex items-center justify-between text-sm border-b border-slate-900 pb-2">
-                                <span>War Room</span>
-                                <span className="text-emerald-500 font-mono text-xs">ACTIVE</span>
-                            </div>
-                            <div className="flex items-center justify-between text-sm border-b border-slate-900 pb-2">
-                                <span>Synthesis Engine</span>
-                                <span className="text-emerald-500 font-mono text-xs">OPERATIONAL</span>
-                            </div>
-                            <div className="flex items-center justify-between text-sm">
-                                <span>Latency</span>
-                                <span className="text-emerald-500 font-mono text-xs">&lt; 120ms</span>
-                            </div>
-                        </div>
+                    {/* Sectors Links (Span 2) */}
+                    <div className="lg:col-span-2">
+                        <h3 className="text-slate-900 font-semibold text-sm mb-6">
+                            Sectors
+                        </h3>
+                        <ul className="space-y-3 text-sm">
+                            <FooterLink href="/market-pulse">Market Pulse</FooterLink>
+                            <FooterLink href="/ai">Artificial Intelligence</FooterLink>
+                            <FooterLink href="/robotics">Robotics</FooterLink>
+                            <FooterLink href="/research">Research</FooterLink>
+                            <FooterLink href="/policy">Policy & Regs</FooterLink>
+                            <FooterLink href="/hacker-news">Cyber Wire</FooterLink>
+                        </ul>
                     </div>
 
-                    {/* Legal / Official */}
-                    <div>
-                        <h3 className="text-white font-bold text-sm uppercase tracking-wider mb-4">Legal & Compliance</h3>
-                        <ul className="space-y-2 text-sm">
-                            <li><Link href="#" className="hover:text-blue-400 transition-colors">Terms of Service</Link></li>
-                            <li><Link href="#" className="hover:text-blue-400 transition-colors">Privacy Policy</Link></li>
-                            <li><Link href="#" className="hover:text-blue-400 transition-colors">Data Governance</Link></li>
-                            <li><Link href="#" className="hover:text-blue-400 transition-colors">Cookie Policy</Link></li>
+                    {/* Tools & Resources (Span 2) */}
+                    <div className="lg:col-span-2">
+                        <h3 className="text-slate-900 font-semibold text-sm mb-6">
+                            Resources
+                        </h3>
+                        <ul className="space-y-3 text-sm">
+                            <FooterLink href="/tools">AI Tools DB</FooterLink>
+                            <FooterLink href="/lab-tools">Lab Tools</FooterLink>
+                            <FooterLink href="/trend-watch">Trend Watch</FooterLink>
+                            <FooterLink href="/how-it-works">How It Works</FooterLink>
+                            <FooterLink href="/about">Mission</FooterLink>
+                            <FooterLink href="/feedback">Feedback</FooterLink>
                         </ul>
-                        <div className="mt-6 flex items-center gap-2 text-xs text-slate-600 bg-slate-900/50 p-2 rounded border border-slate-900">
-                            <Lock className="w-3 h-3" />
-                            <span>256-bit Encrypted Connection</span>
-                        </div>
+                    </div>
+
+                    {/* Legal Links (Span 2) */}
+                    <div className="lg:col-span-2">
+                        <h3 className="text-slate-900 font-semibold text-sm mb-6">
+                            Legal
+                        </h3>
+                        <ul className="space-y-3 text-sm">
+                            <FooterLink href="/legal/privacy">Privacy Policy</FooterLink>
+                            <FooterLink href="/legal/terms">Terms of Service</FooterLink>
+                            <FooterLink href="/legal/cookies">Cookie Policy</FooterLink>
+                            <FooterLink href="/legal/data-governance">Data Governance</FooterLink>
+                        </ul>
                     </div>
                 </div>
 
                 {/* Bottom Bar */}
-                <div className="pt-8 border-t border-slate-900 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-600">
-                    <p>&copy; {new Date().getFullYear()} Novai Intelligence. All rights reserved.</p>
+                <div className="pt-8 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
+                    <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
+                        <p>&copy; 2026 NOVAI INTELLIGENCE. All rights reserved.</p>
+                    </div>
+
                     <div className="flex items-center gap-6">
-                        <span className="flex items-center gap-2">
-                            <Globe className="w-3 h-3" />
-                            Washington, D.C.
-                        </span>
-                        <span className="flex items-center gap-2">
-                            <Activity className="w-3 h-3 text-emerald-500" />
-                            All Systems Normal
-                        </span>
+                        <div className="flex items-center gap-4 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                            <span className="flex items-center gap-1.5 text-blue-600">
+                                <Zap className="w-3 h-3" />
+                                Powered by Novai Live
+                            </span>
+                            <span className="w-1 h-1 rounded-full bg-slate-300"></span>
+                            <span>Los Angeles, CA</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </footer>
+    );
+}
+
+function FooterLink({ href, children }: { href: string, children: React.ReactNode }) {
+    return (
+        <li>
+            <Link href={href} className="flex items-center gap-2 hover:text-blue-600 transition-colors group">
+                <span className="w-0 group-hover:w-2 h-[1px] bg-blue-600 transition-all duration-300"></span>
+                {children}
+            </Link>
+        </li>
+    );
+}
+
+function SocialLink({ href, icon, label }: { href: string, icon: React.ReactNode, label: string }) {
+    return (
+        <a
+            href={href}
+            aria-label={label}
+            className="flex items-center justify-center w-8 h-8 rounded-lg bg-white border border-slate-200 text-slate-400 hover:text-blue-600 hover:border-blue-200 hover:bg-blue-50 transition-all duration-200"
+        >
+            {icon}
+        </a>
     );
 }

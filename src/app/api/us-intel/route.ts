@@ -10,7 +10,6 @@ const parser = new Parser({
 });
 
 // OFFICIAL INTELLIGENCE SOURCES
-// OFFICIAL INTELLIGENCE SOURCES
 const FEEDS = {
     FBI: 'https://www.fbi.gov/feeds/national-press-releases/rss.xml', // Verified working
     // CIA: 'https://www.cia.gov/news-information/your-news/cia-news-feed/rss', // CIA feed is unreliable/gone
