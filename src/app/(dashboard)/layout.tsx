@@ -5,7 +5,7 @@ import { Sidebar } from '@/components/navigation/Sidebar';
 import { MobileNav } from '@/components/navigation/MobileNav';
 import { RightRail } from '@/components/navigation/RightRail';
 import { BreadcrumbHeader } from '@/components/navigation/BreadcrumbHeader';
-import { Footer } from '@/components/layout/Footer';
+import { Footer } from '@/components/ui/Footer';
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
     return (
@@ -20,10 +20,10 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                     </aside>
 
                     {/* Main Content Area */}
-                    <div className="col-span-12 lg:col-span-9">
+                    <div className="col-span-12 lg:col-span-9 flex flex-col">
                         <BreadcrumbHeader />
 
-                        <div className="grid grid-cols-12 gap-8">
+                        <div className="grid grid-cols-12 gap-8 flex-grow">
                             {/* Feed / Main */}
                             <main className="col-span-12 lg:col-span-8">
                                 {children}
@@ -34,6 +34,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                                 <RightRail />
                             </aside>
                         </div>
+
+                        <Footer />
                     </div>
 
                 </div>
