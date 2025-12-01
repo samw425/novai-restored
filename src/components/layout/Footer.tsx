@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { Shield, Activity, Lock, Globe, Github, Twitter, ArrowRight, Zap, MapPin, Mail } from 'lucide-react';
+import { Activity, Lock, Globe, Github, Twitter, ArrowRight, Zap, MapPin, Mail } from 'lucide-react';
+import { Logo } from '@/components/ui/Logo';
 
 export function Footer() {
     return (
@@ -13,13 +14,7 @@ export function Footer() {
                     {/* Brand Column (Span 4) */}
                     <div className="lg:col-span-4 space-y-6">
                         <div className="flex items-center gap-3 text-slate-900">
-                            <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-blue-50 border border-blue-100">
-                                <Shield className="w-5 h-5 text-blue-600" />
-                            </div>
-                            <div>
-                                <span className="block font-bold text-lg tracking-tight leading-none">NOVAI</span>
-                                <span className="block text-[10px] font-mono text-blue-600 tracking-widest uppercase">Intelligence</span>
-                            </div>
+                            <Logo theme="light" />
                         </div>
                         <p className="text-sm leading-relaxed text-slate-500 max-w-sm">
                             AI-First Global Intelligence Platform. Synthesizing 70+ real-time data streams to empower decision-makers with global intelligence.
