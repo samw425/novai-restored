@@ -35,9 +35,7 @@ export function MobileNav() {
         <div className="lg:hidden">
             {/* Top Bar */}
             <div className="fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 z-[100] px-4 flex items-center justify-between">
-                <Link href="/global-feed" onClick={closeMenu}>
-                    <Logo />
-                </Link>
+                <Logo onClick={closeMenu} />
                 <button
                     onClick={toggleMenu}
                     className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg"

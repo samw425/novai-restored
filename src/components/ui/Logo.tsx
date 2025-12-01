@@ -5,14 +5,15 @@ interface LogoProps {
     className?: string;
     showText?: boolean;
     theme?: 'light' | 'dark';
+    onClick?: () => void;
 }
 
-export const Logo: React.FC<LogoProps> = ({ className = '', showText = true, theme = 'light' }) => {
+export const Logo: React.FC<LogoProps> = ({ className = '', showText = true, theme = 'light', onClick }) => {
     const textColor = theme === 'light' ? '#0F172A' : '#FFFFFF';
     const subtextColor = theme === 'light' ? '#64748B' : '#94A3B8';
 
     return (
-        <Link href="/global-feed" className={`flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity ${className}`}>
+        <Link href="/global-feed" onClick={onClick} className={`flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity ${className}`}>
             <svg
                 width="36"
                 height="36"
