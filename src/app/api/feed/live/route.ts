@@ -43,12 +43,12 @@ export async function GET(request: Request) {
             const feedsToFetch = RSS_FEEDS;
 
             // Fetch all feeds in parallel
-            const feedPromises = feedsToFetch.map(async (source) => {
+            const feedPromises = feedsToFetch.map(async (source, sourceIndex) => {
                 try {
                     const feed = await parser.parseURL(source.url);
                     // Limit to 3 items per source at ingestion level to save memory
-                    return feed.items.slice(0, 3).map(item => ({
-                        id: `${source.id}-${item.guid || item.link || Math.random()}`,
+                    return feed.items.slice(0, 3).map((item, itemIndex) => ({
+                        id: `${source.id}-${Date.now()}-${sourceIndex}-${itemIndex}-${item.guid || item.link || Math.random()}`,
                         source: source.name,
                         title: item.title || 'Untitled',
                         summary: cleanText(item.contentSnippet || item.description || ''),
@@ -114,6 +114,26 @@ export async function GET(request: Request) {
                     return false;
                 }
 
+                // STRONG AI/ML/Robotics/Tech keywords - MUST match at least TWO
+                const strongSignals = [
+                    'artificial intelligence', 'machine learning', 'deep learning', 'neural network',
+                    'llm', 'large language model', 'gpt', 'chatgpt', 'claude', 'gemini', 'bard',
+                    'generative ai', 'transformer', 'diffusion model',
+                    'openai', 'anthropic', 'deepmind', 'nvidia ai', 'ai chip', 'gpu computing',
+                    'robot', 'robotic', 'robotics', 'autonomous', 'humanoid robot', 'drone technology',
+                    'computer vision', 'nlp', 'natural language processing', 'speech recognition',
+                    'reinforcement learning', 'supervised learning', 'ai model', 'ai training',
+                    'pytorch', 'tensorflow', 'hugging face', 'langchain',
+                    'chatbot', 'ai assistant', 'copilot', 'ai safety', 'ai regulation',
+                    'prompt engineering', 'fine-tuning', 'embedding', 'vector database',
+                    'sentiment analysis', 'recommendation system', 'ai research',
+                    'boston dynamics', 'tesla bot', 'warehouse automation', 'self-driving',
+                    'ai ethics', 'ai alignment', 'agi'
+                ];
+
+                // WEAK signals (general tech that needs strong signal support)
+                const weakSignals = ['ai', 'algorithm', 'data science', 'automation'];
+
                 // ROBOTICS EXCEPTION: Be more lenient for robotics category
                 if (article.category === 'robotics') {
                     const roboticsKeywords = ['robot', 'bot', 'drone', 'autonomous', 'automation', 'machine', 'boston dynamics', 'figure', 'optimus'];
@@ -135,27 +155,7 @@ export async function GET(request: Request) {
                     if (devKeywords.some(k => text.includes(k))) return true;
                 }
 
-                // STRONG AI/ML/Robotics/Tech keywords - MUST match at least TWO
-                const strongSignals = [
-                    'artificial intelligence', 'machine learning', 'deep learning', 'neural network',
-                    'llm', 'large language model', 'gpt', 'chatgpt', 'claude', 'gemini', 'bard',
-                    'generative ai', 'transformer', 'diffusion model',
-                    'openai', 'anthropic', 'deepmind', 'nvidia ai', 'ai chip', 'gpu computing',
-                    'robot', 'robotic', 'robotics', 'autonomous', 'humanoid robot', 'drone technology',
-                    'computer vision', 'nlp', 'natural language processing', 'speech recognition',
-                    'reinforcement learning', 'supervised learning', 'ai model', 'ai training',
-                    'pytorch', 'tensorflow', 'hugging face', 'langchain',
-                    'chatbot', 'ai assistant', 'copilot', 'ai safety', 'ai regulation',
-                    'prompt engineering', 'fine-tuning', 'embedding', 'vector database',
-                    'sentiment analysis', 'recommendation system', 'ai research',
-                    'boston dynamics', 'tesla bot', 'warehouse automation', 'self-driving',
-                    'ai ethics', 'ai alignment', 'agi'
-                ];
-
                 const strongMatches = strongSignals.filter(signal => text.includes(signal)).length;
-
-                // WEAK signals (general tech that needs strong signal support)
-                const weakSignals = ['ai', 'algorithm', 'data science', 'automation'];
                 const weakMatches = weakSignals.filter(signal => text.includes(signal)).length;
 
                 // DECISION LOGIC:

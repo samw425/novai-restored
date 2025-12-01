@@ -13,12 +13,20 @@ export function MonthlyIntelBrief({ articles, fullView = false, category }: Mont
     // Filter for high priority items from the last 30 days
     const limit = fullView ? 24 : 3;
 
+    console.log(`MonthlyIntelBrief: Received ${articles.length} articles, filtering for category: "${category}"`);
+
     const majorUpdates = articles
         .filter(a => {
-            if (category && category !== 'all' && a.category !== category) return false;
+            // If category is specified and not 'all', filter by it
+            if (category && a.category !== category) {
+                return false;
+            }
+            // Must have a meaningful description
             return (a.description?.length || 0) > 50;
         })
         .slice(0, limit);
+
+    console.log(`MonthlyIntelBrief: After filtering, ${majorUpdates.length} articles match category "${category}"`);
 
     if (majorUpdates.length === 0) {
         return (
