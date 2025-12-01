@@ -23,7 +23,7 @@ export function LiveTicker() {
     if (headlines.length === 0) return null;
 
     return (
-        <div className="w-full bg-gray-950/80 backdrop-blur-md border-b border-white/10 flex items-center h-10 relative z-40 overflow-hidden">
+        <div className="w-full bg-gray-950/80 backdrop-blur-md border-b border-white/10 hidden md:flex items-center h-10 relative z-40 overflow-hidden">
             {/* Label */}
             <div className="h-full px-4 flex items-center gap-2 z-20 shrink-0 bg-gray-950/50 backdrop-blur-xl border-r border-white/10 shadow-[0_0_20px_rgba(59,130,246,0.2)]">
                 <div className="relative">
