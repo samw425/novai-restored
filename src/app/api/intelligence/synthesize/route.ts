@@ -31,9 +31,9 @@ export async function GET() {
         let articles = [];
         try {
             const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
-            console.log('Fetching articles from:', `${baseUrl}/api/feed/live?limit=30`);
+            console.log('Fetching articles from:', `${baseUrl}/api/feed/live?limit=100`);
 
-            const response = await fetch(`${baseUrl}/api/feed/live?limit=30`);
+            const response = await fetch(`${baseUrl}/api/feed/live?limit=100`);
             if (!response.ok) throw new Error(`Feed API returned ${response.status}`);
 
             const data = await response.json();
