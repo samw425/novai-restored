@@ -27,7 +27,7 @@ export const ROBOT_SPECS: RobotSpec[] = [
         vision: 'Tesla Vision (End-to-End Neural Net)',
         compute: 'Tesla FSD Chip',
         description: 'General purpose humanoid designed to perform unsafe, repetitive or boring tasks. Features 11 DoF hands with tactile sensing and faster walking speed than Gen 1.',
-        imageUrl: 'https://digitalassets.tesla.com/tesla-contents/image/upload/f_auto,q_auto/Bot-Hero-Desktop.jpg',
+        imageUrl: '/images/robotics/optimus-gen2.png',
         website: 'https://www.tesla.com/AI'
     },
     {
@@ -42,7 +42,7 @@ export const ROBOT_SPECS: RobotSpec[] = [
         vision: 'Depth sensors + RGB cameras',
         compute: 'Onboard Custom Stack',
         description: 'The next generation of Atlas. Fully electric, stronger, and more agile than the hydraulic predecessor. Designed for real-world applications.',
-        imageUrl: 'https://bostondynamics.com/wp-content/uploads/2024/04/atlas-electric-hero.jpg',
+        imageUrl: '/images/robotics/atlas-electric.png',
         website: 'https://bostondynamics.com/atlas'
     },
     {
@@ -57,7 +57,7 @@ export const ROBOT_SPECS: RobotSpec[] = [
         vision: 'AI-powered Vision Language Models',
         compute: 'Onboard + Cloud (OpenAI Integration)',
         description: 'The world\'s first commercially viable autonomous humanoid robot. Features OpenAI integration for speech-to-speech reasoning and 3x computing power of Figure 01.',
-        imageUrl: 'https://images.squarespace-cdn.com/content/v1/64663b60938f6c3870630b1c/3e20601f-0aee-460d-8813-887467385966/Figure_02_Hero.jpg',
+        imageUrl: '/images/robotics/figure-02.png',
         website: 'https://www.figure.ai/'
     },
     {
@@ -72,7 +72,7 @@ export const ROBOT_SPECS: RobotSpec[] = [
         vision: 'LiDAR + Stereo Cameras',
         compute: 'Onboard',
         description: 'Designed for logistics and warehouse work. The first humanoid robot to be mass-produced and deployed in real commercial environments (Amazon).',
-        imageUrl: 'https://agilityrobotics.com/wp-content/uploads/2023/03/digit-hero.jpg',
+        imageUrl: '/images/robotics/digit-v4.png',
         website: 'https://agilityrobotics.com/'
     },
     {
@@ -87,7 +87,7 @@ export const ROBOT_SPECS: RobotSpec[] = [
         vision: 'Binocular Eye Cameras',
         compute: 'Tritium Robot OS',
         description: 'The world\'s most advanced human-shaped robot for human-robot interaction. Focuses on realistic facial expressions and gesture generation.',
-        imageUrl: 'https://www.engineeredarts.co.uk/wp-content/uploads/2021/12/Ameca-Hero-1.jpg',
+        imageUrl: '/images/robotics/ameca.png',
         website: 'https://www.engineeredarts.co.uk/robot/ameca/'
     },
     {
@@ -102,7 +102,7 @@ export const ROBOT_SPECS: RobotSpec[] = [
         vision: '3D LiDAR + Depth Camera',
         compute: '8-core High Performance CPU',
         description: 'Humanoid agent AI avatar. Capable of extreme flexibility and dynamic movement. Priced for mass adoption/research ($16k).',
-        imageUrl: 'https://shop.unitree.com/cdn/shop/files/G1_1.jpg',
+        imageUrl: '/images/robotics/unitree-g1.png',
         website: 'https://shop.unitree.com/products/unitree-g1'
     }
 ];
