@@ -21,13 +21,16 @@ export const Logo: React.FC<LogoProps> = ({ className = '', showText = true, the
                 className="flex-shrink-0"
             >
                 <defs>
-                    <linearGradient id="novaiGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#2563EB" /> {/* Electric Blue (Blue-600) */}
-                        <stop offset="50%" stopColor="#3B82F6" /> {/* Bright Blue (Blue-500) */}
-                        <stop offset="100%" stopColor="#22D3EE" /> {/* Cyan-400 (Pop) */}
+                    <linearGradient id="shieldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#1E3A8A" /> {/* Deep Navy */}
+                        <stop offset="100%" stopColor="#2563EB" /> {/* Electric Blue */}
+                    </linearGradient>
+                    <linearGradient id="nGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#FFFFFF" />
+                        <stop offset="100%" stopColor="#E0F2FE" />
                     </linearGradient>
                     <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-                        <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+                        <feGaussianBlur stdDeviation="1.5" result="coloredBlur" />
                         <feMerge>
                             <feMergeNode in="coloredBlur" />
                             <feMergeNode in="SourceGraphic" />
@@ -35,36 +38,26 @@ export const Logo: React.FC<LogoProps> = ({ className = '', showText = true, the
                     </filter>
                 </defs>
 
-                {/* Abstract Neural Prism Shape */}
-                <g filter="url(#glow)">
-                    {/* Main Triangle Path */}
-                    <path
-                        d="M20 4L34 32H6L20 4Z"
-                        stroke="url(#novaiGradient)"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        fill="none"
-                        opacity="0.9"
-                    />
+                {/* Main Shield Shape */}
+                <path
+                    d="M20 2L6 8V18C6 26.5 12 34 20 38C28 34 34 26.5 34 18V8L20 2Z"
+                    fill="url(#shieldGradient)"
+                    stroke="#3B82F6"
+                    strokeWidth="1.5"
+                    filter="url(#glow)"
+                />
 
-                    {/* Internal Connection Network */}
-                    <path
-                        d="M20 14V24M14 28L20 24M26 28L20 24"
-                        stroke="url(#novaiGradient)"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        opacity="0.8"
-                    />
+                {/* The "N" Monogram */}
+                <path
+                    d="M14 13V27L26 13V27"
+                    stroke="url(#nGradient)"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                />
 
-                    {/* Nodes */}
-                    <circle cx="20" cy="14" r="2" fill="white" stroke="#2563EB" strokeWidth="1.5" />
-                    <circle cx="14" cy="28" r="2" fill="white" stroke="#3B82F6" strokeWidth="1.5" />
-                    <circle cx="26" cy="28" r="2" fill="white" stroke="#22D3EE" strokeWidth="1.5" />
-
-                    {/* Central Core */}
-                    <circle cx="20" cy="24" r="3" fill="url(#novaiGradient)" />
-                </g>
+                {/* Signal Dot */}
+                <circle cx="26" cy="13" r="1.5" fill="#EF4444" className="animate-pulse" />
             </svg>
 
             {showText && (
