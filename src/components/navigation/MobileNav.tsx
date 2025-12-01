@@ -34,7 +34,7 @@ export function MobileNav() {
     return (
         <div className="lg:hidden">
             {/* Top Bar */}
-            <div className="fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 z-40 px-4 flex items-center justify-between">
+            <div className="fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 z-50 px-4 flex items-center justify-between">
                 <Link href="/global-feed" onClick={closeMenu}>
                     <Logo />
                 </Link>

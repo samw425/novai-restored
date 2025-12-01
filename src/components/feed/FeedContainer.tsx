@@ -36,7 +36,12 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
 
         try {
             const newArticles = await fetchArticles(10);
-            setArticles(prev => reset ? newArticles : [...prev, ...newArticles]);
+            setArticles(prev => {
+                if (reset) return newArticles;
+                // Filter out duplicates based on ID
+                const uniqueNew = newArticles.filter(n => !prev.some(p => p.id === n.id));
+                return [...prev, ...uniqueNew];
+            });
         } catch (error) {
             console.error("Failed to load articles", error);
         } finally {
