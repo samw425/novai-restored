@@ -61,6 +61,13 @@ const categoryLinks = [
         tooltip: "Robotics and autonomous systems news."
     },
     {
+        id: 'us-intelligence',
+        label: 'US Intelligence',
+        icon: Shield,
+        href: '/us-intel',
+        tooltip: 'Domestic & Foreign Ops'
+    },
+    {
         id: 'policy',
         label: 'Policy',
         icon: Scale,
