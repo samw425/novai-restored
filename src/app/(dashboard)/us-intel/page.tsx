@@ -141,7 +141,7 @@ export default function USIntelPage() {
             <PageHeader
                 title="US INTEL"
                 description="DOMESTIC & FOREIGN OPERATIONS"
-                insight="Aggregating real-time directives and unclassified reports from 16+ US Intelligence Community agencies. Our AI vector engine filters 94% of noise to isolate critical national security and emerging technology threats."
+                insight="Aggregating real-time AI updates, directives, and unclassified reports from 16+ US Intelligence Community agencies. Our AI vector engine isolates critical national security and emerging technology threats."
             />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-10">
