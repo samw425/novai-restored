@@ -60,6 +60,21 @@
   }
 }
 
+@theme {
+  --animate-marquee: marquee 120s linear infinite;
+  --animate-spin-slow: spin 8s linear infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+
+    to {
+      transform: translateX(-100%);
+    }
+  }
+}
+
 body {
   color: var(--text-primary);
   background: var(--background);

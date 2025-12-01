@@ -48,15 +48,48 @@ const CONFLICT_FEEDS = [
     'https://news.google.com/rss/search?q=Naval+Deployment+Update&hl=en-US&gl=US&ceid=US:en', // Global Naval Deployments
     'https://news.google.com/rss/search?q=Air+Force+Deployment&hl=en-US&gl=US&ceid=US:en', // Air Force Movements
 
+    // OFFICIAL GOVERNMENT DIRECT FEEDS (The "Realest" Intel)
+    'https://www.defense.gov/DesktopModules/ArticleCS/RSS.ashx?ContentType=1&Site=945&max=10', // US Dept of Defense (Official)
+    'https://www.state.gov/rss/channels/travel.xml', // US State Dept Travel Advisories (Conflict Indicators)
+    'https://www.gov.uk/government/organisations/ministry-of-defence.atom', // UK Ministry of Defence (Official)
+    'https://www.nato.int/cps/en/natohq/news.rss', // NATO Official News
+
+    // HIGH-GRADE OSINT & ANALYSIS (Strategic Depth)
+    'https://www.understandingwar.org/feeds.xml', // Institute for the Study of War (ISW) - Gold Standard
+    'https://www.bellingcat.com/feed/', // Bellingcat (Investigative OSINT)
+    'https://www.csis.org/rss/analysis', // CSIS (Strategic Studies)
+    'https://www.rand.org/news/press.xml', // RAND Corporation (Defense Analysis)
+
     // AGENCY PROXIES (Intel & State Sources)
-    'https://news.google.com/rss/search?q=CIA+Intelligence+Report&hl=en-US&gl=US&ceid=US:en', // CIA Proxy via News
-    'https://news.google.com/rss/search?q=Mossad+Operation&hl=en-US&gl=US&ceid=US:en', // Mossad Proxy via News
-    'https://news.google.com/rss/search?q=FSB+Russia+Security&hl=en-US&gl=US&ceid=US:en', // FSB Proxy via News
-    'https://news.google.com/rss/search?q=MI6+Intelligence&hl=en-US&gl=US&ceid=US:en', // MI6 Proxy
-    'https://news.google.com/rss/search?q=IDF+Military+Operation&hl=en-US&gl=US&ceid=US:en', // IDF Proxy
-    'https://news.google.com/rss/search?q=Shin+Bet+Security&hl=en-US&gl=US&ceid=US:en', // Shin Bet Proxy
-    'https://www.timesofisrael.com/feed/', // Times of Israel (Reliable regional source)
-    'https://www.jpost.com/rss/rssfeedsheadlines.aspx', // Jerusalem Post
+    // FIVE EYES (US, UK, CAN, AUS, NZ)
+    'https://news.google.com/rss/search?q=CIA+Intelligence+Report+OR+Declassified&hl=en-US&gl=US&ceid=US:en', // CIA (US) - Refined for "Report"
+    'https://news.google.com/rss/search?q=NSA+Cyber+Security+Advisory&hl=en-US&gl=US&ceid=US:en', // NSA (US)
+    'https://news.google.com/rss/search?q=MI6+Secret+Intelligence+Service&hl=en-US&gl=US&ceid=US:en', // MI6 (UK)
+    'https://news.google.com/rss/search?q=GCHQ+Cyber+Threat&hl=en-US&gl=US&ceid=US:en', // GCHQ (UK)
+    'https://news.google.com/rss/search?q=CSIS+Canada+Intelligence&hl=en-US&gl=US&ceid=US:en', // CSIS (Canada)
+    'https://news.google.com/rss/search?q=ASIS+Australia+Intelligence&hl=en-US&gl=US&ceid=US:en', // ASIS (Australia)
+
+    // EUROPEAN INTEL
+    'https://news.google.com/rss/search?q=DGSE+France+Intelligence&hl=en-US&gl=US&ceid=US:en', // DGSE (France)
+    'https://news.google.com/rss/search?q=BND+Germany+Intelligence&hl=en-US&gl=US&ceid=US:en', // BND (Germany)
+
+    // MIDDLE EAST & ASIA
+    'https://news.google.com/rss/search?q=Mossad+Operation&hl=en-US&gl=US&ceid=US:en', // Mossad (Israel)
+    'https://news.google.com/rss/search?q=Shin+Bet+Security&hl=en-US&gl=US&ceid=US:en', // Shin Bet (Israel)
+    'https://news.google.com/rss/search?q=IDF+Military+Operation&hl=en-US&gl=US&ceid=US:en', // IDF (Israel)
+    'https://news.google.com/rss/search?q=MIT+Turkey+Intelligence&hl=en-US&gl=US&ceid=US:en', // MIT (Turkey)
+    'https://news.google.com/rss/search?q=MOIS+Iran+Intelligence&hl=en-US&gl=US&ceid=US:en', // MOIS (Iran)
+
+    // ADVERSARIAL / COMPETITOR AGENCIES
+    'https://news.google.com/rss/search?q=FSB+Russia+Security&hl=en-US&gl=US&ceid=US:en', // FSB (Russia)
+    'https://news.google.com/rss/search?q=SVR+Russia+Foreign+Intel&hl=en-US&gl=US&ceid=US:en', // SVR (Russia)
+    'https://news.google.com/rss/search?q=GRU+Russia+Military+Intel&hl=en-US&gl=US&ceid=US:en', // GRU (Russia)
+    'https://news.google.com/rss/search?q=MSS+China+Ministry+State+Security&hl=en-US&gl=US&ceid=US:en', // MSS (China)
+    'https://news.google.com/rss/search?q=RGB+North+Korea+Intel&hl=en-US&gl=US&ceid=US:en', // RGB (North Korea)
+
+    // SOUTH ASIA
+    'https://news.google.com/rss/search?q=RAW+India+Intelligence&hl=en-US&gl=US&ceid=US:en', // RAW (India)
+    'https://news.google.com/rss/search?q=ISI+Pakistan+Intelligence&hl=en-US&gl=US&ceid=US:en', // ISI (Pakistan)
 
     // CYBER WARFARE & THREAT INTEL (Real-Time)
     'https://feeds.feedburner.com/TheHackersNews', // The Hacker News
@@ -231,14 +264,28 @@ export async function fetchConflictIncidents(): Promise<WarRoomIncident[]> {
 
                         if (!found) {
                             // Agency-specific default locations (Fallback if no city found)
-                            if (feedUrl.includes('Mossad') || feedUrl.includes('Shin+Bet') || feedUrl.includes('IDF') || feedUrl.includes('timesofisrael') || feedUrl.includes('jpost')) {
-                                assignedLoc = { lat: 32.0853, lng: 34.7818, region: 'Israel (Intel)' };
-                            } else if (feedUrl.includes('CIA') || feedUrl.includes('FBI')) {
-                                assignedLoc = { lat: 38.9472, lng: -77.1461, region: 'Langley, USA' };
-                            } else if (feedUrl.includes('FSB')) {
-                                assignedLoc = { lat: 55.7558, lng: 37.6173, region: 'Moscow (Intel)' };
-                            } else if (feedUrl.includes('MI6')) {
-                                assignedLoc = { lat: 51.4872, lng: -0.1243, region: 'London (SIS)' };
+                            if (feedUrl.includes('Mossad') || feedUrl.includes('Shin+Bet') || feedUrl.includes('IDF')) {
+                                assignedLoc = { lat: 32.0853, lng: 34.7818, region: 'Tel Aviv (Mossad HQ)' };
+                            } else if (feedUrl.includes('CIA') || feedUrl.includes('FBI') || feedUrl.includes('NSA')) {
+                                assignedLoc = { lat: 38.9472, lng: -77.1461, region: 'Langley/Ft. Meade' };
+                            } else if (feedUrl.includes('FSB') || feedUrl.includes('SVR') || feedUrl.includes('GRU')) {
+                                assignedLoc = { lat: 55.7558, lng: 37.6173, region: 'Moscow (Lubyanka)' };
+                            } else if (feedUrl.includes('MI6') || feedUrl.includes('GCHQ')) {
+                                assignedLoc = { lat: 51.4872, lng: -0.1243, region: 'London (Vauxhall Cross)' };
+                            } else if (feedUrl.includes('DGSE')) {
+                                assignedLoc = { lat: 48.8744, lng: 2.4074, region: 'Paris (DGSE HQ)' };
+                            } else if (feedUrl.includes('BND')) {
+                                assignedLoc = { lat: 52.5352, lng: 13.3768, region: 'Berlin (BND HQ)' };
+                            } else if (feedUrl.includes('MSS')) {
+                                assignedLoc = { lat: 39.9042, lng: 116.4074, region: 'Beijing (MSS HQ)' };
+                            } else if (feedUrl.includes('RAW')) {
+                                assignedLoc = { lat: 28.6139, lng: 77.2090, region: 'New Delhi (RAW HQ)' };
+                            } else if (feedUrl.includes('ISI')) {
+                                assignedLoc = { lat: 33.7294, lng: 73.0931, region: 'Islamabad (ISI HQ)' };
+                            } else if (feedUrl.includes('CSIS')) {
+                                assignedLoc = { lat: 45.4215, lng: -75.6972, region: 'Ottawa (CSIS HQ)' };
+                            } else if (feedUrl.includes('ASIS')) {
+                                assignedLoc = { lat: -35.2809, lng: 149.1300, region: 'Canberra (ASIS HQ)' };
                             } else if (text.includes('us') || text.includes('usa') || text.includes('america') || text.includes('biden') || text.includes('trump')) {
                                 assignedLoc = { lat: 39.8283, lng: -98.5795, region: 'USA (General)' };
                             } else if (text.includes('cyber') || text.includes('hack') || text.includes('breach')) {
@@ -256,12 +303,31 @@ export async function fetchConflictIncidents(): Promise<WarRoomIncident[]> {
 
                         // Determine source name for "Insider" styling
                         let sourceName = 'Defense News';
-                        if (feedUrl.includes('Mossad')) sourceName = 'Mossad Proxy';
-                        else if (feedUrl.includes('CIA')) sourceName = 'CIA Proxy';
-                        else if (feedUrl.includes('FSB')) sourceName = 'FSB Proxy';
-                        else if (feedUrl.includes('IDF')) sourceName = 'IDF Command';
-                        else if (feedUrl.includes('Shin+Bet')) sourceName = 'Shin Bet';
-                        else if (feedUrl.includes('MI6')) sourceName = 'MI6 Proxy';
+                        if (feedUrl.includes('defense.gov')) sourceName = 'US DEPT OF DEFENSE';
+                        else if (feedUrl.includes('state.gov')) sourceName = 'US STATE DEPT';
+                        else if (feedUrl.includes('gov.uk')) sourceName = 'UK MINISTRY OF DEFENCE';
+                        else if (feedUrl.includes('nato.int')) sourceName = 'NATO COMMAND';
+                        else if (feedUrl.includes('understandingwar')) sourceName = 'ISW (WAR STUDY)';
+                        else if (feedUrl.includes('bellingcat')) sourceName = 'BELLINGCAT OSINT';
+                        else if (feedUrl.includes('csis')) sourceName = 'CSIS STRATEGY';
+                        else if (feedUrl.includes('rand.org')) sourceName = 'RAND CORP';
+                        else if (feedUrl.includes('Mossad')) sourceName = 'MOSSAD';
+                        else if (feedUrl.includes('CIA')) sourceName = 'CIA';
+                        else if (feedUrl.includes('NSA')) sourceName = 'NSA';
+                        else if (feedUrl.includes('FSB')) sourceName = 'FSB';
+                        else if (feedUrl.includes('SVR')) sourceName = 'SVR';
+                        else if (feedUrl.includes('GRU')) sourceName = 'GRU';
+                        else if (feedUrl.includes('IDF')) sourceName = 'IDF';
+                        else if (feedUrl.includes('Shin+Bet')) sourceName = 'SHIN BET';
+                        else if (feedUrl.includes('MI6')) sourceName = 'MI6';
+                        else if (feedUrl.includes('GCHQ')) sourceName = 'GCHQ';
+                        else if (feedUrl.includes('DGSE')) sourceName = 'DGSE';
+                        else if (feedUrl.includes('BND')) sourceName = 'BND';
+                        else if (feedUrl.includes('MSS')) sourceName = 'MSS';
+                        else if (feedUrl.includes('RAW')) sourceName = 'RAW';
+                        else if (feedUrl.includes('ISI')) sourceName = 'ISI';
+                        else if (feedUrl.includes('CSIS')) sourceName = 'CSIS';
+                        else if (feedUrl.includes('ASIS')) sourceName = 'ASIS';
                         else if (feedUrl.includes('timesofisrael')) sourceName = 'Times of Israel';
                         else if (feedUrl.includes('jpost')) sourceName = 'Jerusalem Post';
                         else if (item.source?.title) sourceName = item.source.title; // Use RSS source if available
@@ -359,13 +425,12 @@ export async function fetchConflictIncidents(): Promise<WarRoomIncident[]> {
 }
 
 export async function getWarRoomData(): Promise<WarRoomIncident[]> {
-    const [cyber, conflicts, earthquakes] = await Promise.all([
+    const [cyber, conflicts] = await Promise.all([
         fetchCISAIncidents(),
-        fetchConflictIncidents(),
-        fetchUSGSIncidents()
+        fetchConflictIncidents()
     ]);
 
-    return [...cyber, ...conflicts, ...earthquakes].sort((a, b) =>
+    return [...cyber, ...conflicts].sort((a, b) =>
         new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
     );
 }

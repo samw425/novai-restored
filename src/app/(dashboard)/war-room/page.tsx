@@ -1,30 +1,38 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Shield, Globe, Activity, Lock, Eye, AlertOctagon, Loader2, Ship, Plane } from 'lucide-react';
-import { Article } from '@/types';
+import { Shield, Activity, Globe, Lock, Ship, Plane, Loader2, ArrowUp } from 'lucide-react';
+import { PageHeader } from '@/components/ui/PageHeader';
 import { FeedCard } from '@/components/feed/FeedCard';
 import { ResourceLoader } from '@/components/ui/ResourceLoader';
-import { PageHeader } from '@/components/ui/PageHeader';
+import { MonthlyIntelBrief } from '@/components/dashboard/MonthlyIntelBrief';
+import { getWarRoomData } from '@/lib/osint';
+import { Article } from '@/types';
+
+export const runtime = 'edge';
+// Prevent static generation for this page to ensure real-time data
+export const dynamic = 'force-dynamic';
 
 export default function WarRoomPage() {
     const [articles, setArticles] = useState<Article[]>([]);
     const [incidents, setIncidents] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+    const [loadingMore, setLoadingMore] = useState(false);
 
+    // Initial Load
     useEffect(() => {
         const fetchData = async () => {
             try {
                 // Fetch ONLY strict War Room OSINT data
-                // We no longer fetch generic 'policy' news to ensure 100% relevance
-                const mapRes = await fetch('/api/feed/war-room', { cache: 'no-store' });
+                const mapRes = await fetch('/api/feed/war-room?page=1&limit=20', { cache: 'no-store' });
                 const mapData = await mapRes.json();
 
                 if (mapData.incidents) {
                     setIncidents(mapData.incidents);
                     // Use the same strict OSINT data for the list view
                     // Convert WarRoomIncident[] to Article[] shape for the FeedCard component
-                    // or better, create a specialized IncidentCard. For now, we map to Article.
                     const strictArticles = mapData.incidents.map((inc: any) => ({
                         id: inc.id,
                         title: inc.title,
@@ -32,11 +40,12 @@ export default function WarRoomPage() {
                         url: inc.url,
                         source: inc.source,
                         publishedAt: inc.timestamp,
-                        category: inc.type, // 'conflict', 'cyber', 'earthquake'
+                        category: inc.type, // 'conflict', 'cyber'
                         image_url: null, // Incidents usually don't have images, we can use icons
                         score: inc.severity === 'critical' ? 10 : 5
                     }));
                     setArticles(strictArticles);
+                    setHasMore(strictArticles.length >= 20);
                 }
 
             } catch (error) {
@@ -48,6 +57,42 @@ export default function WarRoomPage() {
 
         fetchData();
     }, []);
+
+    // Infinite Scroll Load
+    const loadMore = async () => {
+        if (loadingMore || !hasMore) return;
+        setLoadingMore(true);
+
+        try {
+            const nextPage = page + 1;
+            const res = await fetch(`/api/feed/war-room?page=${nextPage}&limit=20`, { cache: 'no-store' });
+            const data = await res.json();
+
+            if (data.incidents && data.incidents.length > 0) {
+                const newArticles = data.incidents.map((inc: any) => ({
+                    id: inc.id,
+                    title: inc.title,
+                    description: inc.description,
+                    url: inc.url,
+                    source: inc.source,
+                    publishedAt: inc.timestamp,
+                    category: inc.type,
+                    image_url: null,
+                    score: inc.severity === 'critical' ? 10 : 5
+                }));
+
+                setArticles(prev => [...prev, ...newArticles]);
+                setPage(nextPage);
+                setHasMore(newArticles.length >= 20);
+            } else {
+                setHasMore(false);
+            }
+        } catch (error) {
+            console.error('Failed to load more War Room data:', error);
+        } finally {
+            setLoadingMore(false);
+        }
+    };
 
     // Helper to map lat/long to CSS percentage (approximate for Mercator projection)
     // Map bounds: Lat -60 to 85, Lng -180 to 180
@@ -90,14 +135,13 @@ export default function WarRoomPage() {
             </div>
 
             {/* Header */}
-            {/* Header */}
             <div className="flex justify-between items-end mb-6">
                 <div className="flex-1">
                     <PageHeader
-                        title="War Room"
-                        description="Global incident tracking and threat assessment."
-                        insight="AI is reshaping modern warfare. Monitoring autonomous systems and cyber-kinetic threats in real-time."
-                        icon={<Shield className="w-8 h-8 text-red-600" />}
+                        title="THE SITUATION ROOM"
+                        description="GLOBAL CONFLICT & INTELLIGENCE COMMAND"
+                        insight="Direct uplink to global intelligence streams from Defense.gov, State Dept, ISW, and Bellingcat. Intercepting proxy signals from CIA, Mossad, FSB, and MI6."
+                        icon={<Shield className="w-8 h-8 text-red-600 animate-pulse" />}
                     />
                 </div>
                 <div className={`flex items-center gap-2 px-4 py-2 rounded-lg border mb-8 ml-4 ${defconColor}`}>
@@ -110,51 +154,54 @@ export default function WarRoomPage() {
             </div>
 
             {/* Situation Report (SITREP) Explainer */}
-            <div className="bg-white border border-gray-200 rounded-xl p-5 mb-6 shadow-sm relative overflow-hidden group hover:border-blue-200 transition-colors">
-                <div className="absolute top-0 left-0 w-1 h-full bg-blue-500"></div>
+            <div className="bg-black border border-gray-800 rounded-xl p-5 mb-6 shadow-2xl relative overflow-hidden group hover:border-red-900 transition-colors">
+                <div className="absolute top-0 left-0 w-1 h-full bg-red-600"></div>
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
-                        <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1 flex items-center gap-2">
-                            <Activity className="h-3 w-3 text-blue-500" />
-                            INTELLIGENCE BRIEFING
+                        <h3 className="text-xs font-bold text-red-500 uppercase tracking-widest mb-1 flex items-center gap-2">
+                            <Activity className="h-3 w-3 text-red-500" />
+                            EYES ONLY: GLOBAL THREAT MATRIX ACTIVE
                         </h3>
-                        <p className="text-sm text-gray-700 leading-relaxed font-medium max-w-3xl">
-                            Aggregating multi-vector telemetry from classified proxies and open-source signals.
-                            Monitoring active <span className="text-gray-900 font-bold">kinetic conflicts</span>, <span className="text-gray-900 font-bold">cyber warfare signatures</span>, and <span className="text-gray-900 font-bold">high-priority security events</span> in real-time.
+                        <p className="text-sm text-gray-300 leading-relaxed font-mono max-w-3xl">
+                            You have entered the Novai Situation Room. This is not news. This is <span className="text-white font-bold">Raw Intelligence</span>.
+                            We aggregate real-time data from <span className="text-white font-bold">Official Government Feeds</span> (DoD, NATO, UK MoD), <span className="text-white font-bold">Strategic Think Tanks</span> (ISW, CSIS), and <span className="text-white font-bold">Agency Proxies</span> to map kinetic and cyber warfare as it happens.
+                            <br />
+                            <span className="text-red-500 font-bold">TRACKING:</span> Troop Mobilizations, Naval Strike Groups, Air Sorties, and State-Sponsored Cyber Attacks.
                         </p>
                     </div>
-                    <div className="flex items-center gap-3 text-[10px] font-mono text-gray-400 bg-gray-50 px-3 py-2 rounded border border-gray-100 whitespace-nowrap">
+                    <div className="flex items-center gap-3 text-[10px] font-mono text-green-500 bg-gray-900 px-3 py-2 rounded border border-gray-800 whitespace-nowrap">
                         <span className="flex items-center gap-1.5">
                             <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-                            SIGNAL: STRONG
+                            UPLINK: SECURE
                         </span>
-                        <span className="w-px h-3 bg-gray-300"></span>
-                        <span>ENCRYPTION: AES-256</span>
+                        <span className="w-px h-3 bg-gray-700"></span>
+                        <span>ENCRYPTION: MIL-SPEC-256</span>
                     </div>
                 </div>
             </div>
 
             {/* Global Threat Map (Visual Only) */}
-            <div className="bg-gray-900 rounded-xl border border-gray-800 p-6 shadow-lg relative overflow-hidden min-h-[500px]">
-                <div className="absolute inset-0 opacity-30 bg-[url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg')] bg-no-repeat bg-center bg-cover pointer-events-none"></div>
+            <div className="bg-gray-950 rounded-xl border border-gray-800 p-6 shadow-2xl relative overflow-hidden min-h-[600px]">
+                <div className="absolute inset-0 opacity-20 bg-[url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg')] bg-no-repeat bg-center bg-cover pointer-events-none invert"></div>
 
                 {/* Grid Overlay */}
-                <div className="absolute inset-0 bg-[linear-gradient(rgba(0,255,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,0,0.03)_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none"></div>
+                <div className="absolute inset-0 bg-[linear-gradient(rgba(0,50,0,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(0,50,0,0.1)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)] pointer-events-none"></div>
 
                 <div className="relative z-10 flex justify-between items-start mb-12">
-                    <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                        <Globe className="h-5 w-5 text-blue-400" />
-                        Global Incident Map (Live OSINT)
+                    <h2 className="text-lg font-bold text-white flex items-center gap-2 font-mono tracking-tight">
+                        <Globe className="h-5 w-5 text-red-500 animate-spin-slow" />
+                        LIVE SATELLITE TRACKING
                     </h2>
-                    <div className="flex gap-4 text-xs font-mono text-gray-400 bg-black/50 p-2 rounded border border-gray-800">
+                    <div className="flex gap-4 text-xs font-mono text-gray-400 bg-black/80 backdrop-blur-md p-2 rounded border border-gray-800">
                         <div className="flex items-center gap-2">
-                            <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span> Conflict
+                            <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span> KINETIC
                         </div>
                         <div className="flex items-center gap-2">
-                            <span className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span> Cyber
+                            <span className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span> CYBER
                         </div>
                         <div className="flex items-center gap-2 border-l border-gray-700 pl-2 ml-2">
-                            <span className="w-2 h-2 rounded-full bg-blue-600"></span> US/NATO
+                            <span className="w-2 h-2 rounded-full bg-blue-600"></span> NATO/ALLIED
                         </div>
                         <div className="flex items-center gap-2">
                             <span className="w-2 h-2 rounded-full bg-red-600"></span> REDFOR
@@ -170,12 +217,9 @@ export default function WarRoomPage() {
                         let colorClass = 'bg-blue-500';
                         let textClass = 'text-blue-400';
 
-                        if (incident.type === 'earthquake') {
-                            colorClass = 'bg-red-500';
-                            textClass = 'text-red-400';
-                        } else if (incident.type === 'conflict') {
-                            colorClass = 'bg-orange-500';
-                            textClass = 'text-orange-400';
+                        if (incident.type === 'conflict') {
+                            colorClass = 'bg-orange-600';
+                            textClass = 'text-orange-500';
                         } else if (incident.type === 'naval' || incident.type === 'air') {
                             // Country-specific coloring for assets
                             if (incident.country === 'US' || incident.country === 'UK') {
@@ -202,33 +246,36 @@ export default function WarRoomPage() {
                                 className="absolute group cursor-pointer"
                                 style={{ top: pos.top, left: pos.left }}
                             >
-                                <span className={`absolute -inset-4 rounded-full ${colorClass} opacity-20 animate-ping`} style={{ animationDuration: '3s', animationDelay: delay }}></span>
-                                <span className={`absolute -inset-2 rounded-full ${colorClass} opacity-40 animate-pulse`}></span>
+                                <span className={`absolute -inset-6 rounded-full ${colorClass} opacity-10 animate-ping`} style={{ animationDuration: '4s', animationDelay: delay }}></span>
+                                <span className={`absolute -inset-3 rounded-full ${colorClass} opacity-30 animate-pulse`}></span>
 
                                 {/* Icon for Naval/Air, Dot for others */}
                                 {incident.type === 'naval' ? (
-                                    <div className={`w-4 h-4 ${colorClass} rounded-full border-2 border-gray-900 relative z-10 shadow-[0_0_10px_rgba(0,0,0,0.8)] flex items-center justify-center`}>
-                                        <Ship size={8} className="text-white" />
+                                    <div className={`w-5 h-5 ${colorClass} rounded-sm border border-white/20 relative z-10 shadow-[0_0_15px_rgba(0,0,0,1)] flex items-center justify-center transform rotate-45`}>
+                                        <Ship size={10} className="text-white transform -rotate-45" />
                                     </div>
                                 ) : incident.type === 'air' ? (
-                                    <div className={`w-4 h-4 ${colorClass} rounded-full border-2 border-gray-900 relative z-10 shadow-[0_0_10px_rgba(0,0,0,0.8)] flex items-center justify-center`}>
-                                        <Plane size={8} className="text-white" />
+                                    <div className={`w-5 h-5 ${colorClass} rounded-full border border-white/20 relative z-10 shadow-[0_0_15px_rgba(0,0,0,1)] flex items-center justify-center`}>
+                                        <Plane size={10} className="text-white" />
                                     </div>
                                 ) : (
-                                    <div className={`w-3 h-3 ${colorClass} rounded-full border-2 border-gray-900 relative z-10 shadow-[0_0_10px_rgba(0,0,0,0.8)]`}></div>
+                                    <div className={`w-3 h-3 ${colorClass} rounded-full border border-white/50 relative z-10 shadow-[0_0_10px_rgba(0,0,0,1)]`}></div>
                                 )}
 
                                 {/* Tooltip */}
-                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-72 bg-gray-900/95 backdrop-blur-sm text-white text-xs p-4 rounded border border-gray-700 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 shadow-2xl">
-                                    <div className="flex justify-between items-start mb-2 border-b border-gray-700 pb-2">
-                                        <strong className={`block ${textClass} uppercase text-[10px] tracking-wider`}>
+                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-80 bg-black/90 backdrop-blur-xl text-white text-xs p-4 rounded-sm border border-gray-700 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 shadow-2xl">
+                                    <div className="flex justify-between items-start mb-2 border-b border-gray-800 pb-2">
+                                        <strong className={`block ${textClass} uppercase text-[10px] tracking-wider font-mono`}>
                                             {incident.type === 'naval' || incident.type === 'air' ? `${incident.country} ${incident.assetType}` : incident.type}
                                         </strong>
-                                        <span className="text-gray-500 text-[9px]">{new Date(incident.timestamp).toLocaleTimeString()}</span>
+                                        <span className="text-gray-500 text-[9px] font-mono">{new Date(incident.timestamp).toLocaleTimeString()} UTC</span>
                                     </div>
-                                    <div className="font-bold mb-2 text-sm">{incident.title}</div>
-                                    <div className="text-gray-400 text-[10px] leading-relaxed">{incident.description}</div>
-                                    <div className="mt-2 text-[9px] text-gray-600 font-mono">{incident.location.region.toUpperCase()}</div>
+                                    <div className="font-bold mb-2 text-sm font-mono text-white">{incident.title}</div>
+                                    <div className="text-gray-400 text-[10px] leading-relaxed font-mono">{incident.description}</div>
+                                    <div className="mt-2 text-[9px] text-red-500 font-mono uppercase tracking-widest flex justify-between">
+                                        <span>LOC: {incident.location.region.toUpperCase()}</span>
+                                        <span>SRC: {incident.source.toUpperCase()}</span>
+                                    </div>
                                 </div>
                             </div>
                         );
@@ -240,79 +287,110 @@ export default function WarRoomPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
                 {/* Active Incidents (Real-Time Feed) */}
-                <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
-                    <div className="p-6 border-b border-gray-100 flex justify-between items-center">
-                        <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                            <Activity className="h-5 w-5 text-gray-700" />
-                            Active Incidents & Intel Stream
+                <div className="lg:col-span-2 bg-gray-950 rounded-xl border border-gray-800 overflow-hidden shadow-2xl">
+                    <div className="p-6 border-b border-gray-800 flex justify-between items-center bg-black/50">
+                        <h2 className="text-lg font-bold text-white flex items-center gap-2 font-mono">
+                            <Activity className="h-5 w-5 text-green-500" />
+                            RAW INTEL STREAM
                         </h2>
-                        <span className="text-xs font-bold text-gray-400 uppercase">Real-Time</span>
+                        <span className="text-xs font-bold text-green-500 uppercase animate-pulse">● LIVE UPLINK ACTIVE</span>
                     </div>
 
-                    <div className="p-4 space-y-4 max-h-[600px] overflow-y-auto custom-scrollbar">
+                    <div className="p-4 space-y-4 max-h-[600px] overflow-y-auto custom-scrollbar bg-black/20">
                         {loading ? (
-                            <ResourceLoader message="Initializing War Room feeds..." />
+                            <ResourceLoader message="Decrypting global intelligence streams..." />
                         ) : articles.length > 0 ? (
-                            articles.map(article => (
-                                <FeedCard key={article.id} article={article} />
-                            ))
+                            <>
+                                {articles.map(article => (
+                                    <FeedCard key={article.id} article={article} />
+                                ))}
+
+                                {/* Load More Trigger */}
+                                <div className="pt-4 flex justify-center">
+                                    {hasMore ? (
+                                        <button
+                                            onClick={loadMore}
+                                            disabled={loadingMore}
+                                            className="px-6 py-2 bg-gray-900 border border-gray-700 text-green-500 font-mono text-xs hover:bg-gray-800 transition-colors rounded flex items-center gap-2"
+                                        >
+                                            {loadingMore ? <Loader2 className="h-3 w-3 animate-spin" /> : <ArrowUp className="h-3 w-3 rotate-180" />}
+                                            {loadingMore ? 'DECRYPTING MORE...' : 'LOAD OLDER INTEL'}
+                                        </button>
+                                    ) : (
+                                        <span className="text-gray-600 font-mono text-xs">END OF STREAM</span>
+                                    )}
+                                </div>
+                            </>
                         ) : (
-                            <div className="text-center py-8 text-gray-500">
-                                No active incidents reported.
+                            <div className="text-center py-12 text-gray-600 font-mono">
+                                Awaiting incoming signals...
                             </div>
                         )}
                     </div>
                 </div>
 
                 {/* Security Status */}
-                <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm h-fit sticky top-6">
-                    <h2 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
-                        <Lock className="h-5 w-5 text-gray-700" />
-                        System Status
+                <div className="bg-gray-950 rounded-xl border border-gray-800 p-6 shadow-2xl h-fit sticky top-6">
+                    <h2 className="text-lg font-bold text-white mb-6 flex items-center gap-2 font-mono">
+                        <Lock className="h-5 w-5 text-gray-400" />
+                        SYSTEM STATUS
                     </h2>
 
                     <div className="space-y-6">
                         <div>
-                            <div className="flex justify-between text-sm mb-2">
-                                <span className="text-gray-600">Global Stability Index</span>
-                                <span className={`font-bold ${defconLevel === 2 ? 'text-red-600' : 'text-amber-600'}`}>
+                            <div className="flex justify-between text-sm mb-2 font-mono">
+                                <span className="text-gray-400">GLOBAL STABILITY</span>
+                                <span className={`font-bold ${defconLevel === 2 ? 'text-red-500' : 'text-amber-500'}`}>
                                     {defconLevel === 2 ? 'CRITICAL' : 'UNSTABLE'}
                                 </span>
                             </div>
-                            <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                                <div className={`h-full w-[${defconLevel === 2 ? '85%' : '65%'}] ${defconLevel === 2 ? 'bg-red-500' : 'bg-amber-500'}`}></div>
+                            <div className="h-2 bg-gray-900 rounded-full overflow-hidden border border-gray-800">
+                                <div className={`h-full w-[${defconLevel === 2 ? '85%' : '65%'}] ${defconLevel === 2 ? 'bg-red-600' : 'bg-amber-600'} animate-pulse`}></div>
                             </div>
                         </div>
 
                         <div>
-                            <div className="flex justify-between text-sm mb-2">
-                                <span className="text-gray-600">Cyber Threat Level</span>
-                                <span className="font-bold text-orange-600">High</span>
+                            <div className="flex justify-between text-sm mb-2 font-mono">
+                                <span className="text-gray-400">CYBER THREAT LEVEL</span>
+                                <span className="font-bold text-orange-500">HIGH</span>
                             </div>
-                            <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                                <div className="h-full bg-orange-500 w-[75%]"></div>
+                            <div className="h-2 bg-gray-900 rounded-full overflow-hidden border border-gray-800">
+                                <div className="h-full bg-orange-600 w-[75%]"></div>
                             </div>
                         </div>
 
-                        <div className="pt-6 border-t border-gray-100">
-                            <h3 className="text-xs font-bold text-gray-400 uppercase mb-3">Recent Actions</h3>
-                            <ul className="space-y-3">
-                                <li className="flex gap-2 text-xs text-gray-600">
-                                    <span className="text-emerald-500">●</span>
-                                    <span>Monitoring Eastern Europe conflict zones</span>
+                        <div className="pt-6 border-t border-gray-800">
+                            <h3 className="text-xs font-bold text-gray-500 uppercase mb-3 font-mono">ACTIVE MONITORING</h3>
+                            <ul className="space-y-3 font-mono">
+                                <li className="flex gap-2 text-xs text-gray-400">
+                                    <span className="text-red-500 animate-pulse">●</span>
+                                    <span>CIA / NSA / FIVE EYES</span>
                                 </li>
-                                <li className="flex gap-2 text-xs text-gray-600">
-                                    <span className="text-blue-500">●</span>
-                                    <span>Tracking Pacific naval movements</span>
+                                <li className="flex gap-2 text-xs text-gray-400">
+                                    <span className="text-blue-500 animate-pulse">●</span>
+                                    <span>MOSSAD / IDF / SHIN BET</span>
                                 </li>
-                                <li className="flex gap-2 text-xs text-gray-600">
-                                    <span className="text-red-500">●</span>
-                                    <span>Analyzing seismic activity in Ring of Fire</span>
+                                <li className="flex gap-2 text-xs text-gray-400">
+                                    <span className="text-orange-500 animate-pulse">●</span>
+                                    <span>FSB / SVR / GRU</span>
+                                </li>
+                                <li className="flex gap-2 text-xs text-gray-400">
+                                    <span className="text-green-500 animate-pulse">●</span>
+                                    <span>MI6 / GCHQ / DGSE / BND</span>
+                                </li>
+                                <li className="flex gap-2 text-xs text-gray-400">
+                                    <span className="text-yellow-500 animate-pulse">●</span>
+                                    <span>MSS / RGB / MOIS</span>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
+            </div>
+
+            {/* 30-Day Brief */}
+            <div className="mt-12 pt-8 border-t border-gray-800">
+                <MonthlyIntelBrief articles={articles} fullView={true} category="conflict" />
             </div>
         </div>
     );

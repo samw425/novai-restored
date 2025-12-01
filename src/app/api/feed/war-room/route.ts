@@ -4,13 +4,24 @@ import { getWarRoomData } from '@/lib/osint';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
+export async function GET(request: Request) {
     try {
-        const incidents = await getWarRoomData();
+        const { searchParams } = new URL(request.url);
+        const page = parseInt(searchParams.get('page') || '1');
+        const limit = parseInt(searchParams.get('limit') || '20');
+
+        const allIncidents = await getWarRoomData();
+
+        // Pagination logic
+        const startIndex = (page - 1) * limit;
+        const endIndex = startIndex + limit;
+        const paginatedIncidents = allIncidents.slice(startIndex, endIndex);
 
         return NextResponse.json({
-            incidents,
-            count: incidents.length,
+            incidents: paginatedIncidents,
+            total: allIncidents.length,
+            page,
+            hasMore: endIndex < allIncidents.length,
             lastUpdate: new Date().toISOString()
         });
     } catch (error: any) {

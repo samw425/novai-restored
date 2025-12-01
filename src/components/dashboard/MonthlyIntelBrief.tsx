@@ -58,6 +58,13 @@ export function MonthlyIntelBrief({ articles, fullView = false, category }: Mont
                                 TOP STORY
                             </div>
                         )}
+                        {/* LIVE Badge for recent items (< 24h) */}
+                        {new Date(article.publishedAt).getTime() > Date.now() - 24 * 60 * 60 * 1000 && (
+                            <div className={`absolute top-0 ${index < 3 ? 'right-20' : 'right-0'} bg-red-600 text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg z-10 flex items-center gap-1 animate-pulse`}>
+                                <span className="w-1.5 h-1.5 rounded-full bg-white"></span>
+                                LIVE
+                            </div>
+                        )}
                         <div className="flex items-start justify-between mb-3">
                             <div className="flex items-center gap-3">
                                 <Star className={`h-4 w-4 ${index < 3 ? 'text-yellow-500 fill-yellow-500' : 'text-gray-300'} flex-shrink-0`} />
