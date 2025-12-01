@@ -138,8 +138,8 @@ export default function WarRoomPage() {
             <div className="flex justify-between items-end mb-6">
                 <div className="flex-1">
                     <PageHeader
-                        title="THE SITUATION ROOM"
-                        description="GLOBAL CONFLICT & INTELLIGENCE COMMAND"
+                        title="War Room"
+                        description="THE SITUATION ROOM"
                         insight="Direct uplink to global intelligence streams from Defense.gov, State Dept, ISW, and Bellingcat. Intercepting proxy signals from CIA, Mossad, FSB, and MI6."
                         icon={<Shield className="w-8 h-8 text-red-600 animate-pulse" />}
                     />
