@@ -512,102 +512,181 @@ export default function USIntelPage() {
                                                         </div>
                                                     )}
                                                 </div>
-                                            </div >
-                                    ) : (
-                                    <div className="flex flex-col items-center justify-center h-[600px] text-slate-400 p-8 text-center">
-                                        <div className="relative">
-                                            <Shield size={64} className="mb-6 opacity-20" />
-                                        </div>
-                                        <div className="text-2xl font-black tracking-tight text-slate-300">SELECT AN AGENCY</div>
-                                        <p className="text-sm mt-3 font-mono uppercase tracking-widest text-slate-400">Access Educational Dossiers & Live Feeds</p>
-                                    </div>
-)}
+                                            ) : (
+                                                <div className="flex flex-col items-center justify-center h-[600px] text-slate-400 p-8 text-center">
+                                                    <div className="relative">
+                                                        <Shield size={64} className="mb-6 opacity-20" />
+                                                    </div>
+                                                    <div className="text-2xl font-black tracking-tight text-slate-300">SELECT AN AGENCY</div>
+                                                    <p className="text-sm mt-3 font-mono uppercase tracking-widest text-slate-400">Access Educational Dossiers & Live Feeds</p>
+                                                </div>
+                                            )}
+                                        </div >
+                                    )}
                                 </div >
-                                )}
                             </div >
                         </div >
-                    </div >
 
-                    {/* RIGHT COLUMN: PRIORITY ALERTS (Real-Time) */}
-                    < div className="lg:col-span-4 space-y-6" >
-                        {/* Critical Threats Module */}
-                        < div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6" >
-                            <div className="flex items-center gap-2 mb-6 border-b border-slate-100 pb-4">
-                                <Siren size={18} className="text-red-600 animate-pulse" />
-                                <h3 className="text-xs font-black text-slate-900 uppercase tracking-widest">Priority Alerts</h3>
-                            </div>
+                        {/* RIGHT COLUMN: PRIORITY ALERTS (Real-Time) */}
+                        < div className="lg:col-span-4 space-y-6" >
+                            {/* Critical Threats Module */}
+                            < div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6" >
+                                <div className="flex items-center gap-2 mb-6 border-b border-slate-100 pb-4">
+                                    <Siren size={18} className="text-red-600 animate-pulse" />
+                                    <h3 className="text-xs font-black text-slate-900 uppercase tracking-widest">Priority Alerts</h3>
+                                </div>
 
-                            <div className="space-y-4">
-                                {feedItems.filter(i =>
-                                    (i.novai_analysis?.includes('CRITICAL') || i.title.includes('Urgent') || i.title.includes('Warning'))
-                                ).length > 0 ? (
-                                    feedItems.filter(i =>
+                                <div className="space-y-4">
+                                    {feedItems.filter(i =>
                                         (i.novai_analysis?.includes('CRITICAL') || i.title.includes('Urgent') || i.title.includes('Warning'))
-                                    ).slice(0, 3).map((alert, i) => (
-                                        <div key={i} className="p-4 rounded-lg bg-red-50 border border-red-100 relative overflow-hidden group">
-                                            <div className="absolute top-0 right-0 p-2 opacity-50 group-hover:opacity-100 transition-opacity">
-                                                <AlertTriangle size={14} className="text-red-500" />
-                                            </div>
-                                            <div className="flex items-center gap-2 mb-2">
-                                                <span className="w-1.5 h-1.5 bg-red-600 rounded-full animate-ping" />
-                                                <span className="text-[10px] font-black text-red-700 uppercase tracking-wider">Critical Threat</span>
-                                            </div>
-                                            <p className="text-sm font-bold text-slate-800 leading-snug mb-3 break-words">
-                                                {alert.title}
-                                            </p>
-                                            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center pt-3 border-t border-red-200 gap-2">
-                                                <span className="text-[10px] font-bold text-slate-500 uppercase">Source: {alert.agency}</span>
-                                                <a href={alert.link} target="_blank" rel="noopener noreferrer" className="text-[10px] font-mono text-red-600 font-bold hover:text-red-800 flex items-center gap-1 whitespace-nowrap">
-                                                    VIEW INTEL <ArrowUpRight size={10} />
-                                                </a>
-                                            </div>
-                                        </div>
-                                    ))
-                                ) : (
-                                    <div className="p-4 rounded-lg bg-slate-50 border border-slate-100 text-center">
-                                        <span className="text-xs font-bold text-slate-400">No Active Critical Threats Detected</span>
-                                    </div>
-                                )}
-                            </div>
-                        </div >
-
-                        {/* Most Wanted / High Value Targets */}
-                        < div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6" >
-                            <div className="flex items-center gap-2 mb-6 border-b border-slate-100 pb-4">
-                                <Eye size={18} className="text-blue-600" />
-                                <h3 className="text-xs font-black text-slate-900 uppercase tracking-widest">Most Wanted / HVT</h3>
-                            </div>
-
-                            <div className="space-y-4">
-                                {feedItems.filter(i => i.title.includes('Wanted') || i.title.includes('Fugitive')).length > 0 ? (
-                                    feedItems.filter(i => i.title.includes('Wanted') || i.title.includes('Fugitive')).slice(0, 3).map((item, i) => (
-                                        <div key={i} className="flex items-start gap-3 pb-3 border-b border-slate-100 last:border-0 group">
-                                            <div className="w-10 h-10 bg-slate-100 rounded flex items-center justify-center shrink-0 border border-slate-200 group-hover:border-blue-400 transition-colors">
-                                                <Globe size={16} className="text-slate-400 group-hover:text-blue-600" />
-                                            </div>
-                                            <div className="flex-1">
-                                                <div className="text-xs font-bold text-slate-900 leading-tight mb-1 group-hover:text-blue-700 transition-colors break-words">{item.title}</div>
-                                                <div className="flex justify-between items-center">
-                                                    <div className="text-[10px] font-mono text-red-600 uppercase">Status: Active Pursuit</div>
-                                                    <a href={item.link} target="_blank" rel="noopener noreferrer" className="text-[10px] text-slate-400 hover:text-blue-600">
-                                                        <ExternalLink size={10} />
+                                    ).length > 0 ? (
+                                        feedItems.filter(i =>
+                                            (i.novai_analysis?.includes('CRITICAL') || i.title.includes('Urgent') || i.title.includes('Warning'))
+                                        ).slice(0, 3).map((alert, i) => (
+                                            <div key={i} className="p-4 rounded-lg bg-red-50 border border-red-100 relative overflow-hidden group">
+                                                <div className="absolute top-0 right-0 p-2 opacity-50 group-hover:opacity-100 transition-opacity">
+                                                    <AlertTriangle size={14} className="text-red-500" />
+                                                </div>
+                                                <div className="flex items-center gap-2 mb-2">
+                                                    <span className="w-1.5 h-1.5 bg-red-600 rounded-full animate-ping" />
+                                                    <span className="text-[10px] font-black text-red-700 uppercase tracking-wider">Critical Threat</span>
+                                                </div>
+                                                <p className="text-sm font-bold text-slate-800 leading-snug mb-3 break-words">
+                                                    {alert.title}
+                                                </p>
+                                                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center pt-3 border-t border-red-200 gap-2">
+                                                    <span className="text-[10px] font-bold text-slate-500 uppercase">Source: {alert.agency}</span>
+                                                    <a href={alert.link} target="_blank" rel="noopener noreferrer" className="text-[10px] font-mono text-red-600 font-bold hover:text-red-800 flex items-center gap-1 whitespace-nowrap">
+                                                        VIEW INTEL <ArrowUpRight size={10} />
                                                     </a>
                                                 </div>
                                             </div>
+                                        ))
+                                    ) : (
+                                        <div className="p-4 rounded-lg bg-slate-50 border border-slate-100 text-center">
+                                            <span className="text-xs font-bold text-slate-400">No Active Critical Threats Detected</span>
                                         </div>
-                                    ))
-                                ) : (
-                                    <div className="text-center py-8">
-                                        <Loader2 size={24} className="animate-spin mx-auto mb-2 text-slate-400" />
-                                        <div className="text-xs text-slate-400 italic">Scanning Global Databases...</div>
-                                    </div>
-                                )}
-                            </div>
-                        </div >
-                    </div >
+                                    )}
+                                </div>
+                            </div >
 
-                </div >
-            </div >
-        </div >
+                            {/* Most Wanted / High Value Targets */}
+                            < div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6" >
+                                <div className="flex items-center gap-2 mb-6 border-b border-slate-100 pb-4">
+                                    <Eye size={18} className="text-blue-600" />
+                                    <h3 className="text-xs font-black text-slate-900 uppercase tracking-widest">Most Wanted / HVT</h3>
+                                </div>
+
+                                <div className="space-y-4">
+                                    {feedItems.filter(i => i.title.includes('Wanted') || i.title.includes('Fugitive')).length > 0 ? (
+                                        feedItems.filter(i => i.title.includes('Wanted') || i.title.includes('Fugitive')).slice(0, 3).map((item, i) => (
+                                            <div key={i} className="flex items-start gap-3 pb-3 border-b border-slate-100 last:border-0 group">
+                                                <div className="w-10 h-10 bg-slate-100 rounded flex items-center justify-center shrink-0 border border-slate-200 group-hover:border-blue-400 transition-colors">
+                                                    <Globe size={16} className="text-slate-400 group-hover:text-blue-600" />
+                                                </div>
+                                                <div className="flex-1">
+                                                    <div className="text-xs font-bold text-slate-900 leading-tight mb-1 group-hover:text-blue-700 transition-colors break-words">{item.title}</div>
+                                                    <div className="flex justify-between items-center">
+                                                        <div className="text-[10px] font-mono text-red-600 uppercase">Status: Active Pursuit</div>
+                                                        <a href={item.link} target="_blank" rel="noopener noreferrer" className="text-[10px] text-slate-400 hover:text-blue-600">
+                                                            <ExternalLink size={10} />
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <div className="text-center py-8">
+                                            <Loader2 size={24} className="animate-spin mx-auto mb-2 text-slate-400" />
+                                            <div className="text-xs text-slate-400 italic">Scanning Global Databases...</div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div >
+                        </div >
+
+
+                        {/* RIGHT COLUMN: PRIORITY ALERTS (Real-Time) */}
+                        <div className="lg:col-span-4 space-y-6">
+                            {/* Critical Threats Module */}
+                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+                                <div className="flex items-center gap-2 mb-6 border-b border-slate-100 pb-4">
+                                    <Siren size={18} className="text-red-600 animate-pulse" />
+                                    <h3 className="text-xs font-black text-slate-900 uppercase tracking-widest">Priority Alerts</h3>
+                                </div>
+
+                                <div className="space-y-4">
+                                    {feedItems.filter(i =>
+                                        (i.novai_analysis?.includes('CRITICAL') || i.title.includes('Urgent') || i.title.includes('Warning'))
+                                    ).length > 0 ? (
+                                        feedItems.filter(i =>
+                                            (i.novai_analysis?.includes('CRITICAL') || i.title.includes('Urgent') || i.title.includes('Warning'))
+                                        ).slice(0, 3).map((alert, i) => (
+                                            <div key={i} className="p-4 rounded-lg bg-red-50 border border-red-100 relative overflow-hidden group">
+                                                <div className="absolute top-0 right-0 p-2 opacity-50 group-hover:opacity-100 transition-opacity">
+                                                    <AlertTriangle size={14} className="text-red-500" />
+                                                </div>
+                                                <div className="flex items-center gap-2 mb-2">
+                                                    <span className="w-1.5 h-1.5 bg-red-600 rounded-full animate-ping" />
+                                                    <span className="text-[10px] font-black text-red-700 uppercase tracking-wider">Critical Threat</span>
+                                                </div>
+                                                <p className="text-sm font-bold text-slate-800 leading-snug mb-3 break-words">
+                                                    {alert.title}
+                                                </p>
+                                                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center pt-3 border-t border-red-200 gap-2">
+                                                    <span className="text-[10px] font-bold text-slate-500 uppercase">Source: {alert.agency}</span>
+                                                    <a href={alert.link} target="_blank" rel="noopener noreferrer" className="text-[10px] font-mono text-red-600 font-bold hover:text-red-800 flex items-center gap-1 whitespace-nowrap">
+                                                        VIEW INTEL <ArrowUpRight size={10} />
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <div className="p-4 rounded-lg bg-slate-50 border border-slate-100 text-center">
+                                            <span className="text-xs font-bold text-slate-400">No Active Critical Threats Detected</span>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Most Wanted / High Value Targets */}
+                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+                                <div className="flex items-center gap-2 mb-6 border-b border-slate-100 pb-4">
+                                    <Eye size={18} className="text-blue-600" />
+                                    <h3 className="text-xs font-black text-slate-900 uppercase tracking-widest">Most Wanted / HVT</h3>
+                                </div>
+
+                                <div className="space-y-4">
+                                    {feedItems.filter(i => i.title.includes('Wanted') || i.title.includes('Fugitive')).length > 0 ? (
+                                        feedItems.filter(i => i.title.includes('Wanted') || i.title.includes('Fugitive')).slice(0, 3).map((item, i) => (
+                                            <div key={i} className="flex items-start gap-3 pb-3 border-b border-slate-100 last:border-0 group">
+                                                <div className="w-10 h-10 bg-slate-100 rounded flex items-center justify-center shrink-0 border border-slate-200 group-hover:border-blue-400 transition-colors">
+                                                    <Globe size={16} className="text-slate-400 group-hover:text-blue-600" />
+                                                </div>
+                                                <div className="flex-1">
+                                                    <div className="text-xs font-bold text-slate-900 leading-tight mb-1 group-hover:text-blue-700 transition-colors break-words">{item.title}</div>
+                                                    <div className="flex justify-between items-center">
+                                                        <div className="text-[10px] font-mono text-red-600 uppercase">Status: Active Pursuit</div>
+                                                        <a href={item.link} target="_blank" rel="noopener noreferrer" className="text-[10px] text-slate-400 hover:text-blue-600">
+                                                            <ExternalLink size={10} />
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <div className="text-center py-8">
+                                            <Loader2 size={24} className="animate-spin mx-auto mb-2 text-slate-400" />
+                                            <div className="text-xs text-slate-400 italic">Scanning Global Databases...</div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 }

@@ -5,7 +5,7 @@ import { Sidebar } from '@/components/navigation/Sidebar';
 import { MobileNav } from '@/components/navigation/MobileNav';
 import { RightRail } from '@/components/navigation/RightRail';
 import { BreadcrumbHeader } from '@/components/navigation/BreadcrumbHeader';
-import { Footer } from '@/components/ui/Footer';
+import { Footer } from '@/components/layout/Footer';
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
     return (
