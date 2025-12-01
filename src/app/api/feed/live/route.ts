@@ -212,6 +212,16 @@ export async function GET(request: Request) {
             console.log(`Filtering for category '${targetCategory}': found ${filteredArticles.length} articles`);
         }
 
+        // Filter by search query if provided
+        const searchQuery = searchParams.get('search')?.toLowerCase();
+        if (searchQuery) {
+            filteredArticles = filteredArticles.filter(a =>
+                a.title.toLowerCase().includes(searchQuery) ||
+                a.summary.toLowerCase().includes(searchQuery)
+            );
+            console.log(`Filtering for search '${searchQuery}': found ${filteredArticles.length} articles`);
+        }
+
         const articles = filteredArticles.slice(0, limit);
 
         return NextResponse.json({

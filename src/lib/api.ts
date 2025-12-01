@@ -3,12 +3,14 @@ import { Article, MarketTicker, RiskEvent, Tool, Trend, Signal, DailyBriefing } 
 /**
  * Fetch articles from live multi-source RSS aggregator
  */
-export const fetchArticles = async (limit = 20, category = 'All'): Promise<Article[]> => {
+export const fetchArticles = async (limit = 20, category = 'All', search?: string): Promise<Article[]> => {
     try {
-        const response = await fetch(
-            `/api/feed/live?category=${encodeURIComponent(category)}&limit=${limit}`,
-            { cache: 'no-store' }
-        );
+        let url = `/api/feed/live?category=${encodeURIComponent(category)}&limit=${limit}`;
+        if (search) {
+            url += `&search=${encodeURIComponent(search)}`;
+        }
+
+        const response = await fetch(url, { cache: 'no-store' });
 
         if (!response.ok) throw new Error('Failed to fetch feed');
 

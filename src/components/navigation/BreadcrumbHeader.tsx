@@ -1,12 +1,20 @@
 import { useState } from 'react';
 import { Search, UserPlus } from 'lucide-react';
-import { usePathname } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { SignUpModal } from '@/components/auth/SignUpModal';
 
 export function BreadcrumbHeader() {
     const pathname = usePathname();
+    const router = useRouter();
     const currentView = pathname.split('/').pop()?.replace('-', ' ') || 'Global Feed';
     const [isSignUpOpen, setIsSignUpOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const handleSearch = () => {
+        if (searchQuery.trim()) {
+            router.push(`/global-feed?search=${encodeURIComponent(searchQuery)}`);
+        }
+    };
 
     return (
         <>
@@ -32,6 +40,9 @@ export function BreadcrumbHeader() {
                         <input
                             type="text"
                             placeholder="Search Intelligence..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                             className="bg-white border border-gray-200 rounded-lg pl-9 pr-4 py-2 text-xs w-48 lg:w-64 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all shadow-sm"
                         />
                     </div>
