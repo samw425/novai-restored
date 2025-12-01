@@ -22,7 +22,7 @@ export function PageHeader({ title, description, insight, icon }: PageHeaderProp
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                         </span>
-                        <span className="text-[10px] font-bold text-emerald-700 tracking-wider">LIVE | LATENCY: &lt; 5 MIN</span>
+                        <span className="text-[10px] font-bold text-emerald-700 tracking-wider">REAL-TIME INTEL</span>
                     </div>
                 </div>
                 <p className="text-[#64748B] text-lg max-w-3xl">{description}</p>
