@@ -6,6 +6,7 @@ import { ResourceLoader } from '@/components/ui/ResourceLoader';
 import { SentimentGauge } from '@/components/ui/SentimentGauge';
 import { KeywordCloud } from '@/components/ui/KeywordCloud';
 import { DeepDiveModal } from '@/components/ui/DeepDiveModal';
+import { WaitlistModal } from '@/components/ui/WaitlistModal';
 
 interface Theme {
     title: string;
@@ -21,6 +22,8 @@ export default function IntelligenceBriefPage() {
     const [selectedTerm, setSelectedTerm] = useState<string | null>(null);
     const [generatedAt, setGeneratedAt] = useState<string>('');
     const today = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+    const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
 
     useEffect(() => {
         fetchBrief();
@@ -74,7 +77,6 @@ export default function IntelligenceBriefPage() {
                                 AI-synthesized analysis from <span className="font-semibold text-indigo-600">70+ global sources</span>.
                             </p>
                         </div>
-
                     </div>
 
                     {/* Visual Synthesis Section */}
@@ -206,14 +208,20 @@ export default function IntelligenceBriefPage() {
                         ))}
 
                         {/* Upgrade CTA */}
-                        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-8 text-white text-center">
+                        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-8 text-white text-center relative overflow-hidden">
+                            <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold border border-white/30">
+                                COMING SOON
+                            </div>
                             <Download className="h-10 w-10 mx-auto mb-3 opacity-90" />
-                            <h3 className="text-xl font-bold mb-2">Want the full analysis?</h3>
+                            <h3 className="text-xl font-bold mb-2">Novai Pro Intelligence</h3>
                             <p className="text-indigo-100 mb-4 max-w-md mx-auto">
-                                Upgrade to Pro for PDF exports, deeper synthesis, and personalized intelligence tracking.
+                                Deeper synthesis, PDF exports, and personalized intelligence tracking are currently in development.
                             </p>
-                            <button className="bg-white text-indigo-700 px-6 py-3 rounded-lg font-bold hover:bg-indigo-50 transition-colors">
-                                Upgrade to Pro
+                            <button
+                                onClick={() => setIsWaitlistOpen(true)}
+                                className="bg-white text-indigo-700 px-6 py-3 rounded-lg font-bold hover:bg-indigo-50 transition-colors"
+                            >
+                                Join Waitlist
                             </button>
                         </div>
                     </div>
@@ -224,6 +232,12 @@ export default function IntelligenceBriefPage() {
                 isOpen={!!selectedTerm}
                 onClose={() => setSelectedTerm(null)}
                 term={selectedTerm || ''}
+            />
+
+            <WaitlistModal
+                isOpen={isWaitlistOpen}
+                onClose={() => setIsWaitlistOpen(false)}
+                source="Intelligence Brief Page"
             />
         </div>
     );

@@ -54,6 +54,8 @@ export interface Tool {
     category: string;
     pricing: 'Free' | 'Paid' | 'Freemium';
     isToolOfTheDay?: boolean;
+    url: string;
+    source?: string;
 }
 
 export interface RiskEvent {

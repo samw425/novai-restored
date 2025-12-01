@@ -4,17 +4,14 @@ import { useState, useEffect } from 'react';
 import { TrendingUp, ArrowUpRight, Minus, ArrowDownRight, Flame, Clock, Hash, ArrowUp } from 'lucide-react';
 import { Article } from '@/types';
 import { ResourceLoader } from '@/components/ui/ResourceLoader';
-import { MonthlyIntelBrief } from '@/components/dashboard/MonthlyIntelBrief';
+import { FeedContainer } from '@/components/feed/FeedContainer';
 
 export default function TrendWatchPage() {
-    const [articles, setArticles] = useState<Article[]>([]);
     const [loading, setLoading] = useState(true);
     const [trends, setTrends] = useState<{
         rising: { topic: string, velocity: number, count: number }[],
-        stable: { topic: string, count: number }[],
-        recent: Article[]
-    }>({ rising: [], stable: [], recent: [] });
-    const [activeTab, setActiveTab] = useState<'live' | 'brief'>('live');
+        stable: { topic: string, count: number }[]
+    }>({ rising: [], stable: [] });
 
     useEffect(() => {
         const fetchData = async () => {
@@ -22,8 +19,6 @@ export default function TrendWatchPage() {
                 const response = await fetch('/api/feed/live?limit=100');
                 const data = await response.json();
                 const fetchedArticles = data.articles || [];
-
-                setArticles(fetchedArticles);
                 analyzeTrendVelocity(fetchedArticles);
             } catch (error) {
                 console.error('Failed to fetch trend data:', error);
@@ -76,26 +71,41 @@ export default function TrendWatchPage() {
             const velocity = recentCount - olderCount;
 
             // RELAXED: Show if 2+ mentions OR positive velocity
-            if ((velocity > 0 && recentCount >= 2) || recentCount >= 3) {
+            if ((velocity > 0 && recentCount >= 1) || recentCount >= 2) {
                 velocities.push({ topic, velocity, count: recentCount });
             }
         });
 
-        const risingTopics = velocities
+        let risingTopics = velocities
             .sort((a, b) => b.velocity - a.velocity)
             .slice(0, 8);
 
+        // FALLBACK: If no rising topics, use top recent keywords even if low count
+        if (risingTopics.length === 0) {
+            risingTopics = Object.entries(recentCounts)
+                .sort(([, a], [, b]) => b - a)
+                .slice(0, 4)
+                .map(([topic, count]) => ({ topic, velocity: 1, count }));
+        }
+
         // Stable topics (consistently mentioned) - RELAXED from 4 to 3
-        const stableTopics = Object.entries(recentCounts)
-            .filter(([topic, count]) => count >= 3 && !risingTopics.find(r => r.topic === topic))
+        let stableTopics = Object.entries(recentCounts)
+            .filter(([topic, count]) => count >= 2 && !risingTopics.find(r => r.topic === topic))
             .sort(([, a], [, b]) => b - a)
             .slice(0, 6)
             .map(([topic, count]) => ({ topic, count }));
 
+        // FALLBACK for stable topics
+        if (stableTopics.length === 0) {
+            stableTopics = Object.entries(olderCounts)
+                .sort(([, a], [, b]) => b - a)
+                .slice(0, 4)
+                .map(([topic, count]) => ({ topic, count }));
+        }
+
         setTrends({
             rising: risingTopics,
-            stable: stableTopics,
-            recent: data.slice(0, 10) // Show most recent 10 regardless of time
+            stable: stableTopics
         });
     };
 
@@ -109,27 +119,10 @@ export default function TrendWatchPage() {
                 </div>
                 <h1 className="text-3xl font-bold text-gray-900">Trend Watch</h1>
                 <p className="text-gray-500 mt-2 text-lg">Real-time topic momentum and trending patterns.</p>
-
-                <div className="flex gap-4 mt-6">
-                    <button
-                        onClick={() => setActiveTab('live')}
-                        className={`px-4 py-2 text-sm font-bold rounded-lg transition-colors ${activeTab === 'live' ? 'bg-orange-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
-                    >
-                        Live Trends
-                    </button>
-                    <button
-                        onClick={() => setActiveTab('brief')}
-                        className={`px-4 py-2 text-sm font-bold rounded-lg transition-colors ${activeTab === 'brief' ? 'bg-orange-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
-                    >
-                        30-Day Brief
-                    </button>
-                </div>
             </div>
 
             {loading ? (
                 <ResourceLoader message="Analyzing global trend velocity..." />
-            ) : activeTab === 'brief' ? (
-                <MonthlyIntelBrief articles={articles} fullView={true} />
             ) : (
                 <div className="space-y-8">
 
@@ -179,36 +172,14 @@ export default function TrendWatchPage() {
                         )}
                     </div>
 
-                    {/* Recent Articles */}
-                    <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-                        <h2 className="text-lg font-bold text-gray-900 mb-4">Latest Updates</h2>
-                        <div className="divide-y divide-gray-100">
-                            {trends.recent.map((article, i) => (
-                                <a
-                                    key={i}
-                                    href={article.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="block py-4 hover:bg-gray-50 transition-colors group"
-                                >
-                                    <div className="flex gap-4">
-                                        <div className="flex-shrink-0 w-16 text-center">
-                                            <span className="block text-xs font-bold text-gray-400 group-hover:text-orange-600">
-                                                {new Date(article.publishedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                            </span>
-                                        </div>
-                                        <div className="flex-1">
-                                            <h3 className="text-sm font-bold text-gray-900 group-hover:text-orange-600 transition-colors">
-                                                {article.title}
-                                            </h3>
-                                            <div className="flex gap-2 mt-1">
-                                                <span className="px-1.5 py-0.5 bg-gray-100 text-gray-600 text-[10px] font-bold rounded">{article.source}</span>
-                                                <span className="px-1.5 py-0.5 bg-blue-100 text-blue-700 text-[10px] font-bold rounded">{article.category}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            ))}
+                    {/* Live Trend Feed */}
+                    <div className="pt-8">
+                        <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                            <TrendingUp className="h-5 w-5 text-orange-600" />
+                            Live Trend Feed
+                        </h2>
+                        <div className="-mx-4 sm:-mx-6 lg:-mx-8">
+                            <FeedContainer forcedCategory="all" showTicker={false} />
                         </div>
                     </div>
                 </div>

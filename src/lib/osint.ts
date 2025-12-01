@@ -359,12 +359,13 @@ export async function fetchConflictIncidents(): Promise<WarRoomIncident[]> {
 }
 
 export async function getWarRoomData(): Promise<WarRoomIncident[]> {
-    const [cyber, conflicts] = await Promise.all([
+    const [cyber, conflicts, earthquakes] = await Promise.all([
         fetchCISAIncidents(),
-        fetchConflictIncidents()
+        fetchConflictIncidents(),
+        fetchUSGSIncidents()
     ]);
 
-    return [...cyber, ...conflicts].sort((a, b) =>
+    return [...cyber, ...conflicts, ...earthquakes].sort((a, b) =>
         new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
     );
 }

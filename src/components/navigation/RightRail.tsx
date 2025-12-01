@@ -1,14 +1,16 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { Activity, Zap, Cpu, ArrowUpRight, Info, ShieldCheck, TrendingUp, ArrowRight } from 'lucide-react';
+import { WaitlistModal } from '@/components/ui/WaitlistModal';
 
 export function RightRail() {
     return (
         <div className="sticky top-24 space-y-6 w-full">
             <WhatIsNovaiWidget />
             <HowItWorksWidget />
-            <BreakthroughSpotlightWidget />
+            <ProVersionAdWidget />
             <ToolOfTheDayWidget />
             <TrendingTopicsWidget />
         </div>
@@ -127,41 +129,61 @@ function SystemStatusWidget() {
     );
 }
 
-function BreakthroughSpotlightWidget() {
+function ProVersionAdWidget() {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     return (
-        <div className="bg-gradient-to-br from-indigo-900 to-slate-900 rounded-xl p-5 text-white shadow-lg relative overflow-hidden group">
-            <div className="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
-                <Zap className="h-24 w-24 -rotate-12" />
-            </div>
-
-            <div className="relative z-10">
-                <div className="flex items-center gap-2 mb-3">
-                    <span className="h-1.5 w-1.5 bg-yellow-400 rounded-full animate-pulse" />
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-200">
-                        Breakthrough Spotlight
-                    </span>
+        <>
+            <div className="bg-gradient-to-br from-indigo-900 to-slate-900 rounded-xl p-5 text-white shadow-lg relative overflow-hidden group">
+                <div className="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <Zap className="h-24 w-24 -rotate-12" />
                 </div>
 
-                <h4 className="text-lg font-bold mb-2 leading-tight">AI Breakthroughs</h4>
-                <p className="text-xs text-indigo-200 mb-4 leading-relaxed line-clamp-3">
-                    New models and research are pushing the boundaries of what's possible with AI every day.
-                </p>
+                <div className="relative z-10">
+                    <div className="flex items-center gap-2 mb-3">
+                        <span className="h-1.5 w-1.5 bg-yellow-400 rounded-full animate-pulse" />
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-200">
+                            Coming Soon
+                        </span>
+                    </div>
 
-                <div className="mb-4">
-                    <span className="text-[10px] font-semibold text-yellow-300 uppercase tracking-wide">
-                        Why it matters
-                    </span>
-                    <p className="text-[11px] text-gray-300 mt-1">
-                        Stay ahead of the curve with the latest AI developments.
+                    <h4 className="text-lg font-bold mb-2 leading-tight">Novai Pro Intelligence</h4>
+                    <p className="text-xs text-indigo-200 mb-4 leading-relaxed">
+                        Unlock deeper synthesis, PDF exports, and personalized intelligence tracking.
                     </p>
-                </div>
 
-                <Link href="/research" className="w-full flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs font-bold py-2.5 rounded-lg transition-all">
-                    Open Spotlight Story
-                    <ArrowUpRight className="h-3 w-3" />
-                </Link>
+                    <div className="mb-4">
+                        <span className="text-[10px] font-semibold text-yellow-300 uppercase tracking-wide">
+                            Why Upgrade?
+                        </span>
+                        <ul className="space-y-1 mt-1">
+                            <li className="flex items-center gap-2 text-[11px] text-gray-300">
+                                <span className="text-indigo-400">•</span> Unlimited History
+                            </li>
+                            <li className="flex items-center gap-2 text-[11px] text-gray-300">
+                                <span className="text-indigo-400">•</span> Export to PDF/CSV
+                            </li>
+                            <li className="flex items-center gap-2 text-[11px] text-gray-300">
+                                <span className="text-indigo-400">•</span> Custom Alerts
+                            </li>
+                        </ul>
+                    </div>
+
+                    <button
+                        onClick={() => setIsModalOpen(true)}
+                        className="w-full flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs font-bold py-2.5 rounded-lg transition-all"
+                    >
+                        Join Waitlist
+                    </button>
+                </div>
             </div>
-        </div>
+
+            <WaitlistModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                source="Right Rail Widget"
+            />
+        </>
     );
 }
 

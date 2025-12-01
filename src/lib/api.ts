@@ -47,12 +47,12 @@ export const fetchMarketData = async (): Promise<MarketTicker[]> => {
 
 export const fetchTools = async (): Promise<Tool[]> => {
     return [
-        { id: 't1', name: 'Cursor', tagline: 'The AI Code Editor', description: 'Built on VS Code, Cursor understands your entire codebase.', category: 'DevTool', pricing: 'Freemium', isToolOfTheDay: true },
-        { id: 't2', name: 'Perplexity', tagline: 'Where knowledge begins', description: 'AI-powered search engine that provides direct answers with citations.', category: 'Search', pricing: 'Freemium' },
-        { id: 't3', name: 'Midjourney', tagline: 'Text to Image', description: 'Generative AI program that creates images from natural language descriptions.', category: 'Creative', pricing: 'Paid' },
-        { id: 't4', name: 'LangChain', tagline: 'Building applications with LLMs', description: 'Framework for developing applications powered by language models.', category: 'DevTool', pricing: 'Free' },
-        { id: 't5', name: 'Suno', tagline: 'Make a song', description: 'Generative audio platform allowing users to create music with text.', category: 'Creative', pricing: 'Freemium' },
-        { id: 't6', name: 'Groq', tagline: 'Fast AI Inference', description: 'LPU Inference Engine that delivers instant speed for LLMs.', category: 'Hardware', pricing: 'Paid' },
+        { id: 't1', name: 'Cursor', tagline: 'The AI Code Editor', description: 'Built on VS Code, Cursor understands your entire codebase.', category: 'DevTool', pricing: 'Freemium', isToolOfTheDay: true, url: 'https://cursor.sh', source: 'Cursor' },
+        { id: 't2', name: 'Perplexity', tagline: 'Where knowledge begins', description: 'AI-powered search engine that provides direct answers with citations.', category: 'Search', pricing: 'Freemium', url: 'https://perplexity.ai', source: 'Perplexity' },
+        { id: 't3', name: 'Midjourney', tagline: 'Text to Image', description: 'Generative AI program that creates images from natural language descriptions.', category: 'Creative', pricing: 'Paid', url: 'https://midjourney.com', source: 'Midjourney' },
+        { id: 't4', name: 'LangChain', tagline: 'Building applications with LLMs', description: 'Framework for developing applications powered by language models.', category: 'DevTool', pricing: 'Free', url: 'https://langchain.com', source: 'LangChain' },
+        { id: 't5', name: 'Suno', tagline: 'Make a song', description: 'Generative audio platform allowing users to create music with text.', category: 'Creative', pricing: 'Freemium', url: 'https://suno.ai', source: 'Suno' },
+        { id: 't6', name: 'Groq', tagline: 'Fast AI Inference', description: 'LPU Inference Engine that delivers instant speed for LLMs.', category: 'Hardware', pricing: 'Paid', url: 'https://groq.com', source: 'Groq' },
     ];
 };
 

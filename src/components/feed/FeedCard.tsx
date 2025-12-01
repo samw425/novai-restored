@@ -20,9 +20,17 @@ export function FeedCard({ article }: FeedCardProps) {
 
     const isInsider = ['CIA', 'Mossad', 'FSB', 'IDF', 'State Dept', 'TASS', 'US-CERT', 'CISA', 'MI6', 'FBI', 'DHS', 'Shin Bet', 'Times of Israel', 'JPost', 'Jerusalem Post'].some(s => article.source.includes(s));
 
+    const isLive = new Date(article.publishedAt).getTime() > Date.now() - 1000 * 60 * 60 * 4; // 4 hours
+
     return (
-        <>
-            <article className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200 group transform hover:-translate-y-[2px]">
+        <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all group relative overflow-hidden">
+            {isLive && (
+                <div className="absolute top-0 right-0 bg-red-600 text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg z-10 animate-pulse flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 bg-white rounded-full animate-ping" />
+                    LIVE
+                </div>
+            )}
+            <article className="group transform hover:-translate-y-[2px]">
                 <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-2 flex-wrap">
                         <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-2 py-1 rounded">
@@ -86,6 +94,6 @@ export function FeedCard({ article }: FeedCardProps) {
                     </span>
                 </div>
             </article>
-        </>
+        </div>
     );
 }

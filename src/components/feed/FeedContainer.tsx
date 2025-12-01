@@ -13,9 +13,15 @@ import { SystemStatus } from '@/components/dashboard/SystemStatus';
 import { MonthlyIntelBrief } from '@/components/dashboard/MonthlyIntelBrief';
 import { SignUpModal } from '@/components/auth/SignUpModal';
 
-export function FeedContainer() {
+interface FeedContainerProps {
+    initialCategory?: string;
+    forcedCategory?: string; // If set, hides category selector
+    showTicker?: boolean;
+}
+
+export function FeedContainer({ initialCategory = 'all', forcedCategory, showTicker = true }: FeedContainerProps) {
     const [articles, setArticles] = useState<Article[]>([]);
-    const [category, setCategory] = useState('all');
+    const [category, setCategory] = useState(forcedCategory || initialCategory);
     const [cursor, setCursor] = useState<string | undefined>(undefined);
     const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(false);
@@ -24,8 +30,6 @@ export function FeedContainer() {
     const { ref, inView } = useInView();
 
     const loadArticles = useCallback(async (reset = false) => {
-        // Prevent duplicate loads, but allow reset even if loading was true (to force refresh)
-        // Actually, better to just block if loading to avoid race conditions
         if (loading) return;
 
         setLoading(true);
@@ -33,44 +37,39 @@ export function FeedContainer() {
         try {
             const newArticles = await fetchArticles(10);
             setArticles(prev => reset ? newArticles : [...prev, ...newArticles]);
-            // No cursor in Golden Master, just keep appending
         } catch (error) {
             console.error("Failed to load articles", error);
         } finally {
             setLoading(false);
         }
-    }, [cursor, category, loading]); // Removed hasMore from deps to avoid stale closure issues, handled in logic
+    }, [cursor, category, loading]);
 
     // Initial load & Category change
     useEffect(() => {
         setCursor(undefined);
         setHasMore(true);
-        setArticles([]); // Clear list immediately on category change
+        setArticles([]);
 
-        // We need to call loadArticles with reset=true. 
-        // Since loadArticles depends on state that might not be updated yet if we just called setCursor,
-        // we should define a separate init function or just rely on the effect.
-        // But loadArticles is async.
-
-        // Simplified approach:
         const init = async () => {
             setLoading(true);
             try {
-                // Call the live API with category filter
-                const apiCategory = category === 'all' ? 'All' : category;
+                // Use forcedCategory if present, otherwise current state category
+                const targetCategory = forcedCategory || category;
+                const apiCategory = targetCategory === 'all' ? 'All' : targetCategory;
+
                 const response = await fetch(`/api/feed/live?category=${apiCategory}&limit=30`, {
                     cache: 'no-store'
                 });
                 const data = await response.json();
                 setArticles(data.articles || []);
-                setHasMore(true); // Mock infinite scroll always true for now
+                setHasMore(true);
             } finally {
                 setLoading(false);
             }
         };
         init();
 
-    }, [category]);
+    }, [category, forcedCategory]);
 
     // Infinite scroll trigger
     useEffect(() => {
@@ -86,14 +85,13 @@ export function FeedContainer() {
                 const count = await checkNewArticles(articles[0].id);
                 if (count > 0) setNewCount(prev => prev + count);
             }
-        }, 15000); // 15s check
+        }, 15000);
         return () => clearInterval(interval);
     }, [articles]);
 
     const handleRefresh = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
         setNewCount(0);
-        // Trigger a reset load
         const refresh = async () => {
             setLoading(true);
             try {
@@ -116,12 +114,16 @@ export function FeedContainer() {
 
             {/* System Header Components */}
             <div className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-200">
-                <div className="flex items-center justify-between pr-4">
-                    <div className="flex-1">
-                        <LiveTicker />
-                    </div>
-                </div>
-                <SystemStatus />
+                {showTicker && (
+                    <>
+                        <div className="flex items-center justify-between pr-4">
+                            <div className="flex-1">
+                                <LiveTicker />
+                            </div>
+                        </div>
+                        <SystemStatus />
+                    </>
+                )}
 
                 {/* Tab Navigation */}
                 <div className="flex items-center justify-center border-b border-gray-200 bg-gray-50/50">
@@ -146,7 +148,7 @@ export function FeedContainer() {
                     </button>
                 </div>
 
-                {activeTab === 'live' && (
+                {activeTab === 'live' && !forcedCategory && (
                     <FeedHeader activeCategory={category} onCategoryChange={setCategory} />
                 )}
             </div>

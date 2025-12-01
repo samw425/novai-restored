@@ -13,24 +13,21 @@ export const Logo: React.FC<LogoProps> = ({ className = '', showText = true, the
     return (
         <div className={`flex items-center gap-3 ${className}`}>
             <svg
-                width="36"
-                height="36"
-                viewBox="0 0 32 32"
+                width="40"
+                height="40"
+                viewBox="0 0 40 40"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 className="flex-shrink-0"
             >
                 <defs>
-                    {/* Gradient for hexagon */}
-                    <linearGradient id="hexGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#3B82F6" />
-                        <stop offset="50%" stopColor="#2563EB" />
-                        <stop offset="100%" stopColor="#1D4ED8" />
+                    <linearGradient id="novaiGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#2563EB" /> {/* Electric Blue (Blue-600) */}
+                        <stop offset="50%" stopColor="#3B82F6" /> {/* Bright Blue (Blue-500) */}
+                        <stop offset="100%" stopColor="#22D3EE" /> {/* Cyan-400 (Pop) */}
                     </linearGradient>
-
-                    {/* Glow filter */}
-                    <filter id="glow">
-                        <feGaussianBlur stdDeviation="1.5" result="coloredBlur" />
+                    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur stdDeviation="2" result="coloredBlur" />
                         <feMerge>
                             <feMergeNode in="coloredBlur" />
                             <feMergeNode in="SourceGraphic" />
@@ -38,42 +35,44 @@ export const Logo: React.FC<LogoProps> = ({ className = '', showText = true, the
                     </filter>
                 </defs>
 
-                {/* Outer glow hexagon */}
-                <path
-                    d="M16 2L28.1244 9V23L16 30L3.87564 23V9L16 2Z"
-                    stroke="url(#hexGradient)"
-                    strokeWidth="2.5"
-                    fill="none"
-                    opacity="0.3"
-                    filter="url(#glow)"
-                />
+                {/* Abstract Neural Prism Shape */}
+                <g filter="url(#glow)">
+                    {/* Main Triangle Path */}
+                    <path
+                        d="M20 4L34 32H6L20 4Z"
+                        stroke="url(#novaiGradient)"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        fill="none"
+                        opacity="0.9"
+                    />
 
-                {/* Main hexagon with gradient */}
-                <path
-                    d="M16 2L28.1244 9V23L16 30L3.87564 23V9L16 2Z"
-                    stroke="url(#hexGradient)"
-                    strokeWidth="2"
-                    fill="none"
-                />
+                    {/* Internal Connection Network */}
+                    <path
+                        d="M20 14V24M14 28L20 24M26 28L20 24"
+                        stroke="url(#novaiGradient)"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        opacity="0.8"
+                    />
 
-                {/* Inner Network Nodes with glow */}
-                <circle cx="16" cy="16" r="3.5" fill="url(#hexGradient)" filter="url(#glow)" />
-                <circle cx="16" cy="8" r="2" fill="#3B82F6" opacity="0.8" />
-                <circle cx="23" cy="20" r="2" fill="#2563EB" opacity="0.8" />
-                <circle cx="9" cy="20" r="2" fill="#1D4ED8" opacity="0.8" />
+                    {/* Nodes */}
+                    <circle cx="20" cy="14" r="2" fill="white" stroke="#2563EB" strokeWidth="1.5" />
+                    <circle cx="14" cy="28" r="2" fill="white" stroke="#3B82F6" strokeWidth="1.5" />
+                    <circle cx="26" cy="28" r="2" fill="white" stroke="#22D3EE" strokeWidth="1.5" />
 
-                {/* Connecting Lines with gradient */}
-                <path d="M16 16L16 8" stroke="url(#hexGradient)" strokeWidth="2" opacity="0.5" strokeLinecap="round" />
-                <path d="M16 16L23 20" stroke="url(#hexGradient)" strokeWidth="2" opacity="0.5" strokeLinecap="round" />
-                <path d="M16 16L9 20" stroke="url(#hexGradient)" strokeWidth="2" opacity="0.5" strokeLinecap="round" />
+                    {/* Central Core */}
+                    <circle cx="20" cy="24" r="3" fill="url(#novaiGradient)" />
+                </g>
             </svg>
 
             {showText && (
-                <div className="flex flex-col">
-                    <span className="font-bold text-xl tracking-tight leading-none" style={{ color: textColor }}>
+                <div className="flex flex-col justify-center">
+                    <span className="font-bold text-xl tracking-tight leading-none font-sans" style={{ color: textColor }}>
                         NOVAI
                     </span>
-                    <span className="text-[9px] font-medium uppercase tracking-widest mt-0.5" style={{ color: subtextColor }}>
+                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] mt-1" style={{ color: subtextColor }}>
                         Intelligence
                     </span>
                 </div>
