@@ -16,20 +16,11 @@ export const metadata: Metadata = {
     type: "website",
     url: "https://novaibeta.vercel.app",
     siteName: "Novai Intelligence",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Novai Intelligence - Real-time AI Intelligence Platform"
-      }
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Novai Intelligence",
     description: "Real-time AI intelligence platform. Track global AI developments, market activity, and emerging signals.",
-    images: ["/og-image.png"],
   },
   icons: {
     icon: '/favicon.ico',
