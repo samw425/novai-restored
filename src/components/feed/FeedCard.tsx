@@ -20,7 +20,8 @@ export function FeedCard({ article }: FeedCardProps) {
 
     const isInsider = ['CIA', 'Mossad', 'FSB', 'IDF', 'State Dept', 'TASS', 'US-CERT', 'CISA', 'MI6', 'FBI', 'DHS', 'Shin Bet', 'Times of Israel', 'JPost', 'Jerusalem Post'].some(s => article.source.includes(s));
 
-    const isLive = new Date(article.publishedAt).getTime() > Date.now() - 1000 * 60 * 60 * 4; // 4 hours
+    // Show LIVE badge for articles from last 2 hours
+    const isLive = new Date(article.publishedAt).getTime() > Date.now() - 1000 * 60 * 120; // 2 hours
 
     return (
         <article className="group relative">
@@ -30,11 +31,11 @@ export function FeedCard({ article }: FeedCardProps) {
             {/* Card */}
             <div className="relative bg-white border border-gray-100 rounded-2xl p-8 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-500 group-hover:-translate-y-1">
 
-                {/* Live Indicator */}
+                {/* LIVE Indicator with stronger pulse */}
                 {isLive && (
-                    <div className="absolute top-6 right-6 flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-red-500 to-rose-500 text-white text-[10px] font-bold tracking-wider uppercase rounded-full shadow-lg">
+                    <div className="absolute top-6 right-6 flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-red-500 to-rose-600 text-white text-[10px] font-bold tracking-wider uppercase rounded-full shadow-lg shadow-red-500/30">
                         <span className="flex h-1.5 w-1.5 relative">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-90"></span>
                             <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-white"></span>
                         </span>
                         Live
