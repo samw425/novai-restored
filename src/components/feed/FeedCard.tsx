@@ -20,39 +20,14 @@ export function FeedCard({ article }: FeedCardProps) {
 
     const isInsider = ['CIA', 'Mossad', 'FSB', 'IDF', 'State Dept', 'TASS', 'US-CERT', 'CISA', 'MI6', 'FBI', 'DHS', 'Shin Bet', 'Times of Israel', 'JPost', 'Jerusalem Post'].some(s => article.source.includes(s));
 
-    // Calculate freshness
-    const pubDate = new Date(article.publishedAt);
-    const now = new Date();
-    const diffInHours = (now.getTime() - pubDate.getTime()) / (1000 * 60 * 60);
-    const isLive = diffInHours < 4;
-    const isFresh = diffInHours < 24;
-
     return (
         <>
-            <article className={`bg-white rounded-xl p-6 shadow-sm border ${isInsider ? 'border-red-500 ring-1 ring-red-500 bg-red-50/10' : isLive ? 'border-orange-500 ring-1 ring-orange-500/50' : 'border-[#E5E7EB]'} hover:shadow-md transition-all duration-200 group transform hover:-translate-y-[2px]`}>
+            <article className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-all duration-200 group transform hover:-translate-y-[2px]">
                 <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-2 flex-wrap">
-                        {isLive && (
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-white bg-red-600 px-2 py-1 rounded flex items-center gap-1 animate-pulse">
-                                <span className="w-1.5 h-1.5 rounded-full bg-white"></span>
-                                LIVE
-                            </span>
-                        )}
-                        {isInsider ? (
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-red-700 bg-red-100 px-2 py-1 rounded flex items-center gap-1">
-                                <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse"></span>
-                                INSIDER INTEL: {article.source}
-                            </span>
-                        ) : (
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-[#2563EB] bg-blue-50 px-2 py-1 rounded">
-                                {article.source}
-                            </span>
-                        )}
-                        {isFresh && !isLive && (
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-green-700 bg-green-100 px-2 py-1 rounded">
-                                FRESH
-                            </span>
-                        )}
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-2 py-1 rounded">
+                            {article.source}
+                        </span>
                         <span className="text-xs text-gray-400 flex items-center gap-1">
                             <Clock size={12} />
                             {/* Handle potential date parsing errors safely */}
@@ -60,10 +35,10 @@ export function FeedCard({ article }: FeedCardProps) {
                         </span>
                     </div>
                     <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button className="p-1.5 hover:bg-gray-100 rounded text-gray-400 hover:text-[#0F172A]"><Bookmark size={16} /></button>
+                        <button className="p-1.5 hover:bg-gray-100 rounded text-gray-400 hover:text-gray-900"><Bookmark size={16} /></button>
                         <button
                             onClick={() => setIsShareOpen(true)}
-                            className="p-1.5 hover:bg-gray-100 rounded text-gray-400 hover:text-[#0F172A]"
+                            className="p-1.5 hover:bg-gray-100 rounded text-gray-400 hover:text-gray-900"
                         >
                             <Share2 size={16} />
                         </button>
@@ -75,15 +50,15 @@ export function FeedCard({ article }: FeedCardProps) {
                     href={article.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block group-hover:text-[#2563EB] transition-colors"
+                    className="block group-hover:text-blue-600 transition-colors"
                 >
-                    <h3 className="text-lg font-bold text-[#0F172A] mb-2 leading-tight flex items-start gap-2">
+                    <h3 className="text-lg font-bold text-gray-900 mb-2 leading-tight flex items-start gap-2">
                         {article.title}
-                        <ExternalLink size={14} className="mt-1 opacity-0 group-hover:opacity-100 transition-opacity text-[#2563EB]" />
+                        <ExternalLink size={14} className="mt-1 opacity-0 group-hover:opacity-100 transition-opacity text-blue-600" />
                     </h3>
                 </a>
 
-                <p className="text-[#4B5563] text-sm leading-relaxed line-clamp-2 mb-4">
+                <p className="text-gray-600 text-sm leading-relaxed line-clamp-2 mb-4">
                     {article.summary}
                 </p>
 
@@ -92,7 +67,7 @@ export function FeedCard({ article }: FeedCardProps) {
                         <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wide mb-2 block">Deep Dive</span>
                         <div className="space-y-1">
                             {article.relatedLinks.map((link, i) => (
-                                <a key={i} href={link.url} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-xs text-[#2563EB] hover:underline">
+                                <a key={i} href={link.url} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-xs text-blue-600 hover:underline">
                                     <ExternalLink size={10} />
                                     {link.title}
                                 </a>

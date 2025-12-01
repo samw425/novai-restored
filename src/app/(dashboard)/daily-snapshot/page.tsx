@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Clock, Globe, TrendingUp, AlertTriangle, Shield, Zap, Loader2, Activity } from 'lucide-react';
+import { Clock, Globe, TrendingUp, Zap, Activity, Brain, Cpu, FileText } from 'lucide-react';
 import { Article } from '@/types';
+import { ResourceLoader } from '@/components/ui/ResourceLoader';
 
 export default function DailySnapshotPage() {
     const today = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -77,9 +78,7 @@ export default function DailySnapshotPage() {
             </div>
 
             {loading ? (
-                <div className="flex justify-center py-12">
-                    <Loader2 className="animate-spin text-gray-400" size={32} />
-                </div>
+                <ResourceLoader message="Compiling daily intelligence snapshot..." />
             ) : (
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 

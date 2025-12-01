@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Shield, Globe, Activity, Lock, Eye, AlertOctagon, Loader2, Ship, Plane } from 'lucide-react';
 import { Article } from '@/types';
 import { FeedCard } from '@/components/feed/FeedCard';
+import { ResourceLoader } from '@/components/ui/ResourceLoader';
 
 export default function WarRoomPage() {
     const [articles, setArticles] = useState<Article[]>([]);
@@ -248,9 +249,7 @@ export default function WarRoomPage() {
 
                     <div className="p-4 space-y-4 max-h-[600px] overflow-y-auto custom-scrollbar">
                         {loading ? (
-                            <div className="flex items-center justify-center py-12">
-                                <Loader2 className="animate-spin text-gray-400" size={32} />
-                            </div>
+                            <ResourceLoader message="Initializing War Room feeds..." />
                         ) : articles.length > 0 ? (
                             articles.map(article => (
                                 <FeedCard key={article.id} article={article} />

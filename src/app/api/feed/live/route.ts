@@ -120,6 +120,21 @@ export async function GET(request: Request) {
                     return roboticsKeywords.some(k => text.includes(k));
                 }
 
+                // MARKET EXCEPTION: Be more lenient for market/finance category
+                if (article.category === 'market') {
+                    const marketKeywords = ['stock', 'shares', 'ipo', 'funding', 'venture capital', 'acquisition', 'merger', 'revenue', 'earnings', 'nasdaq', 'nyse', 'market cap', 'investor', 'valuation'];
+                    // Must have at least one market keyword AND at least one tech/AI keyword (weak or strong)
+                    const hasMarket = marketKeywords.some(k => text.includes(k));
+                    const hasTech = ['tech', 'technology', 'software', 'hardware', 'chip', 'semiconductor', 'data', 'digital', 'cyber', ...strongSignals, ...weakSignals].some(k => text.includes(k));
+                    if (hasMarket && hasTech) return true;
+                }
+
+                // CODE/DEV EXCEPTION: Be more lenient for code/tools category
+                if (article.category === 'code' || article.category === 'tools') {
+                    const devKeywords = ['github', 'open source', 'repository', 'framework', 'library', 'api', 'sdk', 'python', 'javascript', 'typescript', 'rust', 'react', 'next.js', 'docker', 'kubernetes', 'linux', 'developer'];
+                    if (devKeywords.some(k => text.includes(k))) return true;
+                }
+
                 // STRONG AI/ML/Robotics/Tech keywords - MUST match at least TWO
                 const strongSignals = [
                     'artificial intelligence', 'machine learning', 'deep learning', 'neural network',
@@ -147,7 +162,7 @@ export async function GET(request: Request) {
                 // - Need at least 2 strong signals OR
                 // - 1 strong signal + company name OR
                 // - Specific AI companies even with weak signals
-                // - OR if it's explicitly categorized as 'robotics' (handled above)
+                // - OR if it's explicitly categorized as 'robotics', 'market', or 'code' (handled above)
 
                 const aiCompanies = ['nvidia', 'openai', 'anthropic', 'deepmind', 'microsoft ai', 'google ai', 'meta ai'];
                 const hasAICompany = aiCompanies.some(company => text.includes(company));

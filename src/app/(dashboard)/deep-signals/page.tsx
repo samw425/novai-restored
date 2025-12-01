@@ -1,8 +1,10 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { Radio, TrendingUp, AlertCircle, CheckCircle2, Loader2, Globe, Sparkles } from 'lucide-react';
+import { Radio, TrendingUp, AlertTriangle, Brain, Target, ArrowRight, Activity, Sparkles, CheckCircle2, AlertCircle, Globe } from 'lucide-react';
 import { Article } from '@/types';
+import { ResourceLoader } from '@/components/ui/ResourceLoader';
+import { MonthlyIntelBrief } from '@/components/dashboard/MonthlyIntelBrief';
 
 export default function DeepSignalsPage() {
     const [articles, setArticles] = useState<Article[]>([]);
@@ -12,6 +14,7 @@ export default function DeepSignalsPage() {
         consensus: { topic: string, sources: number, sentiment: 'positive' | 'negative' | 'mixed' }[],
         contradictions: { topic: string, conflicting: Article[] }[]
     }>({ emerging: [], consensus: [], contradictions: [] });
+    const [activeTab, setActiveTab] = useState<'live' | 'brief'>('live');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -24,28 +27,22 @@ export default function DeepSignalsPage() {
 
                 const researchData = await researchRes.json();
                 const aiData = await aiRes.json();
+                const response = await fetch('/api/feed/live?category=research&limit=50');
+                const data = await response.json();
+                const fetchedArticles = data.articles || [];
 
-                let allArticles = [...(researchData.articles || []), ...(aiData.articles || [])];
-
-                // FALLBACK: If insufficient data, fetch from ALL categories
-                if (allArticles.length < 10) {
-                    const fallbackRes = await fetch('/api/feed/live?limit=50');
-                    const fallbackData = await fallbackRes.json();
-                    allArticles = [...allArticles, ...(fallbackData.articles || [])];
-                }
-
-                const uniqueArticles = Array.from(new Map(allArticles.map(item => [item.id, item])).values());
-
-                setArticles(uniqueArticles);
-                analyzePatterns(uniqueArticles);
+                setArticles(fetchedArticles);
+                analyzePatterns(fetchedArticles);
             } catch (error) {
-                console.error('Failed to fetch signal data:', error);
+                console.error('Failed to fetch deep signals:', error);
             } finally {
                 setLoading(false);
             }
         };
 
         fetchData();
+        const interval = setInterval(fetchData, 60000); // Poll every 60s
+        return () => clearInterval(interval);
     }, []);
 
     const analyzePatterns = (data: Article[]) => {
@@ -137,53 +134,75 @@ export default function DeepSignalsPage() {
     };
 
     return (
-        <div className="space-y-8 min-h-screen bg-gray-950 text-gray-100 p-6 lg:p-8 font-sans selection:bg-indigo-500/30">
+        <div className="space-y-8 min-h-screen bg-gray-50/50 text-gray-900 p-6 lg:p-8 font-sans">
             {/* Header */}
-            <div className="border-b border-indigo-900/30 pb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div className="border-b border-gray-200 pb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold text-white tracking-tight flex items-center gap-3">
-                        <Radio className="h-8 w-8 text-indigo-500" />
+                    <h1 className="text-3xl font-bold text-gray-900 tracking-tight flex items-center gap-3">
+                        <Radio className="h-8 w-8 text-indigo-600" />
                         DEEP SIGNALS
                     </h1>
-                    <p className="text-indigo-400/60 mt-2 text-sm font-mono uppercase tracking-widest">
+                    <p className="text-gray-500 mt-2 text-sm font-mono uppercase tracking-widest">
                         Cross-Source Analysis // Pattern Detection // Conflict Zones
                     </p>
                 </div>
-                <div className="flex items-center gap-3 px-4 py-2 bg-indigo-950/30 border border-indigo-900/50 rounded-full">
+                <div className="flex items-center gap-3 px-4 py-2 bg-indigo-50 border border-indigo-100 rounded-full">
                     <span className="relative flex h-2 w-2">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-600"></span>
                     </span>
-                    <span className="text-xs font-bold text-indigo-200 tracking-wider">SCANNING FREQUENCIES</span>
+                    <span className="text-xs font-bold text-indigo-700 tracking-wider">SCANNING FREQUENCIES</span>
                 </div>
             </div>
 
+            <div className="flex justify-center border-b border-gray-200 bg-gray-50/50 mb-6">
+                <button
+                    onClick={() => setActiveTab('live')}
+                    className={`px-6 py-3 text-xs font-bold uppercase tracking-widest transition-all border-b-2 ${activeTab === 'live'
+                        ? 'border-indigo-600 text-indigo-700 bg-indigo-50/50'
+                        : 'border-transparent text-gray-400 hover:text-gray-600 hover:bg-gray-100'
+                        }`}
+                >
+                    Live Signals
+                </button>
+                <div className="w-px h-4 bg-gray-300 self-center mx-2"></div>
+                <button
+                    onClick={() => setActiveTab('brief')}
+                    className={`px-6 py-3 text-xs font-bold uppercase tracking-widest transition-all border-b-2 ${activeTab === 'brief'
+                        ? 'border-indigo-600 text-indigo-700 bg-indigo-50/50'
+                        : 'border-transparent text-gray-400 hover:text-gray-600 hover:bg-gray-100'
+                        }`}
+                >
+                    30-Day Brief
+                </button>
+            </div>
+
             {loading ? (
-                <div className="flex justify-center py-24">
-                    <Loader2 className="animate-spin text-indigo-500 h-12 w-12" />
-                </div>
+                <ResourceLoader message="Detecting deep market signals..." />
+            ) : activeTab === 'brief' ? (
+                <MonthlyIntelBrief articles={articles} fullView={true} category="research" />
             ) : (
                 <div className="space-y-8">
 
                     {/* Emerging Topics (Signal Matrix) */}
-                    <div className="bg-gray-900/50 backdrop-blur-sm border border-indigo-900/30 rounded-xl p-6 shadow-lg relative overflow-hidden">
-                        <div className="absolute top-0 left-0 w-1 h-full bg-indigo-600/50"></div>
+                    <div className="bg-white border border-indigo-100 rounded-xl p-6 shadow-sm relative overflow-hidden">
+                        <div className="absolute top-0 left-0 w-1 h-full bg-indigo-500"></div>
                         <div className="flex items-center gap-2 mb-6">
-                            <Sparkles className="h-4 w-4 text-indigo-400" />
-                            <h2 className="text-xs font-bold text-indigo-400 uppercase tracking-widest">Emerging Signal Matrix</h2>
+                            <Sparkles className="h-4 w-4 text-indigo-600" />
+                            <h2 className="text-xs font-bold text-indigo-600 uppercase tracking-widest">Emerging Signal Matrix</h2>
                         </div>
 
                         {patterns.emerging.length > 0 ? (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                 {patterns.emerging.map((topic, i) => (
-                                    <div key={i} className="bg-gray-900/80 border border-gray-800 p-4 rounded-lg hover:border-indigo-500/50 transition-all group">
+                                    <div key={i} className="bg-gray-50 border border-gray-200 p-4 rounded-lg hover:border-indigo-300 transition-all group">
                                         <div className="flex justify-between items-start mb-3">
-                                            <h3 className="font-bold text-gray-200 group-hover:text-white transition-colors">{topic.topic}</h3>
+                                            <h3 className="font-bold text-gray-900 group-hover:text-indigo-700 transition-colors">{topic.topic}</h3>
                                             <div className="flex items-center gap-1">
-                                                <div className="h-1.5 w-16 bg-gray-800 rounded-full overflow-hidden">
+                                                <div className="h-1.5 w-16 bg-gray-200 rounded-full overflow-hidden">
                                                     <div className="h-full bg-indigo-500" style={{ width: `${topic.strength}%` }}></div>
                                                 </div>
-                                                <span className="text-[10px] font-mono text-indigo-400">{topic.strength}%</span>
+                                                <span className="text-[10px] font-mono text-indigo-600">{topic.strength}%</span>
                                             </div>
                                         </div>
                                         <div className="text-xs text-gray-500 space-y-2">
@@ -193,7 +212,7 @@ export default function DeepSignalsPage() {
                                                     href={article.url}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="block hover:text-indigo-400 transition-colors truncate"
+                                                    className="block hover:text-indigo-600 transition-colors truncate"
                                                 >
                                                     • {article.title}
                                                 </a>
@@ -203,32 +222,32 @@ export default function DeepSignalsPage() {
                                 ))}
                             </div>
                         ) : (
-                            <p className="text-gray-600 text-center py-8 font-mono text-sm">No strong signals detected in current timeframe.</p>
+                            <p className="text-gray-500 text-center py-8 font-mono text-sm">No strong signals detected in current timeframe.</p>
                         )}
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         {/* Consensus Analysis */}
-                        <div className="bg-gray-900/50 backdrop-blur-sm border border-emerald-900/30 rounded-xl p-6 shadow-lg relative overflow-hidden">
-                            <div className="absolute top-0 left-0 w-1 h-full bg-emerald-600/50"></div>
+                        <div className="bg-white border border-emerald-100 rounded-xl p-6 shadow-sm relative overflow-hidden">
+                            <div className="absolute top-0 left-0 w-1 h-full bg-emerald-500"></div>
                             <div className="flex items-center gap-2 mb-6">
-                                <CheckCircle2 className="h-4 w-4 text-emerald-400" />
-                                <h2 className="text-xs font-bold text-emerald-400 uppercase tracking-widest">Cross-Source Verification</h2>
+                                <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                                <h2 className="text-xs font-bold text-emerald-600 uppercase tracking-widest">Cross-Source Verification</h2>
                             </div>
 
                             {patterns.consensus.length > 0 ? (
                                 <div className="space-y-3">
                                     {patterns.consensus.map((item, i) => (
-                                        <div key={i} className="flex justify-between items-center p-4 bg-gray-900/80 border border-gray-800 rounded-lg hover:border-emerald-500/30 transition-all">
+                                        <div key={i} className="flex justify-between items-center p-4 bg-gray-50 border border-gray-200 rounded-lg hover:border-emerald-300 transition-all">
                                             <div>
-                                                <div className="font-bold text-gray-200 text-sm mb-1">{item.topic}</div>
+                                                <div className="font-bold text-gray-900 text-sm mb-1">{item.topic}</div>
                                                 <div className="text-xs text-gray-500 font-mono">
                                                     VERIFIED BY {item.sources} SOURCES
                                                 </div>
                                             </div>
-                                            <span className={`px-2 py-1 text-[10px] font-bold rounded border ${item.sentiment === 'positive' ? 'bg-emerald-950/30 text-emerald-400 border-emerald-900/50' :
-                                                item.sentiment === 'negative' ? 'bg-red-950/30 text-red-400 border-red-900/50' :
-                                                    'bg-gray-800 text-gray-400 border-gray-700'
+                                            <span className={`px-2 py-1 text-[10px] font-bold rounded border ${item.sentiment === 'positive' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
+                                                item.sentiment === 'negative' ? 'bg-red-50 text-red-700 border-red-200' :
+                                                    'bg-gray-100 text-gray-600 border-gray-200'
                                                 }`}>
                                                 {item.sentiment.toUpperCase()}
                                             </span>
@@ -236,23 +255,23 @@ export default function DeepSignalsPage() {
                                     ))}
                                 </div>
                             ) : (
-                                <p className="text-gray-600 text-center py-8 font-mono text-sm">No consensus detected.</p>
+                                <p className="text-gray-500 text-center py-8 font-mono text-sm">No consensus detected.</p>
                             )}
                         </div>
 
                         {/* Contradictions */}
-                        <div className="bg-gray-900/50 backdrop-blur-sm border border-red-900/30 rounded-xl p-6 shadow-lg relative overflow-hidden">
-                            <div className="absolute top-0 left-0 w-1 h-full bg-red-600/50"></div>
+                        <div className="bg-white border border-red-100 rounded-xl p-6 shadow-sm relative overflow-hidden">
+                            <div className="absolute top-0 left-0 w-1 h-full bg-red-500"></div>
                             <div className="flex items-center gap-2 mb-6">
-                                <AlertCircle className="h-4 w-4 text-red-400" />
-                                <h2 className="text-xs font-bold text-red-400 uppercase tracking-widest">Conflict Zones / Contradictions</h2>
+                                <AlertCircle className="h-4 w-4 text-red-600" />
+                                <h2 className="text-xs font-bold text-red-600 uppercase tracking-widest">Conflict Zones / Contradictions</h2>
                             </div>
 
                             {patterns.contradictions.length > 0 ? (
                                 <div className="space-y-4">
                                     {patterns.contradictions.map((item, i) => (
-                                        <div key={i} className="border-l-2 border-red-500/50 pl-4 py-1">
-                                            <h3 className="font-bold text-gray-200 text-sm mb-2">{item.topic}</h3>
+                                        <div key={i} className="border-l-2 border-red-200 pl-4 py-1">
+                                            <h3 className="font-bold text-gray-900 text-sm mb-2">{item.topic}</h3>
                                             <div className="text-xs text-gray-500 space-y-2">
                                                 {item.conflicting.map((article, j) => (
                                                     <a
@@ -260,9 +279,9 @@ export default function DeepSignalsPage() {
                                                         href={article.url}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="block hover:text-red-400 transition-colors"
+                                                        className="block hover:text-red-600 transition-colors"
                                                     >
-                                                        <span className="text-red-500/50 mr-2">⚠</span>
+                                                        <span className="text-red-400 mr-2">⚠</span>
                                                         {article.source}: {article.title}
                                                     </a>
                                                 ))}
@@ -271,31 +290,34 @@ export default function DeepSignalsPage() {
                                     ))}
                                 </div>
                             ) : (
-                                <p className="text-gray-600 text-center py-8 font-mono text-sm">No contradictions detected.</p>
+                                <p className="text-gray-500 text-center py-8 font-mono text-sm">No contradictions detected.</p>
                             )}
                         </div>
                     </div>
 
                     {/* Source Articles */}
-                    <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-6 shadow-lg">
+                    <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
                         <div className="flex items-center gap-2 mb-6">
                             <Globe className="h-4 w-4 text-gray-400" />
-                            <h2 className="text-xs font-bold text-gray-400 uppercase tracking-widest">Raw Signal Feed</h2>
+                            <h2 className="text-xs font-bold text-gray-500 uppercase tracking-widest">Raw Signal Feed</h2>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {articles.slice(0, 6).map((article, i) => (
+                        <div className="space-y-4">
+                            {articles.slice(0, 10).map((article, i) => (
                                 <a
                                     key={i}
                                     href={article.url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="p-4 bg-gray-900/30 border border-gray-800 rounded-lg hover:border-indigo-500/30 hover:bg-gray-900/80 transition-all group"
+                                    className="flex items-start justify-between p-4 bg-gray-50 border border-gray-200 rounded-lg hover:border-indigo-300 hover:bg-white transition-all group"
                                 >
-                                    <span className="text-[10px] font-bold text-gray-500 uppercase block mb-2">{article.category}</span>
-                                    <h3 className="text-sm font-medium text-gray-300 group-hover:text-white line-clamp-2 mb-3 leading-relaxed">
-                                        {article.title}
-                                    </h3>
-                                    <span className="text-[10px] font-mono text-gray-600 group-hover:text-indigo-400 transition-colors">{article.source}</span>
+                                    <div>
+                                        <span className="text-[10px] font-bold text-gray-400 uppercase block mb-1">{article.category}</span>
+                                        <h3 className="text-sm font-medium text-gray-900 group-hover:text-indigo-600 line-clamp-1 mb-1 leading-relaxed">
+                                            {article.title}
+                                        </h3>
+                                        <span className="text-[10px] font-mono text-gray-500">{article.source}</span>
+                                    </div>
+                                    <ArrowRight className="h-4 w-4 text-gray-300 group-hover:text-indigo-400" />
                                 </a>
                             ))}
                         </div>

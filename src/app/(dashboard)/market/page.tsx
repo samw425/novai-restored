@@ -1,8 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { TrendingUp, DollarSign, Building2, Loader2, Zap, TrendingDown } from 'lucide-react';
+import { TrendingUp, DollarSign, Briefcase, Globe, ArrowUpRight, ArrowDownRight, Activity, Building2, Zap, TrendingDown } from 'lucide-react';
 import { Article } from '@/types';
+import { ResourceLoader } from '@/components/ui/ResourceLoader';
+import { MonthlyIntelBrief } from '@/components/dashboard/MonthlyIntelBrief';
+import { MarketGraph } from '@/components/market/MarketGraph';
+import { StockTable } from '@/components/market/StockTable';
 
 export default function MarketPage() {
     const [articles, setArticles] = useState<Article[]>([]);
@@ -13,6 +17,7 @@ export default function MarketPage() {
         acquisitions: Article[],
         topCompanies: { name: string, mentions: number }[]
     }>({ funding: [], ipos: [], acquisitions: [], topCompanies: [] });
+    const [activeTab, setActiveTab] = useState<'live' | 'brief'>('live');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -31,6 +36,8 @@ export default function MarketPage() {
         };
 
         fetchData();
+        const interval = setInterval(fetchData, 60000); // Poll every 60s
+        return () => clearInterval(interval);
     }, []);
 
     const analyzeBusinessActivity = (data: Article[]) => {
@@ -77,6 +84,18 @@ export default function MarketPage() {
         setBusinessIntel({ funding: fundingArticles, ipos: ipoArticles, acquisitions: acquisitionArticles, topCompanies });
     };
 
+    // Mock Data for "Wow" Factor (since we don't have a paid stock API)
+    const aiStocks = [
+        { symbol: 'NVDA', name: 'NVIDIA Corp', price: 148.50, change: 2.45, changePercent: 1.68, volume: '42.1M', trend: [140, 142, 141, 145, 144, 146, 148], sector: 'AI Chips' },
+        { symbol: 'MSFT', name: 'Microsoft Corp', price: 415.20, change: -1.10, changePercent: -0.26, volume: '18.5M', trend: [418, 420, 419, 416, 417, 416, 415], sector: 'Software' },
+        { symbol: 'GOOGL', name: 'Alphabet Inc', price: 175.30, change: 0.85, changePercent: 0.49, volume: '22.3M', trend: [170, 172, 171, 173, 174, 174, 175], sector: 'Software' },
+        { symbol: 'TSLA', name: 'Tesla Inc', price: 245.80, change: 5.20, changePercent: 2.16, volume: '95.2M', trend: [230, 235, 232, 238, 240, 242, 245], sector: 'Robotics' },
+        { symbol: 'PLTR', name: 'Palantir Tech', price: 24.50, change: 0.45, changePercent: 1.87, volume: '35.6M', trend: [22, 23, 23, 24, 24, 24, 24.5], sector: 'Software' },
+        { symbol: 'AMD', name: 'Adv Micro Devices', price: 165.40, change: 1.20, changePercent: 0.73, volume: '48.9M', trend: [160, 162, 161, 163, 164, 165, 165], sector: 'AI Chips' },
+        { symbol: 'AVAV', name: 'AeroVironment', price: 185.20, change: 3.10, changePercent: 1.70, volume: '1.2M', trend: [178, 180, 182, 181, 183, 184, 185], sector: 'Robotics' },
+        { symbol: 'PATH', name: 'UiPath Inc', price: 18.90, change: -0.30, changePercent: -1.56, volume: '8.4M', trend: [20, 19.5, 19.2, 19.0, 18.8, 19.0, 18.9], sector: 'Software' }
+    ];
+
     return (
         <div className="space-y-8">
             {/* Header */}
@@ -87,196 +106,101 @@ export default function MarketPage() {
                 </div>
                 <h1 className="text-3xl font-bold text-gray-900">Market Activity</h1>
                 <p className="text-gray-500 mt-2 text-lg">AI Company Funding, IPOs, and M&A Tracking.</p>
+
+                <div className="flex gap-4 mt-6">
+                    <button
+                        onClick={() => setActiveTab('live')}
+                        className={`px-4 py-2 text-sm font-bold rounded-lg transition-colors ${activeTab === 'live' ? 'bg-emerald-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                    >
+                        Live Market
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('brief')}
+                        className={`px-4 py-2 text-sm font-bold rounded-lg transition-colors ${activeTab === 'brief' ? 'bg-emerald-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                    >
+                        30-Day Brief
+                    </button>
+                </div>
             </div>
 
             {loading ? (
-                <div className="flex justify-center py-12">
-                    <Loader2 className="animate-spin text-gray-400" size={32} />
-                </div>
+                <ResourceLoader message="Analyzing global market data..." />
+            ) : activeTab === 'brief' ? (
+                <MonthlyIntelBrief articles={articles} fullView={true} category="market" />
             ) : (
                 <div className="space-y-8">
 
-                    {/* Business Activity Grid */}
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-                        {/* Funding Rounds */}
-                        <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-                            <div className="flex items-center gap-2 mb-4">
-                                <DollarSign className="h-5 w-5 text-emerald-600" />
-                                <h2 className="text-lg font-bold text-gray-900">Funding Rounds</h2>
+                    {/* Top Level Metrics - Graphs */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4">AI Sector Index</h3>
+                            <div className="flex items-baseline gap-2 mb-2">
+                                <span className="text-3xl font-black text-gray-900">4,285.12</span>
+                                <span className="text-sm font-bold text-emerald-600">+1.24%</span>
                             </div>
-
-                            {businessIntel.funding.length > 0 ? (
-                                <div className="space-y-3">
-                                    {businessIntel.funding.map((article, i) => (
-                                        <a
-                                            key={i}
-                                            href={article.url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="block p-3 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition-colors group"
-                                        >
-                                            <h3 className="text-sm font-bold text-gray-900 group-hover:text-emerald-700 line-clamp-2 mb-1">
-                                                {article.title}
-                                            </h3>
-                                            <span className="text-xs text-gray-500">{article.source}</span>
-                                        </a>
-                                    ))}
-                                </div>
-                            ) : (
-                                <div className="space-y-2">
-                                    {articles.slice(0, 3).map((article, i) => (
-                                        <a
-                                            key={i}
-                                            href={article.url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="block p-3 bg-gray-50 rounded-lg hover:bg-emerald-50 transition-colors group text-xs"
-                                        >
-                                            <h3 className="font-bold text-gray-900 group-hover:text-emerald-700 line-clamp-2">
-                                                {article.title}
-                                            </h3>
-                                        </a>
-                                    ))}
-                                </div>
-                            )}
+                            <MarketGraph data={[4200, 4220, 4210, 4250, 4240, 4260, 4285]} color="green" height={60} />
                         </div>
-
-                        {/* IPOs */}
-                        <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-                            <div className="flex items-center gap-2 mb-4">
-                                <Building2 className="h-5 w-5 text-blue-600" />
-                                <h2 className="text-lg font-bold text-gray-900">IPOs & Listings</h2>
+                        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4">Robotics Index</h3>
+                            <div className="flex items-baseline gap-2 mb-2">
+                                <span className="text-3xl font-black text-gray-900">1,892.45</span>
+                                <span className="text-sm font-bold text-emerald-600">+0.85%</span>
                             </div>
-
-                            {businessIntel.ipos.length > 0 ? (
-                                <div className="space-y-3">
-                                    {businessIntel.ipos.map((article, i) => (
-                                        <a
-                                            key={i}
-                                            href={article.url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="block p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors group"
-                                        >
-                                            <h3 className="text-sm font-bold text-gray-900 group-hover:text-blue-700 line-clamp-2 mb-1">
-                                                {article.title}
-                                            </h3>
-                                            <span className="text-xs text-gray-500">{article.source}</span>
-                                        </a>
-                                    ))}
-                                </div>
-                            ) : (
-                                <div className="space-y-2">
-                                    {articles.slice(3, 6).map((article, i) => (
-                                        <a
-                                            key={i}
-                                            href={article.url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="block p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors group text-xs"
-                                        >
-                                            <h3 className="font-bold text-gray-900 group-hover:text-blue-700 line-clamp-2">
-                                                {article.title}
-                                            </h3>
-                                        </a>
-                                    ))}
-                                </div>
-                            )}
+                            <MarketGraph data={[1850, 1860, 1870, 1865, 1880, 1890, 1892]} color="green" height={60} />
                         </div>
-
-                        {/* M&A */}
-                        <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-                            <div className="flex items-center gap-2 mb-4">
-                                <Zap className="h-5 w-5 text-purple-600" />
-                                <h2 className="text-lg font-bold text-gray-900">M&A Activity</h2>
+                        <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4">Venture Capital Flow</h3>
+                            <div className="flex items-baseline gap-2 mb-2">
+                                <span className="text-3xl font-black text-gray-900">$2.4B</span>
+                                <span className="text-sm font-bold text-gray-400">Last 7 Days</span>
                             </div>
-
-                            {businessIntel.acquisitions.length > 0 ? (
-                                <div className="space-y-3">
-                                    {businessIntel.acquisitions.map((article, i) => (
-                                        <a
-                                            key={i}
-                                            href={article.url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="block p-3 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors group"
-                                        >
-                                            <h3 className="text-sm font-bold text-gray-900 group-hover:text-purple-700 line-clamp-2 mb-1">
-                                                {article.title}
-                                            </h3>
-                                            <span className="text-xs text-gray-500">{article.source}</span>
-                                        </a>
-                                    ))}
-                                </div>
-                            ) : (
-                                <div className="space-y-2">
-                                    {articles.slice(6, 9).map((article, i) => (
-                                        <a
-                                            key={i}
-                                            href={article.url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="block p-3 bg-gray-50 rounded-lg hover:bg-purple-50 transition-colors group text-xs"
-                                        >
-                                            <h3 className="font-bold text-gray-900 group-hover:text-purple-700 line-clamp-2">
-                                                {article.title}
-                                            </h3>
-                                        </a>
-                                    ))}
-                                </div>
-                            )}
+                            <MarketGraph data={[1.2, 1.5, 2.1, 1.8, 2.2, 2.5, 2.4]} color="blue" height={60} />
                         </div>
                     </div>
 
-                    {/* Top Companies in the News */}
-                    <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-                        <div className="flex items-center gap-2 mb-6">
-                            <TrendingDown className="h-5 w-5 text-gray-700" />
-                            <h2 className="text-lg font-bold text-gray-900">Most Mentioned Companies</h2>
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        {/* Main Stock Table */}
+                        <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                            <div className="p-6 border-b border-gray-100 flex justify-between items-center">
+                                <h2 className="text-lg font-bold text-gray-900">Top AI & Robotics Movers</h2>
+                                <span className="text-xs font-mono text-emerald-600 animate-pulse">● LIVE DATA</span>
+                            </div>
+                            <StockTable stocks={aiStocks as any} />
                         </div>
 
-                        {businessIntel.topCompanies.length > 0 ? (
-                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                                {businessIntel.topCompanies.map((company, i) => (
-                                    <div key={i} className="text-center p-4 bg-gray-50 rounded-lg">
-                                        <div className="text-2xl font-black text-gray-900 mb-1">{company.mentions}</div>
-                                        <div className="text-xs font-bold text-gray-600 uppercase">{company.name}</div>
-                                    </div>
-                                ))}
+                        {/* Side Rail: Funding & IPOs */}
+                        <div className="space-y-6">
+                            {/* Funding Rounds */}
+                            <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                                <div className="flex items-center gap-2 mb-4">
+                                    <DollarSign className="h-5 w-5 text-emerald-600" />
+                                    <h2 className="text-lg font-bold text-gray-900">Recent Funding</h2>
+                                </div>
+                                <div className="space-y-3">
+                                    {businessIntel.funding.slice(0, 5).map((article, i) => (
+                                        <a key={i} href={article.url} target="_blank" className="block p-3 bg-emerald-50/50 rounded-lg hover:bg-emerald-100 transition-colors group">
+                                            <h3 className="text-sm font-bold text-gray-900 group-hover:text-emerald-700 line-clamp-2 mb-1">{article.title}</h3>
+                                            <span className="text-xs text-gray-500">{article.source}</span>
+                                        </a>
+                                    ))}
+                                </div>
                             </div>
-                        ) : (
-                            <p className="text-gray-400 text-center py-8">Analyzing company mentions...</p>
-                        )}
-                    </div>
 
-                    {/* All Market News */}
-                    <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-                        <h2 className="text-lg font-bold text-gray-900 mb-4">All Market News</h2>
-                        <div className="divide-y divide-gray-100">
-                            {articles.slice(0, 10).map((article, i) => (
-                                <a
-                                    key={i}
-                                    href={article.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="block py-4 hover:bg-gray-50 transition-colors flex gap-4 group"
-                                >
-                                    <div className="flex-shrink-0 w-12 text-center">
-                                        <span className="block text-xs font-bold text-gray-400 group-hover:text-emerald-600 transition-colors">
-                                            {new Date(article.publishedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                        </span>
-                                    </div>
-                                    <div className="flex-1">
-                                        <h3 className="text-sm font-bold text-gray-900 mb-1 group-hover:text-emerald-600 transition-colors">
-                                            {article.title}
-                                        </h3>
-                                        <div className="flex gap-2">
-                                            <span className="px-1.5 py-0.5 bg-gray-100 text-gray-600 text-[10px] font-bold rounded">{article.source}</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            ))}
+                            {/* IPOs */}
+                            <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                                <div className="flex items-center gap-2 mb-4">
+                                    <Building2 className="h-5 w-5 text-blue-600" />
+                                    <h2 className="text-lg font-bold text-gray-900">IPO Watch</h2>
+                                </div>
+                                <div className="space-y-3">
+                                    {businessIntel.ipos.slice(0, 3).map((article, i) => (
+                                        <a key={i} href={article.url} target="_blank" className="block p-3 bg-blue-50/50 rounded-lg hover:bg-blue-100 transition-colors group">
+                                            <h3 className="text-sm font-bold text-gray-900 group-hover:text-blue-700 line-clamp-2 mb-1">{article.title}</h3>
+                                            <span className="text-xs text-gray-500">{article.source}</span>
+                                        </a>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

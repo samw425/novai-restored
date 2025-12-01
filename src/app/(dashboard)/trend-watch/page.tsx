@@ -1,8 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { TrendingUp, Flame, ArrowUp, ArrowDown, Minus, Loader2 } from 'lucide-react';
+import { TrendingUp, ArrowUpRight, Minus, ArrowDownRight, Flame, Clock, Hash, ArrowUp } from 'lucide-react';
 import { Article } from '@/types';
+import { ResourceLoader } from '@/components/ui/ResourceLoader';
+import { MonthlyIntelBrief } from '@/components/dashboard/MonthlyIntelBrief';
 
 export default function TrendWatchPage() {
     const [articles, setArticles] = useState<Article[]>([]);
@@ -12,11 +14,12 @@ export default function TrendWatchPage() {
         stable: { topic: string, count: number }[],
         recent: Article[]
     }>({ rising: [], stable: [], recent: [] });
+    const [activeTab, setActiveTab] = useState<'live' | 'brief'>('live');
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('/api/feed/live?limit=50');
+                const response = await fetch('/api/feed/live?limit=100');
                 const data = await response.json();
                 const fetchedArticles = data.articles || [];
 
@@ -30,6 +33,8 @@ export default function TrendWatchPage() {
         };
 
         fetchData();
+        const interval = setInterval(fetchData, 60000); // Poll every 60s
+        return () => clearInterval(interval);
     }, []);
 
     const analyzeTrendVelocity = (data: Article[]) => {
@@ -104,12 +109,27 @@ export default function TrendWatchPage() {
                 </div>
                 <h1 className="text-3xl font-bold text-gray-900">Trend Watch</h1>
                 <p className="text-gray-500 mt-2 text-lg">Real-time topic momentum and trending patterns.</p>
+
+                <div className="flex gap-4 mt-6">
+                    <button
+                        onClick={() => setActiveTab('live')}
+                        className={`px-4 py-2 text-sm font-bold rounded-lg transition-colors ${activeTab === 'live' ? 'bg-orange-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                    >
+                        Live Trends
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('brief')}
+                        className={`px-4 py-2 text-sm font-bold rounded-lg transition-colors ${activeTab === 'brief' ? 'bg-orange-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                    >
+                        30-Day Brief
+                    </button>
+                </div>
             </div>
 
             {loading ? (
-                <div className="flex justify-center py-12">
-                    <Loader2 className="animate-spin text-gray-400" size={32} />
-                </div>
+                <ResourceLoader message="Analyzing global trend velocity..." />
+            ) : activeTab === 'brief' ? (
+                <MonthlyIntelBrief articles={articles} fullView={true} />
             ) : (
                 <div className="space-y-8">
 

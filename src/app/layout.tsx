@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description: "Real-time global intelligence feed for the AI era. Track models, risks, and market pulses in one terminal.",
     type: "website",
     url: "https://gonovai.vercel.app",
-    images: ["https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1200&auto=format&fit=crop"],
+    images: ["https://gonovai.vercel.app/og-image.png"],
   },
   twitter: {
     card: "summary_large_image",

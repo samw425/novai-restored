@@ -173,8 +173,8 @@ export function FeedContainer() {
                             <div className="h-px flex-1 bg-gray-200"></div>
                         </div>
 
-                        {/* Grid Layout */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {/* List Layout */}
+                        <div className="max-w-3xl mx-auto space-y-6">
                             {articles.map((article) => (
                                 <FeedCard key={article.id} article={article} />
                             ))}
