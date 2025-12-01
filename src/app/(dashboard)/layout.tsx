@@ -9,9 +9,9 @@ import { Footer } from '@/components/ui/Footer';
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
     return (
-        <div className="min-h-screen bg-[#F5F6F8]">
+        <div className="min-h-screen bg-[#F5F6F8] flex flex-col">
             <MobileNav />
-            <div className="max-w-[1600px] mx-auto px-4 lg:px-6 py-4 lg:py-8">
+            <div className="max-w-[1600px] mx-auto px-4 lg:px-6 py-4 lg:py-8 flex-grow w-full">
                 <div className="grid grid-cols-12 gap-8">
 
                     {/* Left Sidebar */}
@@ -34,12 +34,11 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                                 <RightRail />
                             </aside>
                         </div>
-
-                        <Footer />
                     </div>
 
                 </div>
             </div>
+            <Footer />
         </div>
     );
 }
