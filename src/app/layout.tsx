@@ -31,6 +31,10 @@ export const metadata: Metadata = {
     description: "Real-time AI intelligence platform. Track global AI developments, market activity, and emerging signals.",
     images: ["/og-image.png"],
   },
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/logo.png',
+  },
 };
 
 export default function RootLayout({
