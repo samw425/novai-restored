@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Article } from '@/types';
-import { fetchArticles, checkNewArticles } from '@/lib/api';
+import { fetchArticles, checkNewArticles, fetchTopStories } from '@/lib/api';
 import { FeedCard } from './FeedCard';
 import { FeedHeader } from './FeedHeader';
 import { Loader2, ArrowUp, Shield } from 'lucide-react';
@@ -20,12 +20,16 @@ interface FeedContainerProps {
 }
 
 export function FeedContainer({ initialCategory = 'all', forcedCategory, showTicker = true }: FeedContainerProps) {
+    const [activeTab, setActiveTab] = useState<'live' | 'brief'>('live');
     const [articles, setArticles] = useState<Article[]>([]);
+    const [topStories, setTopStories] = useState<Article[]>([]);
     const [category, setCategory] = useState(forcedCategory || initialCategory);
     const [cursor, setCursor] = useState<string | undefined>(undefined);
     const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(false);
+    const [loadingTopStories, setLoadingTopStories] = useState(false);
     const [newCount, setNewCount] = useState(0);
+    const [isSignUpOpen, setIsSignUpOpen] = useState(false);
 
     const { ref, inView } = useInView();
 
@@ -78,12 +82,12 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
 
     // Infinite scroll trigger
     useEffect(() => {
-        if (inView && hasMore && !loading && articles.length > 0) {
-            loadArticles(false);
+        if (inView && hasMore && !loading && activeTab === 'live') {
+            loadArticles();
         }
-    }, [inView, hasMore, loading, articles.length, loadArticles]);
+    }, [inView, hasMore, loading, loadArticles, activeTab]);
 
-    // Polling for new items
+    // Poll for new articles every 15s
     useEffect(() => {
         const interval = setInterval(async () => {
             if (articles.length > 0) {
@@ -93,6 +97,25 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
         }, 15000);
         return () => clearInterval(interval);
     }, [articles]);
+
+    // Load top stories when Brief tab is active
+    useEffect(() => {
+        if (activeTab === 'brief') {
+            const loadTopStories = async () => {
+                setLoadingTopStories(true);
+                try {
+                    const apiCategory = category === 'all' ? 'All' : category;
+                    const stories = await fetchTopStories(24, apiCategory);
+                    setTopStories(stories);
+                } catch (error) {
+                    console.error('Failed to load top stories:', error);
+                } finally {
+                    setLoadingTopStories(false);
+                }
+            };
+            loadTopStories();
+        }
+    }, [activeTab, category]);
 
     const handleRefresh = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -109,9 +132,6 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
         };
         refresh();
     };
-
-    const [activeTab, setActiveTab] = useState<'live' | 'brief'>('live');
-    const [isSignUpOpen, setIsSignUpOpen] = useState(false);
 
     return (
         <div className="relative min-h-screen pb-20 bg-gray-50/50">
@@ -206,7 +226,13 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
                 {/* BRIEF TAB CONTENT */}
                 {activeTab === 'brief' && (
                     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                        <MonthlyIntelBrief articles={articles} fullView={true} />
+                        {loadingTopStories ? (
+                            <div className="py-12 flex justify-center w-full">
+                                <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+                            </div>
+                        ) : (
+                            <MonthlyIntelBrief articles={topStories} fullView={true} />
+                        )}
                     </div>
                 )}
             </div>

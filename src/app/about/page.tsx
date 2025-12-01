@@ -45,7 +45,7 @@ export default function AboutPage() {
             {/* Coverage */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="bg-white rounded-xl border border-gray-200 p-6 text-center shadow-sm">
-                    <div className="text-4xl font-bold text-blue-600 mb-2">50+</div>
+                    <div className="text-4xl font-bold text-blue-600 mb-2">70+</div>
                     <div className="text-sm text-gray-600">Global Sources</div>
                 </div>
                 <div className="bg-white rounded-xl border border-gray-200 p-6 text-center shadow-sm">

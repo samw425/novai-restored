@@ -22,6 +22,41 @@ export const fetchArticles = async (limit = 20, category = 'All', search?: strin
     }
 };
 
+/**
+ * Fetch top/most important stories from the past 30 days, ranked by importance
+ */
+export const fetchTopStories = async (limit = 24, category = 'All'): Promise<Article[]> => {
+    try {
+        let url = `/api/feed/top-stories?limit=${limit}`;
+        if (category && category !== 'all') {
+            url += `&category=${encodeURIComponent(category)}`;
+        }
+
+        const response = await fetch(url, { cache: 'no-store' });
+
+        if (!response.ok) {
+            console.warn('Top stories API not available, falling back to filtered recent articles');
+            // Fallback: use recent articles filtered by importance
+            const articles = await fetchArticles(100, category);
+            return articles
+                .filter(a => (a.description?.length || 0) > 50)
+                .sort((a, b) => (b.importanceScore || 0) - (a.importanceScore || 0))
+                .slice(0, limit);
+        }
+
+        const data = await response.json();
+        return data.articles || [];
+    } catch (error) {
+        console.error('Failed to fetch top stories:', error);
+        // Fallback to filtered recent articles
+        const articles = await fetchArticles(100, category);
+        return articles
+            .filter(a => (a.description?.length || 0) > 50)
+            .sort((a, b) => (b.importanceScore || 0) - (a.importanceScore || 0))
+            .slice(0, limit);
+    }
+};
+
 // Fallback data for offline/error states
 const fallbackArticles: Article[] = [
     {

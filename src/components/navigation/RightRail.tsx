@@ -20,28 +20,34 @@ export function RightRail() {
 
 function WhatIsNovaiWidget() {
     return (
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border border-blue-200 p-5 shadow-sm">
-            <div className="flex items-center gap-2 mb-3">
-                <Info className="h-4 w-4 text-blue-600" />
-                <h3 className="text-sm font-bold text-blue-900">Novai Intelligence Engine</h3>
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+            <div className="flex items-center gap-2 mb-4">
+                <Info className="h-5 w-5 text-blue-600" />
+                <h3 className="text-base font-black text-gray-900">Novai Intelligence Engine</h3>
             </div>
 
-            <p className="text-xs text-gray-700 leading-relaxed mb-4">
+            <p className="text-sm text-gray-600 leading-relaxed mb-5">
                 Novai is a real-time intelligence system for the AI era. We don't just aggregate news; we distill global signals into actionable insights for decision-makers.
             </p>
 
-            <div className="space-y-2">
-                <div className="flex items-start gap-2">
-                    <span className="text-blue-600 text-xs">✓</span>
-                    <span className="text-xs text-gray-600">50+ global intelligence sources</span>
+            <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                    <div className="w-5 h-5 rounded-full bg-blue-50 flex items-center justify-center shrink-0 mt-0.5">
+                        <span className="text-blue-600 text-xs font-bold">✓</span>
+                    </div>
+                    <span className="text-sm text-gray-600">70+ global intelligence sources</span>
                 </div>
-                <div className="flex items-start gap-2">
-                    <span className="text-blue-600 text-xs">✓</span>
-                    <span className="text-xs text-gray-600">Real-time signal processing</span>
+                <div className="flex items-start gap-3">
+                    <div className="w-5 h-5 rounded-full bg-blue-50 flex items-center justify-center shrink-0 mt-0.5">
+                        <span className="text-blue-600 text-xs font-bold">✓</span>
+                    </div>
+                    <span className="text-sm text-gray-600">Real-time signal processing</span>
                 </div>
-                <div className="flex items-start gap-2">
-                    <span className="text-blue-600 text-xs">✓</span>
-                    <span className="text-xs text-gray-600">Sector-specific deep dives</span>
+                <div className="flex items-start gap-3">
+                    <div className="w-5 h-5 rounded-full bg-blue-50 flex items-center justify-center shrink-0 mt-0.5">
+                        <span className="text-blue-600 text-xs font-bold">✓</span>
+                    </div>
+                    <span className="text-sm text-gray-600">Sector-specific deep dives</span>
                 </div>
             </div>
         </div>
@@ -50,35 +56,35 @@ function WhatIsNovaiWidget() {
 
 function HowItWorksWidget() {
     return (
-        <div className="bg-white rounded-xl border border-[#E5E7EB] p-5 shadow-sm">
-            <div className="flex items-center gap-2 mb-3">
-                <Zap className="h-4 w-4 text-purple-600" />
-                <h3 className="text-sm font-bold text-gray-900">How It Works</h3>
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+            <div className="flex items-center gap-2 mb-4">
+                <Zap className="h-5 w-5 text-purple-600" />
+                <h3 className="text-base font-black text-gray-900">How It Works</h3>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-4">
                 <div>
-                    <div className="flex items-center gap-2 mb-1">
-                        <span className="w-5 h-5 rounded-full bg-purple-100 text-purple-600 text-xs font-bold flex items-center justify-center">1</span>
-                        <span className="text-xs font-semibold text-gray-900">We Aggregate</span>
+                    <div className="flex items-center gap-2.5 mb-2">
+                        <span className="w-6 h-6 rounded-full bg-purple-100 text-purple-600 text-xs font-black flex items-center justify-center">1</span>
+                        <span className="text-sm font-bold text-gray-900">We Aggregate</span>
                     </div>
-                    <p className="text-xs text-gray-600 ml-7">Continuously fetch from top AI publishers worldwide</p>
+                    <p className="text-sm text-gray-600 ml-8.5">Continuously fetch from top AI publishers worldwide</p>
                 </div>
 
                 <div>
-                    <div className="flex items-center gap-2 mb-1">
-                        <span className="w-5 h-5 rounded-full bg-purple-100 text-purple-600 text-xs font-bold flex items-center justify-center">2</span>
-                        <span className="text-xs font-semibold text-gray-900">We Categorize</span>
+                    <div className="flex items-center gap-2.5 mb-2">
+                        <span className="w-6 h-6 rounded-full bg-purple-100 text-purple-600 text-xs font-black flex items-center justify-center">2</span>
+                        <span className="text-sm font-bold text-gray-900">We Categorize</span>
                     </div>
-                    <p className="text-xs text-gray-600 ml-7">Organize by research, robotics, policy, market, and tools</p>
+                    <p className="text-sm text-gray-600 ml-8.5">Organize by research, robotics, policy, market, and tools</p>
                 </div>
 
                 <div>
-                    <div className="flex items-center gap-2 mb-1">
-                        <span className="w-5 h-5 rounded-full bg-purple-100 text-purple-600 text-xs font-bold flex items-center justify-center">3</span>
-                        <span className="text-xs font-semibold text-gray-900">You Stay Ahead</span>
+                    <div className="flex items-center gap-2.5 mb-2">
+                        <span className="w-6 h-6 rounded-full bg-purple-100 text-purple-600 text-xs font-black flex items-center justify-center">3</span>
+                        <span className="text-sm font-bold text-gray-900">You Stay Ahead</span>
                     </div>
-                    <p className="text-xs text-gray-600 ml-7">Get the latest AI news in one place, updated in real-time</p>
+                    <p className="text-sm text-gray-600 ml-8.5">Get the latest AI news in one place, updated in real-time</p>
                 </div>
             </div>
         </div>
@@ -137,46 +143,81 @@ function ProVersionAdWidget() {
 
     return (
         <>
-            <div className="bg-gradient-to-br from-indigo-900 to-slate-900 rounded-xl p-5 text-white shadow-lg relative overflow-hidden group">
-                <div className="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
-                    <Zap className="h-24 w-24 -rotate-12" />
-                </div>
+            <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm relative overflow-hidden group">
+                {/* Subtle accent */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-50 to-purple-50 rounded-full -mr-16 -mt-16 opacity-50"></div>
 
                 <div className="relative z-10">
                     <div className="flex items-center gap-2 mb-3">
-                        <span className="h-1.5 w-1.5 bg-yellow-400 rounded-full animate-pulse" />
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-200">
+                        <span className="h-2 w-2 bg-blue-600 rounded-full animate-pulse" />
+                        <span className="text-xs font-black uppercase tracking-wider text-blue-600">
                             Coming Soon
                         </span>
                     </div>
 
-                    <h4 className="text-lg font-bold mb-2 leading-tight">Novai Pro Intelligence</h4>
-                    <p className="text-xs text-indigo-200 mb-4 leading-relaxed">
-                        Unlock deeper synthesis, PDF exports, and personalized intelligence tracking.
+                    <h4 className="text-2xl font-black mb-2 leading-tight text-gray-900">Novai Pro</h4>
+                    <p className="text-sm text-gray-600 mb-6 leading-relaxed">
+                        Unlock enterprise-grade intelligence tools for power users and organizations.
                     </p>
 
-                    <div className="mb-4">
-                        <span className="text-[10px] font-semibold text-yellow-300 uppercase tracking-wide">
-                            Why Upgrade?
-                        </span>
-                        <ul className="space-y-1 mt-1">
-                            <li className="flex items-center gap-2 text-[11px] text-gray-300">
-                                <span className="text-indigo-400">•</span> Unlimited History
-                            </li>
-                            <li className="flex items-center gap-2 text-[11px] text-gray-300">
-                                <span className="text-indigo-400">•</span> Export to PDF/CSV
-                            </li>
-                            <li className="flex items-center gap-2 text-[11px] text-gray-300">
-                                <span className="text-indigo-400">•</span> Custom Alerts
-                            </li>
-                        </ul>
+                    <div className="space-y-3 mb-6">
+                        <div className="flex items-start gap-3">
+                            <div className="w-5 h-5 rounded-full bg-blue-50 flex items-center justify-center shrink-0 mt-0.5">
+                                <span className="text-blue-600 text-xs font-bold">✓</span>
+                            </div>
+                            <div>
+                                <div className="text-sm font-bold text-gray-900">Unlimited Access</div>
+                                <div className="text-xs text-gray-500">Full article history and advanced search</div>
+                            </div>
+                        </div>
+
+                        <div className="flex items-start gap-3">
+                            <div className="w-5 h-5 rounded-full bg-blue-50 flex items-center justify-center shrink-0 mt-0.5">
+                                <span className="text-blue-600 text-xs font-bold">✓</span>
+                            </div>
+                            <div>
+                                <div className="text-sm font-bold text-gray-900">Export & Share</div>
+                                <div className="text-xs text-gray-500">PDF/CSV exports, team collaboration</div>
+                            </div>
+                        </div>
+
+                        <div className="flex items-start gap-3">
+                            <div className="w-5 h-5 rounded-full bg-blue-50 flex items-center justify-center shrink-0 mt-0.5">
+                                <span className="text-blue-600 text-xs font-bold">✓</span>
+                            </div>
+                            <div>
+                                <div className="text-sm font-bold text-gray-900">Custom Alerts</div>
+                                <div className="text-xs text-gray-500">Personalized notifications for your topics</div>
+                            </div>
+                        </div>
+
+                        <div className="flex items-start gap-3">
+                            <div className="w-5 h-5 rounded-full bg-blue-50 flex items-center justify-center shrink-0 mt-0.5">
+                                <span className="text-blue-600 text-xs font-bold">✓</span>
+                            </div>
+                            <div>
+                                <div className="text-sm font-bold text-gray-900">AI Analysis</div>
+                                <div className="text-xs text-gray-500">Deep synthesis and trend forecasting</div>
+                            </div>
+                        </div>
+
+                        <div className="flex items-start gap-3">
+                            <div className="w-5 h-5 rounded-full bg-blue-50 flex items-center justify-center shrink-0 mt-0.5">
+                                <span className="text-blue-600 text-xs font-bold">✓</span>
+                            </div>
+                            <div>
+                                <div className="text-sm font-bold text-gray-900">Priority Support</div>
+                                <div className="text-xs text-gray-500">Direct line to our intelligence team</div>
+                            </div>
+                        </div>
                     </div>
 
                     <button
                         onClick={() => setIsModalOpen(true)}
-                        className="w-full flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs font-bold py-2.5 rounded-lg transition-all"
+                        className="w-full flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-800 text-white text-sm font-bold py-3 rounded-xl transition-all shadow-sm hover:shadow-md"
                     >
                         Join Waitlist
+                        <ArrowRight className="w-4 h-4" />
                     </button>
                 </div>
             </div>
@@ -192,24 +233,24 @@ function ProVersionAdWidget() {
 
 function ToolOfTheDayWidget() {
     return (
-        <div className="bg-white rounded-xl border border-[#E5E7EB] p-5 shadow-sm relative overflow-hidden">
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm relative overflow-hidden">
             <div className="absolute top-0 right-0 p-3 opacity-5">
                 <Cpu className="h-16 w-16 rotate-12" />
             </div>
 
             <div className="relative z-10">
                 <div className="flex items-center gap-2 mb-3">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-2 py-0.5 rounded">
+                    <span className="text-xs font-black uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
                         Tool of the Day
                     </span>
                 </div>
 
-                <h4 className="text-base font-bold mb-1 text-gray-900">AI Tools</h4>
-                <p className="text-xs text-gray-500 mb-4">Discover the latest AI development tools.</p>
+                <h4 className="text-xl font-black mb-2 text-gray-900">AI Tools</h4>
+                <p className="text-sm text-gray-600 mb-5">Discover the latest AI development tools.</p>
 
                 <Link
                     href="/tool/cursor"
-                    className="block w-full text-center bg-gray-900 hover:bg-gray-800 text-white text-xs font-bold py-2.5 rounded-lg transition-colors"
+                    className="block w-full text-center bg-gray-900 hover:bg-gray-800 text-white text-sm font-bold py-3 rounded-xl transition-all shadow-sm hover:shadow-md"
                 >
                     Inspect Tool
                 </Link>
@@ -228,9 +269,9 @@ function TrendingTopicsWidget() {
     ];
 
     return (
-        <div className="bg-white rounded-xl border border-[#E5E7EB] p-5 shadow-sm">
-            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-2">
-                <Activity className="h-3 w-3" />
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+            <h3 className="text-base font-black text-gray-900 mb-4 flex items-center gap-2">
+                <Activity className="h-4 w-4 text-blue-600" />
                 Trending Topics
             </h3>
             <div className="flex flex-wrap gap-2">
@@ -238,7 +279,7 @@ function TrendingTopicsWidget() {
                     <Link
                         key={topic}
                         href={`/global-feed?topic=${encodeURIComponent(topic)}`}
-                        className="px-3 py-1.5 bg-gray-50 hover:bg-blue-50 text-gray-600 hover:text-blue-600 text-xs font-medium rounded-full transition-colors border border-gray-100 hover:border-blue-100"
+                        className="px-4 py-2 bg-gray-50 hover:bg-blue-50 text-gray-700 hover:text-blue-700 text-sm font-medium rounded-full transition-colors border border-gray-200 hover:border-blue-200"
                     >
                         {topic}
                     </Link>

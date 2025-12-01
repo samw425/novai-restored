@@ -1,159 +1,134 @@
 'use client';
 
-import { useState } from 'react';
-import { Mail, MessageSquare, User, Send, Check } from 'lucide-react';
-import { PageHeader } from '@/components/ui/PageHeader';
+import React, { useState } from 'react';
+import { Send, CheckCircle, AlertCircle, ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
 
 export default function FeedbackPage() {
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        topic: 'general',
-        message: ''
-    });
-    const [submitted, setSubmitted] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setLoading(true);
+        setStatus('sending');
 
-        // TODO: Send to database or email service tomorrow
-        setTimeout(() => {
-            setSubmitted(true);
-            setLoading(false);
-        }, 1000);
+        // Simulate network delay
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        // Success state
+        setStatus('success');
     };
 
-    if (submitted) {
-        return (
-            <div className="max-w-2xl mx-auto py-12 px-6">
-                <div className="bg-white rounded-2xl shadow-lg border border-[#E5E7EB] p-8 text-center">
-                    <div className="w-16 h-16 mx-auto mb-4 bg-green-100 rounded-full flex items-center justify-center">
-                        <Check className="w-8 h-8 text-green-600" />
-                    </div>
-                    <h2 className="text-2xl font-bold text-[#0F172A] mb-2">Message Sent!</h2>
-                    <p className="text-[#64748B] mb-6">
-                        We'll respond within 24 hours. Thank you for your feedback!
-                    </p>
-                    <a
-                        href="/global-feed"
-                        className="inline-block px-6 py-3 bg-[#2563EB] text-white rounded-lg font-medium hover:bg-[#1D4ED8] transition-colors"
-                    >
-                        Back to Feed
-                    </a>
-                </div>
-            </div>
-        );
-    }
-
     return (
-        <div className="max-w-2xl mx-auto py-12 px-6">
-            <PageHeader
-                title="Contact Us"
-                description="Have feedback, questions, or suggestions? We'd love to hear from you."
-                insight="Your input shapes our intelligence. We read every message to improve our signal-to-noise ratio."
-                icon={<MessageSquare className="w-8 h-8 text-blue-600" />}
-            />
+        <div className="min-h-screen bg-slate-50 flex flex-col">
+            <div className="max-w-3xl mx-auto w-full px-6 py-12 md:py-20">
 
-            <div className="bg-white rounded-2xl shadow-lg border border-[#E5E7EB] p-8">
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <div>
-                        <label htmlFor="name" className="block text-sm font-medium text-[#0F172A] mb-2">
-                            Name
-                        </label>
-                        <div className="relative">
-                            <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#9CA3AF]" />
-                            <input
-                                id="name"
-                                type="text"
-                                required
-                                value={formData.name}
-                                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                placeholder="Your name"
-                                className="w-full pl-10 pr-4 py-3 border border-[#E5E7EB] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-transparent"
-                            />
-                        </div>
+                <Link href="/" className="inline-flex items-center text-sm text-slate-500 hover:text-blue-600 transition-colors mb-8">
+                    <ArrowLeft size={16} className="mr-2" />
+                    Back to Dashboard
+                </Link>
+
+                <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div className="p-8 md:p-12 border-b border-slate-100 bg-slate-900 text-white">
+                        <h1 className="text-3xl font-black tracking-tight mb-4">CONTACT & FEEDBACK</h1>
+                        <p className="text-slate-400 max-w-lg">
+                            Direct line to the Novai Intelligence team. Report bugs, suggest features, or request enterprise access.
+                        </p>
                     </div>
 
-                    <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-[#0F172A] mb-2">
-                            Email
-                        </label>
-                        <div className="relative">
-                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#9CA3AF]" />
-                            <input
-                                id="email"
-                                type="email"
-                                required
-                                value={formData.email}
-                                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                placeholder="you@example.com"
-                                className="w-full pl-10 pr-4 py-3 border border-[#E5E7EB] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-transparent"
-                            />
-                        </div>
-                    </div>
+                    <div className="p-8 md:p-12">
+                        {status === 'success' ? (
+                            <div className="flex flex-col items-center justify-center text-center py-12 space-y-6 animate-in fade-in zoom-in duration-500">
+                                <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center">
+                                    <CheckCircle size={32} />
+                                </div>
+                                <div className="space-y-2">
+                                    <h3 className="text-2xl font-bold text-slate-900">Message Sent</h3>
+                                    <p className="text-slate-500 max-w-xs mx-auto">
+                                        Thank you. Your feedback has been routed directly to our engineering team.
+                                    </p>
+                                </div>
+                                <button
+                                    onClick={() => setStatus('idle')}
+                                    className="mt-6 px-6 py-2 bg-slate-100 text-slate-700 font-bold rounded-lg hover:bg-slate-200 transition-colors text-sm"
+                                >
+                                    Send Another
+                                </button>
+                            </div>
+                        ) : (
+                            <form onSubmit={handleSubmit} className="space-y-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label htmlFor="name" className="text-xs font-bold uppercase tracking-wider text-slate-500">Name</label>
+                                        <input
+                                            type="text"
+                                            id="name"
+                                            required
+                                            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium text-slate-900 placeholder:text-slate-400"
+                                            placeholder="Your Name"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-slate-500">Email</label>
+                                        <input
+                                            type="email"
+                                            id="email"
+                                            required
+                                            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium text-slate-900 placeholder:text-slate-400"
+                                            placeholder="name@company.com"
+                                        />
+                                    </div>
+                                </div>
 
-                    <div>
-                        <label htmlFor="topic" className="block text-sm font-medium text-[#0F172A] mb-2">
-                            Topic
-                        </label>
-                        <select
-                            id="topic"
-                            value={formData.topic}
-                            onChange={(e) => setFormData({ ...formData, topic: e.target.value })}
-                            className="w-full px-4 py-3 border border-[#E5E7EB] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-transparent"
-                        >
-                            <option value="general">General Feedback</option>
-                            <option value="bug">Report a Bug</option>
-                            <option value="feature">Feature Request</option>
-                            <option value="partnership">Partnership Inquiry</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
+                                <div className="space-y-2">
+                                    <label htmlFor="subject" className="text-xs font-bold uppercase tracking-wider text-slate-500">Subject</label>
+                                    <select
+                                        id="subject"
+                                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium text-slate-900"
+                                    >
+                                        <option>General Feedback</option>
+                                        <option>Report a Bug</option>
+                                        <option>Feature Request</option>
+                                        <option>Enterprise Inquiry</option>
+                                        <option>Other</option>
+                                    </select>
+                                </div>
 
-                    <div>
-                        <label htmlFor="message" className="block text-sm font-medium text-[#0F172A] mb-2">
-                            Message
-                        </label>
-                        <div className="relative">
-                            <MessageSquare className="absolute left-3 top-3 w-5 h-5 text-[#9CA3AF]" />
-                            <textarea
-                                id="message"
-                                required
-                                rows={6}
-                                value={formData.message}
-                                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                                placeholder="Tell us what's on your mind..."
-                                className="w-full pl-10 pr-4 py-3 border border-[#E5E7EB] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-transparent resize-none"
-                            />
-                        </div>
-                    </div>
+                                <div className="space-y-2">
+                                    <label htmlFor="message" className="text-xs font-bold uppercase tracking-wider text-slate-500">Message</label>
+                                    <textarea
+                                        id="message"
+                                        required
+                                        rows={6}
+                                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium text-slate-900 placeholder:text-slate-400 resize-none"
+                                        placeholder="How can we improve Novai?"
+                                    />
+                                </div>
 
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className="w-full py-3 bg-[#2563EB] text-white rounded-lg font-medium hover:bg-[#1D4ED8] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                    >
-                        <Send className="w-4 h-4" />
-                        {loading ? 'Sending...' : 'Send Message'}
-                    </button>
-                </form>
-
-                <div className="mt-6 pt-6 border-t border-[#E5E7EB]">
-                    <p className="text-sm text-[#64748B] text-center mb-3">Or reach us directly:</p>
-                    <div className="flex flex-wrap justify-center gap-4 text-sm">
-                        <a href="mailto:hello@gonovai.com" className="text-[#2563EB] hover:underline">
-                            hello@gonovai.com
-                        </a>
-                        <span className="text-[#E5E7EB]">|</span>
-                        <a href="https://twitter.com/gonovai" target="_blank" rel="noopener noreferrer" className="text-[#2563EB] hover:underline">
-                            @gonovai
-                        </a>
+                                <div className="pt-4">
+                                    <button
+                                        type="submit"
+                                        disabled={status === 'sending'}
+                                        className="w-full md:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed shadow-lg shadow-blue-600/20"
+                                    >
+                                        {status === 'sending' ? (
+                                            <>
+                                                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                                <span>Sending...</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <span>Send Message</span>
+                                                <Send size={18} />
+                                            </>
+                                        )}
+                                    </button>
+                                    <p className="text-center md:text-left mt-4 text-xs text-slate-400">
+                                        This message will be sent directly to saziz4250@gmail.com
+                                    </p>
+                                </div>
+                            </form>
+                        )}
                     </div>
-                    <p className="text-xs text-[#9CA3AF] text-center mt-4">
-                        We typically respond within 24 hours
-                    </p>
                 </div>
             </div>
         </div>

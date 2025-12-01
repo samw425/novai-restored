@@ -1,7 +1,8 @@
 'use client';
 
 import { Article } from '@/types';
-import { Calendar, Star, ArrowRight, ShieldAlert } from 'lucide-react';
+import { ShieldAlert } from 'lucide-react';
+import { FeedCard } from '@/components/feed/FeedCard';
 
 interface MonthlyIntelBriefProps {
     articles: Article[];
@@ -45,50 +46,14 @@ export function MonthlyIntelBrief({ articles, fullView = false, category }: Mont
                         {fullView ? 'Intelligence Briefing Archive (30 Days)' : '30-Day Intel Brief'}
                     </h3>
                 </div>
-                <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
+                <span className="text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
                     {majorUpdates.length} REPORTS
                 </span>
             </div>
 
-            <div className="max-w-3xl mx-auto space-y-4">
-                {majorUpdates.map((article, index) => (
-                    <div key={article.id} className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md hover:border-blue-300 transition-all group relative overflow-hidden">
-                        {index < 3 && (
-                            <div className="absolute top-0 right-0 bg-blue-600 text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg z-10">
-                                TOP STORY
-                            </div>
-                        )}
-                        {/* LIVE Badge for recent items (< 24h) */}
-                        {new Date(article.publishedAt).getTime() > Date.now() - 24 * 60 * 60 * 1000 && (
-                            <div className={`absolute top-0 ${index < 3 ? 'right-20' : 'right-0'} bg-red-600 text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg z-10 flex items-center gap-1 animate-pulse`}>
-                                <span className="w-1.5 h-1.5 rounded-full bg-white"></span>
-                                LIVE
-                            </div>
-                        )}
-                        <div className="flex items-start justify-between mb-3">
-                            <div className="flex items-center gap-3">
-                                <Star className={`h-4 w-4 ${index < 3 ? 'text-yellow-500 fill-yellow-500' : 'text-gray-300'} flex-shrink-0`} />
-                                <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded uppercase tracking-wider">{article.source}</span>
-                                <span className="text-xs text-gray-400 font-mono">{new Date(article.publishedAt).toLocaleDateString()}</span>
-                            </div>
-                            <a
-                                href={article.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-gray-400 hover:text-blue-600 transition-colors"
-                            >
-                                <ArrowRight className="h-5 w-5" />
-                            </a>
-                        </div>
-
-                        <h4 className="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors leading-tight mb-3 pr-8">
-                            {article.title}
-                        </h4>
-
-                        <p className="text-sm text-gray-600 leading-relaxed line-clamp-2">
-                            {article.description}
-                        </p>
-                    </div>
+            <div className="max-w-3xl mx-auto space-y-6">
+                {majorUpdates.map((article) => (
+                    <FeedCard key={article.id} article={article} />
                 ))}
             </div>
         </div>
