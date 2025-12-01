@@ -10,58 +10,53 @@ export default function TermsOfService() {
                 icon={<FileText className="w-8 h-8 text-blue-600" />}
             />
             <div className="prose prose-slate max-w-none prose-headings:font-bold prose-h3:text-slate-900 prose-p:text-slate-600">
-                <p className="text-sm text-slate-500">Last updated: December 1, 2025</p>
+                <p className="text-sm text-slate-500 mb-8">Last updated: December 1, 2025</p>
 
-                <h3>1. Acceptance of Terms</h3>
+                <h3>1. Agreement to Terms</h3>
                 <p>
-                    By accessing or using the Novai Intelligence platform ("Service"), you agree to be bound by these Terms of Service ("Terms"). If you disagree with any part of the terms, you may not access the Service.
+                    By accessing or using the Novai Intelligence platform, you agree to be bound by these Terms of Service and our Privacy Policy. If you do not agree to these terms, you must not access or use our services.
                 </p>
 
-                <h3>2. Use License</h3>
+                <h3>2. Service Usage License</h3>
                 <p>
-                    Novai grants you a limited, non-exclusive, non-transferable, and revocable license to access and use the Service for your personal or internal business purposes, subject to these Terms.
+                    Novai Intelligence grants you a limited, non-exclusive, non-transferable license to access and use the platform for professional intelligence gathering and analysis purposes. This license is strictly conditioned on your compliance with these Terms.
                 </p>
-                <p>You agree not to:</p>
+                <p>You agree that you will not:</p>
                 <ul className="list-disc pl-5 space-y-2 text-slate-600">
-                    <li>Modify, copy, prepare derivative works of, decompile, or reverse engineer any materials and software contained on the Service.</li>
-                    <li>Remove any copyright or other proprietary notations from the materials.</li>
-                    <li>Transfer the materials to another person or "mirror" the materials on any other server.</li>
-                    <li>Use the Service for any illegal or unauthorized purpose.</li>
+                    <li>Use the platform for any illegal purpose or in violation of any local, state, national, or international law.</li>
+                    <li>Attempt to reverse engineer, decompile, or disassemble any aspect of the platform.</li>
+                    <li>Automate access to the platform (scraping, crawling) without explicit API authorization.</li>
+                    <li>Share your account credentials or access with unauthorized third parties.</li>
                 </ul>
 
-                <h3>3. Intellectual Property</h3>
+                <h3>3. Intellectual Property Rights</h3>
                 <p>
-                    The Service and its original content, features, and functionality are and will remain the exclusive property of Novai Intelligence and its licensors. The Service is protected by copyright, trademark, and other laws of both the United States and foreign countries.
+                    The Novai Intelligence platform, including its algorithms, data aggregation methods, design, and original content, is the exclusive property of Novai Intelligence. All trademarks, service marks, and trade names are proprietary to Novai Intelligence.
                 </p>
 
-                <h3>4. User Accounts</h3>
+                <h3>4. Data Accuracy & Reliability</h3>
                 <p>
-                    When you create an account with us, you must provide information that is accurate, complete, and current at all times. Failure to do so constitutes a breach of the Terms, which may result in immediate termination of your account on our Service.
+                    While we strive to provide accurate real-time intelligence, Novai Intelligence aggregates data from third-party sources. We do not guarantee the absolute accuracy, completeness, or timeliness of any specific data point. Decisions made based on our intelligence are the sole responsibility of the user.
                 </p>
 
-                <h3>5. Disclaimer of Warranties</h3>
+                <h3>5. Limitation of Liability</h3>
                 <p>
-                    The Service is provided on an "AS IS" and "AS AVAILABLE" basis. Novai Intelligence makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.
+                    To the maximum extent permitted by law, Novai Intelligence shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including loss of profits, data, or business opportunities, arising out of or in connection with your use of the platform.
                 </p>
 
-                <h3>6. Limitation of Liability</h3>
+                <h3>6. Termination</h3>
                 <p>
-                    In no event shall Novai Intelligence, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your access to or use of or inability to access or use the Service.
+                    We reserve the right to terminate or suspend your access to the platform immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms.
                 </p>
 
-                <h3>7. Governing Law</h3>
+                <h3>7. Changes to Terms</h3>
                 <p>
-                    These Terms shall be governed and construed in accordance with the laws of California, United States, without regard to its conflict of law provisions.
+                    We may modify these Terms at any time. We will provide notice of material changes. Your continued use of the platform following the posting of revised Terms means that you accept and agree to the changes.
                 </p>
 
-                <h3>8. Changes</h3>
+                <h3>8. Contact Information</h3>
                 <p>
-                    We reserve the right, at our sole discretion, to modify or replace these Terms at any time. By continuing to access or use our Service after those revisions become effective, you agree to be bound by the revised terms.
-                </p>
-
-                <h3>9. Contact Us</h3>
-                <p>
-                    If you have any questions about these Terms, please contact us at legal@novai.com.
+                    For legal inquiries or questions regarding these Terms, please contact our legal team at legal@novai.com.
                 </p>
             </div>
         </div>

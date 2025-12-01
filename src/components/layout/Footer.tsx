@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Activity, Lock, Globe, Github, Twitter, ArrowRight, Zap, MapPin, Mail } from 'lucide-react';
+import { Activity, Lock, Globe, ArrowRight, Zap, MapPin } from 'lucide-react';
 import { Logo } from '@/components/ui/Logo';
 
 export function Footer() {
@@ -17,14 +17,8 @@ export function Footer() {
                             <Logo theme="light" />
                         </div>
                         <p className="text-sm leading-relaxed text-slate-500 max-w-sm">
-                            AI-First Global Intelligence Platform. Synthesizing 70+ real-time data streams to empower decision-makers with global intelligence.
+                            Synthesizing 70+ real-time data streams to empower decision-makers with actionable insights.
                         </p>
-
-                        <div className="flex items-center gap-4 pt-2">
-                            <SocialLink href="#" icon={<Twitter className="w-4 h-4" />} label="Twitter" />
-                            <SocialLink href="#" icon={<Github className="w-4 h-4" />} label="GitHub" />
-                            <SocialLink href="mailto:contact@novai.com" icon={<Mail className="w-4 h-4" />} label="Email" />
-                        </div>
                     </div>
 
                     {/* Platform Links (Span 2) */}
@@ -119,14 +113,4 @@ function FooterLink({ href, children }: { href: string, children: React.ReactNod
     );
 }
 
-function SocialLink({ href, icon, label }: { href: string, icon: React.ReactNode, label: string }) {
-    return (
-        <a
-            href={href}
-            aria-label={label}
-            className="flex items-center justify-center w-8 h-8 rounded-lg bg-white border border-slate-200 text-slate-400 hover:text-blue-600 hover:border-blue-200 hover:bg-blue-50 transition-all duration-200"
-        >
-            {icon}
-        </a>
-    );
-}
+
