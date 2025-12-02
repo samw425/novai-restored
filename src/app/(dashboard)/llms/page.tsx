@@ -64,6 +64,7 @@ export default function LLMsPage() {
                     category="research"
                     title=""
                     description=""
+                    showHeader={false}
                 />
 
                 <div className="space-y-6">

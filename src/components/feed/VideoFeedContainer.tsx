@@ -19,11 +19,11 @@ export function VideoFeedContainer({ liveVideos, briefVideos }: VideoFeedContain
         <div className="space-y-8">
             {/* TOGGLE CONTROLS */}
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white p-2 rounded-xl border border-slate-200 shadow-sm">
-                <div className="flex items-center gap-1 p-1 bg-slate-100/50 rounded-lg w-full sm:w-auto">
+                <div className="flex items-center gap-1 p-1 bg-slate-100/50 rounded-lg w-full sm:w-auto relative z-10">
                     <button
                         onClick={() => setView('live')}
                         className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-2.5 rounded-md text-xs font-bold uppercase tracking-wider transition-all duration-200 ${view === 'live'
-                            ? 'bg-white text-blue-600 shadow-sm ring-1 ring-slate-200'
+                            ? 'bg-red-600 text-white shadow-md shadow-red-200'
                             : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
                             }`}
                     >
@@ -92,7 +92,7 @@ export function VideoFeedContainer({ liveVideos, briefVideos }: VideoFeedContain
                                     <h2 className="text-2xl font-black tracking-tight">Monthly Visual Briefing</h2>
                                 </div>
                                 <p className="text-slate-400 max-w-xl">
-                                    High-priority visual intelligence synthesized from the last 30 days. Critical viewing for decision-makers.
+                                    AI-synthesized collection of the highest-signal visual intelligence from the last 30 days. Ranked by impact score.
                                 </p>
                             </div>
                         </div>
@@ -100,6 +100,6 @@ export function VideoFeedContainer({ liveVideos, briefVideos }: VideoFeedContain
                     </div>
                 )}
             </div>
-        </div>
+        </div >
     );
 }

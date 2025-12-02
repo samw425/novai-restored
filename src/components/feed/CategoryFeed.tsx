@@ -12,9 +12,10 @@ interface CategoryFeedProps {
     description: string;
     insight?: string;
     icon?: React.ReactNode;
+    showHeader?: boolean;
 }
 
-export function CategoryFeed({ category, title, description, insight, icon }: CategoryFeedProps) {
+export function CategoryFeed({ category, title, description, insight, icon, showHeader = true }: CategoryFeedProps) {
     const [articles, setArticles] = useState<Article[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -38,12 +39,14 @@ export function CategoryFeed({ category, title, description, insight, icon }: Ca
 
     return (
         <div className="max-w-3xl mx-auto pb-12">
-            <PageHeader
-                title={title}
-                description={description}
-                insight={insight}
-                icon={icon}
-            />
+            {showHeader && (
+                <PageHeader
+                    title={title}
+                    description={description}
+                    insight={insight}
+                    icon={icon}
+                />
+            )}
 
             <div className="space-y-6">
                 {loading ? (
