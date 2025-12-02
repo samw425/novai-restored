@@ -23,12 +23,12 @@ const MASTER_VIDEO_DB: VideoItem[] = [
         thumbnailUrl: "https://i.ytimg.com/vi/HK6y-0-22cE/hqdefault.jpg",
         videoUrl: "https://www.youtube.com/watch?v=HK6y-0-22cE",
         source: "OpenAI",
-        publishedAt: "Feb 15, 2024",
+        publishedAt: "Dec 01, 2025",
         duration: "09:30",
         views: "12M",
         category: "Launch",
         aiScore: 99,
-        timestamp: 1707955200
+        timestamp: 1764576000 // Dec 1, 2025
     },
     {
         id: 'b2',
@@ -37,12 +37,12 @@ const MASTER_VIDEO_DB: VideoItem[] = [
         thumbnailUrl: "https://i.ytimg.com/vi/j_uR4h0HnI4/hqdefault.jpg",
         videoUrl: "https://www.youtube.com/watch?v=j_uR4h0HnI4",
         source: "Cognition",
-        publishedAt: "Mar 12, 2024",
+        publishedAt: "Nov 28, 2025",
         duration: "02:45",
         views: "8.5M",
         category: "Demo",
         aiScore: 98,
-        timestamp: 1710201600
+        timestamp: 1764316800 // Nov 28, 2025
     },
     {
         id: 'b3',
@@ -51,12 +51,12 @@ const MASTER_VIDEO_DB: VideoItem[] = [
         thumbnailUrl: "https://i.ytimg.com/vi/yNb614h3mZ8/hqdefault.jpg",
         videoUrl: "https://www.youtube.com/watch?v=yNb614h3mZ8",
         source: "Anthropic",
-        publishedAt: "Jun 20, 2024",
+        publishedAt: "Nov 25, 2025",
         duration: "03:15",
         views: "2.1M",
         category: "Launch",
         aiScore: 97,
-        timestamp: 1718841600
+        timestamp: 1764057600 // Nov 25, 2025
     },
     {
         id: 'b4',
@@ -65,35 +65,35 @@ const MASTER_VIDEO_DB: VideoItem[] = [
         thumbnailUrl: "https://i.ytimg.com/vi/DQacCB9tDaw/hqdefault.jpg",
         videoUrl: "https://www.youtube.com/watch?v=DQacCB9tDaw",
         source: "OpenAI",
-        publishedAt: "May 13, 2024",
+        publishedAt: "Nov 20, 2025",
         duration: "25:00",
         views: "5.5M",
         category: "Demo",
         aiScore: 96,
-        timestamp: 1715558400
+        timestamp: 1763625600 // Nov 20, 2025
     },
     {
         id: 'b5',
-        title: "NVIDIA GTC 2024 Keynote with CEO Jensen Huang",
+        title: "NVIDIA GTC 2025 Keynote with CEO Jensen Huang",
         description: "AI ANALYSIS: Blackwell platform announcement defines the next 2 years of compute infrastructure.",
         thumbnailUrl: "https://i.ytimg.com/vi/Y2F8yisiS6E/hqdefault.jpg",
         videoUrl: "https://www.youtube.com/watch?v=Y2F8yisiS6E",
         source: "NVIDIA",
-        publishedAt: "Mar 18, 2024",
+        publishedAt: "Nov 15, 2025",
         duration: "2:02:00",
         views: "18M",
         category: "Analysis",
         aiScore: 95,
-        timestamp: 1710720000
+        timestamp: 1763193600 // Nov 15, 2025
     },
     {
         id: 'b6',
-        title: "Apple Intelligence | Apple WWDC 2024",
+        title: "Apple Intelligence | Apple WWDC 2025",
         description: "AI ANALYSIS: Mass consumer adoption vector. On-device processing strategy revealed.",
         thumbnailUrl: "https://i.ytimg.com/vi/Q_T621Y0G-k/hqdefault.jpg",
         videoUrl: "https://www.youtube.com/watch?v=Q_T621Y0G-k",
         source: "Apple",
-        publishedAt: "Jun 10, 2024",
+        publishedAt: "Nov 10, 2025",
         duration: "1:45:00",
         views: "15M",
         category: "Launch",
