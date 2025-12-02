@@ -118,7 +118,7 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
         }
     }, [activeTab, category]);
 
-    const handleRefresh = () => {
+    const handleLoadNewArticles = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
         setNewCount(0);
         const refresh = async () => {
@@ -186,7 +186,7 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
                     <>
                         {newCount > 0 && (
                             <div
-                                onClick={handleRefresh}
+                                onClick={handleLoadNewArticles}
                                 className="sticky top-32 z-30 mx-auto w-fit mb-6 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg cursor-pointer hover:bg-blue-700 transition-all flex items-center gap-2 text-sm font-bold animate-in slide-in-from-top-2"
                             >
                                 <ArrowUp className="h-4 w-4" />
@@ -211,23 +211,52 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                             {/* Main Feed Column */}
                             <div className="lg:col-span-8 space-y-6">
-                                {articles.map((article) => (
-                                    <FeedCard key={article.id} article={article} />
-                                ))}
+                                {loading && articles.length === 0 ? (
+                                    // Skeleton Loaders
+                                    Array.from({ length: 5 }).map((_, i) => (
+                                        <div key={i} className="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm animate-pulse">
+                                            <div className="flex items-center gap-4 mb-6">
+                                                <div className="w-10 h-10 bg-slate-200 rounded-full"></div>
+                                                <div className="space-y-2">
+                                                    <div className="h-3 w-24 bg-slate-200 rounded"></div>
+                                                    <div className="h-2 w-16 bg-slate-200 rounded"></div>
+                                                </div>
+                                            </div>
+                                            <div className="h-8 w-3/4 bg-slate-200 rounded mb-4"></div>
+                                            <div className="h-4 w-full bg-slate-200 rounded mb-2"></div>
+                                            <div className="h-4 w-2/3 bg-slate-200 rounded"></div>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <>
+                                        {articles.map((article) => (
+                                            <FeedCard key={article.id} article={article} />
+                                        ))}
+
+                                        {/* Load More / End Sentinel */}
+                                        <div ref={ref} className="py-8 flex justify-center">
+                                            {loading ? ( // Changed from loadingMore to loading
+                                                <div className="flex items-center gap-2 text-slate-400 text-sm font-bold animate-pulse">
+                                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                                    DECRYPTING ARCHIVES...
+                                                </div>
+                                            ) : !hasMore ? (
+                                                <div className="flex items-center gap-2 text-slate-300 text-xs font-bold uppercase tracking-widest">
+                                                    <Shield className="w-4 h-4" />
+                                                    End of Intelligence Stream
+                                                </div>
+                                            ) : (
+                                                <div className="h-4"></div>
+                                            )}
+                                        </div>
+                                    </>
+                                )}
                             </div>
 
                             {/* Right Rail Column */}
                             <div className="hidden lg:block lg:col-span-4">
                                 <RightRail />
                             </div>
-                        </div>
-
-                        {/* Loading / End Sentinel */}
-                        <div ref={ref} className="py-12 flex justify-center w-full">
-                            {loading && <Loader2 className="h-8 w-8 animate-spin text-gray-400" />}
-                            {!hasMore && articles.length > 0 && (
-                                <p className="text-gray-400 text-sm font-medium">End of Stream.</p>
-                            )}
                         </div>
                     </>
                 )}
