@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Logo } from '@/components/ui/Logo';
-import { Calendar, Activity, Radio, FlaskConical, TrendingUp, Shield, Info, Hexagon, Bot, Scale, Wrench, Brain } from 'lucide-react';
+import { Calendar, Activity, Radio, FlaskConical, TrendingUp, Shield, Info, Hexagon, Bot, Scale, Wrench, Brain, Youtube } from 'lucide-react';
 import {
     Tooltip,
     TooltipContent,
@@ -35,6 +35,13 @@ const platformLinks = [
         icon: Activity,
         href: '/global-feed',
         tooltip: "Real-time stream of AI news from all sources."
+    },
+    {
+        id: 'videos',
+        label: 'Video Feed',
+        icon: Youtube,
+        href: '/videos',
+        tooltip: "Curated high-signal AI videos and demos."
     },
     {
         id: 'live-wire',
