@@ -14,8 +14,8 @@ export default function VideosPage() {
         <div className="space-y-6">
             <PageHeader
                 title="Video Intelligence"
-                description="VISUAL SIGNAL PROCESSING"
-                insight="Curated high-signal demonstrations, keynotes, and technical breakdowns from the AI frontier."
+                description="OPTICAL SIGNAL PROCESSING"
+                insight="Autonomous ingestion of high-value visual data: technical demonstrations, executive keynotes, and emergent capabilities."
                 icon={<Youtube className="w-8 h-8 text-red-600" />}
             />
 

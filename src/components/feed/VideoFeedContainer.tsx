@@ -23,8 +23,8 @@ export function VideoFeedContainer({ liveVideos, briefVideos }: VideoFeedContain
                     <button
                         onClick={() => setView('live')}
                         className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-2.5 rounded-md text-xs font-bold uppercase tracking-wider transition-all duration-200 ${view === 'live'
-                                ? 'bg-white text-blue-600 shadow-sm ring-1 ring-slate-200'
-                                : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
+                            ? 'bg-white text-blue-600 shadow-sm ring-1 ring-slate-200'
+                            : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
                             }`}
                     >
                         <Radio size={14} className={view === 'live' ? 'animate-pulse' : ''} />
@@ -33,8 +33,8 @@ export function VideoFeedContainer({ liveVideos, briefVideos }: VideoFeedContain
                     <button
                         onClick={() => setView('brief')}
                         className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-2.5 rounded-md text-xs font-bold uppercase tracking-wider transition-all duration-200 ${view === 'brief'
-                                ? 'bg-slate-900 text-white shadow-md'
-                                : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
+                            ? 'bg-slate-900 text-white shadow-md'
+                            : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
                             }`}
                     >
                         <ShieldAlert size={14} />
@@ -64,10 +64,10 @@ export function VideoFeedContainer({ liveVideos, briefVideos }: VideoFeedContain
                         <div className="flex items-center justify-between">
                             <div>
                                 <h2 className="text-lg font-black text-slate-900 uppercase tracking-widest leading-none">
-                                    Live Visual Intelligence
+                                    Live Feed: Visual Intelligence
                                 </h2>
                                 <p className="text-xs font-mono text-slate-500 uppercase tracking-wider mt-1">
-                                    Real-time Demos • Keynotes • Breaking News
+                                    Real-time Ingestion • Unfiltered Source Material
                                 </p>
                             </div>
                         </div>
@@ -76,7 +76,7 @@ export function VideoFeedContainer({ liveVideos, briefVideos }: VideoFeedContain
                         {/* Infinite Scroll Loader Mockup */}
                         <div className="py-12 flex flex-col items-center justify-center gap-3 text-slate-400">
                             <div className="w-6 h-6 border-2 border-slate-200 border-t-blue-500 rounded-full animate-spin"></div>
-                            <span className="text-xs font-mono uppercase tracking-widest">Loading more signals...</span>
+                            <span className="text-xs font-mono uppercase tracking-widest">Establishing secure connection...</span>
                         </div>
                     </div>
                 ) : (
@@ -89,10 +89,10 @@ export function VideoFeedContainer({ liveVideos, briefVideos }: VideoFeedContain
                             <div className="relative z-10">
                                 <div className="flex items-center gap-3 mb-2">
                                     <ShieldAlert className="text-amber-400" />
-                                    <h2 className="text-2xl font-black tracking-tight">30-Day Video Brief</h2>
+                                    <h2 className="text-2xl font-black tracking-tight">Monthly Visual Briefing</h2>
                                 </div>
                                 <p className="text-slate-400 max-w-xl">
-                                    The most critical visual updates from the last month. High-signal content only. If you only watch 3 videos this month, watch these.
+                                    High-priority visual intelligence synthesized from the last 30 days. Critical viewing for decision-makers.
                                 </p>
                             </div>
                         </div>
