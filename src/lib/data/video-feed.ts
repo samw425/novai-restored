@@ -8,7 +8,7 @@ export interface VideoItem {
     publishedAt: string;
     duration: string;
     views: string;
-    category: 'Interview' | 'Demo' | 'Analysis' | 'Documentary' | 'Live';
+    category: 'Interview' | 'Demo' | 'Analysis' | 'Documentary' | 'Live' | 'Safety';
 }
 
 export const BRIEF_VIDEOS: VideoItem[] = [
@@ -51,6 +51,42 @@ export const BRIEF_VIDEOS: VideoItem[] = [
 ];
 
 export const LIVE_VIDEOS: VideoItem[] = [
+    {
+        id: 's1',
+        title: "Anthropic CEO: AI could be on dangerous path",
+        description: "Dario Amodei discusses the existential risks of AI and the necessity of safety guardrails.",
+        thumbnailUrl: "https://i.ytimg.com/vi/aAPpQC-3EyE/hqdefault.jpg",
+        videoUrl: "https://www.youtube.com/watch?v=aAPpQC-3EyE",
+        source: "CBS News",
+        publishedAt: "2 weeks ago",
+        duration: "08:45",
+        views: "1.2M",
+        category: "Safety"
+    },
+    {
+        id: 's2',
+        title: "Geoffrey Hinton: Will AI outsmart human intelligence?",
+        description: "The 'Godfather of AI' issues a stark warning about the rapid evolution of artificial intelligence.",
+        thumbnailUrl: "https://i.ytimg.com/vi/IkdziSLYzHw/hqdefault.jpg",
+        videoUrl: "https://www.youtube.com/watch?v=IkdziSLYzHw",
+        source: "BBC News",
+        publishedAt: "1 month ago",
+        duration: "15:30",
+        views: "2.8M",
+        category: "Safety"
+    },
+    {
+        id: 's3',
+        title: "Anthropic's Core Views on AI Safety",
+        description: "Christopher Olah explains the technical approaches Anthropic is taking to align AI systems.",
+        thumbnailUrl: "https://i.ytimg.com/vi/r0N0Rx_0gXA/hqdefault.jpg",
+        videoUrl: "https://www.youtube.com/watch?v=r0N0Rx_0gXA",
+        source: "Anthropic",
+        publishedAt: "3 months ago",
+        duration: "45:00",
+        views: "500K",
+        category: "Safety"
+    },
     {
         id: 'l1',
         title: "Starship's Fourth Flight Test",
