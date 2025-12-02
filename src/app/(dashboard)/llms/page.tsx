@@ -25,17 +25,17 @@ export default function LLMsPage() {
                 icon={<Brain className="w-8 h-8 text-purple-600" />}
             />
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            <div className="space-y-16 mb-12">
+                {/* SECTION 1: LATEST LAB NEWS */}
                 <div className="space-y-6">
-                    <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-lg font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <div className="flex items-center justify-between mb-6 border-b border-slate-200 pb-4">
+                        <h2 className="text-xl font-black text-slate-900 uppercase tracking-wider flex items-center gap-3">
+                            <span className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse shadow-lg shadow-emerald-200"></span>
                             Latest Lab News
                         </h2>
-                        <span className="text-[10px] font-mono text-slate-400 uppercase">Real-time Ingestion</span>
+                        <span className="text-xs font-mono text-slate-500 uppercase bg-slate-100 px-3 py-1 rounded-full">Real-time Ingestion</span>
                     </div>
 
-                    {/* Using CategoryFeed with 'research' to pull real-time data from our ingestion engine */}
                     <CategoryFeed
                         category="research"
                         title=""
@@ -44,13 +44,14 @@ export default function LLMsPage() {
                     />
                 </div>
 
+                {/* SECTION 2: MODEL RELEASE VIDEOS */}
                 <div className="space-y-6">
-                    <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-lg font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                            <span className="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span>
+                    <div className="flex items-center justify-between mb-6 border-b border-slate-200 pb-4">
+                        <h2 className="text-xl font-black text-slate-900 uppercase tracking-wider flex items-center gap-3">
+                            <span className="w-3 h-3 rounded-full bg-purple-500 animate-pulse shadow-lg shadow-purple-200"></span>
                             Model Release Videos
                         </h2>
-                        <span className="text-[10px] font-mono text-slate-400 uppercase">Visual Intelligence</span>
+                        <span className="text-xs font-mono text-slate-500 uppercase bg-slate-100 px-3 py-1 rounded-full">Visual Intelligence</span>
                     </div>
                     <VideoFeed videos={llmVideos} />
                 </div>
