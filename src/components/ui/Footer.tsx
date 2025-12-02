@@ -42,9 +42,11 @@ export function Footer() {
                             <li><a href="/ai-news" className="text-slate-600 hover:text-blue-600 transition-colors">AI News</a></li>
                             <li><a href="/llms" className="text-slate-600 hover:text-blue-600 transition-colors">LLMs & Models</a></li>
                             <li><a href="/robotics" className="text-slate-600 hover:text-blue-600 transition-colors">Robotics</a></li>
+                            <li><a href="/us-intel" className="text-slate-600 hover:text-blue-600 transition-colors">US Intelligence</a></li>
                             <li><a href="/research" className="text-slate-600 hover:text-blue-600 transition-colors">Research</a></li>
                             <li><a href="/policy" className="text-slate-600 hover:text-blue-600 transition-colors">Policy & Regulation</a></li>
                             <li><a href="/cyber-intel" className="text-slate-600 hover:text-blue-600 transition-colors">Cyber Intelligence</a></li>
+                            <li><a href="/hacker-news" className="text-slate-600 hover:text-blue-600 transition-colors">Hacker News</a></li>
                         </ul>
                     </div>
 

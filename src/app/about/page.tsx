@@ -5,12 +5,14 @@ import { Shield, Database, Filter, Cpu, Map, ArrowRight } from 'lucide-react';
 export default function AboutPage() {
     return (
         <div className="min-h-screen bg-slate-50 pb-20">
-            <PageHeader
-                title="About Novai"
-                description="MISSION & METHODOLOGY"
-                insight="We are building the world's first autonomous open-source intelligence agency."
-                icon={<Shield className="w-8 h-8 text-blue-600" />}
-            />
+            <div className="max-w-4xl mx-auto px-6 pt-8">
+                <PageHeader
+                    title="About Novai"
+                    description="MISSION & METHODOLOGY"
+                    insight="We are building the world's first autonomous open-source intelligence agency."
+                    icon={<Shield className="w-8 h-8 text-blue-600" />}
+                />
+            </div>
 
             <div className="max-w-4xl mx-auto px-6 -mt-8 relative z-10 space-y-12">
 

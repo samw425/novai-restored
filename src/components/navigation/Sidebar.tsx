@@ -37,6 +37,13 @@ const platformLinks = [
         tooltip: "Real-time stream of AI news from all sources."
     },
     {
+        id: 'live-wire',
+        label: 'Live Wire',
+        icon: Radio,
+        href: '/live-wire',
+        tooltip: "Raw, unfiltered real-time intelligence stream."
+    },
+    {
         id: 'deep-signals',
         label: 'Deep Signals',
         icon: Radio,
@@ -54,6 +61,13 @@ const categoryLinks = [
         tooltip: "General AI news and developments."
     },
     {
+        id: 'llms',
+        label: 'LLMs & Models',
+        icon: Brain,
+        href: '/llms',
+        tooltip: "Large Language Models and architecture updates."
+    },
+    {
         id: 'robotics',
         label: 'Robotics',
         icon: Bot,
@@ -66,6 +80,13 @@ const categoryLinks = [
         icon: Shield,
         href: '/us-intel',
         tooltip: 'Domestic & Foreign Ops'
+    },
+    {
+        id: 'cyber-intel',
+        label: 'Cyber Intel',
+        icon: Shield,
+        href: '/cyber-intel',
+        tooltip: "Cybersecurity threats and defense intelligence."
     },
     {
         id: 'policy',
@@ -125,6 +146,13 @@ const knowledgeLinks = [
         icon: Shield,
         href: '/war-room',
         tooltip: "Risks, incidents, and policy heat you should watch."
+    },
+    {
+        id: 'about',
+        label: 'About Novai',
+        icon: Info,
+        href: '/about',
+        tooltip: "Mission, Methodology, and Roadmap."
     },
 ];
 

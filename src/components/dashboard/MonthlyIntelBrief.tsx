@@ -68,9 +68,9 @@ export function MonthlyIntelBrief({ articles, fullView = false, category }: Mont
                 </div>
             </div>
 
-            {/* Grid Content */}
+            {/* List Content */}
             <div className="p-6 bg-slate-50/30">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="max-w-3xl mx-auto space-y-6">
                     {majorUpdates.map((article) => (
                         <FeedCard key={article.id} article={article} />
                     ))}
