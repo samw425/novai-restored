@@ -6,6 +6,7 @@ import { Article } from '@/types';
 import { fetchArticles, checkNewArticles, fetchTopStories } from '@/lib/api';
 import { FeedCard } from './FeedCard';
 import { FeedHeader } from './FeedHeader';
+import { RightRail } from './RightRail';
 import { Loader2, ArrowUp, Shield } from 'lucide-react';
 
 import { LiveTicker } from '@/components/dashboard/LiveTicker';
@@ -206,11 +207,19 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
                             <div className="h-px flex-1 bg-gray-200"></div>
                         </div>
 
-                        {/* List Layout */}
-                        <div className="max-w-3xl mx-auto space-y-6">
-                            {articles.map((article) => (
-                                <FeedCard key={article.id} article={article} />
-                            ))}
+                        {/* Grid Layout: Feed + Right Rail */}
+                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                            {/* Main Feed Column */}
+                            <div className="lg:col-span-8 space-y-6">
+                                {articles.map((article) => (
+                                    <FeedCard key={article.id} article={article} />
+                                ))}
+                            </div>
+
+                            {/* Right Rail Column */}
+                            <div className="hidden lg:block lg:col-span-4">
+                                <RightRail />
+                            </div>
                         </div>
 
                         {/* Loading / End Sentinel */}
