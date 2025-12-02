@@ -38,23 +38,43 @@ export function MonthlyIntelBrief({ articles, fullView = false, category }: Mont
     }
 
     return (
-        <div className="mb-8">
-            <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-2">
-                    <ShieldAlert className="h-5 w-5 text-blue-600" />
-                    <h3 className="text-sm font-bold text-gray-900 uppercase tracking-widest">
-                        {fullView ? 'Intelligence Briefing Archive (30 Days)' : '30-Day Intel Brief'}
-                    </h3>
+        <div className="mb-8 bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+            {/* Official Header */}
+            <div className="bg-slate-50 border-b border-slate-200 px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-blue-100 rounded-lg">
+                        <ShieldAlert className="h-5 w-5 text-blue-700" />
+                    </div>
+                    <div>
+                        <h3 className="text-sm font-black text-slate-900 uppercase tracking-widest leading-none">
+                            Intelligence Briefing
+                        </h3>
+                        <p className="text-[10px] font-mono text-slate-500 uppercase tracking-wider mt-1">
+                            30-Day Retrospective • Top Priority Items
+                        </p>
+                    </div>
                 </div>
-                <span className="text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
-                    {majorUpdates.length} REPORTS
-                </span>
+
+                <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-md shadow-sm">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span className="text-[10px] font-bold text-slate-700 uppercase tracking-wide">
+                            {majorUpdates.length} Reports
+                        </span>
+                    </div>
+                    <div className="hidden sm:block text-[10px] font-mono text-slate-400">
+                        CONFIDENTIAL // NOFORN
+                    </div>
+                </div>
             </div>
 
-            <div className="max-w-3xl mx-auto space-y-6">
-                {majorUpdates.map((article) => (
-                    <FeedCard key={article.id} article={article} />
-                ))}
+            {/* Grid Content */}
+            <div className="p-6 bg-slate-50/30">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {majorUpdates.map((article) => (
+                        <FeedCard key={article.id} article={article} />
+                    ))}
+                </div>
             </div>
         </div>
     );
