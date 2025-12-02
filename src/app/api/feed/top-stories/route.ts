@@ -39,8 +39,8 @@ export async function GET(request: Request) {
         const feedPromises = feedsToFetch.map(async (source) => {
             try {
                 const feed = await parser.parseURL(source.url);
-                // Fetch up to 20 items to ensure we catch high-priority older items
-                return feed.items.slice(0, 20).map((item, index) => ({
+                // Fetch up to 50 items to ensure we catch high-priority older items
+                return feed.items.slice(0, 50).map((item, index) => ({
                     id: `${source.id}-${index}-${item.guid || item.link}`,
                     source: source.name,
                     title: item.title || 'Untitled',
@@ -84,9 +84,12 @@ export async function GET(request: Request) {
             let score = article.importanceScore;
 
             // Keyword Boost
+            // Keyword Boost - HEAVY weight for AI terms to meet user requirement
             const text = (article.title + ' ' + article.summary).toLowerCase();
-            if (text.includes('openai') || text.includes('gpt-5') || text.includes('gemini') || text.includes('claude')) score += 20;
-            if (text.includes('breakthrough') || text.includes('state of the art') || text.includes('sota')) score += 15;
+            if (text.includes('openai') || text.includes('gpt') || text.includes('gemini') || text.includes('claude') || text.includes('llama') || text.includes('anthropic') || text.includes('mistral')) score += 50;
+            if (text.includes('artificial intelligence') || text.includes(' ai ') || text.includes('llm') || text.includes('neural network')) score += 40;
+            if (text.includes('breakthrough') || text.includes('state of the art') || text.includes('sota')) score += 25;
+            if (text.includes('nvidia') || text.includes('h100') || text.includes('gpu')) score += 30;
 
             // Recency Penalty (slight, to allow older important stories to surface)
             // We don't want to penalize too much, otherwise it just becomes a "latest news" feed again.
