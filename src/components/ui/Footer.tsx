@@ -11,7 +11,7 @@ export function Footer() {
                     <div className="col-span-1 md:col-span-4 space-y-4 pr-8">
                         <Logo theme="light" />
                         <p className="text-slate-500 text-sm leading-relaxed max-w-sm">
-                            Synthesizing 70+ real-time intelligence streams to empower decision-makers with clear, actionable signal.
+                            The central nervous system for the post-AI world. Autonomously monitoring 70+ high-signal sources to provide a God's Eye View of the technological singularity.
                         </p>
                         <div className="flex items-center gap-2 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full w-fit border border-emerald-100">
                             <span className="relative flex h-2 w-2">
@@ -57,8 +57,9 @@ export function Footer() {
                             <li><a href="/tools" className="text-slate-600 hover:text-blue-600 transition-colors">AI Tools Database</a></li>
                             <li><a href="/lab-tools" className="text-slate-600 hover:text-blue-600 transition-colors">Lab Tools</a></li>
                             <li><a href="/trend-watch" className="text-slate-600 hover:text-blue-600 transition-colors">Trend Watch</a></li>
-                            <li><a href="/how-it-works" className="text-slate-600 hover:text-blue-600 transition-colors">How It Works</a></li>
-                            <li><a href="/mission" className="text-slate-600 hover:text-blue-600 transition-colors">Mission</a></li>
+                            <li><a href="/about" className="text-slate-600 hover:text-blue-600 transition-colors">How It Works</a></li>
+                            <li><a href="/about" className="text-slate-600 hover:text-blue-600 transition-colors">Mission</a></li>
+
                             <li><a href="/about" className="text-slate-600 hover:text-blue-600 transition-colors">About Novai</a></li>
                             <li><a href="/feedback" className="text-slate-600 hover:text-blue-600 transition-colors">Feedback</a></li>
                         </ul>
