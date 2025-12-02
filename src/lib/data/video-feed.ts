@@ -8,15 +8,15 @@ export interface VideoItem {
     publishedAt: string;
     duration: string;
     views: string;
-    category: 'Interview' | 'Demo' | 'Analysis' | 'Documentary';
+    category: 'Interview' | 'Demo' | 'Analysis' | 'Documentary' | 'Live';
 }
 
-export const VIDEO_FEED_DATA: VideoItem[] = [
+export const BRIEF_VIDEOS: VideoItem[] = [
     {
         id: 'v1',
         title: "Sam Altman: OpenAI's Roadmap to AGI (Exclusive)",
         description: "A deep dive into the future of GPT-5, agentic workflows, and the timeline for Artificial General Intelligence.",
-        thumbnailUrl: "https://i.ytimg.com/vi/jkq-9W8g_r4/maxresdefault.jpg", // Placeholder, will need real ones or generic
+        thumbnailUrl: "https://i.ytimg.com/vi/jkq-9W8g_r4/maxresdefault.jpg",
         videoUrl: "https://www.youtube.com/watch?v=jkq-9W8g_r4",
         source: "Y Combinator",
         publishedAt: "2025-11-28T10:00:00Z",
@@ -47,41 +47,80 @@ export const VIDEO_FEED_DATA: VideoItem[] = [
         duration: "1:30:00",
         views: "2.5M",
         category: "Analysis"
+    }
+];
+
+export const LIVE_VIDEOS: VideoItem[] = [
+    {
+        id: 'l1',
+        title: "LIVE: SpaceX Starship Launch & Booster Catch Attempt",
+        description: "Live coverage of the latest Starship integrated flight test from Starbase, Texas.",
+        thumbnailUrl: "https://i.ytimg.com/vi/921VbMMAw80/maxresdefault.jpg",
+        videoUrl: "https://www.youtube.com/watch?v=921VbMMAw80",
+        source: "SpaceX",
+        publishedAt: "LIVE NOW",
+        duration: "LIVE",
+        views: "450K Watching",
+        category: "Live"
     },
     {
-        id: 'v4',
-        title: "The State of AI Agents: From Chatbots to Workers",
-        description: "An analysis of how autonomous agents are transforming the workforce in 2025.",
-        thumbnailUrl: "https://i.ytimg.com/vi/aircAruvnKk/maxresdefault.jpg",
-        videoUrl: "https://www.youtube.com/watch?v=aircAruvnKk",
-        source: "3Blue1Brown",
-        publishedAt: "2025-12-01T08:00:00Z",
-        duration: "22:10",
-        views: "500K",
+        id: 'l2',
+        title: "Tesla Optimus Gen 3: First Public Walkthrough",
+        description: "Real-time demonstration of the new Optimus robot performing complex household tasks.",
+        thumbnailUrl: "https://i.ytimg.com/vi/gV6hP9wpMW8/maxresdefault.jpg",
+        videoUrl: "https://www.youtube.com/watch?v=gV6hP9wpMW8",
+        source: "Tesla",
+        publishedAt: "2 hours ago",
+        duration: "08:45",
+        views: "120K",
+        category: "Demo"
+    },
+    {
+        id: 'l3',
+        title: "Andrej Karpathy: LLM OS Explained",
+        description: "New educational breakdown on how Large Language Models are becoming operating systems.",
+        thumbnailUrl: "https://i.ytimg.com/vi/zjkBMFhNj_g/maxresdefault.jpg",
+        videoUrl: "https://www.youtube.com/watch?v=zjkBMFhNj_g",
+        source: "Andrej Karpathy",
+        publishedAt: "5 hours ago",
+        duration: "42:00",
+        views: "300K",
         category: "Analysis"
     },
     {
-        id: 'v5',
+        id: 'l4',
+        title: "Figure 02 Robot: Coffee Making Demo",
+        description: "End-to-end neural network control demonstration of Figure 02 making coffee.",
+        thumbnailUrl: "https://i.ytimg.com/vi/Sq1QZB5baNw/maxresdefault.jpg",
+        videoUrl: "https://www.youtube.com/watch?v=Sq1QZB5baNw",
+        source: "Figure",
+        publishedAt: "1 day ago",
+        duration: "02:30",
+        views: "1.1M",
+        category: "Demo"
+    },
+    {
+        id: 'l5',
+        title: "Microsoft Surface Event 2025: AI Integration",
+        description: "Full recap of the new AI features integrated into Windows and Surface devices.",
+        thumbnailUrl: "https://i.ytimg.com/vi/yH91h9tJ5p0/maxresdefault.jpg",
+        videoUrl: "https://www.youtube.com/watch?v=yH91h9tJ5p0",
+        source: "Microsoft",
+        publishedAt: "1 day ago",
+        duration: "15:00",
+        views: "600K",
+        category: "Analysis"
+    },
+    {
+        id: 'l6',
         title: "Boston Dynamics: Atlas 2.0 Parkour Update",
         description: "The latest robotics capabilities from Boston Dynamics showing unprecedented agility.",
         thumbnailUrl: "https://i.ytimg.com/vi/tF4DML7FIWk/maxresdefault.jpg",
         videoUrl: "https://www.youtube.com/watch?v=tF4DML7FIWk",
         source: "Boston Dynamics",
-        publishedAt: "2025-11-29T16:45:00Z",
+        publishedAt: "2 days ago",
         duration: "03:45",
         views: "5.1M",
         category: "Demo"
-    },
-    {
-        id: 'v6',
-        title: "Ilya Sutskever: What We Learned Building SSI",
-        description: "Safe Superintelligence Inc.'s co-founder discusses the safety challenges of superintelligence.",
-        thumbnailUrl: "https://i.ytimg.com/vi/SEkKLk2_Vjo/maxresdefault.jpg",
-        videoUrl: "https://www.youtube.com/watch?v=SEkKLk2_Vjo",
-        source: "Stanford Online",
-        publishedAt: "2025-11-20T11:00:00Z",
-        duration: "55:00",
-        views: "900K",
-        category: "Interview"
     }
 ];
