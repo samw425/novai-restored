@@ -3,6 +3,7 @@
 import React from 'react';
 import { VideoItem } from '@/lib/data/video-feed';
 import { Play, Clock, Eye, ExternalLink } from 'lucide-react';
+import { formatDistanceToNow } from 'date-fns';
 
 interface VideoFeedProps {
     videos: VideoItem[];
@@ -50,15 +51,21 @@ export function VideoFeed({ videos }: VideoFeedProps) {
                     <div className="p-4 flex flex-col flex-1">
                         <div className="flex items-center justify-between mb-2">
                             <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${video.category === 'Interview' ? 'bg-purple-50 text-purple-600 border-purple-100' :
-                                    video.category === 'Demo' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' :
-                                        'bg-blue-50 text-blue-600 border-blue-100'
+                                video.category === 'Demo' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' :
+                                    'bg-blue-50 text-blue-600 border-blue-100'
                                 }`}>
                                 {video.category}
                             </span>
-                            <span className="text-[10px] font-medium text-slate-400 flex items-center gap-1">
-                                <Eye size={10} />
-                                {video.views}
-                            </span>
+                            <div className="flex items-center gap-3">
+                                <span className="text-[10px] font-medium text-slate-500 flex items-center gap-1">
+                                    <Clock size={10} />
+                                    {formatDistanceToNow(video.timestamp, { addSuffix: true })}
+                                </span>
+                                <span className="text-[10px] font-medium text-slate-400 flex items-center gap-1">
+                                    <Eye size={10} />
+                                    {video.views}
+                                </span>
+                            </div>
                         </div>
 
                         <h3 className="text-sm font-bold text-slate-900 leading-tight mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
