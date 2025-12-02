@@ -29,7 +29,6 @@ export function Footer() {
                             <li><a href="/global-feed" className="text-slate-600 hover:text-blue-600 transition-colors">Global Feed</a></li>
                             <li><a href="/deep-signals" className="text-slate-600 hover:text-blue-600 transition-colors">Deep Signals</a></li>
                             <li><a href="/daily-snapshot" className="text-slate-600 hover:text-blue-600 transition-colors">Daily Snapshot</a></li>
-                            <li><a href="/live-wire" className="text-slate-600 hover:text-blue-600 transition-colors">Live Wire</a></li>
                             <li><a href="/war-room" className="text-slate-600 hover:text-blue-600 transition-colors">War Room</a></li>
                             <li><a href="/market-pulse" className="text-slate-600 hover:text-blue-600 transition-colors">Market Pulse</a></li>
                         </ul>
@@ -45,7 +44,6 @@ export function Footer() {
                             <li><a href="/us-intel" className="text-slate-600 hover:text-blue-600 transition-colors">US Intelligence</a></li>
                             <li><a href="/research" className="text-slate-600 hover:text-blue-600 transition-colors">Research</a></li>
                             <li><a href="/policy" className="text-slate-600 hover:text-blue-600 transition-colors">Policy & Regulation</a></li>
-                            <li><a href="/cyber-intel" className="text-slate-600 hover:text-blue-600 transition-colors">Cyber Intelligence</a></li>
                             <li><a href="/hacker-news" className="text-slate-600 hover:text-blue-600 transition-colors">Hacker News</a></li>
                         </ul>
                     </div>
@@ -59,6 +57,7 @@ export function Footer() {
                             <li><a href="/trend-watch" className="text-slate-600 hover:text-blue-600 transition-colors">Trend Watch</a></li>
                             <li><a href="/about" className="text-slate-600 hover:text-blue-600 transition-colors">How It Works</a></li>
                             <li><a href="/about" className="text-slate-600 hover:text-blue-600 transition-colors">Mission</a></li>
+                            <li><a href="/master-plan" className="text-slate-600 hover:text-blue-600 transition-colors">Master Plan</a></li>
 
                             <li><a href="/about" className="text-slate-600 hover:text-blue-600 transition-colors">About Novai</a></li>
                             <li><a href="/feedback" className="text-slate-600 hover:text-blue-600 transition-colors">Feedback</a></li>
