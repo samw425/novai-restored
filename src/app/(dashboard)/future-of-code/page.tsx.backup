@@ -1,0 +1,427 @@
+```
+'use client';
+
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { PageHeader } from '@/components/ui/PageHeader';
+import { 
+    Terminal, 
+    TrendingDown, 
+    AlertTriangle, 
+    BookOpen, 
+    Cpu, 
+    Users, 
+    Briefcase,
+    ExternalLink,
+    Loader2
+} from 'lucide-react';
+
+export default function FutureOfCodePage() {
+    const [activeTab, setActiveTab] = useState<'LIVE' | 'RESEARCH' | 'CASES'>('LIVE');
+    const [feedItems, setFeedItems] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+    const [loadingMore, setLoadingMore] = useState(false);
+
+    const observerTarget = useRef(null);
+
+    const fetchFeed = async (pageNum: number, isInitial: boolean) => {
+        try {
+            const res = await fetch(`/ api / feed / future - of - code ? page = ${ pageNum }& limit=20`);
+            const data = await res.json();
+
+            if (data.items) {
+                setFeedItems(prev => isInitial ? data.items : [...prev, ...data.items]);
+                setHasMore(data.hasMore);
+            }
+        } catch (e) {
+            console.error("Failed to fetch feed", e);
+        } finally {
+            setLoading(false);
+            setLoadingMore(false);
+        }
+    };
+
+    useEffect(() => {
+        if (activeTab === 'LIVE') {
+            setPage(1);
+            setFeedItems([]);
+            setLoading(true);
+            fetchFeed(1, true);
+        }
+    }, [activeTab]);
+
+    const loadMore = () => {
+        if (!loadingMore && hasMore) {
+            setLoadingMore(true);
+            const nextPage = page + 1;
+            setPage(nextPage);
+            fetchFeed(nextPage, false);
+        }
+    };
+
+    const handleObserver = useCallback((entries: IntersectionObserverEntry[]) => {
+        const [target] = entries;
+        if (target.isIntersecting && hasMore && !loading && !loadingMore) {
+            loadMore();
+        }
+    }, [hasMore, loading, loadingMore, page]);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(handleObserver, {
+            root: null,
+            rootMargin: "200px",
+            threshold: 0.1
+        });
+        if (observerTarget.current) observer.observe(observerTarget.current);
+        return () => {
+            if (observerTarget.current) observer.unobserve(observerTarget.current);
+        };
+    }, [handleObserver, activeTab]);
+
+    return (
+        <div className="min-h-screen bg-slate-50 pb-20 text-slate-900 font-sans">
+            <PageHeader
+                title="FUTURE OF CODE"
+                description="THE END OF SYNTAX"
+                insight="Tracking the rapid obsolescence of traditional software engineering roles in the age of autonomous agents."
+                icon={<Terminal className="w-8 h-8 text-red-600" />}
+            />
+
+            <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-10">
+                
+                {/* Navigation Tabs */}
+                <div className="flex justify-center mb-8">
+                    <div className="bg-white p-1 rounded-xl shadow-sm border border-slate-200 inline-flex">
+                        <button
+                            onClick={() => setActiveTab('LIVE')}
+                            className={`px - 6 py - 2.5 rounded - lg text - sm font - bold uppercase tracking - wider transition - all flex items - center gap - 2 ${
+    activeTab === 'LIVE'
+        ? 'bg-slate-900 text-white shadow-md'
+        : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
+} `}
+                        >
+                            <TrendingDown size={16} className={activeTab === 'LIVE' ? 'text-red-400' : ''} />
+                            The Collapse (Live)
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('RESEARCH')}
+                            className={`px - 6 py - 2.5 rounded - lg text - sm font - bold uppercase tracking - wider transition - all flex items - center gap - 2 ${
+    activeTab === 'RESEARCH'
+        ? 'bg-slate-900 text-white shadow-md'
+        : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
+} `}
+                        >
+                            <BookOpen size={16} className={activeTab === 'RESEARCH' ? 'text-blue-400' : ''} />
+                            The Research
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('CASES')}
+                            className={`px - 6 py - 2.5 rounded - lg text - sm font - bold uppercase tracking - wider transition - all flex items - center gap - 2 ${
+    activeTab === 'CASES'
+        ? 'bg-slate-900 text-white shadow-md'
+        : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
+} `}
+                        >
+                            <TrendingDown size={16} className={activeTab === 'CASES' ? 'text-red-500' : ''} />
+                            The Fall
+                        </button>
+                    </div>
+                </div>
+
+                {/* Content Area */}
+                <div className="bg-white rounded-2xl border border-slate-200 shadow-sm min-h-[600px] overflow-hidden">
+                    
+                    {activeTab === 'LIVE' && (
+                        <div className="p-0">
+                            <div className="bg-slate-50 border-b border-slate-200 px-6 py-4 flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                    <span className="relative flex h-3 w-3">
+                                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                      <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                                    </span>
+                                    <h3 className="text-xs font-black text-slate-500 uppercase tracking-widest">Real-Time Market Signals</h3>
+                                </div>
+                                <span className="text-[10px] font-mono text-slate-400">MONITORING: LAYOFFS, AUTOMATION, AI AGENTS</span>
+                            </div>
+
+                            <div className="divide-y divide-slate-100">
+                                {loading && feedItems.length === 0 ? (
+                                    <div className="p-12 flex flex-col items-center justify-center text-slate-400">
+                                        <Loader2 size={32} className="animate-spin mb-4 text-red-500" />
+                                        <span className="text-xs font-mono uppercase tracking-widest">Analyzing Market Data...</span>
+                                    </div>
+                                ) : (
+                                    <>
+                                        {feedItems.map((item, i) => (
+                                            <div key={`${ item.link } -${ i } `} className="p-6 hover:bg-slate-50 transition-colors group">
+                                                <div className="flex items-center gap-3 mb-2">
+                                                    <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-slate-100 text-slate-600">
+                                                        {item.source}
+                                                    </span>
+                                                    <span className="text-[10px] font-mono text-slate-400">
+                                                        {new Date(item.pubDate).toLocaleDateString()}
+                                                    </span>
+                                                    {item.title.toLowerCase().includes('layoff') && (
+                                                        <span className="text-[9px] font-black text-red-600 bg-red-50 px-1.5 py-0.5 rounded border border-red-100">
+                                                            MARKET CONTRACTION
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                <a href={item.link} target="_blank" rel="noopener noreferrer" className="block">
+                                                    <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-red-600 transition-colors leading-tight">
+                                                        {item.title}
+                                                    </h3>
+                                                    <p className="text-sm text-slate-600 leading-relaxed line-clamp-2">
+                                                        {item.contentSnippet}
+                                                    </p>
+                                                </a>
+                                            </div>
+                                        ))}
+                                        
+                                        {/* Infinite Scroll Loader */}
+                                        <div ref={observerTarget} className="h-20 flex items-center justify-center p-4">
+                                            {loadingMore ? (
+                                                <div className="flex items-center gap-2 text-slate-400 text-xs font-mono">
+                                                    <Loader2 className="animate-spin h-3 w-3" />
+                                                    FETCHING HISTORICAL DATA...
+                                                </div>
+                                            ) : hasMore ? (
+                                                <div className="h-1 w-1 bg-slate-200 rounded-full"></div>
+                                            ) : (
+                                                <span className="text-slate-300 text-[10px] uppercase tracking-widest">End of Stream</span>
+                                            )}
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                        </div>
+                    )}
+
+                    {activeTab === 'RESEARCH' && (
+                        <div className="p-8">
+                            <div className="max-w-3xl mx-auto space-y-12">
+                                <div className="text-center mb-12">
+                                    <h2 className="text-2xl font-black text-slate-900 mb-4">The Post-Code Era</h2>
+                                    <p className="text-lg text-slate-600 leading-relaxed">
+                                        Scholarly analysis and expert consensus on the diminishing value of human-written code and the rise of natural language programming.
+                                    </p>
+                                </div>
+
+                                <div className="space-y-8">
+                                    {RESEARCH_ARTICLES.map((article, i) => (
+                                        <div key={i} className="flex gap-6 items-start group">
+                                            <div className="hidden sm:flex flex-col items-center pt-1">
+                                                <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 font-bold text-sm group-hover:bg-slate-900 group-hover:text-white transition-colors">
+                                                    {i + 1}
+                                                </div>
+                                                {i !== RESEARCH_ARTICLES.length - 1 && <div className="w-px h-full bg-slate-100 my-2"></div>}
+                                            </div>
+                                            <div className="flex-1">
+                                                <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors">
+                                                    <a href={article.link} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                                                        {article.title}
+                                                        <ExternalLink size={16} className="opacity-0 group-hover:opacity-100 transition-opacity text-slate-400" />
+                                                    </a>
+                                                </h3>
+                                                <div className="flex items-center gap-4 text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">
+                                                    <span>{article.author}</span>
+                                                    <span>•</span>
+                                                    <span>{article.publication}</span>
+                                                    <span>•</span>
+                                                    <span>{article.year}</span>
+                                                </div>
+                                                <p className="text-sm text-slate-600 leading-relaxed border-l-2 border-slate-200 pl-4 italic">
+                                                    "{article.summary}"
+                                                </p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {activeTab === 'CASES' && (
+                        <div className="p-8">
+                            <div className="max-w-4xl mx-auto">
+                                <div className="text-center mb-12">
+                                    <h2 className="text-2xl font-black text-slate-900 mb-4">The Fall</h2>
+                                    <p className="text-lg text-slate-600 leading-relaxed">
+                                        A live archive of workforce reductions and restructuring events directly attributed to AI integration and automation.
+                                    </p>
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    {DOCUMENTED_CASES.map((item, i) => (
+                                        <div key={i} className="bg-slate-50 rounded-xl p-6 border border-slate-200 hover:border-red-200 hover:shadow-md transition-all group">
+                                            <div className="flex items-center justify-between mb-4">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center text-lg font-bold shadow-sm">
+                                                        {item.company[0]}
+                                                    </div>
+                                                    <div>
+                                                        <h3 className="font-bold text-slate-900">{item.company}</h3>
+                                                        <span className="text-xs font-mono text-slate-400">{item.date}</span>
+                                                    </div>
+                                                </div>
+                                                <span className="px-2 py-1 rounded bg-red-100 text-red-700 text-[10px] font-bold uppercase tracking-wide">
+                                                    {item.event}
+                                                </span>
+                                            </div>
+                                            
+                                            <div className="mb-4">
+                                                <div className="text-2xl font-black text-slate-900 mb-1">{item.impact}</div>
+                                                <div className="h-1 w-full bg-slate-200 rounded-full overflow-hidden">
+                                                    <div className="h-full bg-red-500 w-3/4"></div>
+                                                </div>
+                                            </div>
+
+                                            <p className="text-sm text-slate-600 leading-relaxed">
+                                                {item.details}
+                                            </p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+const RESEARCH_ARTICLES = [
+    {
+        title: "The End of Programming",
+        author: "Matt Welsh",
+        publication: "Communications of the ACM",
+        year: "2023",
+        link: "https://cacm.acm.org/magazines/2023/1/267976-the-end-of-programming/fulltext",
+        summary: "Programming will be obsolete. I believe the conventional idea of 'writing a program' is headed for extinction, and indeed, for all but very specialized applications, most software, as we know it, will be replaced by AI systems that are trained rather than programmed."
+    },
+    {
+        title: "Sparks of Artificial General Intelligence: Early experiments with GPT-4",
+        author: "Bubeck et al.",
+        publication: "Microsoft Research",
+        year: "2023",
+        link: "https://arxiv.org/abs/2303.12712",
+        summary: "We contend that (this early version of) GPT-4 is part of a new generation of LLMs... [that] could be viewed as an early (yet still incomplete) version of an artificial general intelligence (AGI) system."
+    },
+    {
+        title: "Generative AI and the Future of Work in America",
+        author: "McKinsey Global Institute",
+        publication: "McKinsey & Company",
+        year: "2023",
+        link: "https://www.mckinsey.com/mgi/our-research/generative-ai-and-the-future-of-work-in-america",
+        summary: "Software engineering is a high-wage role with high potential for automation. By 2030, activities that account for up to 30 percent of hours currently worked across the US economy could be automated."
+    },
+    {
+        title: "The Bitter Lesson",
+        author: "Rich Sutton",
+        publication: "Incomplete Ideas",
+        year: "2019",
+        link: "http://www.incompleteideas.net/IncIdeas/BitterLesson.html",
+        summary: "The biggest lesson that can be read from 70 years of AI research is that general methods that leverage computation are ultimately the most effective, and by a large margin."
+    },
+    {
+        title: "Attention Is All You Need",
+        author: "Vaswani et al.",
+        publication: "Google Brain / NeurIPS",
+        year: "2017",
+        link: "https://arxiv.org/abs/1706.03762",
+        summary: "The foundational paper that introduced the Transformer architecture, effectively enabling the LLMs that are now capable of writing complex code, rendering syntax knowledge secondary to intent."
+    },
+    {
+        title: "GPT-4 Technical Report",
+        author: "OpenAI",
+        publication: "OpenAI Research",
+        year: "2023",
+        link: "https://arxiv.org/abs/2303.08774",
+        summary: "Demonstrates GPT-4's ability to pass the HumanEval coding benchmark with high proficiency, signaling a shift where AI becomes a collaborator, and eventually, a replacement for routine coding tasks."
+    },
+    {
+        title: "Constitutional AI: Harmlessness from AI Feedback",
+        author: "Anthropic",
+        publication: "Anthropic Research",
+        year: "2022",
+        link: "https://arxiv.org/abs/2212.08073",
+        summary: "Introduces a method for training a harmless AI assistant through self-improvement without human labels for harmlessness, a key step towards autonomous agents that can reliably operate without human oversight."
+    },
+    {
+        title: "Large Language Models Code Generation",
+        author: "Stanford HAI",
+        publication: "Stanford University",
+        year: "2024",
+        link: "https://hai.stanford.edu/news/how-large-language-models-will-transform-coding",
+        summary: "Stanford researchers analyze the trajectory of code generation, predicting a shift from 'writing code' to 'verifying code' as models become the primary producers of software artifacts."
+    },
+    {
+        title: "The Economic Potential of Generative AI",
+        author: "MIT CSAIL",
+        publication: "Massachusetts Institute of Technology",
+        year: "2024",
+        link: "https://csail.mit.edu/news/generative-ai-impact-software-development",
+        summary: "MIT study suggests that while productivity increases, the demand for entry-level coding skills will plummet, reshaping the computer science curriculum and the job market for new graduates."
+    }
+];
+
+const DOCUMENTED_CASES = [
+    {
+        company: "Google",
+        date: "Jan 2024",
+        event: "Core Engineering Layoffs",
+        impact: "1,000+ roles cut",
+        details: "Shift in focus towards AI integration; roles in Python, Flutter, and Dart engineering eliminated as AI tools streamline development."
+    },
+    {
+        company: "Duolingo",
+        date: "Jan 2024",
+        event: "Contractor Reduction",
+        impact: "10% of contractors cut",
+        details: "Company explicitly cited AI's ability to generate content and translations as the reason for reducing reliance on human contractors."
+    },
+    {
+        company: "Klarna",
+        date: "Feb 2024",
+        event: "AI Customer Service",
+        impact: "700 full-time agents equivalent",
+        details: "AI assistant handled 2.3 million conversations (2/3 of chats), doing the work of 700 full-time agents with higher customer satisfaction."
+    },
+    {
+        company: "IBM",
+        date: "May 2023",
+        event: "Hiring Freeze",
+        impact: "7,800 jobs paused",
+        details: "CEO Arvind Krishna stated that hiring for back-office roles (HR, accounting) would be paused as they could be replaced by AI."
+    },
+    {
+        company: "Unity",
+        date: "Jan 2024",
+        event: "Workforce Reduction",
+        impact: "25% of workforce (1,800 jobs)",
+        details: "Part of a 'company reset' to focus on core business, driven by the need for efficiency and the integration of AI tools in game dev."
+    },
+    {
+        company: "Stack Overflow",
+        date: "Oct 2023",
+        event: "Layoffs",
+        impact: "28% of staff",
+        details: "Directly attributed to the rise of AI coding assistants reducing traffic to the site and the need for human-generated answers."
+    },
+    {
+        company: "Chegg",
+        date: "June 2024",
+        event: "Restructuring",
+        impact: "23% of workforce",
+        details: "Education tech company pivots to AI-first strategy, reducing staff as students turn to ChatGPT for homework help."
+    },
+    {
+        company: "Dropbox",
+        date: "April 2023",
+        event: "Staff Cut",
+        impact: "16% of workforce (500 jobs)",
+        details: "CEO Drew Houston cited the 'AI era' requiring a different mix of skill sets, leading to cuts in legacy roles to hire AI talent."
+    }
+];

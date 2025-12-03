@@ -1,455 +1,748 @@
 'use client';
 
-import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { PageHeader } from '@/components/ui/PageHeader';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import {
     Shield,
     Globe,
-    Lock,
-    AlertTriangle,
-    Radio,
-    Activity,
-    ExternalLink,
-    ArrowUpRight,
-    Loader2,
-    Eye,
-    Terminal,
     Zap,
-    Siren,
-    BookOpen,
+    Activity,
+    AlertTriangle,
     Search,
+    Filter,
     ChevronRight,
+    Lock,
+    Eye,
+    Radio,
     FileText,
-    History
+    Siren,
+    ArrowUpRight,
+    Terminal,
+    Cpu,
+    Target,
+    History,
+    BrainCircuit,
+    Loader2,
+    ShieldAlert
 } from 'lucide-react';
-import { AGENCY_PROFILES } from '@/lib/data/us-intel-profiles';
 import { MonthlyIntelBrief } from '@/components/dashboard/MonthlyIntelBrief';
-import { Article } from '@/types';
+
+// --- TYPES ---
+interface FeedItem {
+    title: string;
+    link: string;
+    pubDate: string;
+    contentSnippet: string;
+    source: 'CIA' | 'FBI' | 'NSA' | 'DOD' | 'State Dept' | 'White House' | 'Treasury' | 'DHS' | 'Unknown';
+    agency: string; // For display
+    novai_analysis?: string; // AI generated context
+}
+
+interface AgencyProfile {
+    name: string;
+    acronym: string;
+    founded: string;
+    headquarters: string;
+    director: string;
+    budget: string;
+    mission: string;
+    mission_url: string;
+    jurisdiction: string;
+    special_units: string[];
+    known_associates: string[];
+    focus: string[];
+    controversies: string[];
+    ai_stance?: string; // New field for AI positioning
+    active_directives?: { title: string; description: string; link?: string }[]; // New field for real links
+    classified_annex?: {
+        codename: string;
+        shadow_budget: string;
+        unacknowledged_projects: string[];
+        deep_fact: string;
+    };
+}
+
+// --- DATA ---
+const AGENCY_PROFILES: Record<string, AgencyProfile> = {
+    CIA: {
+        name: 'Central Intelligence Agency',
+        acronym: 'CIA',
+        founded: '1947',
+        headquarters: 'Langley, Virginia',
+        director: 'William J. Burns',
+        budget: '$32 Billion (Est.)',
+        mission: 'Collect, analyze, evaluate, and disseminate foreign intelligence to assist the President and senior US government policymakers in making decisions relating to national security.',
+        mission_url: 'https://www.cia.gov/about/mission-vision/',
+        jurisdiction: 'Foreign Intelligence (No domestic police powers)',
+        special_units: ['Special Activities Center (SAC)', 'Global Response Staff', 'Political Action Group'],
+        known_associates: ['MI6', 'DGSE', 'Mossad', 'ASIS'],
+        focus: ['Counterterrorism', 'Nonproliferation', 'Cyber Intelligence', 'Counterintelligence'],
+        controversies: ['MKUltra', 'Iran-Contra Affair', 'Enhanced Interrogation Techniques', 'Bay of Pigs'],
+        ai_stance: 'Aggressively integrating Generative AI for open-source intelligence (OSINT) analysis and pattern recognition in intercepted communications. Launching "Maisey" and other internal LLMs.',
+        active_directives: [
+            { title: 'China Mission Center', description: 'Dedicated unit to address the global challenge posed by the People\'s Republic of China.', link: 'https://www.cia.gov/stories/story/cia-announces-establishment-of-china-mission-center/' },
+            { title: 'Transnational Technology Risk', description: 'Focusing on emerging technologies like AI and biotech that threaten US interests.', link: 'https://www.cia.gov/about/organization/transnational-and-technology-mission-center/' }
+        ],
+        classified_annex: {
+            codename: 'JUPITER GARDEN',
+            shadow_budget: '$4.2B (Black)',
+            unacknowledged_projects: ['Sentient World Simulation', 'Project STARGATE II'],
+            deep_fact: 'The CIA operates a venture capital firm called In-Q-Tel to fund startups that develop technology useful to the intelligence community.'
+        }
+    },
+    FBI: {
+        name: 'Federal Bureau of Investigation',
+        acronym: 'FBI',
+        founded: '1908',
+        headquarters: 'Washington, D.C.',
+        director: 'Christopher Wray',
+        budget: '$10.8 Billion',
+        mission: 'Protect the American people and uphold the Constitution of the United States.',
+        mission_url: 'https://www.fbi.gov/about/mission',
+        jurisdiction: 'Domestic Intelligence & Federal Law Enforcement',
+        special_units: ['Hostage Rescue Team (HRT)', 'Cyber Action Team', 'Behavioral Analysis Unit'],
+        known_associates: ['DEA', 'ATF', 'DHS', 'Local Law Enforcement'],
+        focus: ['Terrorism', 'Counterintelligence', 'Cyber Crime', 'Public Corruption', 'Civil Rights'],
+        controversies: ['COINTELPRO', 'Ruby Ridge', 'Waco Siege', 'MLK Jr. Surveillance'],
+        ai_stance: 'Utilizing AI for facial recognition (NGI system) and predictive policing algorithms. Heavy focus on combating AI-facilitated cyber crime and deepfakes.',
+        active_directives: [
+            { title: 'Cyber Strategy', description: 'Imposing risk and consequences on cyber adversaries.', link: 'https://www.fbi.gov/investigate/cyber/national-cyber-strategy' },
+            { title: 'Election Security', description: 'Protecting democratic institutions from foreign influence.', link: 'https://www.fbi.gov/investigate/counterintelligence/foreign-influence/protected-voices' }
+        ],
+        classified_annex: {
+            codename: 'IRON LEDGER',
+            shadow_budget: '$1.1B (Black)',
+            unacknowledged_projects: ['Carnivore v2', 'Magic Lantern AI'],
+            deep_fact: 'The FBI maintains a massive biometric database called NGI (Next Generation Identification) which holds fingerprints, iris scans, and facial recognition data on millions of Americans.'
+        }
+    },
+    NSA: {
+        name: 'National Security Agency',
+        acronym: 'NSA',
+        founded: '1952',
+        headquarters: 'Fort Meade, Maryland',
+        director: 'Gen. Timothy Haugh',
+        budget: '$21 Billion (Est.)',
+        mission: 'Lead the US Government in cryptology that encompasses both Signals Intelligence (SIGINT) and Cybersecurity products and services.',
+        mission_url: 'https://www.nsa.gov/about/mission-values/',
+        jurisdiction: 'Signals Intelligence & Cybersecurity',
+        special_units: ['Tailored Access Operations (TAO)', 'Equation Group', 'Cryptanalysis Unit'],
+        known_associates: ['US Cyber Command', 'GCHQ', 'CSE', 'BND'],
+        focus: ['SIGINT', 'Cybersecurity', 'Cryptanalysis', 'Network Warfare'],
+        controversies: ['PRISM', 'Snowden Leaks', 'Warrantless Wiretapping', 'EternalBlue Exploit'],
+        ai_stance: 'Pioneering AI in cryptanalysis and code-breaking. Developing autonomous cyber-defense systems and AI-driven signal processing to handle exabytes of data.',
+        active_directives: [
+            { title: 'AI Security Center', description: 'New entity to oversee the development and integration of AI capabilities within US national security systems.', link: 'https://www.nsa.gov/Press-Room/Press-Releases-Statements/Press-Release-View/Article/3541142/nsa-announces-new-artificial-intelligence-security-center/' },
+            { title: 'Quantum Resistance', description: 'Preparing national security systems for the post-quantum cryptography era.', link: 'https://www.nsa.gov/Cybersecurity/Quantum-Key-Distribution-QKD-and-Quantum-Cryptography-QC/' }
+        ],
+        classified_annex: {
+            codename: 'STELLAR WIND',
+            shadow_budget: '$8.5B (Black)',
+            unacknowledged_projects: ['Utah Data Center Expansion', 'Quantum Decryption Initiative'],
+            deep_fact: 'The NSA is the largest employer of mathematicians in the United States.'
+        }
+    },
+    DOD: {
+        name: 'Department of Defense',
+        acronym: 'DOD',
+        founded: '1947',
+        headquarters: 'The Pentagon, Arlington, Virginia',
+        director: 'Lloyd Austin (SecDef)',
+        budget: '$842 Billion',
+        mission: 'Provide the military forces needed to deter war and ensure our nation\'s security.',
+        mission_url: 'https://www.defense.gov/Our-Story/',
+        jurisdiction: 'Military Operations & National Defense',
+        special_units: ['JSOC', 'DARPA', 'DIA', 'US Cyber Command'],
+        known_associates: ['NATO', 'Five Eyes', 'CIA', 'NSA'],
+        focus: ['Warfighting', 'Deterrence', 'Humanitarian Aid', 'Cyber Warfare'],
+        controversies: ['Abu Ghraib', 'Drone Program', 'Pentagon Papers', 'Budget Audits'],
+        ai_stance: 'Project Maven and Replicator Initiative: Integrating AI into weapons systems, logistics, and decision-making. Aiming for "algorithmic warfare" dominance.',
+        active_directives: [
+            { title: 'Replicator Initiative', description: 'Fielding thousands of autonomous systems across multiple domains.', link: 'https://www.defense.gov/News/News-Stories/Article/Article/3508936/hicks-announces-replicator-initiative-to-counter-chinas-military-buildup/' },
+            { title: 'JADC2', description: 'Joint All-Domain Command and Control: Connecting sensors from all branches into a unified network.', link: 'https://www.defense.gov/News/News-Stories/Article/Article/2964002/dod-releases-jadc2-implementation-plan/' }
+        ],
+        classified_annex: {
+            codename: 'SKYNET',
+            shadow_budget: '$50B+ (Black)',
+            unacknowledged_projects: ['TR-3B Aurora', 'Rod from God'],
+            deep_fact: 'The DOD is the world\'s largest employer, with over 2.8 million employees.'
+        }
+    },
+    DHS: {
+        name: 'Department of Homeland Security',
+        acronym: 'DHS',
+        founded: '2002',
+        headquarters: 'Washington, D.C.',
+        director: 'Alejandro Mayorkas',
+        budget: '$60 Billion',
+        mission: 'Secure the nation from the many threats we face. This requires the dedication of more than 240,000 employees in jobs that range from aviation and border security to emergency response.',
+        mission_url: 'https://www.dhs.gov/mission',
+        jurisdiction: 'Domestic Security, Borders, Cybersecurity',
+        special_units: ['Secret Service', 'ICE', 'TSA', 'CISA'],
+        known_associates: ['FBI', 'Local Police', 'FEMA', 'Coast Guard'],
+        focus: ['Counterterrorism', 'Border Security', 'Cybersecurity', 'Disaster Response'],
+        controversies: ['Border Policies', 'Surveillance', 'TSA Screening'],
+        ai_stance: 'Using AI for border surveillance, threat detection, and analyzing travel data. CISA leads the effort in protecting critical infrastructure from AI-enabled threats.',
+        active_directives: [
+            { title: 'AI Safety and Security Board', description: 'Advising on the safe and secure development and deployment of AI.', link: 'https://www.dhs.gov/news/2024/04/26/dhs-announces-establishment-artificial-intelligence-safety-and-security-board' },
+            { title: 'Border Security Tech', description: 'Deploying autonomous surveillance towers and AI-driven biometric processing.', link: 'https://www.dhs.gov/science-and-technology/border-security-technology' }
+        ],
+        classified_annex: {
+            codename: 'EAGLE EYE',
+            shadow_budget: '$2.5B (Black)',
+            unacknowledged_projects: ['Biometric Entry-Exit Program', 'Project HOSTILE INTENT'],
+            deep_fact: 'DHS was created in response to the September 11 attacks and absorbed 22 different federal agencies.'
+        }
+    },
+    'State Dept': {
+        name: 'Department of State',
+        acronym: 'DOS',
+        founded: '1789',
+        headquarters: 'Harry S Truman Building, D.C.',
+        director: 'Antony Blinken',
+        budget: '$58 Billion',
+        mission: 'Protect and promote U.S. security, prosperity, and democratic values and shape an international environment in which all Americans can thrive.',
+        mission_url: 'https://www.state.gov/about/',
+        jurisdiction: 'Foreign Policy & Diplomacy',
+        special_units: ['Diplomatic Security Service (DSS)', 'Bureau of Intelligence and Research (INR)'],
+        known_associates: ['CIA', 'USAID', 'Foreign Ministries'],
+        focus: ['Diplomacy', 'Foreign Aid', 'Counterterrorism', 'Human Rights'],
+        controversies: ['Benghazi Attack', 'Email Server Scandal', 'WikiLeaks Cables'],
+        ai_stance: 'Leveraging AI to analyze global sentiment, predict conflicts, and streamline visa processing. Establishing norms for responsible state behavior in cyberspace and AI.',
+        active_directives: [
+            { title: 'Enterprise AI Strategy', description: 'Harnessing AI to empower diplomacy and development.', link: 'https://www.state.gov/enterprise-artificial-intelligence-strategy-fy-2024-2025/' },
+            { title: 'Cyber Diplomacy', description: 'Building international coalitions to promote an open, interoperable, secure, and reliable cyberspace.', link: 'https://www.state.gov/bureaus-offices/deputy-secretary-of-state/bureau-of-cyberspace-and-digital-policy/' }
+        ],
+        classified_annex: {
+            codename: 'FOGGY BOTTOM',
+            shadow_budget: '$500M (Black)',
+            unacknowledged_projects: ['Embassy Spy Posts', 'Operation MOCKINGBIRD II'],
+            deep_fact: 'The Bureau of Intelligence and Research (INR) is the State Department\'s own intelligence agency and is one of the smallest but most respected members of the IC.'
+        }
+    },
+    'White House': {
+        name: 'The White House (NSC)',
+        acronym: 'NSC',
+        founded: '1947',
+        headquarters: '1600 Pennsylvania Avenue',
+        director: 'Jake Sullivan (NSA)',
+        budget: 'N/A (Executive Office)',
+        mission: 'Advise and assist the President on national security and foreign policies.',
+        mission_url: 'https://www.whitehouse.gov/nsc/',
+        jurisdiction: 'National Security Policy Coordination',
+        special_units: ['Situation Room', 'Cyber Directorate'],
+        known_associates: ['All Agencies'],
+        focus: ['Policy Strategy', 'Crisis Management', 'Interagency Coordination'],
+        controversies: ['Iran-Contra', 'Watergate'],
+        ai_stance: 'Setting the national agenda for AI safety, security, and trustworthiness. Issued Executive Order on Safe, Secure, and Trustworthy Artificial Intelligence.',
+        active_directives: [
+            { title: 'Executive Order on AI', description: 'Comprehensive directive to manage the risks of AI while seizing its promise.', link: 'https://www.whitehouse.gov/briefing-room/presidential-actions/2023/10/30/executive-order-on-the-safe-secure-and-trustworthy-development-and-use-of-artificial-intelligence/' }
+        ],
+        classified_annex: {
+            codename: 'CROWN JEWEL',
+            shadow_budget: 'Classified',
+            unacknowledged_projects: ['Presidential Emergency Action Documents (PEADs)'],
+            deep_fact: 'The National Security Council is the President\'s principal forum for considering national security and foreign policy matters.'
+        }
+    },
+    Treasury: {
+        name: 'Department of the Treasury',
+        acronym: 'USDT',
+        founded: '1789',
+        headquarters: 'Washington, D.C.',
+        director: 'Janet Yellen',
+        budget: '$16 Billion',
+        mission: 'Maintain a strong economy and create economic and job opportunities by promoting the conditions that enable economic growth and stability at home and abroad.',
+        mission_url: 'https://home.treasury.gov/about/role-of-the-treasury',
+        jurisdiction: 'Finance, Tax, Sanctions',
+        special_units: ['Office of Foreign Assets Control (OFAC)', 'FinCEN', 'IRS-CI'],
+        known_associates: ['Federal Reserve', 'IMF', 'World Bank'],
+        focus: ['Economic Sanctions', 'Terrorist Financing', 'Financial Intelligence'],
+        controversies: ['2008 Bailouts', 'Sanctions Evasion'],
+        ai_stance: 'Using AI to detect money laundering, fraud, and sanctions evasion. Monitoring the use of AI in the financial sector for stability risks.',
+        active_directives: [
+            { title: 'AI in Financial Services', description: 'Managing risks and opportunities of AI in the financial sector.', link: 'https://home.treasury.gov/news/press-releases/jy2429' }
+        ],
+        classified_annex: {
+            codename: 'GOLDEN KEY',
+            shadow_budget: '$300M (Black)',
+            unacknowledged_projects: ['SWIFT Surveillance', 'Operation CHOKEPOINT'],
+            deep_fact: 'The Treasury Department operates the Office of Terrorism and Financial Intelligence (TFI), which marshals the department\'s intelligence and enforcement functions.'
+        }
+    }
+};
 
 export default function USIntelPage() {
-    const [activeAgency, setActiveAgency] = useState('ALL');
+    const [activeAgency, setActiveAgency] = useState<string>('ALL');
     const [viewMode, setViewMode] = useState<'FEED' | 'DOSSIER'>('FEED');
-    const [feedItems, setFeedItems] = useState<any[]>([]);
-    const [topStories, setTopStories] = useState<Article[]>([]);
+    const [feedItems, setFeedItems] = useState<FeedItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [loadingMore, setLoadingMore] = useState(false);
-    const [page, setPage] = useState(1);
+    const [error, setError] = useState(false);
     const [hasMore, setHasMore] = useState(true);
-
+    const [page, setPage] = useState(1);
     const observerTarget = useRef(null);
 
-    // Reset state when agency changes
-    useEffect(() => {
-        setFeedItems([]);
-        setPage(1);
-        setHasMore(true);
-        setLoading(true);
-        fetchFeed(1, activeAgency, true);
-    }, [activeAgency]);
+    // Derived State for Brief
+    const topStories = feedItems.slice(0, 5);
+    const briefArticles = useMemo(() => topStories.map(item => ({
+        id: item.link,
+        title: item.title,
+        summary: item.contentSnippet,
+        source: item.source,
+        url: item.link,
+        publishedAt: item.pubDate,
+        category: 'intelligence' as const,
+        topicSlug: 'us-intel',
+        importanceScore: 10
+    })), [topStories]);
 
-    // Fetch Top Stories for 30-Day Brief (Once on mount)
-    useEffect(() => {
-        const fetchTopStories = async () => {
-            try {
-                const res = await fetch('/api/feed/top-stories?limit=10');
-                const data = await res.json();
-                if (data.articles) {
-                    setTopStories(data.articles);
-                }
-            } catch (error) {
-                console.error("Failed to fetch top stories", error);
-            }
-        };
-        fetchTopStories();
-    }, []);
+    // Fetch Feed
+    const fetchFeed = useCallback(async (pageNum: number, isInitial: boolean = false) => {
+        // Allow initial load to proceed even if loading is true (since we init loading to true)
+        if ((loading && !isInitial) || (!hasMore && !isInitial) || error) return;
 
-    const fetchFeed = async (pageNum: number, agency: string, isInitial: boolean) => {
         try {
-            const res = await fetch(`/api/us-intel?page=${pageNum}&limit=20&agency=${agency}`);
+            if (isInitial) {
+                setLoading(true);
+                setError(false);
+            } else {
+                setLoadingMore(true);
+            }
+
+            // In a real app, we would fetch from our API
+            // const res = await fetch(`/api/feed/us-intel?agency=${activeAgency}&page=${pageNum}`);
+            // const data = await res.json();
+
+            // For now, simulating fetch with the existing API route logic or mock
+            const res = await fetch(`/api/feed/us-intel?agency=${activeAgency}&page=${pageNum}&limit=15`);
+
+            if (!res.ok) throw new Error('Failed to fetch');
+
             const data = await res.json();
 
             if (data.items) {
-                setFeedItems(prev => isInitial ? data.items : [...prev, ...data.items]);
+                if (isInitial) {
+                    setFeedItems(data.items);
+                } else {
+                    setFeedItems(prev => [...prev, ...data.items]);
+                }
                 setHasMore(data.hasMore);
             }
-        } catch (e) {
-            console.error("Failed to fetch US Intel feed", e);
+        } catch (error) {
+            console.error('Failed to fetch intel feed:', error);
+            setHasMore(false);
+            setError(true);
         } finally {
             setLoading(false);
             setLoadingMore(false);
         }
-    };
+    }, [activeAgency, loading, hasMore, error]);
 
-    const loadMore = () => {
-        if (!loadingMore && hasMore) {
-            setLoadingMore(true);
-            const nextPage = page + 1;
-            setPage(nextPage);
-            fetchFeed(nextPage, activeAgency, false);
-        }
-    };
-
-    // Infinite Scroll Observer
-    const handleObserver = useCallback((entries: IntersectionObserverEntry[]) => {
-        const [target] = entries;
-        if (target.isIntersecting && hasMore && !loading && !loadingMore) {
-            loadMore();
-        }
-    }, [hasMore, loading, loadingMore, page, activeAgency]);
-
+    // Initial Load & Agency Change
+    // Initial Load & Agency Change
     useEffect(() => {
-        const observer = new IntersectionObserver(handleObserver, {
-            root: null,
-            rootMargin: "200px",
-            threshold: 0.1
-        });
-        if (observerTarget.current) observer.observe(observerTarget.current);
-        return () => {
-            if (observerTarget.current) observer.unobserve(observerTarget.current);
-        };
-    }, [handleObserver, viewMode]); // Re-attach when viewMode changes
+        setPage(1);
+        setFeedItems([]);
+        setHasMore(true);
+        setError(false);
+        fetchFeed(1, true);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [activeAgency]);
 
-    const activeProfile = activeAgency !== 'ALL' ? AGENCY_PROFILES[activeAgency as keyof typeof AGENCY_PROFILES] : null;
+    // Infinite Scroll
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            entries => {
+                if (entries[0].isIntersecting && hasMore && !loadingMore && !loading && !error) {
+                    setPage(prev => {
+                        const nextPage = prev + 1;
+                        fetchFeed(nextPage);
+                        return nextPage;
+                    });
+                }
+            },
+            { threshold: 1.0 }
+        );
+
+        if (observerTarget.current) {
+            observer.observe(observerTarget.current);
+        }
+
+        return () => observer.disconnect();
+    }, [hasMore, loadingMore, loading, error, fetchFeed]);
+
+    const activeProfile = activeAgency !== 'ALL' ? AGENCY_PROFILES[activeAgency] : null;
+
+    // Filter top stories for alerts (mock logic for now, or derived from feed)
+    const priorityAlerts = feedItems.filter(item =>
+        item.title.toLowerCase().includes('alert') ||
+        item.title.toLowerCase().includes('urgent') ||
+        item.title.toLowerCase().includes('breaking') ||
+        item.novai_analysis?.includes('CRITICAL')
+    ).slice(0, 5);
+
+
 
     return (
-        <div className="min-h-screen bg-slate-50 pb-20 text-slate-900 font-sans overflow-x-hidden">
-            <PageHeader
-                title="US INTEL"
-                description="DOMESTIC & FOREIGN OPERATIONS"
-                insight="Aggregating declassified directives, public hearings, and real-time press releases from the US Intelligence Community."
-                icon={<Shield className="w-8 h-8 text-blue-700" />}
-            />
+        <div className="min-h-screen bg-slate-50 pb-20">
+            <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-            <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-10">
+                {/* HEADER */}
+                <div className="mb-8">
+                    <h1 className="text-4xl font-black text-slate-900 tracking-tight mb-2 flex items-center gap-3">
+                        <Shield size={32} className="text-blue-600" />
+                        US INTELLIGENCE
+                    </h1>
+                    <p className="text-lg text-slate-600 max-w-2xl">
+                        Real-time aggregation of open-source intelligence and official reports from major US national security agencies.
+                    </p>
+                </div>
 
-                {/* COMMAND CENTER LAYOUT */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-12rem)] min-h-[800px]">
+                {/* AGENCY SELECTOR (Horizontal Segmented Control) */}
+                {/* MAIN CONTENT GRID - 3 Columns */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 min-h-[800px]">
 
-                    {/* LEFT PANEL: AGENCY SELECTOR & DOSSIER NAV */}
-                    <div className="lg:col-span-3 flex flex-col gap-4 h-full">
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4 flex-1 overflow-y-auto custom-scrollbar">
-                            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 px-2">Agencies</h3>
-                            <div className="space-y-1">
+                    {/* LEFT COLUMN: Agency Selector (Span 3) */}
+                    <div className="lg:col-span-3 flex flex-col gap-4">
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                            <div className="p-4 border-b border-slate-100 bg-slate-50">
+                                <h3 className="text-xs font-bold text-slate-900 uppercase tracking-widest flex items-center gap-2">
+                                    <Target size={14} className="text-blue-600" />
+                                    Select Agency
+                                </h3>
+                            </div>
+                            <div className="p-2 flex flex-col gap-1">
                                 <button
-                                    onClick={() => { setActiveAgency('ALL'); setViewMode('FEED'); }}
-                                    className={`w-full text-left px-4 py-3 rounded-lg text-sm font-bold transition-all flex items-center justify-between group ${activeAgency === 'ALL' ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-50'
+                                    onClick={() => setActiveAgency('ALL')}
+                                    className={`px-4 py-3 rounded-lg text-sm font-bold transition-all flex items-center justify-between group ${activeAgency === 'ALL'
+                                        ? 'bg-slate-900 text-white shadow-md'
+                                        : 'bg-transparent text-slate-600 hover:bg-slate-100'
                                         }`}
                                 >
                                     <div className="flex items-center gap-3">
-                                        <Globe size={16} className={activeAgency === 'ALL' ? 'text-blue-600' : 'text-slate-400'} />
+                                        <Globe size={16} className={activeAgency === 'ALL' ? 'text-blue-400' : 'text-slate-400 group-hover:text-slate-600'} />
                                         <span>Global Wire</span>
                                     </div>
                                     {activeAgency === 'ALL' && <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></div>}
                                 </button>
 
-                                <div className="h-px bg-slate-100 my-2 mx-2"></div>
+                                <div className="h-px bg-slate-100 my-1 mx-2"></div>
 
                                 {Object.entries(AGENCY_PROFILES).map(([key, profile]) => (
                                     <button
                                         key={key}
-                                        onClick={() => { setActiveAgency(key); setViewMode('DOSSIER'); }}
-                                        className={`w-full text-left px-4 py-3 rounded-lg text-sm font-bold transition-all flex items-center justify-between group ${activeAgency === key ? 'bg-slate-900 text-white shadow-md' : 'text-slate-600 hover:bg-slate-50'
+                                        onClick={() => setActiveAgency(key)}
+                                        className={`px-4 py-3 rounded-lg text-sm font-medium transition-all flex items-center justify-between group ${activeAgency === key
+                                            ? 'bg-slate-900 text-white shadow-md'
+                                            : 'bg-transparent text-slate-600 hover:bg-slate-100'
                                             }`}
                                     >
                                         <div className="flex items-center gap-3">
-                                            <span className={`font-mono text-xs ${activeAgency === key ? 'text-slate-400' : 'text-slate-300'}`}>{key}</span>
+                                            {/* We could add specific icons for agencies here if we had them */}
+                                            <Shield size={16} className={activeAgency === key ? 'text-blue-400' : 'text-slate-400 group-hover:text-slate-600'} />
                                             <span>{profile.name}</span>
                                         </div>
-                                        <ChevronRight size={14} className={`transition-transform ${activeAgency === key ? 'text-white translate-x-1' : 'text-slate-300 opacity-0 group-hover:opacity-100'}`} />
+                                        {activeAgency === key && <ChevronRight size={14} className="text-slate-400" />}
                                     </button>
                                 ))}
                             </div>
                         </div>
 
-                        {/* Quick Stats / Status */}
-                        <div className="bg-slate-900 rounded-xl border border-slate-800 p-5 text-white shadow-lg">
-                            <div className="flex items-center gap-2 mb-4">
-                                <Activity size={16} className="text-emerald-500" />
-                                <span className="text-xs font-bold uppercase tracking-widest text-slate-400">System Status</span>
-                            </div>
-                            <div className="space-y-3">
-                                <div className="flex justify-between text-xs font-mono">
-                                    <span className="text-slate-500">UPLINK</span>
-                                    <span className="text-emerald-500">ESTABLISHED</span>
-                                </div>
-                                <div className="flex justify-between text-xs font-mono">
-                                    <span className="text-slate-500">LATENCY</span>
-                                    <span className="text-emerald-500">24ms</span>
-                                </div>
-                                <div className="flex justify-between text-xs font-mono">
-                                    <span className="text-slate-500">ENCRYPTION</span>
-                                    <span className="text-emerald-500">AES-256</span>
+                        {/* Mobile Warning / Context */}
+                        <div className="bg-blue-50 rounded-xl border border-blue-100 p-4">
+                            <div className="flex items-start gap-3">
+                                <ShieldAlert size={16} className="text-blue-600 mt-0.5" />
+                                <div>
+                                    <h4 className="text-xs font-bold text-blue-900 mb-1">Data Classification: UNCLASSIFIED / OSINT</h4>
+                                    <p className="text-[10px] text-blue-700 leading-relaxed">
+                                        You are viewing a real-time aggregation of unclassified and declassified intelligence streams.
+                                    </p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    {/* CENTER PANEL: MAIN CONTENT (FEED OR DOSSIER) */}
-                    <div className="lg:col-span-6 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col h-full">
+                    {/* CENTER COLUMN: Main Feed / Dossier (Span 6) */}
+                    <div className="lg:col-span-6 flex flex-col gap-6">
+
+                        {/* Monthly Brief (Top Stories) - Only show on Global Wire */}
+                        {activeAgency === 'ALL' && topStories.length > 0 && (
+                            <div className="mb-6">
+                                {/* Brief removed as per user request until fixed */}
+                            </div>
+                        )}
 
                         {/* Content Header */}
-                        <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-white sticky top-0 z-20">
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm px-6 py-4 flex justify-between items-center sticky top-0 z-20">
                             <div className="flex items-center gap-3">
-                                {viewMode === 'FEED' ? (
+                                {activeAgency === 'ALL' ? (
                                     <div className="flex items-center gap-2">
                                         <Radio size={18} className="text-red-600 animate-pulse" />
                                         <h2 className="text-sm font-black text-slate-900 uppercase tracking-widest">
-                                            {activeAgency === 'ALL' ? 'Live Intelligence Stream' : `${activeAgency} Wire`}
+                                            Live Intelligence Stream
                                         </h2>
                                     </div>
                                 ) : (
                                     <div className="flex items-center gap-2">
-                                        <BookOpen size={18} className="text-blue-600" />
+                                        <FileText size={18} className="text-blue-600" />
                                         <h2 className="text-sm font-black text-slate-900 uppercase tracking-widest">
-                                            Agency Dossier: {activeAgency}
+                                            Agency Dossier & Live Feed: {AGENCY_PROFILES[activeAgency]?.name}
                                         </h2>
                                     </div>
                                 )}
                             </div>
-
-                            <div className="flex bg-slate-100 rounded-lg p-1">
-                                <button
-                                    onClick={() => setViewMode('FEED')}
-                                    className={`px-3 py-1 text-[10px] font-bold uppercase rounded transition-all ${viewMode === 'FEED' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
-                                >
-                                    Feed
-                                </button>
-                                <button
-                                    onClick={() => setViewMode('DOSSIER')}
-                                    disabled={activeAgency === 'ALL'}
-                                    className={`px-3 py-1 text-[10px] font-bold uppercase rounded transition-all ${viewMode === 'DOSSIER' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700 disabled:opacity-50'}`}
-                                >
-                                    Dossier
-                                </button>
+                            <div className="flex items-center gap-2 text-xs font-mono text-slate-400">
+                                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                LIVE
                             </div>
                         </div>
 
-                        {/* Scrollable Content Area */}
-                        <div className="flex-1 overflow-y-auto custom-scrollbar bg-slate-50/50 relative">
-                            {viewMode === 'FEED' ? (
-                                <div className="divide-y divide-slate-100">
-                                    {loading && feedItems.length === 0 ? (
-                                        <div className="p-12 flex flex-col items-center justify-center text-slate-400">
-                                            <Loader2 size={32} className="animate-spin mb-4 text-blue-500" />
-                                            <span className="text-xs font-mono uppercase tracking-widest">Decrypting Signals...</span>
-                                        </div>
-                                    ) : (
-                                        <>
-                                            {feedItems.map((item, index) => {
-                                                const isLive = (new Date().getTime() - new Date(item.pubDate).getTime()) < 2 * 60 * 60 * 1000;
-                                                return (
-                                                    <div key={`${item.link}-${index}`} className="p-6 hover:bg-white transition-colors group">
-                                                        <div className="flex items-center gap-2 mb-2">
-                                                            <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold uppercase border ${item.agency === 'FBI' ? 'bg-blue-50 text-blue-700 border-blue-100' :
-                                                                item.agency === 'CIA' ? 'bg-slate-100 text-slate-700 border-slate-200' :
-                                                                    item.agency === 'NSA' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' :
-                                                                        'bg-orange-50 text-orange-700 border-orange-100'
-                                                                }`}>
-                                                                {item.agency}
-                                                            </span>
-                                                            <span className="text-[10px] font-mono text-slate-400">
-                                                                {new Date(item.pubDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                                            </span>
-                                                            {isLive && <span className="text-[9px] font-bold text-red-600 bg-red-50 px-1.5 py-0.5 rounded border border-red-100 animate-pulse">LIVE</span>}
-                                                        </div>
-                                                        <a href={item.link} target="_blank" rel="noopener noreferrer" className="block group-hover:translate-x-1 transition-transform duration-300">
-                                                            <h3 className="text-sm font-bold text-slate-900 leading-snug mb-2 group-hover:text-blue-600">
-                                                                {item.title}
-                                                            </h3>
-                                                        </a>
-                                                        {item.novai_analysis && (
-                                                            <div className="mt-3 pl-3 border-l-2 border-blue-200">
-                                                                <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                                                                    {item.novai_analysis}
-                                                                </p>
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                );
-                                            })}
-
-                                            {/* Infinite Scroll Loader */}
-                                            <div ref={observerTarget} className="h-20 flex items-center justify-center p-4">
-                                                {loadingMore ? (
-                                                    <div className="flex items-center gap-2 text-slate-400 text-xs font-mono">
-                                                        <Loader2 className="animate-spin h-3 w-3" />
-                                                        FETCHING ARCHIVES...
-                                                    </div>
-                                                ) : hasMore ? (
-                                                    <div className="h-1 w-1 bg-slate-200 rounded-full"></div>
-                                                ) : (
-                                                    <span className="text-slate-300 text-[10px] uppercase tracking-widest">End of Stream</span>
-                                                )}
-                                            </div>
-                                        </>
-                                    )}
+                        {/* Dossier View (Shown ABOVE feed when agency selected) */}
+                        {activeAgency !== 'ALL' && activeProfile && (
+                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden mb-6">
+                                {/* Header */}
+                                <div className="bg-slate-900 px-6 py-4 flex justify-between items-center">
+                                    <div className="flex items-center gap-3">
+                                        <Shield className="text-white" size={20} />
+                                        <h2 className="text-white font-bold tracking-wider uppercase text-sm">
+                                            AGENCY DOSSIER: {activeProfile.name}
+                                        </h2>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <span className="px-2 py-0.5 rounded bg-blue-600 text-white text-[10px] font-bold">
+                                            {activeProfile.acronym}
+                                        </span>
+                                        <span className="px-2 py-0.5 rounded bg-emerald-500 text-white text-[10px] font-bold">
+                                            ACTIVE
+                                        </span>
+                                    </div>
                                 </div>
-                            ) : (
-                                activeProfile ? (
-                                    <div className="p-8 space-y-10">
-                                        {/* Dossier Header */}
-                                        <div className="border-b border-slate-200 pb-8">
-                                            <h1 className="text-4xl font-black text-slate-900 tracking-tight mb-2">{activeProfile.name}</h1>
-                                            <div className="flex flex-wrap gap-6 text-sm text-slate-500 font-medium">
-                                                <span className="flex items-center gap-2"><Globe size={14} /> HQ: {activeProfile.headquarters}</span>
-                                                <span className="flex items-center gap-2"><Activity size={14} /> Est: {activeProfile.founded}</span>
-                                                <span className="flex items-center gap-2 text-emerald-600 font-bold"><Zap size={14} /> Budget: {activeProfile.budget}</span>
+
+                                <div className="p-6">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                        {/* Left Column: Core Stats */}
+                                        <div className="space-y-6">
+                                            <div>
+                                                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Mission</h3>
+                                                <p className="text-sm text-slate-700 leading-relaxed font-medium">
+                                                    {activeProfile.mission}
+                                                </p>
+                                                <a href={activeProfile.mission_url} target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 hover:underline mt-1 inline-flex items-center gap-1">
+                                                    Official Mission Statement <ArrowUpRight size={10} />
+                                                </a>
+                                            </div>
+
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <div className="p-3 bg-slate-50 rounded-lg border border-slate-100">
+                                                    <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">Director</div>
+                                                    <div className="text-xs font-bold text-slate-900">{activeProfile.director}</div>
+                                                </div>
+                                                <div className="p-3 bg-slate-50 rounded-lg border border-slate-100">
+                                                    <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">Budget</div>
+                                                    <div className="text-xs font-bold text-slate-900 font-mono">{activeProfile.budget}</div>
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Jurisdiction</h3>
+                                                <div className="flex flex-wrap gap-2">
+                                                    <span className="px-2 py-1 bg-slate-100 text-slate-600 text-xs rounded-md font-medium border border-slate-200">
+                                                        {activeProfile.jurisdiction}
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
 
-                                        {/* Mission */}
-                                        <div>
-                                            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Mission Profile</h3>
-                                            <p className="text-xl font-serif text-slate-800 leading-relaxed italic">"{activeProfile.mission}"</p>
-                                            {activeProfile.mission_url && (
-                                                <a href={activeProfile.mission_url} target="_blank" className="text-xs text-blue-600 hover:underline mt-2 inline-flex items-center gap-1">
-                                                    Official Mission Statement <ExternalLink size={10} />
-                                                </a>
+                                        {/* Right Column: Deep Dive */}
+                                        <div className="space-y-6">
+                                            {/* AI Stance */}
+                                            {activeProfile.ai_stance && (
+                                                <div className="p-4 bg-blue-50 rounded-lg border border-blue-100">
+                                                    <h3 className="text-xs font-bold text-blue-800 uppercase tracking-widest mb-2 flex items-center gap-2">
+                                                        <BrainCircuit size={14} />
+                                                        AI Stance & Strategy
+                                                    </h3>
+                                                    <p className="text-xs text-blue-900 leading-relaxed">
+                                                        {activeProfile.ai_stance}
+                                                    </p>
+                                                </div>
+                                            )}
+
+                                            {/* Active Directives (Real Links) */}
+                                            {activeProfile.active_directives && (
+                                                <div>
+                                                    <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+                                                        <Target size={14} />
+                                                        Active Directives
+                                                    </h3>
+                                                    <div className="space-y-2">
+                                                        {activeProfile.active_directives.map((directive, idx) => (
+                                                            <a
+                                                                key={idx}
+                                                                href={directive.link}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="block p-3 bg-white rounded border border-slate-200 hover:border-blue-300 hover:shadow-sm transition-all group"
+                                                            >
+                                                                <div className="text-xs font-bold text-slate-900 group-hover:text-blue-600 flex items-center justify-between">
+                                                                    {directive.title}
+                                                                    <ArrowUpRight size={10} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                                                                </div>
+                                                                <div className="text-[10px] text-slate-500 mt-1 line-clamp-1">
+                                                                    {directive.description}
+                                                                </div>
+                                                            </a>
+                                                        ))}
+                                                    </div>
+                                                </div>
                                             )}
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        {activeAgency !== 'ALL' && activeProfile && (
+                            <div className="bg-amber-50 rounded-xl border border-amber-100 p-6 relative overflow-hidden">
+                                <div className="absolute -right-4 -top-4 text-amber-100 opacity-50 rotate-12">
+                                    <Lock size={100} />
+                                </div>
+                                <div className="flex items-center gap-2 mb-4 relative z-10">
+                                    <Lock size={18} className="text-amber-600" />
+                                    <h3 className="text-sm font-black text-amber-900 uppercase tracking-widest">Classified Annex</h3>
+                                </div>
 
-                                        {/* AI Stance */}
-                                        {(activeProfile as any).ai_stance && (
-                                            <div className="bg-blue-50 rounded-xl p-6 border border-blue-100">
-                                                <h3 className="text-xs font-bold text-blue-600 uppercase tracking-widest mb-3 flex items-center gap-2">
-                                                    <Terminal size={14} /> AI Doctrine
+                                <div className="grid grid-cols-2 gap-6 relative z-10">
+                                    <div>
+                                        <div className="text-[10px] font-bold text-amber-600 uppercase mb-1">Project Codename</div>
+                                        <div className="font-mono text-lg font-bold text-amber-900">{activeProfile.classified_annex?.codename}</div>
+                                    </div>
+                                    <div>
+                                        <div className="text-[10px] font-bold text-amber-600 uppercase mb-1">Black Budget Estimate</div>
+                                        <div className="font-mono text-lg font-bold text-amber-900">{activeProfile.classified_annex?.shadow_budget}</div>
+                                    </div>
+                                    <div className="col-span-2">
+                                        <div className="text-[10px] font-bold text-amber-600 uppercase mb-1">Unacknowledged Projects</div>
+                                        <div className="flex flex-wrap gap-2">
+                                            {activeProfile.classified_annex?.unacknowledged_projects.map(p => (
+                                                <span key={p} className="text-xs font-mono bg-amber-100 text-amber-800 px-2 py-1 rounded">
+                                                    {p}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Feed Content (ALWAYS SHOWN) */}
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden min-h-[600px]">
+                            {loading && feedItems.length === 0 ? (
+                                <div className="p-12 flex flex-col items-center justify-center text-slate-400">
+                                    <Loader2 size={32} className="animate-spin mb-4 text-blue-500" />
+                                    <span className="text-xs font-mono uppercase tracking-widest">Establishing Secure Uplink...</span>
+                                </div>
+                            ) : feedItems.length === 0 ? (
+                                <div className="p-12 flex flex-col items-center justify-center text-slate-400">
+                                    <AlertTriangle size={32} className="mb-4 text-amber-500" />
+                                    <span className="text-xs font-mono uppercase tracking-widest">No Intelligence Reports Available</span>
+                                </div>
+                            ) : (
+                                <div className="divide-y divide-slate-100">
+                                    {feedItems.map((item, i) => (
+                                        <div key={`${item.link}-${i}`} className="p-6 hover:bg-slate-50 transition-colors group">
+                                            <div className="flex items-center justify-between mb-2">
+                                                <div className="flex items-center gap-2">
+                                                    <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${item.source === 'CIA' ? 'bg-blue-100 text-blue-700' :
+                                                        item.source === 'FBI' ? 'bg-red-100 text-red-700' :
+                                                            item.source === 'NSA' ? 'bg-emerald-100 text-emerald-700' :
+                                                                item.source === 'DOD' ? 'bg-slate-800 text-white' :
+                                                                    'bg-slate-100 text-slate-600'
+                                                        }`}>
+                                                        {item.source}
+                                                    </span>
+                                                    <span className="text-[10px] font-mono text-slate-400">
+                                                        {new Date(item.pubDate).toLocaleTimeString()}
+                                                    </span>
+                                                </div>
+                                                {item.novai_analysis && (
+                                                    <span className="text-[9px] font-black text-purple-600 bg-purple-50 px-2 py-0.5 rounded border border-purple-100 flex items-center gap-1">
+                                                        <BrainCircuit size={10} />
+                                                        NOVAI ANALYSIS
+                                                    </span>
+                                                )}
+                                            </div>
+                                            <a href={item.link} target="_blank" rel="noopener noreferrer" className="block group-hover:translate-x-1 transition-transform duration-300">
+                                                <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors leading-tight">
+                                                    {item.title}
                                                 </h3>
-                                                <p className="text-sm text-slate-700 leading-relaxed font-medium">
-                                                    {(activeProfile as any).ai_stance}
+                                                <p className="text-sm text-slate-600 leading-relaxed line-clamp-2">
+                                                    {item.contentSnippet}
                                                 </p>
-                                            </div>
-                                        )}
-
-                                        {/* Active Directives (Full List) */}
-                                        {activeProfile.active_directives && activeProfile.active_directives.length > 0 && (
-                                            <div>
-                                                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-                                                    <FileText size={14} /> Active Directives
-                                                </h3>
-                                                <div className="grid grid-cols-1 gap-4">
-                                                    {activeProfile.active_directives.map((directive, i) => (
-                                                        <div key={i} className="bg-white border border-slate-200 rounded-lg p-4 shadow-sm">
-                                                            <h4 className="font-bold text-slate-900 text-sm mb-1">{directive.title}</h4>
-                                                            <p className="text-xs text-slate-600 leading-relaxed mb-2">{directive.description}</p>
-                                                            {directive.link && (
-                                                                <a href={directive.link} target="_blank" className="text-[10px] font-bold text-blue-600 hover:underline flex items-center gap-1">
-                                                                    Read Directive <ArrowUpRight size={10} />
-                                                                </a>
-                                                            )}
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        )}
-
-                                        {/* Controversies (Full List) */}
-                                        {activeProfile.controversies && activeProfile.controversies.length > 0 && (
-                                            <div>
-                                                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-                                                    <History size={14} /> Historical Controversies
-                                                </h3>
-                                                <div className="space-y-4">
-                                                    {activeProfile.controversies.map((item, i) => (
-                                                        <div key={i} className="pl-4 border-l-2 border-slate-200">
-                                                            <h4 className="font-bold text-slate-800 text-sm">{item.title}</h4>
-                                                            <p className="text-xs text-slate-500 leading-relaxed mt-1">{item.description}</p>
-                                                            {item.link && (
-                                                                <a href={item.link} target="_blank" className="text-[10px] text-slate-400 hover:text-slate-600 mt-1 block">
-                                                                    Source Reference &rarr;
-                                                                </a>
-                                                            )}
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        )}
-
-                                        {/* Classified Annex */}
-                                        {activeProfile.classified_annex && (
-                                            <div className="bg-slate-950 text-slate-300 rounded-xl p-6 border border-slate-800 relative overflow-hidden mt-8">
-                                                <div className="absolute top-0 right-0 p-3 opacity-20"><Lock size={48} /></div>
-                                                <h3 className="text-xs font-bold text-red-500 uppercase tracking-widest mb-4 flex items-center gap-2">
-                                                    <Lock size={14} /> Classified Annex // Level 5
-                                                </h3>
-                                                <div className="space-y-4 relative z-10">
-                                                    <div>
-                                                        <span className="text-[10px] uppercase text-slate-500">Codename</span>
-                                                        <div className="font-mono text-white font-bold">{activeProfile.classified_annex.codename}</div>
-                                                    </div>
-                                                    <div>
-                                                        <span className="text-[10px] uppercase text-slate-500">Shadow Budget</span>
-                                                        <div className="font-mono text-red-400 font-bold">{activeProfile.classified_annex.shadow_budget}</div>
-                                                    </div>
-                                                    <div>
-                                                        <span className="text-[10px] uppercase text-slate-500">Unacknowledged Projects</span>
-                                                        <ul className="list-disc list-inside text-xs font-mono text-slate-400 mt-1">
-                                                            {activeProfile.classified_annex.unacknowledged_projects.map((proj, i) => (
-                                                                <li key={i}>{proj}</li>
-                                                            ))}
-                                                        </ul>
-                                                    </div>
-                                                    <div>
-                                                        <span className="text-[10px] uppercase text-slate-500">Deep Fact</span>
-                                                        <p className="text-sm leading-relaxed mt-1 border-l-2 border-red-900 pl-3 italic opacity-80">
-                                                            "{activeProfile.classified_annex.deep_fact}"
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )}
+                                            </a>
+                                        </div>
+                                    ))}
+                                    {/* Infinite Scroll Target */}
+                                    <div ref={observerTarget} className="p-4 flex justify-center">
+                                        {loadingMore && <Loader2 size={20} className="animate-spin text-slate-400" />}
                                     </div>
-                                ) : (
-                                    <div className="flex flex-col items-center justify-center h-full text-slate-400">
-                                        <Shield size={48} className="mb-4 opacity-20" />
-                                        <p className="text-sm font-bold uppercase tracking-widest">Select an Agency Dossier</p>
-                                    </div>
-                                )
+                                </div>
                             )}
                         </div>
                     </div>
 
-                    {/* RIGHT PANEL: ALERTS & WATCHLIST */}
-                    <div className="lg:col-span-3 flex flex-col gap-4 h-full">
+                    {/* RIGHT COLUMN: Status & Brief (Span 3) */}
+                    <div className="lg:col-span-3 flex flex-col gap-6">
 
-                        {/* 30-Day Brief Integration */}
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex-1 flex flex-col">
-                            <div className="px-4 py-3 border-b border-slate-100 bg-slate-50">
-                                <h3 className="text-xs font-bold text-slate-900 uppercase tracking-widest flex items-center gap-2">
-                                    <FileText size={14} className="text-blue-600" />
-                                    30-Day Brief
-                                </h3>
+                        {/* System Status */}
+                        <div className="bg-slate-900 rounded-xl p-6 text-white shadow-lg">
+                            <div className="flex items-center gap-3 mb-6">
+                                <Activity className="text-emerald-400" size={20} />
+                                <span className="text-xs font-bold tracking-[0.2em] text-slate-400">SYSTEM STATUS</span>
                             </div>
-                            <div className="flex-1 overflow-y-auto custom-scrollbar p-2">
-                                <MonthlyIntelBrief articles={topStories} fullView={false} />
+
+                            <div className="space-y-4">
+                                <div className="flex justify-between items-center">
+                                    <span className="text-xs font-mono text-slate-400">UPLINK</span>
+                                    <span className="text-xs font-bold text-emerald-400">ESTABLISHED</span>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                    <span className="text-xs font-mono text-slate-400">UPDATE RATE</span>
+                                    <span className="text-xs font-bold text-emerald-400">REAL-TIME</span>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                    <span className="text-xs font-mono text-slate-400">ENCRYPTION</span>
+                                    <span className="text-xs font-bold text-emerald-400">AES-256</span>
+                                </div>
                             </div>
                         </div>
 
-                        {/* Priority Alerts */}
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 h-1/3 overflow-y-auto custom-scrollbar">
-                            <div className="flex items-center gap-2 mb-4">
-                                <Siren size={16} className="text-red-600 animate-pulse" />
-                                <h3 className="text-xs font-bold text-slate-900 uppercase tracking-widest">Priority Alerts</h3>
-                            </div>
-                            <div className="space-y-3">
-                                {feedItems.filter(i => (i.novai_analysis?.includes('CRITICAL') || i.title.includes('Urgent'))).slice(0, 5).map((alert, i) => (
-                                    <div key={i} className="p-3 bg-red-50 border border-red-100 rounded-lg">
-                                        <div className="flex items-center gap-2 mb-1.5">
-                                            <span className="w-1.5 h-1.5 bg-red-600 rounded-full animate-ping"></span>
-                                            <span className="text-[9px] font-black text-red-700 uppercase">Critical</span>
-                                        </div>
-                                        <p className="text-xs font-bold text-slate-800 leading-snug mb-2">{alert.title}</p>
-                                        <a href={alert.link} target="_blank" className="text-[10px] font-bold text-red-600 hover:underline flex items-center gap-1">
-                                            View Intel <ArrowUpRight size={10} />
+                        {/* Priority Alerts - Only show if there are alerts */}
+                        {priorityAlerts.length > 0 && (
+                            <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+                                <div className="flex items-center justify-between mb-4">
+                                    <h3 className="text-xs font-bold text-slate-900 uppercase tracking-widest flex items-center gap-2">
+                                        <Siren size={14} className="text-red-500" />
+                                        Priority Alerts
+                                    </h3>
+                                    <span className="text-[10px] font-bold bg-red-100 text-red-600 px-2 py-0.5 rounded">LIVE</span>
+                                </div>
+                                <div className="space-y-3">
+                                    {priorityAlerts.map((alert, idx) => (
+                                        <a key={idx} href={alert.link} target="_blank" rel="noopener noreferrer" className="block p-3 bg-red-50 rounded border border-red-100 hover:border-red-200 transition-colors">
+                                            <div className="text-xs font-bold text-red-800 mb-1 line-clamp-2">{alert.title}</div>
+                                            <div className="text-[10px] text-red-600 flex justify-between">
+                                                <span>{alert.agency}</span>
+                                                <span>{new Date(alert.pubDate).toLocaleTimeString()}</span>
+                                            </div>
                                         </a>
-                                    </div>
-                                ))}
-                                {feedItems.filter(i => (i.novai_analysis?.includes('CRITICAL') || i.title.includes('Urgent'))).length === 0 && (
-                                    <div className="text-center py-8 text-slate-400 text-xs">No Active Alerts</div>
-                                )}
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        )}
 
+                        {/* 30-Day Brief - Removed as per user request until fixed */}
+
+                    </div>
                 </div>
             </div>
         </div>
