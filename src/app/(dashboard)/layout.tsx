@@ -9,7 +9,12 @@ import { Footer } from '@/components/ui/Footer';
 
 import { NewsTicker } from '@/components/ui/NewsTicker';
 
+import { usePathname } from 'next/navigation';
+
 export default function DashboardLayout({ children }: { children: ReactNode }) {
+    const pathname = usePathname();
+    const isFullWidthPage = ['/war-room', '/us-intel'].includes(pathname);
+
     return (
         <div className="min-h-screen bg-[#F5F6F8] flex flex-col pt-10">
             <NewsTicker />
@@ -28,14 +33,16 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
                         <div className="grid grid-cols-12 gap-8 flex-1">
                             {/* Feed / Main */}
-                            <main className="col-span-12 lg:col-span-8">
+                            <main className={`col-span-12 ${isFullWidthPage ? '' : 'lg:col-span-8'}`}>
                                 {children}
                             </main>
 
                             {/* Right Rail */}
-                            <aside className="hidden lg:block col-span-4 sticky top-24 h-[calc(100vh-6rem)] overflow-y-auto no-scrollbar">
-                                <RightRail />
-                            </aside>
+                            {!isFullWidthPage && (
+                                <aside className="hidden lg:block col-span-4 sticky top-24 h-[calc(100vh-6rem)] overflow-y-auto no-scrollbar">
+                                    <RightRail />
+                                </aside>
+                            )}
                         </div>
                     </div>
 

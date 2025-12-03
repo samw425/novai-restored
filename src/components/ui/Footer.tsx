@@ -38,7 +38,7 @@ export function Footer() {
                     <div className="col-span-1 md:col-span-2 space-y-4">
                         <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Sectors</h4>
                         <ul className="space-y-2 text-sm font-medium">
-                            <li><a href="/ai-news" className="text-slate-600 hover:text-blue-600 transition-colors">AI News</a></li>
+                            <li><a href="/ai" className="text-slate-600 hover:text-blue-600 transition-colors">AI News</a></li>
                             <li><a href="/llms" className="text-slate-600 hover:text-blue-600 transition-colors">LLMs & Models</a></li>
                             <li><a href="/robotics" className="text-slate-600 hover:text-blue-600 transition-colors">Robotics</a></li>
                             <li><a href="/us-intel" className="text-slate-600 hover:text-blue-600 transition-colors">US Intelligence</a></li>

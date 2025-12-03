@@ -1,10 +1,12 @@
 'use client';
 
-import { TrendingUp } from 'lucide-react';
+import { TrendingUp, Activity } from 'lucide-react';
 import { MarketGraph } from '@/components/market/MarketGraph';
 import { StockTable } from '@/components/market/StockTable';
 import { FeedContainer } from '@/components/feed/FeedContainer';
 import { PageHeader } from '@/components/ui/PageHeader';
+
+import { MarketHeatMap } from '@/components/market/MarketHeatMap';
 
 export default function MarketPage() {
     // Mock Data for "Wow" Factor (since we don't have a paid stock API)
@@ -58,10 +60,22 @@ export default function MarketPage() {
                 </div>
             </div>
 
+            {/* Heat Map Section */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden p-6">
+                <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                        <Activity className="h-5 w-5 text-blue-600" />
+                        Sector Heat Map
+                    </h2>
+                    <span className="text-xs font-mono text-gray-400">REAL-TIME INTENSITY</span>
+                </div>
+                <MarketHeatMap stocks={aiStocks} />
+            </div>
+
             {/* Main Stock Table */}
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
                 <div className="p-6 border-b border-gray-100 flex justify-between items-center">
-                    <h2 className="text-lg font-bold text-gray-900">Top AI & Robotics Movers</h2>
+                    <h2 className="text-lg font-bold text-gray-900">Detailed Metrics</h2>
                     <span className="text-xs font-mono text-emerald-600 animate-pulse">● LIVE DATA</span>
                 </div>
                 <StockTable stocks={aiStocks as any} />

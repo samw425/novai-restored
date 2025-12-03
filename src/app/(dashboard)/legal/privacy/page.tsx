@@ -52,7 +52,7 @@ export default function PrivacyPolicy() {
 
                 <h3>6. Your Rights</h3>
                 <p>
-                    Depending on your jurisdiction, you may have the right to access, correct, or delete your personal data. To exercise these rights, please contact our Data Protection Officer at privacy@novai.com.
+                    Depending on your jurisdiction, you may have the right to access, correct, or delete your personal data. To exercise these rights, please contact our Data Protection Officer at saziz4250@gmail.com.
                 </p>
 
                 <h3>7. Changes to This Policy</h3>
@@ -68,7 +68,7 @@ export default function PrivacyPolicy() {
                     <br />
                     Los Angeles, CA
                     <br />
-                    Email: privacy@novai.com
+                    Email: saziz4250@gmail.com
                 </p>
             </div>
         </div>
