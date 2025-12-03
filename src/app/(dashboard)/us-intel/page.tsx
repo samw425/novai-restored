@@ -18,114 +18,98 @@ import {
     Siren,
     BookOpen,
     Search,
-    ChevronRight
+    ChevronRight,
+    FileText,
+    History
 } from 'lucide-react';
 import { AGENCY_PROFILES } from '@/lib/data/us-intel-profiles';
-
-// Define the shape of our expanded agency profile
-interface AgencyProfile {
-    name: string;
-    acronym: string;
-    founded: string;
-    headquarters: string;
-    director: string;
-    budget: string;
-    mission: string;
-    mission_url?: string;
-    jurisdiction: string;
-    special_units: string[];
-    known_associates: string[];
-    active_directives: {
-        title: string;
-        description: string;
-        link?: string;
-    }[];
-    budget_history?: { year: number; amount: string; }[];
-    controversies: {
-        title: string;
-        description: string;
-        link?: string;
-    }[];
-    key_personnel: {
-        name: string;
-        role: string;
-        notes?: string;
-    }[];
-    classified_annex?: {
-        codename: string;
-        shadow_budget: string;
-        unacknowledged_projects: string[];
-        deep_fact: string;
-        source_url?: string;
-    };
-}
+import { MonthlyIntelBrief } from '@/components/dashboard/MonthlyIntelBrief';
+import { Article } from '@/types';
 
 export default function USIntelPage() {
     const [activeAgency, setActiveAgency] = useState('ALL');
     const [viewMode, setViewMode] = useState<'FEED' | 'DOSSIER'>('FEED');
     const [feedItems, setFeedItems] = useState<any[]>([]);
+    const [topStories, setTopStories] = useState<Article[]>([]);
     const [loading, setLoading] = useState(true);
-    const [isScanning, setIsScanning] = useState(false);
+    const [loadingMore, setLoadingMore] = useState(false);
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
 
-    // Infinite Scroll State
-    const [visibleCount, setVisibleCount] = useState(20);
     const observerTarget = useRef(null);
 
-    // Initial Fetch
-    const fetchFeed = async () => {
-        setIsScanning(true);
+    // Reset state when agency changes
+    useEffect(() => {
+        setFeedItems([]);
+        setPage(1);
+        setHasMore(true);
+        setLoading(true);
+        fetchFeed(1, activeAgency, true);
+    }, [activeAgency]);
+
+    // Fetch Top Stories for 30-Day Brief (Once on mount)
+    useEffect(() => {
+        const fetchTopStories = async () => {
+            try {
+                const res = await fetch('/api/feed/top-stories?limit=10');
+                const data = await res.json();
+                if (data.articles) {
+                    setTopStories(data.articles);
+                }
+            } catch (error) {
+                console.error("Failed to fetch top stories", error);
+            }
+        };
+        fetchTopStories();
+    }, []);
+
+    const fetchFeed = async (pageNum: number, agency: string, isInitial: boolean) => {
         try {
-            const res = await fetch('/api/us-intel');
+            const res = await fetch(`/api/us-intel?page=${pageNum}&limit=20&agency=${agency}`);
             const data = await res.json();
+
             if (data.items) {
-                setFeedItems(prev => {
-                    if (prev.length === 0) return data.items;
-                    const newItems = data.items.filter((newItem: any) => !prev.some(existing => existing.link === newItem.link));
-                    return [...newItems, ...prev];
-                });
+                setFeedItems(prev => isInitial ? data.items : [...prev, ...data.items]);
+                setHasMore(data.hasMore);
             }
         } catch (e) {
             console.error("Failed to fetch US Intel feed", e);
         } finally {
             setLoading(false);
-            setTimeout(() => setIsScanning(false), 1500);
+            setLoadingMore(false);
         }
     };
 
-    useEffect(() => {
-        fetchFeed();
-        const interval = setInterval(fetchFeed, 30000);
-        return () => clearInterval(interval);
-    }, []);
+    const loadMore = () => {
+        if (!loadingMore && hasMore) {
+            setLoadingMore(true);
+            const nextPage = page + 1;
+            setPage(nextPage);
+            fetchFeed(nextPage, activeAgency, false);
+        }
+    };
 
     // Infinite Scroll Observer
     const handleObserver = useCallback((entries: IntersectionObserverEntry[]) => {
         const [target] = entries;
-        if (target.isIntersecting) {
-            setVisibleCount(prev => prev + 20);
+        if (target.isIntersecting && hasMore && !loading && !loadingMore) {
+            loadMore();
         }
-    }, []);
+    }, [hasMore, loading, loadingMore, page, activeAgency]);
 
     useEffect(() => {
         const observer = new IntersectionObserver(handleObserver, {
             root: null,
-            rootMargin: "100px",
+            rootMargin: "200px",
             threshold: 0.1
         });
         if (observerTarget.current) observer.observe(observerTarget.current);
         return () => {
             if (observerTarget.current) observer.unobserve(observerTarget.current);
         };
-    }, [handleObserver]);
+    }, [handleObserver, viewMode]); // Re-attach when viewMode changes
 
     const activeProfile = activeAgency !== 'ALL' ? AGENCY_PROFILES[activeAgency as keyof typeof AGENCY_PROFILES] : null;
-
-    const filteredItems = feedItems.filter(item => {
-        if (activeAgency === 'ALL') return true;
-        return item.agency === activeAgency;
-    });
-
-    const visibleItems = filteredItems.slice(0, visibleCount);
 
     return (
         <div className="min-h-screen bg-slate-50 pb-20 text-slate-900 font-sans overflow-x-hidden">
@@ -251,15 +235,15 @@ export default function USIntelPage() {
                                         </div>
                                     ) : (
                                         <>
-                                            {visibleItems.map((item, index) => {
+                                            {feedItems.map((item, index) => {
                                                 const isLive = (new Date().getTime() - new Date(item.pubDate).getTime()) < 2 * 60 * 60 * 1000;
                                                 return (
                                                     <div key={`${item.link}-${index}`} className="p-6 hover:bg-white transition-colors group">
                                                         <div className="flex items-center gap-2 mb-2">
                                                             <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold uppercase border ${item.agency === 'FBI' ? 'bg-blue-50 text-blue-700 border-blue-100' :
-                                                                    item.agency === 'CIA' ? 'bg-slate-100 text-slate-700 border-slate-200' :
-                                                                        item.agency === 'NSA' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' :
-                                                                            'bg-orange-50 text-orange-700 border-orange-100'
+                                                                item.agency === 'CIA' ? 'bg-slate-100 text-slate-700 border-slate-200' :
+                                                                    item.agency === 'NSA' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' :
+                                                                        'bg-orange-50 text-orange-700 border-orange-100'
                                                                 }`}>
                                                                 {item.agency}
                                                             </span>
@@ -283,8 +267,19 @@ export default function USIntelPage() {
                                                     </div>
                                                 );
                                             })}
-                                            <div ref={observerTarget} className="h-20 flex items-center justify-center">
-                                                {loading ? <Loader2 className="animate-spin text-slate-300" /> : <div className="h-1 w-1 bg-slate-200 rounded-full"></div>}
+
+                                            {/* Infinite Scroll Loader */}
+                                            <div ref={observerTarget} className="h-20 flex items-center justify-center p-4">
+                                                {loadingMore ? (
+                                                    <div className="flex items-center gap-2 text-slate-400 text-xs font-mono">
+                                                        <Loader2 className="animate-spin h-3 w-3" />
+                                                        FETCHING ARCHIVES...
+                                                    </div>
+                                                ) : hasMore ? (
+                                                    <div className="h-1 w-1 bg-slate-200 rounded-full"></div>
+                                                ) : (
+                                                    <span className="text-slate-300 text-[10px] uppercase tracking-widest">End of Stream</span>
+                                                )}
                                             </div>
                                         </>
                                     )}
@@ -306,6 +301,11 @@ export default function USIntelPage() {
                                         <div>
                                             <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Mission Profile</h3>
                                             <p className="text-xl font-serif text-slate-800 leading-relaxed italic">"{activeProfile.mission}"</p>
+                                            {activeProfile.mission_url && (
+                                                <a href={activeProfile.mission_url} target="_blank" className="text-xs text-blue-600 hover:underline mt-2 inline-flex items-center gap-1">
+                                                    Official Mission Statement <ExternalLink size={10} />
+                                                </a>
+                                            )}
                                         </div>
 
                                         {/* AI Stance */}
@@ -320,9 +320,53 @@ export default function USIntelPage() {
                                             </div>
                                         )}
 
+                                        {/* Active Directives (Full List) */}
+                                        {activeProfile.active_directives && activeProfile.active_directives.length > 0 && (
+                                            <div>
+                                                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                                                    <FileText size={14} /> Active Directives
+                                                </h3>
+                                                <div className="grid grid-cols-1 gap-4">
+                                                    {activeProfile.active_directives.map((directive, i) => (
+                                                        <div key={i} className="bg-white border border-slate-200 rounded-lg p-4 shadow-sm">
+                                                            <h4 className="font-bold text-slate-900 text-sm mb-1">{directive.title}</h4>
+                                                            <p className="text-xs text-slate-600 leading-relaxed mb-2">{directive.description}</p>
+                                                            {directive.link && (
+                                                                <a href={directive.link} target="_blank" className="text-[10px] font-bold text-blue-600 hover:underline flex items-center gap-1">
+                                                                    Read Directive <ArrowUpRight size={10} />
+                                                                </a>
+                                                            )}
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* Controversies (Full List) */}
+                                        {activeProfile.controversies && activeProfile.controversies.length > 0 && (
+                                            <div>
+                                                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                                                    <History size={14} /> Historical Controversies
+                                                </h3>
+                                                <div className="space-y-4">
+                                                    {activeProfile.controversies.map((item, i) => (
+                                                        <div key={i} className="pl-4 border-l-2 border-slate-200">
+                                                            <h4 className="font-bold text-slate-800 text-sm">{item.title}</h4>
+                                                            <p className="text-xs text-slate-500 leading-relaxed mt-1">{item.description}</p>
+                                                            {item.link && (
+                                                                <a href={item.link} target="_blank" className="text-[10px] text-slate-400 hover:text-slate-600 mt-1 block">
+                                                                    Source Reference &rarr;
+                                                                </a>
+                                                            )}
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+
                                         {/* Classified Annex */}
                                         {activeProfile.classified_annex && (
-                                            <div className="bg-slate-950 text-slate-300 rounded-xl p-6 border border-slate-800 relative overflow-hidden">
+                                            <div className="bg-slate-950 text-slate-300 rounded-xl p-6 border border-slate-800 relative overflow-hidden mt-8">
                                                 <div className="absolute top-0 right-0 p-3 opacity-20"><Lock size={48} /></div>
                                                 <h3 className="text-xs font-bold text-red-500 uppercase tracking-widest mb-4 flex items-center gap-2">
                                                     <Lock size={14} /> Classified Annex // Level 5
@@ -335,6 +379,14 @@ export default function USIntelPage() {
                                                     <div>
                                                         <span className="text-[10px] uppercase text-slate-500">Shadow Budget</span>
                                                         <div className="font-mono text-red-400 font-bold">{activeProfile.classified_annex.shadow_budget}</div>
+                                                    </div>
+                                                    <div>
+                                                        <span className="text-[10px] uppercase text-slate-500">Unacknowledged Projects</span>
+                                                        <ul className="list-disc list-inside text-xs font-mono text-slate-400 mt-1">
+                                                            {activeProfile.classified_annex.unacknowledged_projects.map((proj, i) => (
+                                                                <li key={i}>{proj}</li>
+                                                            ))}
+                                                        </ul>
                                                     </div>
                                                     <div>
                                                         <span className="text-[10px] uppercase text-slate-500">Deep Fact</span>
@@ -358,8 +410,22 @@ export default function USIntelPage() {
 
                     {/* RIGHT PANEL: ALERTS & WATCHLIST */}
                     <div className="lg:col-span-3 flex flex-col gap-4 h-full">
+
+                        {/* 30-Day Brief Integration */}
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex-1 flex flex-col">
+                            <div className="px-4 py-3 border-b border-slate-100 bg-slate-50">
+                                <h3 className="text-xs font-bold text-slate-900 uppercase tracking-widest flex items-center gap-2">
+                                    <FileText size={14} className="text-blue-600" />
+                                    30-Day Brief
+                                </h3>
+                            </div>
+                            <div className="flex-1 overflow-y-auto custom-scrollbar p-2">
+                                <MonthlyIntelBrief articles={topStories} fullView={false} />
+                            </div>
+                        </div>
+
                         {/* Priority Alerts */}
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 flex-1 overflow-y-auto custom-scrollbar">
+                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 h-1/3 overflow-y-auto custom-scrollbar">
                             <div className="flex items-center gap-2 mb-4">
                                 <Siren size={16} className="text-red-600 animate-pulse" />
                                 <h3 className="text-xs font-bold text-slate-900 uppercase tracking-widest">Priority Alerts</h3>
@@ -382,27 +448,6 @@ export default function USIntelPage() {
                                 )}
                             </div>
                         </div>
-
-                        {/* Watchlist */}
-                        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 h-1/3 overflow-y-auto custom-scrollbar">
-                            <div className="flex items-center gap-2 mb-4">
-                                <Eye size={16} className="text-blue-600" />
-                                <h3 className="text-xs font-bold text-slate-900 uppercase tracking-widest">HVT Watchlist</h3>
-                            </div>
-                            <div className="space-y-3">
-                                {feedItems.filter(i => i.title.includes('Wanted') || i.title.includes('Fugitive')).slice(0, 3).map((item, i) => (
-                                    <div key={i} className="flex items-start gap-2 border-b border-slate-50 pb-2 last:border-0">
-                                        <div className="w-8 h-8 bg-slate-100 rounded flex items-center justify-center shrink-0">
-                                            <Globe size={14} className="text-slate-400" />
-                                        </div>
-                                        <div>
-                                            <div className="text-xs font-bold text-slate-900 line-clamp-2">{item.title}</div>
-                                            <div className="text-[9px] text-red-500 font-mono uppercase mt-0.5">Active Pursuit</div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
                     </div>
 
                 </div>
@@ -410,4 +455,3 @@ export default function USIntelPage() {
         </div>
     );
 }
-

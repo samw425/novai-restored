@@ -111,7 +111,7 @@ export default function WarRoomPage() {
                     </div>
                     <div className="overflow-hidden whitespace-nowrap w-full relative">
                         {/* Slowed down ticker for readability */}
-                        <div className="inline-block animate-marquee pl-4 text-sm font-mono text-green-400 py-2" style={{ animationDuration: '60s' }}>
+                        <div className="inline-block animate-marquee pl-4 text-sm font-mono text-green-400 py-2" style={{ animationDuration: '30s' }}>
                             {incidents.length > 0 ? incidents.map(i => (
                                 <span key={i.id} className="mr-16 inline-flex items-center gap-2">
                                     <span className={i.severity === 'critical' ? 'text-red-500 font-bold' : 'text-green-500'}>
@@ -134,10 +134,19 @@ export default function WarRoomPage() {
                 <div className="flex-1">
                     <PageHeader
                         title="War Room"
-                        description="THE SITUATION ROOM"
-                        insight="Direct uplink to global intelligence streams. Tracking kinetic warfare, naval maneuvers, and cyber threats in real-time."
+                        description="GLOBAL SITUATION ROOM // LIVE"
+                        insight="Direct uplink to global intelligence streams. Tracking kinetic warfare, naval maneuvers, and cyber threats in real-time. Data is aggregated from classified and open sources."
                         icon={<Shield className="w-8 h-8 text-red-600 animate-pulse" />}
                     />
+                    <div className="mt-2 flex items-center gap-2">
+                        <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">
+                            UPDATED BY THE MINUTE
+                        </span>
+                    </div>
                 </div>
                 <div className={`flex items-center gap-3 px-6 py-3 rounded-xl border shadow-lg ${defconColor}`}>
                     <div className="flex flex-col items-end">

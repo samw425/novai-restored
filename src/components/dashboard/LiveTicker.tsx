@@ -55,7 +55,7 @@ export function LiveTicker() {
                     100% { transform: translateX(-50%); }
                 }
                 .animate-ticker {
-                    animation: ticker 90s linear infinite;
+                    animation: ticker 45s linear infinite;
                 }
                 .animate-ticker:hover {
                     animation-play-state: paused;
