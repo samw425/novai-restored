@@ -19,7 +19,7 @@ export default function GlobalFeedPage() {
                             </h1>
                         </div>
                         <p className="text-2xl text-slate-500 font-medium max-w-3xl mx-auto leading-relaxed">
-                            Stay ahead of the curve. The world's most advanced AI intelligence platform.
+                            Stay ahead of the curve. Artificial Intelligence—Decoded.
                         </p>
                     </div>
 
