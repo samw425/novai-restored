@@ -59,7 +59,7 @@ export default function GlobalFeedPage() {
                                     </span>
                                 </div>
                                 <p className="text-slate-600 leading-relaxed text-sm">
-                                    Currently ingesting signals from <span className="font-bold text-slate-900">72+ verified global sources</span>. Our vector engine filters 94% of noise to isolate high-impact <span className="font-bold text-blue-600">AI, Cyber, and Geopolitical</span> developments in real-time.
+                                    Currently ingesting signals from <span className="font-bold text-slate-900">72+ verified global sources</span>. Our vector engine filters 94% of noise to isolate high-impact <span className="font-bold text-blue-600">AI and Technology</span> developments in real-time.
                                 </p>
                             </div>
                         </div>
