@@ -22,41 +22,55 @@
 }
 
 :root {
-  /* Base Colors */
-  --background: #F5F6F8;
+  /* Base Colors - Premium Off-White */
+  --background: #F8F9FA;
   --foreground: #0F172A;
 
   /* Surface Colors */
   --surface-white: #FFFFFF;
-  --surface-soft: #F0F1F3;
+  --surface-soft: #F1F5F9;
 
   /* Text Colors */
   --text-primary: #0F172A;
-  --text-secondary: #4B5563;
-  --text-muted: #6B7280;
+  /* Deep Navy */
+  --text-secondary: #475569;
+  /* Slate 600 */
+  --text-muted: #94A3B8;
+  /* Slate 400 */
 
   /* Border */
-  --border: #E5E7EB;
+  --border: #E2E8F0;
 
-  /* Accents */
-  --accent-blue: #2563EB;
-  --accent-blue-hover: #EBF2FF;
-  --success-green: #22C55E;
-  --danger-red: #EF4444;
+  /* Accents - Deep Royal & Platinum */
+  --accent-blue: #0F172A;
+  /* Midnight Navy (Primary Brand) */
+  --accent-blue-hover: #1E293B;
+  /* Slightly lighter Navy */
+  --accent-gold: #C0A062;
+  /* Muted Gold for premium touches */
+  --accent-platinum: #E2E8F0;
+  /* Platinum for borders/subtle bg */
+
+  --success-green: #059669;
+  --danger-red: #DC2626;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0F172A;
+    --background: #020617;
+    /* Richer Black/Blue */
     --foreground: #F8FAFC;
-    --surface-white: #1E293B;
-    --surface-soft: #334155;
+    --surface-white: #0F172A;
+    /* Deep Navy Surface */
+    --surface-soft: #1E293B;
     --text-primary: #F8FAFC;
     --text-secondary: #CBD5E1;
-    --text-muted: #94A3B8;
-    --border: #334155;
-    --accent-blue: #3B82F6;
-    --accent-blue-hover: #1E3A8A;
+    --text-muted: #64748B;
+    --border: #1E293B;
+    --accent-blue: #38BDF8;
+    /* Lighter Blue for Dark Mode contrast */
+    --accent-blue-hover: #0EA5E9;
+    --accent-gold: #EAB308;
   }
 }
 

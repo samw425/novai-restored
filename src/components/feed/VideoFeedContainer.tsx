@@ -15,6 +15,7 @@ export function VideoFeedContainer({ liveVideos: initialLiveVideos, briefVideos 
     const [videos, setVideos] = useState<VideoItem[]>(initialLiveVideos);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
+    const [visibleCount, setVisibleCount] = useState(10);
 
     const fetchVideos = async () => {
         try {
@@ -53,8 +54,8 @@ export function VideoFeedContainer({ liveVideos: initialLiveVideos, briefVideos 
                         <button
                             onClick={() => setActiveTab('live')}
                             className={`px-4 py-2 rounded-md text-sm font-bold transition-all ${activeTab === 'live'
-                                    ? 'bg-white text-slate-900 shadow-sm'
-                                    : 'text-slate-500 hover:text-slate-900'
+                                ? 'bg-white text-slate-900 shadow-sm'
+                                : 'text-slate-500 hover:text-slate-900'
                                 }`}
                         >
                             Live Wire
@@ -62,8 +63,8 @@ export function VideoFeedContainer({ liveVideos: initialLiveVideos, briefVideos 
                         <button
                             onClick={() => setActiveTab('brief')}
                             className={`px-4 py-2 rounded-md text-sm font-bold transition-all ${activeTab === 'brief'
-                                    ? 'bg-white text-slate-900 shadow-sm'
-                                    : 'text-slate-500 hover:text-slate-900'
+                                ? 'bg-white text-slate-900 shadow-sm'
+                                : 'text-slate-500 hover:text-slate-900'
                                 }`}
                         >
                             30-Day Brief
@@ -91,9 +92,22 @@ export function VideoFeedContainer({ liveVideos: initialLiveVideos, briefVideos 
                                     <Loader2 className="w-8 h-8 text-slate-300 animate-spin" />
                                 </div>
                             ) : (
-                                videos.map((video) => (
-                                    <VideoCard key={video.id} video={video} />
-                                ))
+                                <>
+                                    {videos.slice(0, visibleCount).map((video) => (
+                                        <VideoCard key={video.id} video={video} />
+                                    ))}
+
+                                    {visibleCount < videos.length && (
+                                        <div className="pt-4 flex justify-center">
+                                            <button
+                                                onClick={() => setVisibleCount(prev => prev + 5)}
+                                                className="px-6 py-3 bg-white border border-slate-200 text-slate-600 font-medium rounded-full hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm flex items-center gap-2"
+                                            >
+                                                Load More Intelligence
+                                            </button>
+                                        </div>
+                                    )}
+                                </>
                             )
                         ) : (
                             briefVideos.map((video) => (
@@ -106,25 +120,31 @@ export function VideoFeedContainer({ liveVideos: initialLiveVideos, briefVideos 
 
             {/* Right Rail (Stats/Info) - Hidden on mobile */}
             <div className="hidden lg:block lg:col-span-4 space-y-6">
-                <div className="bg-slate-900 rounded-xl p-6 text-white">
-                    <h3 className="font-serif text-xl font-bold mb-4">Intelligence Brief</h3>
-                    <p className="text-slate-400 text-sm mb-6">
+                <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+                    <h3 className="font-serif text-xl font-bold text-slate-900 mb-4">Intelligence Brief</h3>
+                    <p className="text-slate-600 text-sm mb-6 leading-relaxed">
                         Curated high-signal video intelligence from the world's leading AI labs.
                         Updated in real-time.
                     </p>
 
                     <div className="space-y-4">
-                        <div className="flex justify-between items-center text-sm">
-                            <span className="text-slate-500">Sources Monitored</span>
-                            <span className="font-mono text-blue-400">12</span>
+                        <div className="flex justify-between items-center text-sm border-b border-slate-100 pb-3">
+                            <span className="text-slate-500 font-medium">Sources Monitored</span>
+                            <span className="font-mono text-blue-600 font-bold">12</span>
                         </div>
-                        <div className="flex justify-between items-center text-sm">
-                            <span className="text-slate-500">Avg. Signal Score</span>
-                            <span className="font-mono text-green-400">94/100</span>
+                        <div className="flex justify-between items-center text-sm border-b border-slate-100 pb-3">
+                            <span className="text-slate-500 font-medium">Avg. Signal Score</span>
+                            <span className="font-mono text-green-600 font-bold">94/100</span>
                         </div>
-                        <div className="flex justify-between items-center text-sm">
-                            <span className="text-slate-500">Update Frequency</span>
-                            <span className="font-mono text-purple-400">Real-time</span>
+                        <div className="flex justify-between items-center text-sm pt-1">
+                            <span className="text-slate-500 font-medium">Update Frequency</span>
+                            <span className="font-mono text-purple-600 font-bold flex items-center gap-2">
+                                <span className="relative flex h-2 w-2">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
+                                </span>
+                                Real-time
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -173,9 +193,9 @@ function VideoCard({ video, isBrief }: { video: VideoItem; isBrief?: boolean }) 
                 <div className="flex-1 min-w-0 py-1">
                     <div className="flex items-center gap-2 mb-2">
                         <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${video.category === 'Launch' ? 'bg-purple-100 text-purple-700' :
-                                video.category === 'Demo' ? 'bg-blue-100 text-blue-700' :
-                                    video.category === 'Safety' ? 'bg-red-100 text-red-700' :
-                                        'bg-slate-100 text-slate-600'
+                            video.category === 'Demo' ? 'bg-blue-100 text-blue-700' :
+                                video.category === 'Safety' ? 'bg-red-100 text-red-700' :
+                                    'bg-slate-100 text-slate-600'
                             }`}>
                             {video.category}
                         </span>

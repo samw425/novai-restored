@@ -17,9 +17,20 @@ export async function GET() {
         const uniqueVideos = Array.from(new Map(allVideos.map(item => [item.id, item])).values());
 
         // Sort by timestamp (newest first)
-        const sortedVideos = uniqueVideos.sort((a, b) => b.timestamp - a.timestamp);
+        uniqueVideos.sort((a, b) => b.timestamp - a.timestamp);
 
-        return NextResponse.json({ videos: sortedVideos });
+        // Apply Variety Filter (Max 2 videos per source to prevent dominance)
+        const sourceCounts: Record<string, number> = {};
+        const balancedVideos = uniqueVideos.filter(video => {
+            const count = sourceCounts[video.source] || 0;
+            if (count < 2) {
+                sourceCounts[video.source] = count + 1;
+                return true;
+            }
+            return false;
+        });
+
+        return NextResponse.json({ videos: balancedVideos });
     } catch (error) {
         console.error('Video Feed API Error:', error);
         // Fallback to static data if RSS fails

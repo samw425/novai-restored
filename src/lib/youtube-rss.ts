@@ -12,8 +12,8 @@ const CHANNELS = [
     { id: 'UCtXKDgv1AVoG88PLl8nGXmw', name: 'SpaceX' },
     { id: 'UC5iQ4m25f7F20fJ55h23h2A', name: 'Boston Dynamics' },
     { id: 'UC0e3QhIYukixgh5VL3b2BQA', name: 'Tesla' },
-    { id: 'UC2D2CMWXMOVWx7giW1n3LIg', name: 'Andrew Ng' },
     { id: 'UC7f5bVxWsm3jlZIPDzOMtAg', name: 'Two Minute Papers' },
+    { id: 'UC2D2CMWXMOVWx7giW1n3LIg', name: 'Andrew Ng' },
 ];
 
 export async function fetchYouTubeRSS(): Promise<VideoItem[]> {

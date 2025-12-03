@@ -11,7 +11,6 @@ export function MobileNav() {
     const pathname = usePathname();
 
     const toggleMenu = () => setIsOpen(!isOpen);
-
     const closeMenu = () => setIsOpen(false);
 
     const NavLink = ({ href, icon: Icon, label }: { href: string; icon: any; label: string }) => {
@@ -20,42 +19,43 @@ export function MobileNav() {
             <Link
                 href={href}
                 onClick={closeMenu}
-                className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${isActive
-                    ? 'bg-blue-50 text-blue-600'
-                    : 'text-gray-600 hover:bg-gray-50'
+                className={`flex items-center gap-4 px-6 py-4 text-base font-medium transition-all border-l-2 ${isActive
+                    ? 'bg-slate-50 border-[#0F172A] text-[#0F172A]'
+                    : 'border-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-900'
                     }`}
             >
-                <Icon className={`h-5 w-5 ${isActive ? 'text-blue-600' : 'text-gray-400'}`} />
-                {label}
+                <Icon className={`h-5 w-5 ${isActive ? 'text-[#0F172A]' : 'text-slate-400'}`} strokeWidth={isActive ? 2 : 1.5} />
+                <span className={isActive ? 'font-bold' : ''}>{label}</span>
             </Link>
         );
     };
 
     return (
         <div className="lg:hidden">
-            {/* Top Bar */}
-            <div className="fixed top-10 left-0 right-0 h-16 bg-white border-b border-gray-200 z-[100] px-4 flex items-center justify-between">
+            {/* Top Bar - Solid, Premium Header */}
+            <div className="fixed top-0 left-0 right-0 h-16 bg-white border-b border-slate-200 z-[100] px-4 flex items-center justify-between shadow-sm">
                 <Logo onClick={closeMenu} />
                 <button
                     onClick={toggleMenu}
-                    className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg"
+                    className="p-2 text-[#0F172A] hover:bg-slate-50 rounded-full transition-colors active:scale-95"
+                    aria-label="Toggle Menu"
                 >
                     {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
                 </button>
             </div>
 
-            {/* Spacer for fixed header (Ticker + Nav) */}
-            <div className="h-28" />
+            {/* Spacer */}
+            <div className="h-16" />
 
             {/* Full Screen Menu Overlay */}
             {isOpen && (
-                <div className="fixed inset-0 top-24 bg-white z-[99] overflow-y-auto pb-20 animate-in fade-in slide-in-from-top-5 duration-200">
-                    <div className="p-4 space-y-8">
+                <div className="fixed inset-0 top-16 bg-white z-[99] overflow-y-auto pb-32 animate-in fade-in slide-in-from-top-2 duration-200">
+                    <div className="py-6 space-y-8">
 
                         {/* Platform */}
                         <div>
-                            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 px-4">Platform</h3>
-                            <div className="space-y-1">
+                            <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-6 font-mono">Platform</h3>
+                            <div className="space-y-0.5">
                                 <NavLink href="/intelligence-brief" icon={Brain} label="Intelligence Brief" />
                                 <NavLink href="/daily-snapshot" icon={Calendar} label="Daily Snapshot" />
                                 <NavLink href="/global-feed" icon={Activity} label="Global Feed" />
@@ -67,8 +67,8 @@ export function MobileNav() {
 
                         {/* Categories */}
                         <div>
-                            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 px-4">Categories</h3>
-                            <div className="space-y-1">
+                            <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-6 font-mono">Categories</h3>
+                            <div className="space-y-0.5">
                                 <NavLink href="/ai" icon={Hexagon} label="AI News" />
                                 <NavLink href="/us-intel" icon={Shield} label="US Intelligence" />
                                 <NavLink href="/robotics" icon={Bot} label="Robotics" />
@@ -81,8 +81,8 @@ export function MobileNav() {
 
                         {/* Knowledge */}
                         <div>
-                            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 px-4">Knowledge</h3>
-                            <div className="space-y-1">
+                            <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-6 font-mono">Knowledge</h3>
+                            <div className="space-y-0.5">
                                 <NavLink href="/hacker-news" icon={Radio} label="Hacker News" />
                                 <NavLink href="/lab-tools" icon={FlaskConical} label="Lab & Tools" />
                                 <NavLink href="/trend-watch" icon={TrendingUp} label="Trend Watch" />
@@ -92,18 +92,18 @@ export function MobileNav() {
 
                         {/* System */}
                         <div>
-                            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 px-4">System</h3>
-                            <div className="space-y-1">
+                            <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-6 font-mono">System</h3>
+                            <div className="space-y-0.5">
                                 <NavLink href="/feedback" icon={Info} label="Feedback" />
                             </div>
                         </div>
 
                         {/* CTA */}
-                        <div className="pt-4">
+                        <div className="px-6 pt-4">
                             <Link
                                 href="/signup"
                                 onClick={closeMenu}
-                                className="w-full bg-[#0F172A] text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2"
+                                className="w-full bg-[#0F172A] text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-blue-900/20 active:scale-95 transition-all"
                             >
                                 GET DAILY BRIEFS
                             </Link>
