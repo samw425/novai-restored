@@ -14,7 +14,14 @@ export default function LLMsPage() {
         v.title.includes('Gemini') ||
         v.title.includes('Llama') ||
         v.title.includes('Model') ||
-        v.title.includes('LLM')
+        v.title.includes('LLM') ||
+        v.title.includes('OpenAI') ||
+        v.title.includes('o1') ||
+        v.title.includes('Sora') ||
+        v.title.includes('Apple') ||
+        v.title.includes('NVIDIA') ||
+        v.title.includes('Figure') ||
+        v.title.includes('Tesla')
     );
 
     return (
