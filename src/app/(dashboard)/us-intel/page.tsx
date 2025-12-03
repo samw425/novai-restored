@@ -185,61 +185,13 @@ export default function USIntelPage() {
     const fetchFeed = useCallback(async () => {
         setLoading(true);
         try {
-            // In a real scenario, this would be a fetch to your API
-            // const res = await fetch(`/api/feed/us-intel?agency=${activeAgency}`);
-            // const data = await res.json();
-
-            // MOCK DATA FOR DEMONSTRATION (Replace with real API call)
-            // Simulating network delay
-            await new Promise(resolve => setTimeout(resolve, 800));
-
-            const mockItems = [
-                {
-                    title: 'CIA Launches New AI-Driven OSINT Initiative',
-                    link: 'https://www.cia.gov/news',
-                    pubDate: new Date().toISOString(),
-                    source: 'CIA',
-                    contentSnippet: 'The Central Intelligence Agency has officially unveiled "Maisey", a new internal large language model designed to assist analysts in processing open-source intelligence...'
-                },
-                {
-                    title: 'FBI Director Wray Warns of AI-Powered Cyber Threats',
-                    link: 'https://www.fbi.gov/news',
-                    pubDate: new Date(Date.now() - 3600000).toISOString(),
-                    source: 'FBI',
-                    contentSnippet: 'In a testimony before Congress, FBI Director Christopher Wray highlighted the growing threat of generative AI being used by foreign adversaries to conduct sophisticated phishing campaigns...'
-                },
-                {
-                    title: 'NSA Releases Guidance on Quantum-Resistant Cryptography',
-                    link: 'https://www.nsa.gov/news',
-                    pubDate: new Date(Date.now() - 7200000).toISOString(),
-                    source: 'NSA',
-                    contentSnippet: 'The National Security Agency has released a new cybersecurity advisory urging defense contractors to begin the transition to post-quantum cryptographic algorithms...'
-                },
-                {
-                    title: 'DOD Replicator Initiative Accelerates Drone Procurement',
-                    link: 'https://www.defense.gov/news',
-                    pubDate: new Date(Date.now() - 10800000).toISOString(),
-                    source: 'DOD',
-                    contentSnippet: 'The Pentagon\'s Replicator initiative is moving ahead of schedule, with new contracts awarded for thousands of low-cost, autonomous drone systems...'
-                },
-                {
-                    title: 'CISA (DHS) Publishes AI Safety Guidelines for Critical Infrastructure',
-                    link: 'https://www.cisa.gov/news',
-                    pubDate: new Date(Date.now() - 14400000).toISOString(),
-                    source: 'DHS',
-                    contentSnippet: 'The Cybersecurity and Infrastructure Security Agency has released a comprehensive framework for ensuring the safe deployment of AI systems in energy and water sectors...'
-                }
-            ];
-
-            // Filter logic
-            if (activeAgency === 'ALL') {
-                setFeedItems(mockItems);
-            } else {
-                setFeedItems(mockItems.filter(item => item.source === activeAgency || (activeAgency === 'DOD' && item.source === 'DOD') || (activeAgency === 'DHS' && item.source === 'DHS')));
-            }
-
+            const res = await fetch(`/api/feed/us-intel?agency=${activeAgency}`);
+            if (!res.ok) throw new Error('Failed to fetch');
+            const data = await res.json();
+            setFeedItems(data.items || []);
         } catch (error) {
             console.error("Feed fetch error:", error);
+            // Keep existing items if error, or show error state
         } finally {
             setLoading(false);
         }
@@ -306,9 +258,9 @@ export default function USIntelPage() {
                                             <div className="flex items-center justify-between mb-2">
                                                 <div className="flex items-center gap-2">
                                                     <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${item.source === 'CIA' ? 'bg-blue-100 text-blue-700' :
-                                                            item.source === 'FBI' ? 'bg-red-100 text-red-700' :
-                                                                item.source === 'NSA' ? 'bg-emerald-100 text-emerald-700' :
-                                                                    'bg-slate-100 text-slate-600'
+                                                        item.source === 'FBI' ? 'bg-red-100 text-red-700' :
+                                                            item.source === 'NSA' ? 'bg-emerald-100 text-emerald-700' :
+                                                                'bg-slate-100 text-slate-600'
                                                         }`}>
                                                         {item.source}
                                                     </span>
