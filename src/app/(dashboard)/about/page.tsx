@@ -1,11 +1,16 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Shield, Zap, Globe, Brain, ArrowRight } from 'lucide-react';
+import { SignupModal } from '@/components/ui/SignupModal';
 
 export default function AboutPage() {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     return (
         <div className="max-w-5xl mx-auto pb-20">
+            <SignupModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+
             {/* Hero Section */}
             <div className="relative rounded-3xl overflow-hidden bg-slate-900 text-white mb-16 shadow-2xl shadow-slate-200">
                 <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop')] bg-cover bg-center opacity-20 mix-blend-overlay"></div>
@@ -76,7 +81,10 @@ export default function AboutPage() {
                 <p className="text-slate-400 mb-8 max-w-xl mx-auto">
                     Join the elite circle of decision-makers who rely on Novai for their daily intelligence briefing.
                 </p>
-                <button className="px-8 py-4 bg-white text-slate-900 font-bold rounded-full hover:bg-blue-50 transition-colors duration-200 flex items-center gap-2 mx-auto">
+                <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="px-8 py-4 bg-white text-slate-900 font-bold rounded-full hover:bg-blue-50 transition-colors duration-200 flex items-center gap-2 mx-auto"
+                >
                     Start Your Briefing
                     <ArrowRight size={18} />
                 </button>

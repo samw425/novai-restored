@@ -11,7 +11,7 @@ import { NewsTicker } from '@/components/ui/NewsTicker';
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
     return (
-        <div className="min-h-screen bg-[#F5F6F8] flex flex-col">
+        <div className="min-h-screen bg-[#F5F6F8] flex flex-col pt-10">
             <NewsTicker />
             <MobileNav />
             <div className="max-w-[1600px] mx-auto px-4 lg:px-6 py-4 lg:py-8 flex-grow w-full">

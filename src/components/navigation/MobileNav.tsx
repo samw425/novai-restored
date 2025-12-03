@@ -34,7 +34,7 @@ export function MobileNav() {
     return (
         <div className="lg:hidden">
             {/* Top Bar */}
-            <div className="fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 z-[100] px-4 flex items-center justify-between">
+            <div className="fixed top-10 left-0 right-0 h-16 bg-white border-b border-gray-200 z-[100] px-4 flex items-center justify-between">
                 <Logo onClick={closeMenu} />
                 <button
                     onClick={toggleMenu}
@@ -44,12 +44,12 @@ export function MobileNav() {
                 </button>
             </div>
 
-            {/* Spacer for fixed header */}
-            <div className="h-16" />
+            {/* Spacer for fixed header (Ticker + Nav) */}
+            <div className="h-28" />
 
             {/* Full Screen Menu Overlay */}
             {isOpen && (
-                <div className="fixed inset-0 top-16 bg-white z-[99] overflow-y-auto pb-20 animate-in fade-in slide-in-from-top-5 duration-200">
+                <div className="fixed inset-0 top-24 bg-white z-[99] overflow-y-auto pb-20 animate-in fade-in slide-in-from-top-5 duration-200">
                     <div className="p-4 space-y-8">
 
                         {/* Platform */}

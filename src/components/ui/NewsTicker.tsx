@@ -1,23 +1,33 @@
-'use client';
-
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Zap } from 'lucide-react';
+import { fetchArticles } from '@/lib/api';
 
 export function NewsTicker() {
-    const headlines = [
-        "OpenAI releases GPT-5 preview to select partners",
-        "NVIDIA announces Blackwell B200 availability",
-        "Anthropic Claude 3.5 Opus tops coding benchmarks",
-        "Tesla Optimus Gen 3 demonstrates autonomous assembly",
-        "Google DeepMind solves new protein folding challenge",
-        "Meta releases Llama 4 100B open source model",
-        "Apple integrates Gemini into iOS 19 core",
-        "SpaceX Starship achieves orbit with full payload",
-        "Microsoft AI CEO announces new safety protocols"
-    ];
+    const [headlines, setHeadlines] = useState<string[]>([
+        "Initializing global intelligence streams...",
+        "Connecting to secure uplinks...",
+        "Decrypting real-time signals..."
+    ]);
+
+    useEffect(() => {
+        const loadHeadlines = async () => {
+            try {
+                const articles = await fetchArticles(15);
+                if (articles && articles.length > 0) {
+                    setHeadlines(articles.map(a => a.title));
+                }
+            } catch (error) {
+                console.error('Failed to load ticker headlines', error);
+            }
+        };
+        loadHeadlines();
+        // Refresh every minute
+        const interval = setInterval(loadHeadlines, 60000);
+        return () => clearInterval(interval);
+    }, []);
 
     return (
-        <div className="w-full bg-slate-900/95 backdrop-blur-sm border-b border-slate-800 text-white overflow-hidden h-10 flex items-center relative z-50">
+        <div className="w-full bg-slate-900/95 backdrop-blur-sm border-b border-slate-800 text-white overflow-hidden h-10 flex items-center relative z-[110] fixed top-0 left-0 right-0">
             {/* Label */}
             <div className="bg-blue-600 h-full px-4 flex items-center gap-2 font-bold text-xs uppercase tracking-wider shrink-0 z-10 shadow-lg shadow-blue-900/20">
                 <Zap size={12} className="fill-white animate-pulse" />
