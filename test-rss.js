@@ -9,13 +9,13 @@ const parser = new Parser({
 });
 
 const feeds = [
-    { name: 'CIA', url: 'https://www.cia.gov/stories/feed' },
-    { name: 'FBI', url: 'https://www.fbi.gov/feeds/national-press-releases' },
-    { name: 'DOD', url: 'https://www.defense.gov/DesktopModules/ArticleCS/RSS.aspx?ContentType=1&Site=945&max=10' },
-    { name: 'State', url: 'https://www.state.gov/rss-feed/press-releases/feed/' },
-    { name: 'Treasury', url: 'https://home.treasury.gov/rss/press-releases' },
-    { name: 'NSA', url: 'https://www.nsa.gov/rss/news/' },
-    { name: 'DHS', url: 'https://www.dhs.gov/news/releases/press-releases/rss' }
+    { name: 'CIA (Google)', url: 'https://news.google.com/rss/search?q=site:cia.gov&hl=en-US&gl=US&ceid=US:en' },
+    { name: 'FBI (Google)', url: 'https://news.google.com/rss/search?q=site:fbi.gov&hl=en-US&gl=US&ceid=US:en' },
+    { name: 'DOD (Google)', url: 'https://news.google.com/rss/search?q=site:defense.gov&hl=en-US&gl=US&ceid=US:en' },
+    { name: 'State (Official)', url: 'https://www.state.gov/rss-feed/press-releases/feed/' },
+    { name: 'Treasury (Google)', url: 'https://news.google.com/rss/search?q=site:home.treasury.gov&hl=en-US&gl=US&ceid=US:en' },
+    { name: 'NSA (Google)', url: 'https://news.google.com/rss/search?q=site:nsa.gov&hl=en-US&gl=US&ceid=US:en' },
+    { name: 'DHS (Google)', url: 'https://news.google.com/rss/search?q=site:dhs.gov&hl=en-US&gl=US&ceid=US:en' }
 ];
 
 async function test() {
