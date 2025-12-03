@@ -2,12 +2,19 @@ import { NextResponse } from 'next/server';
 import Parser from 'rss-parser';
 import { RSS_FEEDS } from '@/config/rss-feeds';
 
-const parser = new Parser();
+const parser = new Parser({
+    headers: {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'application/rss+xml, application/xml, text/xml, */*'
+    }
+});
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const agency = searchParams.get('agency'); // 'CIA', 'FBI', 'ALL', etc.
     const limit = parseInt(searchParams.get('limit') || '20');
+
+    console.log(`[US-INTEL] Fetching feed for agency: ${agency}`);
 
     // Map agency acronyms to feed IDs or categories
     let targetFeeds: typeof RSS_FEEDS = [];
@@ -34,14 +41,19 @@ export async function GET(request: Request) {
         }
     }
 
+    console.log(`[US-INTEL] Target feeds: ${targetFeeds.map(f => f.id).join(', ')}`);
+
     if (targetFeeds.length === 0) {
+        console.log('[US-INTEL] No target feeds found');
         return NextResponse.json({ items: [] });
     }
 
     try {
         const feedPromises = targetFeeds.map(async (feed) => {
             try {
+                console.log(`[US-INTEL] Fetching ${feed.url}...`);
                 const feedData = await parser.parseURL(feed.url);
+                console.log(`[US-INTEL] Successfully fetched ${feed.url} (${feedData.items.length} items)`);
                 return feedData.items.map(item => ({
                     title: item.title,
                     link: item.link,
@@ -52,7 +64,7 @@ export async function GET(request: Request) {
                     guid: item.guid || item.link
                 }));
             } catch (err) {
-                console.error(`Failed to parse feed ${feed.url}:`, err);
+                console.error(`[US-INTEL] Failed to parse feed ${feed.url}:`, err);
                 return [];
             }
         });
