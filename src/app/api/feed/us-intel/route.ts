@@ -32,7 +32,9 @@ export async function GET(request: Request) {
             'State Dept': 'state-dept',
             'USDT': 'treasury-news', // Treasury
             'Treasury': 'treasury-news',
-            'DHS': 'dhs-news'
+            'DHS': 'dhs-news',
+            'White House': 'white-house-news',
+            'NSC': 'white-house-news'
         };
 
         const feedId = agencyMap[agency];

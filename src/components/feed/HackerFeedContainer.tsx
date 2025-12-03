@@ -162,7 +162,7 @@ export function HackerFeedContainer() {
                 {/* BRIEF TAB CONTENT */}
                 {activeTab === 'brief' && (
                     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                        <MonthlyIntelBrief articles={articles} fullView={true} />
+                        <MonthlyIntelBrief />
                     </div>
                 )}
             </div>

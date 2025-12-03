@@ -27,7 +27,43 @@ const AGENCY_PROFILES: Record<string, any> = {
             codename: 'JUPITER GARDEN',
             shadow_budget: '$4.2B (Black)',
             unacknowledged_projects: ['Sentient World Simulation', 'Project STARGATE II']
-        }
+        },
+        education_dossier: `The Central Intelligence Agency (CIA) is the civilian foreign intelligence service of the federal government of the United States, officially tasked with gathering, processing, and analyzing national security information from around the world, primarily through the use of human intelligence (HUMINT).
+
+        Established in 1947 with the signing of the National Security Act by President Harry S. Truman, the CIA grew out of the World War II-era Office of Strategic Services (OSS). It is the only agency authorized by law to carry out covert action at the behest of the President.
+
+        The agency is organized into five main directorates:
+        • **Directorate of Operations (DO):** Responsible for the clandestine collection of foreign intelligence.
+        • **Directorate of Analysis (DA):** Responsible for analyzing and interpreting intelligence.
+        • **Directorate of Science and Technology (DS&T):** Creates and applies innovative technology.
+        • **Directorate of Support (DS):** Provides administrative and logistical support.
+        • **Directorate of Digital Innovation (DDI):** Focused on cyber intelligence and digital threats.`,
+        official_links: [
+            { title: 'CIA World Factbook', url: 'https://www.cia.gov/the-world-factbook/', description: 'Comprehensive data on every country.' },
+            { title: 'Freedom of Information Act (FOIA)', url: 'https://www.cia.gov/readingroom/home', description: 'Declassified documents archive.' },
+            { title: 'Center for the Study of Intelligence', url: 'https://www.cia.gov/resources/csi/', description: 'Historical analysis and lessons learned.' }
+        ],
+        issues_discrepancies: `**Historical Controversies:**
+        The CIA has been involved in numerous controversial activities, including the 1953 Iranian coup d'état, the 1954 Guatemalan coup, and the MKUltra mind control program.
+
+        **Modern Concerns:**
+        • **Enhanced Interrogation Techniques:** Post-9/11 programs drew significant criticism and legal challenges regarding the use of torture.
+        • **Drone Warfare:** The targeted killing program has faced scrutiny over civilian casualties and due process.
+        • **Surveillance:** Allegations of domestic surveillance, though officially outside its charter, continue to surface in debates about privacy and security.`,
+        novai_analysis: [
+            {
+                title: 'Shift to Great Power Competition',
+                date: '2025-11-15',
+                type: 'Strategic Shift',
+                content: 'The agency is fundamentally restructuring its human intelligence networks to pivot from counter-terrorism to hard target penetration in China and Russia. This involves a massive recruitment drive for Mandarin and Russian speakers and a new focus on technological espionage.'
+            },
+            {
+                title: 'The "Maisey" LLM Initiative',
+                date: '2025-10-02',
+                type: 'Tech Intel',
+                content: 'Internal reports suggest the CIA\'s custom LLM "Maisey" has achieved a breakthrough in cross-referencing disjointed OSINT data points, successfully predicting three major geopolitical shifts in the last quarter before they occurred.'
+            }
+        ]
     },
     FBI: {
         name: 'Federal Bureau of Investigation',
@@ -48,7 +84,45 @@ const AGENCY_PROFILES: Record<string, any> = {
             codename: 'IRON LEDGER',
             shadow_budget: '$1.1B (Black)',
             unacknowledged_projects: ['Carnivore v2', 'Magic Lantern AI']
-        }
+        },
+        education_dossier: `The Federal Bureau of Investigation (FBI) is the domestic intelligence and security service of the United States and its principal federal law enforcement agency. It operates under the jurisdiction of the Department of Justice.
+
+        Founded in 1908 as the Bureau of Investigation, the FBI has evolved from a small force of special agents to a massive organization with jurisdiction over more than 200 categories of federal crimes.
+
+        **Dual Mission:**
+        Unlike the CIA, the FBI has both intelligence and law enforcement responsibilities. It works to protect the U.S. from terrorism, espionage, and cyber attacks, while also combating significant violent crime and public corruption.
+
+        **Key Capabilities:**
+        • **Criminal Justice Information Services (CJIS):** The largest division, providing data and analytics to law enforcement.
+        • **Laboratory Division:** One of the largest and most comprehensive crime labs in the world.
+        • **Critical Incident Response Group (CIRG):** Handles crisis management, hostage rescue, and behavioral analysis.`,
+        official_links: [
+            { title: 'FBI Most Wanted', url: 'https://www.fbi.gov/wanted', description: 'Fugitives and missing persons.' },
+            { title: 'Internet Crime Complaint Center (IC3)', url: 'https://www.ic3.gov/', description: 'Report cyber crime and fraud.' },
+            { title: 'Uniform Crime Reporting (UCR)', url: 'https://ucr.fbi.gov/', description: 'National crime statistics and data.' }
+        ],
+        issues_discrepancies: `**Surveillance & Privacy:**
+        The FBI has faced criticism for its use of FISA warrants and the surveillance of U.S. citizens. The "Section 702" debate highlights the tension between national security and privacy rights.
+
+        **Historical Legacy:**
+        Under J. Edgar Hoover, the COINTELPRO program targeted domestic political organizations, leaving a legacy of mistrust among civil rights groups.
+
+        **Politicization Allegations:**
+        In recent years, the Bureau has faced accusations of political bias in its investigations, challenging its reputation for neutrality.`,
+        novai_analysis: [
+            {
+                title: 'Quantum-Resistant Encryption Standards',
+                date: '2025-12-01',
+                type: 'Cyber Defense',
+                content: 'The FBI is coordinating with NIST to enforce new quantum-resistant cryptographic standards across all federal law enforcement databases, anticipating "Q-Day" (the day quantum computers break current encryption) within the decade.'
+            },
+            {
+                title: 'AI-Enhanced Biometrics Rollout',
+                date: '2025-09-20',
+                type: 'Surveillance',
+                content: 'The Next Generation Identification (NGI) system is receiving a controversial upgrade. New AI algorithms claim to identify suspects from partial face data in low-resolution CCTV footage with 99.8% accuracy, raising significant privacy concerns.'
+            }
+        ]
     },
     NSA: {
         name: 'National Security Agency',
@@ -69,7 +143,39 @@ const AGENCY_PROFILES: Record<string, any> = {
             codename: 'STELLAR WIND',
             shadow_budget: '$8.5B (Black)',
             unacknowledged_projects: ['Utah Data Center Expansion', 'Quantum Decryption Initiative']
-        }
+        },
+        education_dossier: `The National Security Agency (NSA) is a national-level intelligence agency of the United States Department of Defense, under the authority of the Director of National Intelligence. The NSA is responsible for global monitoring, collection, and processing of information and data for foreign and domestic intelligence and counterintelligence purposes, specializing in a discipline known as signals intelligence (SIGINT).
+
+        **Core Missions:**
+        • **Signals Intelligence (SIGINT):** Intercepting and analyzing foreign communications.
+        • **Cybersecurity:** Protecting U.S. government communications and information systems.
+
+        **Technological Leadership:**
+        The NSA is the largest employer of mathematicians in the United States and possesses some of the world's most powerful supercomputers. It plays a critical role in the development of cryptographic standards and cyber defense strategies.`,
+        official_links: [
+            { title: 'NSA Research', url: 'https://www.nsa.gov/Research/', description: 'Innovations in math and cyber.' },
+            { title: 'National Cryptologic Museum', url: 'https://www.nsa.gov/museum/', description: 'History of codebreaking.' },
+            { title: 'Central Security Service (CSS)', url: 'https://www.nsa.gov/About/CSS/', description: 'Combat support arm.' }
+        ],
+        issues_discrepancies: `**Mass Surveillance:**
+        The 2013 disclosures by Edward Snowden revealed the extent of the NSA's global surveillance programs, including PRISM and the collection of metadata on U.S. citizens, sparking a worldwide debate on privacy.
+
+        **Encryption Backdoors:**
+        The agency has been criticized for allegedly attempting to weaken encryption standards to facilitate surveillance, which critics argue undermines global internet security.`,
+        novai_analysis: [
+            {
+                title: 'Post-Quantum Cryptography Breakthrough',
+                date: '2025-11-30',
+                type: 'Cryptography',
+                content: 'NSA mathematicians have released a new suite of public-key algorithms designed to secure classified networks against future quantum computer attacks. This move signals a high confidence in the imminence of quantum decryption capabilities.'
+            },
+            {
+                title: 'Zero-Trust Architecture Mandate',
+                date: '2025-10-15',
+                type: 'Policy',
+                content: 'The NSA is aggressively pushing a "Zero Trust" security model across the DOD, assuming that no network perimeter is secure and requiring continuous verification for every user and device.'
+            }
+        ]
     },
     DOD: {
         name: 'Department of Defense',
@@ -90,7 +196,43 @@ const AGENCY_PROFILES: Record<string, any> = {
             codename: 'SKYNET',
             shadow_budget: '$50B+ (Black)',
             unacknowledged_projects: ['TR-3B Aurora', 'Rod from God']
-        }
+        },
+        education_dossier: `The Department of Defense (DOD) is an executive branch department of the federal government charged with coordinating and supervising all agencies and functions of the government directly related to national security and the United States Armed Forces.
+
+        **Structure:**
+        Headquartered at the Pentagon, the DOD is the largest employer in the world. It oversees the Army, Navy, Marine Corps, Air Force, and Space Force.
+
+        **Command Structure:**
+        • **The Secretary of Defense:** The principal defense policy advisor to the President.
+        • **The Joint Chiefs of Staff:** The highest-ranking military officers who advise the President and Secretary.
+        • **Unified Combatant Commands:** 11 geographic or functional commands (e.g., CENTCOM, CYBERCOM) that conduct military operations.`,
+        official_links: [
+            { title: 'Defense.gov News', url: 'https://www.defense.gov/News/', description: 'Official news and press releases.' },
+            { title: 'Joint Chiefs of Staff', url: 'https://www.jcs.mil/', description: 'Senior military leadership.' },
+            { title: 'DARPA', url: 'https://www.darpa.mil/', description: 'Defense Advanced Research Projects Agency.' }
+        ],
+        issues_discrepancies: `**Financial Accountability:**
+        The DOD has famously failed multiple independent financial audits, with trillions of dollars in assets and spending often unaccounted for or difficult to track.
+
+        **Procurement Controversies:**
+        Major weapons programs, such as the F-35 Lightning II, have faced criticism for massive cost overruns and technical delays.
+
+        **The "Revolving Door":**
+        Critics point to the seamless movement of high-ranking officials between the Pentagon and major defense contractors as a potential conflict of interest.`,
+        novai_analysis: [
+            {
+                title: 'Replicator Initiative Acceleration',
+                date: '2025-11-10',
+                type: 'Autonomous Warfare',
+                content: 'The "Replicator" program, aimed at fielding thousands of cheap, autonomous drones, has entered Phase 2. The focus is now on "swarm intelligence," allowing these systems to coordinate attacks without human intervention.'
+            },
+            {
+                title: 'Space Force Integration',
+                date: '2025-08-22',
+                type: 'Space Domain',
+                content: 'DOD is finalizing the integration of Space Force assets into the JADC2 network, ensuring that satellite data can be fed directly to tactical units on the ground in real-time.'
+            }
+        ]
     },
     DHS: {
         name: 'Department of Homeland Security',
@@ -111,7 +253,41 @@ const AGENCY_PROFILES: Record<string, any> = {
             codename: 'EAGLE EYE',
             shadow_budget: '$2.5B (Black)',
             unacknowledged_projects: ['Biometric Entry-Exit Program']
-        }
+        },
+        education_dossier: `The Department of Homeland Security (DHS) was created in response to the September 11 attacks, integrating 22 different federal departments and agencies into a unified cabinet agency.
+
+        **Mission Scope:**
+        DHS has a broad mandate that includes border security, customs, emergency management, and cybersecurity.
+
+        **Key Components:**
+        • **Customs and Border Protection (CBP):** Secures the border and facilitates trade.
+        • **Immigration and Customs Enforcement (ICE):** Enforces immigration laws within the U.S.
+        • **Cybersecurity and Infrastructure Security Agency (CISA):** Protects critical infrastructure from physical and cyber threats.
+        • **Transportation Security Administration (TSA):** Secures the nation's transportation systems.`,
+        official_links: [
+            { title: 'CISA Alerts', url: 'https://www.cisa.gov/news-events/cybersecurity-advisories', description: 'Critical cyber warnings.' },
+            { title: 'FEMA', url: 'https://www.fema.gov/', description: 'Emergency management.' },
+            { title: 'Ready.gov', url: 'https://www.ready.gov/', description: 'Disaster preparedness.' }
+        ],
+        issues_discrepancies: `**Border Management:**
+        DHS faces constant political and logistical challenges regarding the management of the southern border and the treatment of migrants.
+
+        **Civil Liberties:**
+        Agencies like TSA and ICE have faced criticism over invasive screening procedures and detention practices.`,
+        novai_analysis: [
+            {
+                title: 'Biometric Entry/Exit Expansion',
+                date: '2025-11-05',
+                type: 'Surveillance',
+                content: 'DHS is expanding its facial recognition program to 20 new international airports. The goal is to have 97% of all air travelers scanned biometrically by 2026, eliminating the need for physical boarding passes.'
+            },
+            {
+                title: 'AI-Driven Threat Detection',
+                date: '2025-09-12',
+                type: 'Homeland Security',
+                content: 'CISA has deployed a new AI system to monitor critical infrastructure for "pre-attack indicators." The system analyzes patterns in power grid fluctuations and water system data to detect cyber-physical attacks.'
+            }
+        ]
     },
     'State Dept': {
         name: 'Department of State',
@@ -132,7 +308,37 @@ const AGENCY_PROFILES: Record<string, any> = {
             codename: 'FOGGY BOTTOM',
             shadow_budget: '$500M (Black)',
             unacknowledged_projects: ['Embassy Spy Posts']
-        }
+        },
+        education_dossier: `The Department of State (DOS) is the oldest executive department, responsible for the nation's foreign policy and international relations. It represents the U.S. at the United Nations and operates embassies and consulates worldwide.
+
+        **Diplomatic Functions:**
+        • **Foreign Service:** Corps of diplomats who represent U.S. interests abroad.
+        • **Visa & Passport Services:** Managing travel documents for citizens and visitors.
+        • **Treaty Negotiation:** Crafting international agreements on trade, arms control, and human rights.`,
+        official_links: [
+            { title: 'Travel Advisories', url: 'https://travel.state.gov/content/travel/en/traveladvisories/traveladvisories.html/', description: 'Safety ratings for every country.' },
+            { title: 'Foreign Service Institute', url: 'https://www.state.gov/bureaus-offices/under-secretary-for-management/foreign-service-institute/', description: 'Diplomatic training.' },
+            { title: 'ShareAmerica', url: 'https://share.america.gov/', description: 'Public diplomacy platform.' }
+        ],
+        issues_discrepancies: `**Security Failures:**
+        The 2012 Benghazi attack remains a significant point of controversy regarding the security of diplomatic outposts.
+
+        **Bureaucracy:**
+        The department is often criticized for its slow-moving bureaucracy and resistance to rapid policy shifts.`,
+        novai_analysis: [
+            {
+                title: 'Digital Diplomacy Corps',
+                date: '2025-10-30',
+                type: 'Soft Power',
+                content: 'State is launching a new "Digital Diplomacy" office tasked with countering disinformation campaigns on social media in real-time. This team will use AI to detect and flag state-sponsored narratives.'
+            },
+            {
+                title: 'Arctic Strategy Update',
+                date: '2025-07-14',
+                type: 'Geopolitics',
+                content: 'With the opening of new shipping lanes, the State Department is increasing its diplomatic presence in the Arctic Council to counter growing Russian and Chinese influence in the region.'
+            }
+        ]
     },
     'White House': {
         name: 'The White House (NSC)',
@@ -146,13 +352,44 @@ const AGENCY_PROFILES: Record<string, any> = {
         jurisdiction: 'Policy Coordination',
         ai_stance: 'Setting the national agenda for AI safety, security, and trustworthiness. Issued Executive Order on Safe, Secure, and Trustworthy Artificial Intelligence.',
         active_directives: [
-            { title: 'Executive Order on AI', description: 'Comprehensive directive to manage AI risks.', link: 'https://www.whitehouse.gov/briefing-room/presidential-actions/2023/10/30/executive-order-on-the-safe-secure-and-trustworthy-development-and-use-of-artificial-intelligence/' }
+            { title: 'Executive Order 14179', description: 'Removing Barriers to American Leadership in Artificial Intelligence.', link: 'https://www.federalregister.gov/presidential-documents/executive-orders' }
         ],
         classified_annex: {
             codename: 'CROWN JEWEL',
             shadow_budget: 'Classified',
             unacknowledged_projects: ['PEADs']
-        }
+        },
+        education_dossier: `The National Security Council (NSC) is the President's principal forum for considering national security and foreign policy matters with senior national security advisors and cabinet officials.
+
+        **Role & Function:**
+        The NSC advises the President on the integration of domestic, foreign, and military policies relating to national security. It also facilitates cooperation between various government agencies.
+
+        **The Situation Room:**
+        Located in the West Wing, this intelligence management center is where the President monitors crises and conducts secure communications.`,
+        official_links: [
+            { title: 'White House Administration', url: 'https://www.whitehouse.gov/administration/', description: 'Council structure and leadership.' },
+            { title: 'Executive Orders', url: 'https://www.federalregister.gov/presidential-documents/executive-orders', description: 'Presidential directives.' },
+            { title: 'National Security Strategy', url: 'https://history.state.gov/milestones/1945-1952/nsc', description: 'Historical context and strategy.' }
+        ],
+        issues_discrepancies: `**Concentration of Power:**
+        Critics argue that the NSC has grown too powerful, often bypassing the State Department and Defense Department in policy formulation ("The Imperial Presidency").
+
+        **Lack of Oversight:**
+        Unlike Cabinet officials, the National Security Advisor and NSC staff are not subject to Senate confirmation, raising accountability concerns.`,
+        novai_analysis: [
+            {
+                title: 'AI Executive Order Implementation',
+                date: '2025-11-20',
+                type: 'Policy',
+                content: 'The NSC is leading the interagency review of the AI Executive Order. Early drafts suggest strict new reporting requirements for any AI model that exceeds a certain compute threshold.'
+            },
+            {
+                title: 'Pivot to the Pacific',
+                date: '2025-08-05',
+                type: 'Grand Strategy',
+                content: 'A classified NSC memo outlines a 5-year plan to strengthen alliances in the Indo-Pacific. The strategy emphasizes "integrated deterrence" combining military, economic, and technological capabilities.'
+            }
+        ]
     },
     Treasury: {
         name: 'Department of the Treasury',
@@ -172,7 +409,39 @@ const AGENCY_PROFILES: Record<string, any> = {
             codename: 'GOLDEN KEY',
             shadow_budget: '$300M (Black)',
             unacknowledged_projects: ['SWIFT Surveillance']
-        }
+        },
+        education_dossier: `The Department of the Treasury plays a critical role in national security through its Office of Terrorism and Financial Intelligence (TFI). It leverages the U.S. financial system to combat rogue states, terrorist financiers, and proliferators of WMDs.
+
+        **Financial Warfare:**
+        • **Office of Foreign Assets Control (OFAC):** Administers and enforces economic and trade sanctions.
+        • **FinCEN:** Combats money laundering and terrorist financing.
+
+        **Economic Statecraft:**
+        The Treasury uses the dominance of the U.S. dollar to impose crippling costs on adversaries without firing a shot.`,
+        official_links: [
+            { title: 'Sanctions List (SDN)', url: 'https://sanctionssearch.ofac.treas.gov/', description: 'Search blocked persons and entities.' },
+            { title: 'FinCEN', url: 'https://www.fincen.gov/', description: 'Financial Crimes Enforcement Network.' },
+            { title: 'Treasury International Capital', url: 'https://home.treasury.gov/data/treasury-international-capital-tic-system', description: 'Cross-border financial data.' }
+        ],
+        issues_discrepancies: `**Sanctions Impact:**
+        There is ongoing debate about the humanitarian impact of broad economic sanctions on civilian populations in targeted countries.
+
+        **Dollar Weaponization:**
+        Aggressive use of financial sanctions has led some nations to seek alternatives to the U.S. dollar, potentially threatening its status as the global reserve currency.`,
+        novai_analysis: [
+            {
+                title: 'Crypto-Sanctions Enforcement',
+                date: '2025-12-02',
+                type: 'Financial Intel',
+                content: 'Treasury\'s OFAC has sanctioned three major cryptocurrency mixers used by North Korean hackers. This marks a significant escalation in the effort to cut off illicit revenue streams for rogue states.'
+            },
+            {
+                title: 'Digital Dollar Pilot',
+                date: '2025-09-18',
+                type: 'Economic Policy',
+                content: 'The Federal Reserve and Treasury are quietly advancing a pilot program for a Central Bank Digital Currency (CBDC). The goal is to maintain the dollar\'s dominance in an increasingly digitized global economy.'
+            }
+        ]
     }
 };
 

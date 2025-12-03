@@ -122,6 +122,97 @@ export function DossierView({ profile }: DossierViewProps) {
                     </div>
                 </div>
             )}
+
+            {/* Deep Dive / Education */}
+            {profile.education_dossier && (
+                <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+                    <h3 className="text-xs font-bold text-slate-900 uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <FileText size={16} className="text-slate-400" />
+                        Agency Deep Dive
+                    </h3>
+                    <div className="prose prose-sm prose-slate max-w-none text-slate-600 leading-relaxed">
+                        <p className="whitespace-pre-line">{profile.education_dossier}</p>
+                    </div>
+                </div>
+            )}
+
+            {/* Official Channels */}
+            {profile.official_links && profile.official_links.length > 0 && (
+                <div className="bg-slate-50 rounded-2xl border border-slate-200 p-6">
+                    <h3 className="text-xs font-bold text-slate-900 uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <ArrowUpRight size={16} className="text-slate-400" />
+                        Official Channels
+                    </h3>
+                    <div className="grid grid-cols-1 gap-2">
+                        {profile.official_links.map((link: any, i: number) => (
+                            <a
+                                key={i}
+                                href={link.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center justify-between p-3 bg-white rounded-lg border border-slate-200 hover:border-blue-300 hover:shadow-sm transition-all group"
+                            >
+                                <div>
+                                    <div className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
+                                        {link.title}
+                                    </div>
+                                    {link.description && (
+                                        <div className="text-xs text-slate-500 mt-0.5">
+                                            {link.description}
+                                        </div>
+                                    )}
+                                </div>
+                                <ArrowUpRight size={14} className="text-slate-300 group-hover:text-blue-500 transition-colors" />
+                            </a>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {/* Issues & Discrepancies */}
+            {profile.issues_discrepancies && (
+                <div className="bg-amber-50 rounded-2xl border border-amber-100 p-6">
+                    <h3 className="text-xs font-bold text-amber-800 uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <Activity size={16} className="text-amber-600" />
+                        Critical Analysis & Issues
+                    </h3>
+                    <div className="prose prose-sm prose-amber max-w-none text-amber-900/80 leading-relaxed">
+                        <p className="whitespace-pre-line">{profile.issues_discrepancies}</p>
+                    </div>
+                </div>
+            )}
+
+            {/* Novai Analysis */}
+            {profile.novai_analysis && profile.novai_analysis.length > 0 && (
+                <div className="space-y-4">
+                    <h3 className="text-xs font-bold text-purple-900 uppercase tracking-widest flex items-center gap-2 px-1">
+                        <BrainCircuit size={16} className="text-purple-600" />
+                        Novai Analysis
+                    </h3>
+                    {profile.novai_analysis.map((item: any, i: number) => (
+                        <div key={i} className="bg-white rounded-2xl border border-purple-100 shadow-sm p-6 relative overflow-hidden group hover:shadow-md transition-all">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-purple-50 rounded-full blur-2xl opacity-50 -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+
+                            <div className="flex items-center justify-between mb-3 relative z-10">
+                                <span className="px-2 py-0.5 rounded bg-purple-100 text-purple-700 text-[10px] font-bold border border-purple-200 uppercase tracking-wide">
+                                    {item.type || 'Insight'}
+                                </span>
+                                <span className="text-[10px] font-mono text-slate-400">
+                                    {item.date}
+                                </span>
+                            </div>
+
+                            <h4 className="text-base font-bold text-slate-900 mb-2 group-hover:text-purple-700 transition-colors relative z-10">
+                                {item.title}
+                            </h4>
+
+                            <p className="text-sm text-slate-600 leading-relaxed relative z-10">
+                                {item.content}
+                            </p>
+                        </div>
+                    ))}
+                </div>
+            )}
         </motion.div>
     );
 }

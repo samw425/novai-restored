@@ -1,4 +1,4 @@
-export type FeedCategory = 'research' | 'tools' | 'policy' | 'market' | 'robotics' | 'ai' | 'security' | 'us-intel';
+export type FeedCategory = 'research' | 'tools' | 'policy' | 'market' | 'robotics' | 'ai' | 'security' | 'us-intel' | 'current-wars';
 
 export interface FeedSource {
     id: string;
@@ -84,6 +84,17 @@ export const RSS_FEEDS: FeedSource[] = [
     { id: 'treasury-news', name: 'Treasury Dept', url: 'https://news.google.com/rss/search?q=site:home.treasury.gov&hl=en-US&gl=US&ceid=US:en', category: 'us-intel', priority: 9, region: 'US' },
     { id: 'nsa-news', name: 'NSA News', url: 'https://news.google.com/rss/search?q=site:nsa.gov&hl=en-US&gl=US&ceid=US:en', category: 'us-intel', priority: 10, region: 'US' },
     { id: 'dhs-news', name: 'DHS News', url: 'https://news.google.com/rss/search?q=site:dhs.gov&hl=en-US&gl=US&ceid=US:en', category: 'us-intel', priority: 9, region: 'US' },
+    { id: 'white-house-news', name: 'White House', url: 'https://news.google.com/rss/search?q=site:whitehouse.gov&hl=en-US&gl=US&ceid=US:en', category: 'us-intel', priority: 10, region: 'US' },
+
+    // ========== CURRENT WARS (Priority 10) ==========
+    // Israel / Gaza
+    { id: 'jpost-war', name: 'Jerusalem Post', url: 'https://www.jpost.com/rss/rssfeedsheadlines.aspx', category: 'current-wars', priority: 10, region: 'Global' },
+    { id: 'times-israel', name: 'Times of Israel', url: 'https://www.timesofisrael.com/feed/', category: 'current-wars', priority: 10, region: 'Global' },
+    { id: 'aljazeera-war', name: 'Al Jazeera', url: 'https://www.aljazeera.com/xml/rss/all.xml', category: 'current-wars', priority: 10, region: 'Global' },
+
+    // Russia / Ukraine
+    { id: 'kyiv-independent', name: 'Kyiv Independent', url: 'https://kyivindependent.com/feed/', category: 'current-wars', priority: 10, region: 'Europe' },
+    { id: 'bbc-europe', name: 'BBC Europe', url: 'https://feeds.bbci.co.uk/news/world/europe/rss.xml', category: 'current-wars', priority: 10, region: 'Europe' },
 ];
 
 // Helper functions
