@@ -1,4 +1,4 @@
-export type FeedCategory = 'research' | 'tools' | 'policy' | 'market' | 'robotics' | 'ai' | 'security';
+export type FeedCategory = 'research' | 'tools' | 'policy' | 'market' | 'robotics' | 'ai' | 'security' | 'us-intel';
 
 export interface FeedSource {
     id: string;
@@ -75,6 +75,15 @@ export const RSS_FEEDS: FeedSource[] = [
     { id: 'last-week-in-ai', name: 'Last Week in AI', url: 'https://lastweekin.ai/feed', category: 'ai', priority: 8, region: 'Global' },
     { id: 'ben-evans', name: 'Ben Evans', url: 'https://www.ben-evans.com/benedictevans?format=rss', category: 'ai', priority: 8, region: 'Europe' },
     { id: 'stratechery', name: 'Stratechery', url: 'https://stratechery.com/feed/', category: 'market', priority: 9, region: 'US' },
+
+    // ========== US INTELLIGENCE AGENCIES (Priority 10) ==========
+    { id: 'cia-news', name: 'CIA News', url: 'https://www.cia.gov/stories/feed', category: 'us-intel', priority: 10, region: 'US' },
+    { id: 'fbi-news', name: 'FBI News', url: 'https://www.fbi.gov/feeds/national-press-releases', category: 'us-intel', priority: 10, region: 'US' },
+    { id: 'dod-news', name: 'Dept of Defense', url: 'https://www.defense.gov/DesktopModules/ArticleCS/RSS.aspx?ContentType=1&Site=945&max=10', category: 'us-intel', priority: 10, region: 'US' },
+    { id: 'state-dept', name: 'State Department', url: 'https://www.state.gov/rss-feed/press-releases/feed/', category: 'us-intel', priority: 9, region: 'US' },
+    { id: 'treasury-news', name: 'Treasury Dept', url: 'https://home.treasury.gov/rss/press-releases', category: 'us-intel', priority: 9, region: 'US' },
+    { id: 'nsa-news', name: 'NSA News', url: 'https://www.nsa.gov/rss/news/', category: 'us-intel', priority: 10, region: 'US' },
+    { id: 'dhs-news', name: 'DHS News', url: 'https://www.dhs.gov/news/releases/press-releases/rss', category: 'us-intel', priority: 9, region: 'US' },
 ];
 
 // Helper functions
