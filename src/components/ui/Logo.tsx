@@ -13,37 +13,44 @@ export const Logo: React.FC<LogoProps> = ({ className = '', showText = true, the
     const subtextColor = theme === 'light' ? '#64748B' : '#94A3B8';
 
     return (
-        <Link href="/global-feed" onClick={onClick} className={`flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity ${className}`}>
-            <svg
-                width="36"
-                height="36"
-                viewBox="0 0 36 36"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="flex-shrink-0"
-            >
-                {/* Modern Blue Shield */}
-                <path
-                    d="M18 3L5 8V16C5 23.5 10.5 30.5 18 34C25.5 30.5 31 23.5 31 16V8L18 3Z"
-                    fill="#2563EB"
-                />
+        <Link href="/global-feed" onClick={onClick} className={`flex items-center gap-3 cursor-pointer group ${className}`}>
+            <div className="relative flex items-center justify-center">
+                <svg
+                    width="40"
+                    height="40"
+                    viewBox="0 0 40 40"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="transform transition-transform group-hover:scale-105 duration-300 ease-out"
+                >
+                    {/* Premium Geometric Shield - Deeper Royal Blue */}
+                    <path
+                        d="M20 4L6 9.5V18C6 26.5 12 34 20 37.5C28 34 34 26.5 34 18V9.5L20 4Z"
+                        fill="#1E40AF" 
+                        className="drop-shadow-sm"
+                    />
+                    
+                    {/* Inner Reflection/Detail for Depth (Subtle) */}
+                    <path
+                        d="M20 4L6 9.5V18C6 18.5 6.1 19 6.2 19.5L20 5.5L33.8 19.5C33.9 19 34 18.5 34 18V9.5L20 4Z"
+                        fill="white"
+                        fillOpacity="0.1"
+                    />
+                </svg>
 
-                {/* Red Blinking Status Dot - Top Right */}
-                <circle
-                    cx="28"
-                    cy="8"
-                    r="3"
-                    fill="#EF4444"
-                    className="animate-pulse"
-                />
-            </svg>
+                {/* Live Pulse Dot - Perfectly Positioned */}
+                <div className="absolute top-2 right-2 flex h-3 w-3">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-red-600 border-2 border-white"></span>
+                </div>
+            </div>
 
             {showText && (
-                <div className="flex flex-col justify-center">
-                    <span className="font-black text-xl tracking-tight leading-none" style={{ color: textColor }}>
+                <div className="flex flex-col justify-center -space-y-0.5">
+                    <span className="font-extrabold text-xl tracking-tighter leading-none" style={{ color: textColor }}>
                         NOVAI
                     </span>
-                    <span className="text-[9px] font-bold uppercase tracking-[0.15em] mt-1" style={{ color: subtextColor }}>
+                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">
                         Intelligence
                     </span>
                 </div>

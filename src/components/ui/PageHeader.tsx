@@ -1,4 +1,5 @@
 import { Sparkles } from 'lucide-react';
+import { NovaiLogo } from '@/components/Logo';
 
 interface PageHeaderProps {
     title: string;
@@ -43,10 +44,7 @@ export function PageHeader({ title, description, insight, icon }: PageHeaderProp
                         <div className="relative z-10 flex gap-4">
                             <div className="shrink-0 mt-1">
                                 <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center shadow-sm">
-                                    <svg width="20" height="20" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M18 3L5 8V16C5 23.5 10.5 30.5 18 34C25.5 30.5 31 23.5 31 16V8L18 3Z" fill="#2563EB" />
-                                        <circle cx="28" cy="8" r="3" fill="#EF4444" className="animate-pulse" />
-                                    </svg>
+                                    <NovaiLogo className="w-5 h-5" />
                                 </div>
                             </div>
                             <div>

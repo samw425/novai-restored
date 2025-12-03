@@ -2,66 +2,25 @@ export function NovaiLogo({ className = "h-8 w-8" }: { className?: string }) {
     return (
         <svg
             className={className}
-            viewBox="0 0 100 100"
+            viewBox="0 0 40 40"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
         >
-            {/* Outer Neural Ring */}
-            <circle
-                cx="50"
-                cy="50"
-                r="45"
-                stroke="url(#gradient1)"
-                strokeWidth="2"
-                fill="none"
-                opacity="0.3"
-            />
-
-            {/* Signal Wave/Data Stream */}
+            {/* Premium Geometric Shield - Deeper Royal Blue */}
             <path
-                d="M 20 50 Q 30 30, 40 50 T 60 50 T 80 50"
-                stroke="url(#gradient2)"
-                strokeWidth="3"
-                fill="none"
-                strokeLinecap="round"
+                d="M20 4L6 9.5V18C6 26.5 12 34 20 37.5C28 34 34 26.5 34 18V9.5L20 4Z"
+                fill="#1E40AF"
             />
 
-            {/* Central Node */}
-            <circle
-                cx="50"
-                cy="50"
-                r="8"
-                fill="url(#gradient3)"
+            {/* Inner Reflection/Detail for Depth (Subtle) */}
+            <path
+                d="M20 4L6 9.5V18C6 18.5 6.1 19 6.2 19.5L20 5.5L33.8 19.5C33.9 19 34 18.5 34 18V9.5L20 4Z"
+                fill="white"
+                fillOpacity="0.1"
             />
 
-            {/* Neural Connection Points */}
-            <circle cx="30" cy="35" r="3" fill="#4F46E5" opacity="0.6" />
-            <circle cx="50" cy="25" r="3" fill="#4F46E5" opacity="0.8" />
-            <circle cx="70" cy="35" r="3" fill="#14B8A6" opacity="0.6" />
-            <circle cx="75" cy="55" r="3" fill="#14B8A6" opacity="0.8" />
-
-            {/* Connection Lines */}
-            <line x1="30" y1="35" x2="50" y2="50" stroke="#4F46E5" strokeWidth="1" opacity="0.3" />
-            <line x1="50" y1="25" x2="50" y2="50" stroke="#4F46E5" strokeWidth="1" opacity="0.3" />
-            <line x1="70" y1="35" x2="50" y2="50" stroke="#14B8A6" strokeWidth="1" opacity="0.3" />
-            <line x1="75" y1="55" x2="50" y2="50" stroke="#14B8A6" strokeWidth="1" opacity="0.3" />
-
-            {/* Gradients */}
-            <defs>
-                <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#4F46E5" />
-                    <stop offset="100%" stopColor="#14B8A6" />
-                </linearGradient>
-                <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#4F46E5" />
-                    <stop offset="50%" stopColor="#7C3AED" />
-                    <stop offset="100%" stopColor="#14B8A6" />
-                </linearGradient>
-                <radialGradient id="gradient3">
-                    <stop offset="0%" stopColor="#4F46E5" />
-                    <stop offset="100%" stopColor="#3B82F6" />
-                </radialGradient>
-            </defs>
+            {/* Live Pulse Dot - Integrated directly into SVG for this component */}
+            <circle cx="28" cy="12" r="3" fill="#DC2626" stroke="white" strokeWidth="1" />
         </svg>
     );
 }
