@@ -43,20 +43,6 @@ const platformLinks = [
         href: '/videos',
         tooltip: "Curated high-signal AI videos and demos."
     },
-    {
-        id: 'live-wire',
-        label: 'Live Wire',
-        icon: Radio,
-        href: '/live-wire',
-        tooltip: "Raw, unfiltered real-time intelligence stream."
-    },
-    {
-        id: 'deep-signals',
-        label: 'Deep Signals',
-        icon: Radio,
-        href: '/deep-signals',
-        tooltip: "High-impact patterns and analysis behind the news."
-    },
 ];
 
 const categoryLinks = [
@@ -87,13 +73,6 @@ const categoryLinks = [
         icon: Shield,
         href: '/us-intel',
         tooltip: 'Domestic & Foreign Ops'
-    },
-    {
-        id: 'cyber-intel',
-        label: 'Cyber Intel',
-        icon: Shield,
-        href: '/cyber-intel',
-        tooltip: "Cybersecurity threats and defense intelligence."
     },
     {
         id: 'policy',
