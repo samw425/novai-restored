@@ -3,10 +3,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { Article } from '@/types';
-import { fetchArticles, checkNewArticles, fetchTopStories } from '@/lib/api';
+import { fetchArticles, checkNewArticles } from '@/lib/api';
 import { FeedCard } from './FeedCard';
 import { FeedHeader } from './FeedHeader';
-import { Loader2, ArrowUp, Shield } from 'lucide-react';
+import { Loader2, ArrowUp } from 'lucide-react';
 
 import { LiveTicker } from '@/components/dashboard/LiveTicker';
 import { SystemStatus } from '@/components/dashboard/SystemStatus';
@@ -20,14 +20,11 @@ interface FeedContainerProps {
 }
 
 export function FeedContainer({ initialCategory = 'all', forcedCategory, showTicker = true }: FeedContainerProps) {
-    const [activeTab, setActiveTab] = useState<'live' | 'brief'>('live');
     const [articles, setArticles] = useState<Article[]>([]);
-    const [topStories, setTopStories] = useState<Article[]>([]);
     const [category, setCategory] = useState(forcedCategory || initialCategory);
     const [cursor, setCursor] = useState<string | undefined>(undefined);
     const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(false);
-    const [loadingTopStories, setLoadingTopStories] = useState(false);
     const [newCount, setNewCount] = useState(0);
     const [isSignUpOpen, setIsSignUpOpen] = useState(false);
 
@@ -82,10 +79,10 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
 
     // Infinite scroll trigger
     useEffect(() => {
-        if (inView && hasMore && !loading && activeTab === 'live') {
+        if (inView && hasMore && !loading) {
             loadArticles();
         }
-    }, [inView, hasMore, loading, loadArticles, activeTab]);
+    }, [inView, hasMore, loading, loadArticles]);
 
     // Poll for new articles every 15s
     useEffect(() => {
@@ -97,25 +94,6 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
         }, 15000);
         return () => clearInterval(interval);
     }, [articles]);
-
-    // Load top stories when Brief tab is active
-    useEffect(() => {
-        if (activeTab === 'brief') {
-            const loadTopStories = async () => {
-                setLoadingTopStories(true);
-                try {
-                    const apiCategory = category === 'all' ? 'All' : category;
-                    const stories = await fetchTopStories(24, apiCategory);
-                    setTopStories(stories);
-                } catch (error) {
-                    console.error('Failed to load top stories:', error);
-                } finally {
-                    setLoadingTopStories(false);
-                }
-            };
-            loadTopStories();
-        }
-    }, [activeTab, category]);
 
     const handleRefresh = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -150,91 +128,57 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
                     </>
                 )}
 
-                {/* Tab Navigation */}
-                <div className="flex items-center justify-center border-b border-gray-200 bg-gray-50/50">
-                    <button
-                        onClick={() => setActiveTab('live')}
-                        className={`px-6 py-3 text-xs font-bold uppercase tracking-widest transition-all border-b-2 ${activeTab === 'live'
-                            ? 'border-blue-500 text-blue-600 bg-blue-50/50'
-                            : 'border-transparent text-gray-400 hover:text-gray-600 hover:bg-gray-100'
-                            }`}
-                    >
-                        Live Wire
-                    </button>
-                    <div className="w-px h-4 bg-gray-300"></div>
-                    <button
-                        onClick={() => setActiveTab('brief')}
-                        className={`px-6 py-3 text-xs font-bold uppercase tracking-widest transition-all border-b-2 ${activeTab === 'brief'
-                            ? 'border-blue-500 text-blue-600 bg-blue-50/50'
-                            : 'border-transparent text-gray-400 hover:text-gray-600 hover:bg-gray-100'
-                            }`}
-                    >
-                        30-Day Brief
-                    </button>
-                </div>
-
-                {activeTab === 'live' && !forcedCategory && (
+                {/* Category Selector (Only if not forced) */}
+                {!forcedCategory && (
                     <FeedHeader activeCategory={category} onCategoryChange={setCategory} />
                 )}
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
 
-                {/* LIVE TAB CONTENT */}
-                {activeTab === 'live' && (
-                    <>
-                        {newCount > 0 && (
-                            <div
-                                onClick={handleRefresh}
-                                className="sticky top-32 z-30 mx-auto w-fit mb-6 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg cursor-pointer hover:bg-blue-700 transition-all flex items-center gap-2 text-sm font-bold animate-in slide-in-from-top-2"
-                            >
-                                <ArrowUp className="h-4 w-4" />
-                                {newCount} New Updates
-                            </div>
-                        )}
-
-                        {/* Section Header */}
-                        <div className="flex items-center gap-4 mb-6">
-                            <div className="h-px flex-1 bg-gray-200"></div>
-                            <div className="flex items-center gap-2">
-                                <span className="relative flex h-2 w-2">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-                                </span>
-                                <span className="text-[10px] font-mono text-red-500 font-bold uppercase tracking-widest">LIVE FEED</span>
-                            </div>
-                            <div className="h-px flex-1 bg-gray-200"></div>
-                        </div>
-
-                        {/* List Layout */}
-                        <div className="max-w-3xl mx-auto space-y-6">
-                            {articles.map((article) => (
-                                <FeedCard key={article.id} article={article} />
-                            ))}
-                        </div>
-
-                        {/* Loading / End Sentinel */}
-                        <div ref={ref} className="py-12 flex justify-center w-full">
-                            {loading && <Loader2 className="h-8 w-8 animate-spin text-gray-400" />}
-                            {!hasMore && articles.length > 0 && (
-                                <p className="text-gray-400 text-sm font-medium">End of Stream.</p>
-                            )}
-                        </div>
-                    </>
+                {/* 30-DAY BRIEF HERO SECTION (Only on main feed) */}
+                {!forcedCategory && (
+                    <MonthlyIntelBrief />
                 )}
 
-                {/* BRIEF TAB CONTENT */}
-                {activeTab === 'brief' && (
-                    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                        {loadingTopStories ? (
-                            <div className="py-12 flex justify-center w-full">
-                                <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
-                            </div>
-                        ) : (
-                            <MonthlyIntelBrief articles={topStories} fullView={true} />
-                        )}
+                {/* LIVE FEED CONTENT */}
+                {newCount > 0 && (
+                    <div
+                        onClick={handleRefresh}
+                        className="sticky top-32 z-30 mx-auto w-fit mb-6 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg cursor-pointer hover:bg-blue-700 transition-all flex items-center gap-2 text-sm font-bold animate-in slide-in-from-top-2"
+                    >
+                        <ArrowUp className="h-4 w-4" />
+                        {newCount} New Updates
                     </div>
                 )}
+
+                {/* Section Header */}
+                <div className="flex items-center gap-4 mb-6">
+                    <div className="h-px flex-1 bg-gradient-to-r from-transparent via-blue-200 to-transparent opacity-50"></div>
+                    <div className="flex items-center gap-2">
+                        <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                        </span>
+                        <span className="text-[10px] font-mono text-blue-600 font-bold uppercase tracking-[0.2em]">NEURAL FEED // LIVE SIGNALS</span>
+                    </div>
+                    <div className="h-px flex-1 bg-gradient-to-r from-transparent via-blue-200 to-transparent opacity-50"></div>
+                </div>
+
+                {/* List Layout */}
+                <div className="max-w-3xl mx-auto space-y-6">
+                    {articles.map((article) => (
+                        <FeedCard key={article.id} article={article} />
+                    ))}
+                </div>
+
+                {/* Loading / End Sentinel */}
+                <div ref={ref} className="py-12 flex justify-center w-full">
+                    {loading && <Loader2 className="h-8 w-8 animate-spin text-gray-400" />}
+                    {!hasMore && articles.length > 0 && (
+                        <p className="text-gray-400 text-sm font-medium">End of Stream.</p>
+                    )}
+                </div>
             </div>
         </div>
     );
