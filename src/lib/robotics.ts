@@ -32,15 +32,18 @@ const VIDEO_FEEDS = [
 // Fallback for YouTube search RSS if channel IDs are tricky
 const YOUTUBE_SEARCH_RSS = 'https://www.youtube.com/feeds/videos.xml?search_query=humanoid+robot+demonstration';
 
+import { RSS_FEEDS } from '@/config/rss-feeds';
+
 export async function fetchRoboticsFeed(): Promise<RoboticsItem[]> {
     const items: RoboticsItem[] = [];
 
-    // 1. Fetch News
-    const newsPromises = NEWS_FEEDS.map(async (feedSource) => {
+    // 1. Fetch News from Central Config (Category: 'robotics')
+    const roboticsFeeds = RSS_FEEDS.filter(f => f.category === 'robotics');
+
+    const newsPromises = roboticsFeeds.map(async (feedSource) => {
         try {
             const feed = await parser.parseURL(feedSource.url);
             feed.items.forEach(item => {
-                // Filter for relevance if needed
                 if (item.title && item.link) {
                     items.push({
                         id: item.guid || item.link,
@@ -54,12 +57,12 @@ export async function fetchRoboticsFeed(): Promise<RoboticsItem[]> {
                 }
             });
         } catch (e) {
-            console.error(`Failed to fetch robotics news from ${feedSource.name}`, e);
+            // console.error(`Failed to fetch robotics news from ${feedSource.name}`, e);
         }
     });
 
-    // 2. Fetch Videos (Simulated for now if RSS fails, or use real RSS)
-    // Note: YouTube RSS is reliable.
+    // 2. Fetch Videos (Keep existing video logic or integrate if RSS_FEEDS supports video)
+    // For now, we keep the hardcoded video feeds as they are specific YouTube channels not yet in RSS_FEEDS
     const videoPromises = VIDEO_FEEDS.map(async (feedSource) => {
         try {
             const feed = await parser.parseURL(feedSource.url);
@@ -77,7 +80,6 @@ export async function fetchRoboticsFeed(): Promise<RoboticsItem[]> {
                         pubDate: item.pubDate || new Date().toISOString(),
                         source: feedSource.name,
                         type: 'video',
-                        // YouTube RSS puts the thumbnail in media:group -> media:thumbnail
                         thumbnail: `https://img.youtube.com/vi/${item.id.replace('yt:video:', '')}/mqdefault.jpg`
                     });
                 }
@@ -89,6 +91,15 @@ export async function fetchRoboticsFeed(): Promise<RoboticsItem[]> {
 
     await Promise.all([...newsPromises, ...videoPromises]);
 
+    // 3. DIVERSITY FILTER: Max 3 per source
+    const sourceCounts: Record<string, number> = {};
+    const filteredItems = items.filter(item => {
+        const count = sourceCounts[item.source] || 0;
+        if (count >= 3) return false;
+        sourceCounts[item.source] = count + 1;
+        return true;
+    });
+
     // Sort by date descending
-    return items.sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime());
+    return filteredItems.sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime());
 }

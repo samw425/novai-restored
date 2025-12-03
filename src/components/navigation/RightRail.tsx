@@ -1,16 +1,16 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
 import { Activity, Zap, Cpu, ArrowUpRight, Info, ShieldCheck, TrendingUp, ArrowRight } from 'lucide-react';
-import { WaitlistModal } from '@/components/ui/WaitlistModal';
+
+import { ProAd } from '@/components/ads/ProAd';
 
 export function RightRail() {
     return (
         <div className="sticky top-24 space-y-6 w-full">
             <WhatIsNovaiWidget />
             <HowItWorksWidget />
-            <ProVersionAdWidget />
+            <ProAd />
             <ToolOfTheDayWidget />
             <TrendingTopicsWidget />
         </div>
@@ -35,7 +35,7 @@ function WhatIsNovaiWidget() {
                     <div className="w-5 h-5 rounded-full bg-blue-50 flex items-center justify-center shrink-0 mt-0.5">
                         <span className="text-blue-600 text-xs font-bold">✓</span>
                     </div>
-                    <span className="text-sm text-gray-600">70+ global intelligence sources</span>
+                    <span className="text-sm text-gray-600">109+ global intelligence sources</span>
                 </div>
                 <div className="flex items-start gap-3">
                     <div className="w-5 h-5 rounded-full bg-blue-50 flex items-center justify-center shrink-0 mt-0.5">
@@ -138,71 +138,7 @@ function SystemStatusWidget() {
     );
 }
 
-function ProVersionAdWidget() {
-    const [isModalOpen, setIsModalOpen] = useState(false);
 
-    return (
-        <>
-            <div className="bg-white rounded-xl border border-[#E5E7EB] p-5 shadow-sm relative overflow-hidden group">
-                <div className="absolute top-0 right-0 p-3 opacity-5 group-hover:opacity-10 transition-opacity">
-                    <Zap className="h-24 w-24 -rotate-12 text-blue-600" />
-                </div>
-
-                <div className="relative z-10">
-                    <div className="flex items-center gap-2 mb-3">
-                        <span className="flex h-2 w-2 relative">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-                        </span>
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600">
-                            Coming Soon
-                        </span>
-                    </div>
-
-                    <h4 className="text-lg font-bold mb-2 text-gray-900 leading-tight">Novai Pro</h4>
-                    <p className="text-xs text-gray-500 mb-5 leading-relaxed">
-                        The ultimate intelligence suite for professionals.
-                    </p>
-
-                    <div className="space-y-3 mb-6">
-                        <FeatureRow label="Unlimited History Search" />
-                        <FeatureRow label="PDF & CSV Data Exports" />
-                        <FeatureRow label="Custom Threat Alerts" />
-                        <FeatureRow label="Deep Synthesis Reports" />
-                        <FeatureRow label="API Access" />
-                        <FeatureRow label="Team Collaboration" />
-                    </div>
-
-                    <button
-                        onClick={() => setIsModalOpen(true)}
-                        className="w-full flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-800 text-white text-xs font-bold py-3 rounded-lg transition-all shadow-sm hover:shadow-md"
-                    >
-                        Join Pro Waitlist
-                        <ArrowRight className="w-3 h-3" />
-                    </button>
-                </div>
-            </div>
-
-
-            <WaitlistModal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                source="Right Rail Widget"
-            />
-        </>
-    );
-}
-
-function FeatureRow({ label }: { label: string }) {
-    return (
-        <div className="flex items-center gap-2.5">
-            <div className="h-4 w-4 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
-                <Zap className="w-2.5 h-2.5 text-blue-600" fill="currentColor" />
-            </div>
-            <span className="text-xs font-medium text-gray-700">{label}</span>
-        </div>
-    );
-}
 
 function ToolOfTheDayWidget() {
     return (
@@ -273,7 +209,7 @@ function AboutNovaiWidget() {
             <div className="mb-4">
                 <div className="flex items-center gap-2 mb-2">
                     <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">
-                        70+ Verified Sources
+                        109+ Verified Sources
                     </span>
                     <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-100">
                         Growing Daily

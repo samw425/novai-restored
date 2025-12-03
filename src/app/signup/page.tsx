@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { Mail, Sparkles, Check } from 'lucide-react';
+import { Mail, Sparkles, Check, ArrowRight, Shield, Zap, Globe } from 'lucide-react';
+import { Logo } from '@/components/ui/Logo';
 
 export default function SignUpPage() {
     const [email, setEmail] = useState('');
@@ -16,7 +17,14 @@ export default function SignUpPage() {
             const response = await fetch('/api/contact', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, name: '', organization: '', interest: 'Waitlist' })
+                body: JSON.stringify({
+                    email,
+                    name: 'Daily Brief Subscriber',
+                    subject: 'Daily Brief Signup',
+                    message: 'New subscriber joined via /signup landing page',
+                    organization: 'Individual',
+                    interest: 'Daily Brief'
+                })
             });
 
             if (response.ok) {
@@ -34,20 +42,23 @@ export default function SignUpPage() {
 
     if (submitted) {
         return (
-            <div className="min-h-screen bg-[#F9FAFB] flex items-center justify-center px-6">
-                <div className="max-w-md w-full bg-white rounded-2xl shadow-lg border border-[#E5E7EB] p-8 text-center">
-                    <div className="w-16 h-16 mx-auto mb-4 bg-green-100 rounded-full flex items-center justify-center">
-                        <Check className="w-8 h-8 text-green-600" />
+            <div className="min-h-screen bg-white flex flex-col items-center justify-center px-4 relative overflow-hidden">
+                <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-50" />
+
+                <div className="max-w-md w-full bg-white rounded-3xl shadow-xl border border-slate-100 p-10 text-center relative z-10 animate-in zoom-in-95 duration-500">
+                    <div className="w-20 h-20 mx-auto mb-6 bg-emerald-50 rounded-full flex items-center justify-center">
+                        <Check className="w-10 h-10 text-emerald-600" />
                     </div>
-                    <h2 className="text-2xl font-bold text-[#0F172A] mb-2">You're on the list!</h2>
-                    <p className="text-[#64748B] mb-6">
-                        We'll notify you when Novai launches. Check your inbox for confirmation.
+                    <h2 className="text-3xl font-bold text-slate-900 mb-3 tracking-tight">You're In.</h2>
+                    <p className="text-slate-500 mb-8 text-lg leading-relaxed">
+                        Welcome to the inner circle. Your first intelligence brief will arrive in your inbox tomorrow morning.
                     </p>
                     <a
                         href="/global-feed"
-                        className="inline-block px-6 py-3 bg-[#2563EB] text-white rounded-lg font-medium hover:bg-[#1D4ED8] transition-colors"
+                        className="inline-flex items-center justify-center gap-2 w-full px-8 py-4 bg-slate-900 text-white rounded-xl font-bold hover:bg-slate-800 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                     >
-                        Explore the Feed
+                        Explore Live Intelligence
+                        <ArrowRight className="w-4 h-4" />
                     </a>
                 </div>
             </div>
@@ -55,77 +66,108 @@ export default function SignUpPage() {
     }
 
     return (
-        <div className="min-h-screen bg-[#F9FAFB] flex items-center justify-center px-6">
-            <div className="max-w-md w-full">
-                <div className="text-center mb-8">
-                    <div className="inline-flex items-center gap-2 mb-4">
-                        <Sparkles className="w-8 h-8 text-[#2563EB]" />
-                        <h1 className="text-3xl font-bold text-[#0F172A]">Join Novai</h1>
-                    </div>
-                    <p className="text-[#64748B] text-lg">
-                        Get early access to the ultimate AI intelligence platform
-                    </p>
-                </div>
+        <div className="min-h-screen bg-white flex flex-col relative overflow-hidden">
+            {/* Background Pattern */}
+            <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-50 pointer-events-none" />
 
-                <div className="bg-white rounded-2xl shadow-lg border border-[#E5E7EB] p-8">
-                    <div className="mb-6">
-                        <h3 className="font-semibold text-[#0F172A] mb-3">Why Join Novai?</h3>
-                        <ul className="space-y-3">
-                            {[
-                                'Daily Intelligence Briefing (Curated by AI)',
-                                'Access to "Deep Signals" & Market Analysis',
-                                'Customizable Feed (Follow specific topics)',
-                                'Critical Risk Alerts ("War Room" Access)',
-                                'Early Access to Enterprise API'
-                            ].map((benefit, i) => (
-                                <li key={i} className="flex items-start gap-2 text-sm text-[#64748B]">
-                                    <Check className="w-4 h-4 text-[#2563EB] mt-0.5 flex-shrink-0" />
-                                    {benefit}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+            {/* Navbar */}
+            <nav className="relative z-10 px-6 py-6 flex justify-between items-center max-w-7xl mx-auto w-full">
+                <Logo theme="light" />
+                <a href="/global-feed" className="text-sm font-bold text-slate-500 hover:text-slate-900 transition-colors">
+                    View Live Demo
+                </a>
+            </nav>
 
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                        <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-[#0F172A] mb-2">
-                                Email Address
-                            </label>
-                            <div className="relative">
-                                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#9CA3AF]" />
-                                <input
-                                    id="email"
-                                    type="email"
-                                    required
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    placeholder="you@example.com"
-                                    className="w-full pl-10 pr-4 py-3 border border-[#E5E7EB] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-transparent"
-                                />
-                            </div>
+            <main className="flex-grow flex items-center justify-center px-4 py-12 relative z-10">
+                <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+                    {/* Left Column: Copy */}
+                    <div className="space-y-8 text-center lg:text-left">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-bold uppercase tracking-wider">
+                            <Sparkles className="w-3 h-3" />
+                            Daily Intelligence Brief
                         </div>
 
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className="w-full py-3 bg-[#2563EB] text-white rounded-lg font-medium hover:bg-[#1D4ED8] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            {loading ? 'Joining...' : 'Join the Waitlist'}
-                        </button>
-                    </form>
+                        <h1 className="text-5xl md:text-6xl font-black text-slate-900 tracking-tight leading-[1.1]">
+                            The Signal You Need.<br />
+                            <span className="text-slate-400">
+                                The Noise You Don't.
+                            </span>
+                        </h1>
 
-                    <p className="text-xs text-[#9CA3AF] text-center mt-4">
-                        No spam. No credit card required. Unsubscribe anytime.
-                    </p>
+                        <p className="text-xl text-slate-600 leading-relaxed max-w-xl mx-auto lg:mx-0 font-medium">
+                            Join the inner circle of decision-makers who start their day with Novai. A concise, AI-curated briefing on the technological singularity, delivered every morning.
+                        </p>
+
+                        <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start text-sm font-bold text-slate-500">
+                            <div className="flex items-center gap-2">
+                                <Shield className="w-4 h-4 text-slate-900" />
+                                No Ads
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Zap className="w-4 h-4 text-slate-900" />
+                                5-Minute Read
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Globe className="w-4 h-4 text-slate-900" />
+                                Global Coverage
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Right Column: Form Card */}
+                    <div className="w-full max-w-md mx-auto lg:ml-auto">
+                        <div className="bg-white rounded-3xl shadow-2xl shadow-slate-200/50 border border-slate-100 p-8 md:p-10 relative overflow-hidden group hover:border-slate-200 transition-all duration-500">
+
+                            <div className="mb-8">
+                                <h3 className="text-2xl font-bold text-slate-900 mb-2">Subscribe to Briefing</h3>
+                                <p className="text-slate-500 text-sm font-medium">Join the list. Unsubscribe anytime.</p>
+                            </div>
+
+                            <form onSubmit={handleSubmit} className="space-y-5">
+                                <div>
+                                    <label htmlFor="email" className="block text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">
+                                        Work Email
+                                    </label>
+                                    <div className="relative group/input">
+                                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within/input:text-blue-600 transition-colors" />
+                                        <input
+                                            id="email"
+                                            type="email"
+                                            required
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            placeholder="name@company.com"
+                                            className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 transition-all font-medium"
+                                        />
+                                    </div>
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    className="w-full py-4 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                >
+                                    {loading ? (
+                                        'Processing...'
+                                    ) : (
+                                        <>
+                                            Subscribe Free
+                                            <ArrowRight className="w-5 h-5" />
+                                        </>
+                                    )}
+                                </button>
+                            </form>
+
+                            <div className="mt-8 pt-6 border-t border-slate-100 text-center">
+                                <p className="text-xs text-slate-400 font-medium">
+                                    Trusted by leaders in AI and Tech.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-                <p className="text-center text-sm text-[#64748B] mt-6">
-                    Already have access?{' '}
-                    <a href="/global-feed" className="text-[#2563EB] font-medium hover:underline">
-                        Go to feed
-                    </a>
-                </p>
-            </div>
+            </main>
         </div>
     );
 }

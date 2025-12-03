@@ -449,25 +449,76 @@ export default function USIntelPage() {
     const [activeAgency, setActiveAgency] = useState<string>('ALL');
     const [feedItems, setFeedItems] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+    const observer = useRef<IntersectionObserver | null>(null);
+
+    // Infinite Scroll Observer
+    const lastElementRef = useCallback((node: HTMLDivElement) => {
+        if (loading) return;
+        if (observer.current) observer.current.disconnect();
+        observer.current = new IntersectionObserver(entries => {
+            if (entries[0].isIntersecting && hasMore) {
+                setPage(prev => prev + 1);
+            }
+        });
+        if (node) observer.current.observe(node);
+    }, [loading, hasMore]);
 
     // Fetch Feed Logic
-    const fetchFeed = useCallback(async () => {
-        setLoading(true);
+    const fetchFeed = useCallback(async (pageNum: number, isPolling = false) => {
+        if (!isPolling) setLoading(true);
         try {
-            const res = await fetch(`/api/feed/us-intel?agency=${activeAgency}`);
+            const res = await fetch(`/api/feed/us-intel?agency=${activeAgency}&page=${pageNum}&limit=20`);
             if (!res.ok) throw new Error('Failed to fetch');
             const data = await res.json();
-            setFeedItems(data.items || []);
+
+            setFeedItems(prev => {
+                if (pageNum === 1) {
+                    // If polling (page 1), merge new items at the top
+                    if (isPolling) {
+                        const newItems = data.items.filter((newItem: any) =>
+                            !prev.some(existingItem => existingItem.link === newItem.link)
+                        );
+                        return [...newItems, ...prev];
+                    }
+                    return data.items || [];
+                }
+                // If loading more pages, append to bottom
+                return [...prev, ...(data.items || [])];
+            });
+
+            if (!isPolling) {
+                setHasMore(data.hasMore);
+            }
         } catch (error) {
             console.error("Feed fetch error:", error);
-            // Keep existing items if error, or show error state
         } finally {
-            setLoading(false);
+            if (!isPolling) setLoading(false);
         }
     }, [activeAgency]);
 
+    // Initial Load & Agency Change
     useEffect(() => {
-        fetchFeed();
+        setPage(1);
+        setFeedItems([]);
+        setHasMore(true);
+        fetchFeed(1);
+    }, [activeAgency]);
+
+    // Load More Pages
+    useEffect(() => {
+        if (page > 1) {
+            fetchFeed(page);
+        }
+    }, [page]);
+
+    // Real-time Polling (every 30 seconds)
+    useEffect(() => {
+        const interval = setInterval(() => {
+            fetchFeed(1, true);
+        }, 30000);
+        return () => clearInterval(interval);
     }, [fetchFeed]);
 
     return (
@@ -485,14 +536,58 @@ export default function USIntelPage() {
                     {/* LEFT COLUMN: Dossier View (Sticky) */}
                     <div className="lg:col-span-4 lg:sticky lg:top-24 h-fit">
                         {activeAgency === 'ALL' ? (
-                            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 text-center">
-                                <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                                    <BrainCircuit className="text-blue-600" size={32} />
+                            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                                {/* Header */}
+                                <div className="bg-slate-900 px-6 py-4 border-b border-slate-800 flex justify-between items-center">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-900/50">
+                                            <BrainCircuit className="text-white" size={18} />
+                                        </div>
+                                        <div>
+                                            <h2 className="text-sm font-bold text-white uppercase tracking-wider">Global Command</h2>
+                                            <p className="text-[10px] text-slate-400 font-mono">US INTELLIGENCE COMMUNITY</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-col items-end">
+                                        <span className="flex items-center gap-2">
+                                            <span className="relative flex h-2 w-2">
+                                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                                            </span>
+                                            <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">System Online</span>
+                                        </span>
+                                    </div>
                                 </div>
-                                <h2 className="text-xl font-black text-slate-900 mb-2">Global Intelligence Wire</h2>
-                                <p className="text-slate-600 text-sm leading-relaxed">
-                                    You are viewing the aggregated real-time feed from all monitored US intelligence agencies. Select a specific agency above to view its classified dossier and dedicated stream.
-                                </p>
+
+                                {/* Content */}
+                                <div className="p-6">
+                                    <p className="text-slate-600 text-sm leading-relaxed mb-6">
+                                        You are viewing the <span className="font-bold text-slate-900">aggregated real-time feed</span> from the entire US Intelligence Community.
+                                        Novai's neural engine is currently monitoring <span className="font-bold text-blue-600">109+ high-signal sources</span> for critical developments.
+                                    </p>
+
+                                    {/* Agency Grid Status */}
+                                    <div className="grid grid-cols-2 gap-3 mb-6">
+                                        {['CIA', 'FBI', 'NSA', 'DOD', 'State Dept', 'DHS'].map((agency) => (
+                                            <div key={agency} className="flex items-center justify-between p-2 bg-slate-50 rounded border border-slate-100">
+                                                <span className="text-[10px] font-bold text-slate-700">{agency}</span>
+                                                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <div className="p-3 bg-blue-50 border border-blue-100 rounded-lg flex gap-3 items-start">
+                                        <div className="mt-0.5">
+                                            <Loader2 className="w-4 h-4 text-blue-600 animate-spin" />
+                                        </div>
+                                        <div>
+                                            <h4 className="text-xs font-bold text-blue-900 uppercase mb-1">Live Synthesis Active</h4>
+                                            <p className="text-[11px] text-blue-700 leading-snug">
+                                                Processing incoming signals. Select a specific agency above for classified dossier access.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         ) : (
                             <DossierView profile={AGENCY_PROFILES[activeAgency]} />
@@ -502,15 +597,21 @@ export default function USIntelPage() {
                     {/* RIGHT COLUMN: Live Feed */}
                     <div className="lg:col-span-8">
                         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden min-h-[600px]">
-                            <div className="px-6 py-4 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
+                            <div className="px-6 py-4 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center sticky top-0 z-10 backdrop-blur-sm">
                                 <h3 className="text-xs font-bold text-slate-900 uppercase tracking-widest flex items-center gap-2">
                                     <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
                                     Live Wire: {activeAgency === 'ALL' ? 'All Sources' : AGENCY_PROFILES[activeAgency]?.acronym}
                                 </h3>
-                                <span className="text-[10px] font-mono text-slate-400">ENCRYPTED // REAL-TIME</span>
+                                <div className="flex items-center gap-3">
+                                    <span className="relative flex h-2 w-2">
+                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                                    </span>
+                                    <span className="text-[10px] font-mono text-slate-400">ENCRYPTED // REAL-TIME</span>
+                                </div>
                             </div>
 
-                            {loading ? (
+                            {loading && feedItems.length === 0 ? (
                                 <div className="p-12 flex flex-col items-center justify-center text-slate-400">
                                     <Loader2 size={32} className="animate-spin mb-4 text-blue-500" />
                                     <span className="text-xs font-mono uppercase tracking-widest">Establishing Secure Uplink...</span>
@@ -522,35 +623,52 @@ export default function USIntelPage() {
                                 </div>
                             ) : (
                                 <div className="divide-y divide-slate-100">
-                                    {feedItems.map((item, i) => (
-                                        <div key={i} className="p-6 hover:bg-slate-50 transition-colors group">
-                                            <div className="flex items-center justify-between mb-2">
-                                                <div className="flex items-center gap-2">
-                                                    <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${item.source === 'CIA' ? 'bg-blue-100 text-blue-700' :
-                                                        item.source === 'FBI' ? 'bg-red-100 text-red-700' :
-                                                            item.source === 'NSA' ? 'bg-emerald-100 text-emerald-700' :
-                                                                'bg-slate-100 text-slate-600'
-                                                        }`}>
-                                                        {item.source}
-                                                    </span>
-                                                    <span className="text-[10px] font-mono text-slate-400">
-                                                        {new Date(item.pubDate).toLocaleTimeString()}
-                                                    </span>
+                                    {feedItems.map((item, i) => {
+                                        const isLastElement = i === feedItems.length - 1;
+                                        return (
+                                            <div
+                                                key={`${item.link}-${i}`}
+                                                ref={isLastElement ? lastElementRef : null}
+                                                className="p-6 hover:bg-slate-50 transition-colors group animate-in fade-in slide-in-from-bottom-2 duration-500"
+                                            >
+                                                <div className="flex items-center justify-between mb-2">
+                                                    <div className="flex items-center gap-2">
+                                                        <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${item.source === 'CIA' ? 'bg-blue-100 text-blue-700' :
+                                                            item.source === 'FBI' ? 'bg-red-100 text-red-700' :
+                                                                item.source === 'NSA' ? 'bg-emerald-100 text-emerald-700' :
+                                                                    'bg-slate-100 text-slate-600'
+                                                            }`}>
+                                                            {item.source}
+                                                        </span>
+                                                        <span className="text-[10px] font-mono text-slate-400">
+                                                            {new Date(item.pubDate).toLocaleTimeString()}
+                                                        </span>
+                                                    </div>
+                                                    <a href={item.link} target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-blue-600 transition-colors">
+                                                        <ExternalLink size={14} />
+                                                    </a>
                                                 </div>
-                                                <a href={item.link} target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-blue-600 transition-colors">
-                                                    <ExternalLink size={14} />
+                                                <a href={item.link} target="_blank" rel="noopener noreferrer" className="block">
+                                                    <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors leading-tight">
+                                                        {item.title}
+                                                    </h3>
+                                                    <p className="text-sm text-slate-600 leading-relaxed line-clamp-2">
+                                                        {item.contentSnippet}
+                                                    </p>
                                                 </a>
                                             </div>
-                                            <a href={item.link} target="_blank" rel="noopener noreferrer" className="block">
-                                                <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-blue-600 transition-colors leading-tight">
-                                                    {item.title}
-                                                </h3>
-                                                <p className="text-sm text-slate-600 leading-relaxed line-clamp-2">
-                                                    {item.contentSnippet}
-                                                </p>
-                                            </a>
+                                        );
+                                    })}
+                                    {loading && (
+                                        <div className="p-8 flex justify-center">
+                                            <Loader2 size={24} className="animate-spin text-slate-400" />
                                         </div>
-                                    ))}
+                                    )}
+                                    {!hasMore && feedItems.length > 0 && (
+                                        <div className="p-8 text-center text-xs font-mono text-slate-400 uppercase tracking-widest">
+                                            End of Intelligence Stream
+                                        </div>
+                                    )}
                                 </div>
                             )}
                         </div>

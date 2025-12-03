@@ -23,19 +23,39 @@ export default function GlobalFeedPage() {
                         </p>
                     </div>
 
-                    {/* Stats/Badges */}
-                    <div className="flex flex-wrap items-center justify-center gap-3">
-                        <div className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-full shadow-sm">
-                            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-                            <span className="text-sm font-bold text-slate-900">Neural Filters Active</span>
+                    {/* Stats/Badges - Command Center Style */}
+                    <div className="flex flex-wrap items-center justify-center gap-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
+                        <div className="flex items-center gap-3 px-5 py-2.5 bg-white border border-slate-200 rounded-lg shadow-sm hover:border-blue-200 transition-colors group">
+                            <div className="relative">
+                                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                                <div className="absolute inset-0 w-2 h-2 rounded-full bg-emerald-500 blur-sm opacity-50"></div>
+                            </div>
+                            <div className="flex flex-col text-left">
+                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">System Status</span>
+                                <span className="text-xs font-mono font-bold text-slate-900 group-hover:text-blue-600 transition-colors">NEURAL FILTERS ACTIVE</span>
+                            </div>
                         </div>
-                        <div className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-full shadow-sm">
-                            <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-                            <span className="text-sm font-bold text-slate-900">Real-Time Inference</span>
+
+                        <div className="flex items-center gap-3 px-5 py-2.5 bg-white border border-slate-200 rounded-lg shadow-sm hover:border-blue-200 transition-colors group">
+                            <div className="relative">
+                                <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                                <div className="absolute inset-0 w-2 h-2 rounded-full bg-blue-500 blur-sm opacity-50"></div>
+                            </div>
+                            <div className="flex flex-col text-left">
+                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Latency</span>
+                                <span className="text-xs font-mono font-bold text-slate-900 group-hover:text-blue-600 transition-colors">REAL-TIME INFERENCE</span>
+                            </div>
                         </div>
-                        <div className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-full shadow-sm">
-                            <div className="w-2 h-2 rounded-full bg-purple-500"></div>
-                            <span className="text-sm font-bold text-slate-900">72+ Global Sources</span>
+
+                        <div className="flex items-center gap-3 px-5 py-2.5 bg-white border border-slate-200 rounded-lg shadow-sm hover:border-blue-200 transition-colors group">
+                            <div className="relative">
+                                <div className="w-2 h-2 rounded-full bg-purple-500"></div>
+                                <div className="absolute inset-0 w-2 h-2 rounded-full bg-purple-500 blur-sm opacity-50"></div>
+                            </div>
+                            <div className="flex flex-col text-left">
+                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Coverage</span>
+                                <span className="text-xs font-mono font-bold text-slate-900 group-hover:text-blue-600 transition-colors">109+ GLOBAL SOURCES</span>
+                            </div>
                         </div>
                     </div>
 
@@ -59,7 +79,7 @@ export default function GlobalFeedPage() {
                                     </span>
                                 </div>
                                 <p className="text-slate-600 leading-relaxed text-sm">
-                                    Currently ingesting signals from <span className="font-bold text-slate-900">72+ verified global sources</span>. Our vector engine filters 94% of noise to isolate high-impact <span className="font-bold text-blue-600">AI and Technology</span> developments in real-time.
+                                    Currently ingesting signals from <span className="font-bold text-slate-900">109+ verified global sources</span>. Our vector engine filters 94% of noise to isolate high-impact <span className="font-bold text-blue-600">AI and Technology</span> developments in real-time.
                                 </p>
                             </div>
                         </div>

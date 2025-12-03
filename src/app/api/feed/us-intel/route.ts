@@ -12,9 +12,10 @@ const parser = new Parser({
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const agency = searchParams.get('agency'); // 'CIA', 'FBI', 'ALL', etc.
+    const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '20');
 
-    console.log(`[US-INTEL] Fetching feed for agency: ${agency}`);
+    console.log(`[US-INTEL] Fetching feed for agency: ${agency}, page: ${page}`);
 
     // Map agency acronyms to feed IDs or categories
     let targetFeeds: typeof RSS_FEEDS = [];
@@ -53,9 +54,9 @@ export async function GET(request: Request) {
     try {
         const feedPromises = targetFeeds.map(async (feed) => {
             try {
-                console.log(`[US-INTEL] Fetching ${feed.url}...`);
+                // console.log(`[US-INTEL] Fetching ${feed.url}...`);
                 const feedData = await parser.parseURL(feed.url);
-                console.log(`[US-INTEL] Successfully fetched ${feed.url} (${feedData.items.length} items)`);
+                // console.log(`[US-INTEL] Successfully fetched ${feed.url} (${feedData.items.length} items)`);
                 return feedData.items.map(item => ({
                     title: item.title,
                     link: item.link,
@@ -81,9 +82,15 @@ export async function GET(request: Request) {
             return dateB - dateA;
         });
 
+        // Pagination Logic
+        const startIndex = (page - 1) * limit;
+        const endIndex = startIndex + limit;
+        const paginatedItems = allItems.slice(startIndex, endIndex);
+
         return NextResponse.json({
-            items: allItems.slice(0, limit),
-            hasMore: allItems.length > limit
+            items: paginatedItems,
+            hasMore: allItems.length > endIndex,
+            total: allItems.length
         });
 
     } catch (error) {

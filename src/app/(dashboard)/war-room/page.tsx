@@ -161,17 +161,17 @@ export default function WarRoomPage() {
 
             {/* Tab Navigation (Segmented Control) */}
             <div className="flex justify-center mb-8">
-                <div className="bg-gray-900/50 p-1 rounded-lg inline-flex border border-gray-800 backdrop-blur-sm">
+                <div className="bg-slate-900 p-1 rounded-lg inline-flex border border-slate-800 shadow-sm">
                     <button
                         onClick={() => setActiveTab('GLOBAL_INTEL')}
-                        className={`px-6 py-2 rounded-md text-sm font-mono transition-all duration-200 flex items-center gap-2 ${activeTab === 'GLOBAL_INTEL' ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/20' : 'text-gray-400 hover:text-white'}`}
+                        className={`px-6 py-2 rounded-md text-sm font-mono transition-all duration-200 flex items-center gap-2 ${activeTab === 'GLOBAL_INTEL' ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/20' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}
                     >
                         <Globe size={14} />
                         GLOBAL INTEL
                     </button>
                     <button
                         onClick={() => setActiveTab('CURRENT_WARS')}
-                        className={`px-6 py-2 rounded-md text-sm font-mono transition-all duration-200 flex items-center gap-2 ${activeTab === 'CURRENT_WARS' ? 'bg-red-600 text-white shadow-lg shadow-red-900/20' : 'text-gray-400 hover:text-white'}`}
+                        className={`px-6 py-2 rounded-md text-sm font-mono transition-all duration-200 flex items-center gap-2 ${activeTab === 'CURRENT_WARS' ? 'bg-red-600 text-white shadow-lg shadow-red-900/20' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}
                     >
                         <AlertOctagon size={14} />
                         CURRENT WARS
@@ -213,11 +213,11 @@ export default function WarRoomPage() {
 
             {/* Active Military Alarms Banner */}
             {criticalCount > 0 && (
-                <div className="bg-red-950/30 border border-red-900/50 rounded-lg p-4 mb-6 flex items-start gap-4 animate-in fade-in slide-in-from-top-4">
-                    <AlertOctagon className="text-red-500 shrink-0 mt-0.5" />
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 flex items-start gap-4 animate-in fade-in slide-in-from-top-4 shadow-sm">
+                    <AlertOctagon className="text-red-600 shrink-0 mt-0.5" />
                     <div>
-                        <h3 className="text-red-500 font-bold text-sm uppercase tracking-widest mb-1">Active Military Alarms</h3>
-                        <p className="text-red-200/80 text-sm font-mono">
+                        <h3 className="text-red-700 font-bold text-sm uppercase tracking-widest mb-1">Active Military Alarms</h3>
+                        <p className="text-red-900 text-sm font-mono font-medium">
                             {criticalCount} critical incidents detected requiring immediate attention. Global force posture elevated.
                         </p>
                     </div>

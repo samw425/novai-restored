@@ -81,7 +81,7 @@ export default function IntelligenceBriefPage() {
                             </div>
                             <PageHeader
                                 title="Intelligence Brief"
-                                description="AI-synthesized analysis from 70+ global sources."
+                                description="AI-synthesized analysis from 109+ global sources."
                                 insight="This isn't just news aggregation. Our AI connects the dots to explain NOT just what happened, but why it matters."
                                 icon={<Brain className="w-8 h-8 text-indigo-600" />}
                             />
@@ -121,7 +121,7 @@ export default function IntelligenceBriefPage() {
                             <div>
                                 <h2 className="font-bold text-lg mb-1">What makes this different?</h2>
                                 <p className="text-indigo-100 text-sm leading-relaxed">
-                                    This isn't just news aggregation. Our AI analyzes patterns across <span className="font-bold text-white">70+ global sources</span>,
+                                    This isn't just news aggregation. Our AI analyzes patterns across <span className="font-bold text-white">109+ global sources</span>,
                                     connects the dots, and explains <span className="font-bold text-white">what it means</span> and
                                     <span className="font-bold text-white"> why it matters</span> for your work.
                                 </p>

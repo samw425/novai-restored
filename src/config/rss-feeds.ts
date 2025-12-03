@@ -93,8 +93,61 @@ export const RSS_FEEDS: FeedSource[] = [
     { id: 'aljazeera-war', name: 'Al Jazeera', url: 'https://www.aljazeera.com/xml/rss/all.xml', category: 'current-wars', priority: 10, region: 'Global' },
 
     // Russia / Ukraine
+    // Russia / Ukraine
     { id: 'kyiv-independent', name: 'Kyiv Independent', url: 'https://kyivindependent.com/feed/', category: 'current-wars', priority: 10, region: 'Europe' },
     { id: 'bbc-europe', name: 'BBC Europe', url: 'https://feeds.bbci.co.uk/news/world/europe/rss.xml', category: 'current-wars', priority: 10, region: 'Europe' },
+    { id: 'mosecow-times', name: 'The Moscow Times', url: 'https://www.themoscowtimes.com/rss/news', category: 'current-wars', priority: 9, region: 'Europe' },
+    { id: 'meduza-en', name: 'Meduza', url: 'https://meduza.io/rss/en/all', category: 'current-wars', priority: 9, region: 'Europe' },
+
+    // Middle East / Conflict
+    { id: 'middle-east-eye', name: 'Middle East Eye', url: 'https://www.middleeasteye.net/rss', category: 'current-wars', priority: 9, region: 'Global' },
+    { id: 'al-monitor', name: 'Al-Monitor', url: 'https://www.al-monitor.com/rss', category: 'current-wars', priority: 9, region: 'Global' },
+
+    // ========== DEFENSE & STRATEGIC STUDIES (Priority 10) ==========
+    { id: 'defense-news', name: 'Defense News', url: 'https://www.defensenews.com/arc/outboundfeeds/rss/', category: 'us-intel', priority: 10, region: 'US' },
+    { id: 'war-on-rocks', name: 'War on the Rocks', url: 'https://warontherocks.com/feed/', category: 'us-intel', priority: 10, region: 'US' },
+    { id: 'breaking-defense', name: 'Breaking Defense', url: 'https://breakingdefense.com/feed/', category: 'us-intel', priority: 9, region: 'US' },
+    { id: 'defense-one', name: 'Defense One', url: 'https://www.defenseone.com/rss/all/', category: 'us-intel', priority: 9, region: 'US' },
+    { id: 'isw-updates', name: 'Institute for Study of War', url: 'https://www.understandingwar.org/feeds.xml', category: 'us-intel', priority: 10, region: 'Global' },
+    { id: 'csis', name: 'CSIS', url: 'https://www.csis.org/rss/analysis', category: 'us-intel', priority: 9, region: 'US' },
+    { id: 'rand-corp', name: 'RAND Corporation', url: 'https://www.rand.org/news/rss.xml', category: 'us-intel', priority: 9, region: 'US' },
+    { id: 'usni-news', name: 'US Naval Institute', url: 'https://news.usni.org/feed', category: 'us-intel', priority: 9, region: 'US' },
+    { id: 'army-times', name: 'Army Times', url: 'https://www.armytimes.com/arc/outboundfeeds/rss/', category: 'us-intel', priority: 8, region: 'US' },
+    { id: 'air-force-times', name: 'Air Force Times', url: 'https://www.airforcetimes.com/arc/outboundfeeds/rss/', category: 'us-intel', priority: 8, region: 'US' },
+
+    // ========== GLOBAL INTELLIGENCE & GEOPOLITICS (Priority 10) ==========
+    { id: 'foreign-policy', name: 'Foreign Policy', url: 'https://foreignpolicy.com/feed/', category: 'us-intel', priority: 10, region: 'Global' },
+    { id: 'foreign-affairs', name: 'Foreign Affairs', url: 'https://www.foreignaffairs.com/rss.xml', category: 'us-intel', priority: 10, region: 'Global' },
+    { id: 'the-diplomat', name: 'The Diplomat', url: 'https://thediplomat.com/feed/', category: 'us-intel', priority: 9, region: 'Asia' },
+    { id: 'scmp-tech', name: 'South China Morning Post', url: 'https://www.scmp.com/rss/318421/feed', category: 'market', priority: 9, region: 'Asia' },
+    { id: 'nikkei-asia', name: 'Nikkei Asia', url: 'https://asia.nikkei.com/rss/feed/nar', category: 'market', priority: 9, region: 'Asia' },
+    { id: 'al-jazeera-english', name: 'Al Jazeera English', url: 'https://www.aljazeera.com/xml/rss/all.xml', category: 'market', priority: 9, region: 'Global' },
+    { id: 'dw-news', name: 'Deutsche Welle', url: 'https://rss.dw.com/xml/rss-en-all', category: 'market', priority: 8, region: 'Europe' },
+    { id: 'france24', name: 'France 24', url: 'https://www.france24.com/en/rss', category: 'market', priority: 8, region: 'Europe' },
+
+    // ========== ADVANCED TECH & CYBER (Priority 9) ==========
+    { id: 'cyberscoop', name: 'CyberScoop', url: 'https://www.cyberscoop.com/feed/', category: 'security', priority: 9, region: 'US' },
+    { id: 'recorded-future', name: 'The Record', url: 'https://therecord.media/feed', category: 'security', priority: 9, region: 'Global' },
+    { id: 'unit42', name: 'Palo Alto Unit 42', url: 'https://unit42.paloaltonetworks.com/feed/', category: 'security', priority: 9, region: 'US' },
+    { id: 'mandiant', name: 'Mandiant Threat Intel', url: 'https://www.mandiant.com/resources/blog/rss.xml', category: 'security', priority: 9, region: 'US' },
+    { id: 'sifted-eu', name: 'Sifted EU', url: 'https://sifted.eu/feed', category: 'market', priority: 8, region: 'Europe' },
+    { id: 'tech-in-asia', name: 'Tech in Asia', url: 'https://www.techinasia.com/feed', category: 'market', priority: 8, region: 'Asia' },
+    { id: 'rest-of-world', name: 'Rest of World', url: 'https://restofworld.org/feed/', category: 'market', priority: 9, region: 'Global' },
+
+    // ========== NEW SOURCES (Broadening Scope) ==========
+    { id: 'semafor-tech', name: 'Semafor Tech', url: 'https://www.semafor.com/feed/technology', category: 'market', priority: 9, region: 'US' },
+    { id: 'information-tech', name: 'The Information', url: 'https://www.theinformation.com/feed', category: 'market', priority: 10, region: 'US' },
+    { id: 'axios-tech', name: 'Axios Tech', url: 'https://api.axios.com/feed/technology', category: 'market', priority: 8, region: 'US' },
+    { id: 'qz-tech', name: 'Quartz Tech', url: 'https://qz.com/emails/quartz-obsession/feed', category: 'market', priority: 8, region: 'Global' },
+    { id: 'ieee-spectrum', name: 'IEEE Spectrum', url: 'https://spectrum.ieee.org/feeds/feed.rss', category: 'tools', priority: 9, region: 'Global' },
+    { id: 'hackaday', name: 'Hackaday', url: 'https://hackaday.com/blog/feed/', category: 'tools', priority: 8, region: 'Global' },
+    { id: 'anandtech', name: 'AnandTech', url: 'https://www.anandtech.com/rss/', category: 'tools', priority: 8, region: 'US' },
+    { id: 'tomshardware', name: 'Toms Hardware', url: 'https://www.tomshardware.com/feeds/all', category: 'tools', priority: 7, region: 'US' },
+    { id: '9to5mac', name: '9to5Mac', url: 'https://9to5mac.com/feed/', category: 'market', priority: 7, region: 'US' },
+    { id: 'macrumors', name: 'MacRumors', url: 'https://www.macrumors.com/macrumors.xml', category: 'market', priority: 7, region: 'US' },
+    { id: 'stratechery-daily', name: 'Stratechery Daily', url: 'https://stratechery.com/feed/', category: 'market', priority: 9, region: 'US' },
+    { id: 'platformer', name: 'Platformer', url: 'https://www.platformer.news/feed', category: 'market', priority: 9, region: 'US' },
+    { id: '404-media', name: '404 Media', url: 'https://www.404media.co/rss/', category: 'market', priority: 9, region: 'US' },
 ];
 
 // Helper functions

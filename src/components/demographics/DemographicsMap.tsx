@@ -58,37 +58,37 @@ export function DemographicsMap({ countries }: DemographicsMapProps) {
     };
 
     return (
-        <div className="relative w-full h-[700px] bg-slate-950 rounded-xl border border-slate-800 overflow-hidden group shadow-2xl">
+        <div className="relative w-full h-[700px] bg-slate-50 rounded-xl border border-slate-200 overflow-hidden group shadow-sm">
             {/* Map Controls */}
-            <div className="absolute top-4 right-4 z-20 flex flex-col gap-2 bg-slate-900/90 backdrop-blur border border-slate-700 rounded-lg p-2">
-                <button onClick={handleZoomIn} className="p-2 hover:bg-slate-800 rounded text-slate-400 hover:text-white transition-colors">
+            <div className="absolute top-4 right-4 z-20 flex flex-col gap-2 bg-white/90 backdrop-blur border border-slate-200 rounded-lg p-2 shadow-sm">
+                <button onClick={handleZoomIn} className="p-2 hover:bg-slate-100 rounded text-slate-500 hover:text-slate-900 transition-colors">
                     <ZoomIn size={18} />
                 </button>
-                <button onClick={handleZoomOut} className="p-2 hover:bg-slate-800 rounded text-slate-400 hover:text-white transition-colors">
+                <button onClick={handleZoomOut} className="p-2 hover:bg-slate-100 rounded text-slate-500 hover:text-slate-900 transition-colors">
                     <ZoomOut size={18} />
                 </button>
-                <div className="h-px bg-slate-700 my-1"></div>
-                <button onClick={handleReset} className="p-2 hover:bg-slate-800 rounded text-slate-400 hover:text-white transition-colors">
+                <div className="h-px bg-slate-200 my-1"></div>
+                <button onClick={handleReset} className="p-2 hover:bg-slate-100 rounded text-slate-500 hover:text-slate-900 transition-colors">
                     <Maximize size={18} />
                 </button>
             </div>
 
             {/* Legend */}
             <div className="absolute bottom-4 left-4 z-20 flex flex-col gap-2 pointer-events-none">
-                <div className="bg-slate-900/90 backdrop-blur border border-slate-700 rounded-lg p-3">
-                    <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Population Growth</h4>
+                <div className="bg-white/90 backdrop-blur border border-slate-200 rounded-lg p-3 shadow-sm">
+                    <h4 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Population Growth</h4>
                     <div className="flex flex-col gap-1.5">
                         <div className="flex items-center gap-2">
                             <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-                            <span className="text-[10px] text-slate-300">High Growth ({'>'}2%)</span>
+                            <span className="text-[10px] text-slate-600">High Growth ({'>'}2%)</span>
                         </div>
                         <div className="flex items-center gap-2">
                             <span className="w-2 h-2 rounded-full bg-blue-500"></span>
-                            <span className="text-[10px] text-slate-300">Stable ({'>'}0.5%)</span>
+                            <span className="text-[10px] text-slate-600">Stable ({'>'}0.5%)</span>
                         </div>
                         <div className="flex items-center gap-2">
                             <span className="w-2 h-2 rounded-full bg-amber-500"></span>
-                            <span className="text-[10px] text-slate-300">Decline ({'<'}0%)</span>
+                            <span className="text-[10px] text-slate-600">Decline ({'<'}0%)</span>
                         </div>
                     </div>
                 </div>
@@ -106,12 +106,12 @@ export function DemographicsMap({ countries }: DemographicsMapProps) {
             >
                 {/* World Map Background */}
                 <div
-                    className="absolute inset-0 w-full h-full bg-[url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg')] bg-no-repeat bg-center bg-contain opacity-20 invert pointer-events-none"
+                    className="absolute inset-0 w-full h-full bg-[url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg')] bg-no-repeat bg-center bg-contain opacity-30 pointer-events-none"
                     style={{ backgroundSize: '100% auto' }}
                 ></div>
 
                 {/* Grid Overlay */}
-                <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:50px_50px] pointer-events-none"></div>
+                <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:50px_50px] pointer-events-none"></div>
 
                 {/* Country Nodes */}
                 {countries.map((country) => {

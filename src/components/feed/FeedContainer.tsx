@@ -12,6 +12,7 @@ import { LiveTicker } from '@/components/dashboard/LiveTicker';
 import { SystemStatus } from '@/components/dashboard/SystemStatus';
 import { MonthlyIntelBrief } from '@/components/dashboard/MonthlyIntelBrief';
 import { SignUpModal } from '@/components/auth/SignUpModal';
+import { AIBrief } from '@/components/feed/AIBrief';
 
 interface FeedContainerProps {
     initialCategory?: string;
@@ -137,9 +138,8 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
 
                 {/* 30-DAY BRIEF HERO SECTION (Only on main feed) */}
-                {!forcedCategory && (
-                    <MonthlyIntelBrief />
-                )}
+                {/* 30-DAY BRIEF HERO SECTION REMOVED PER USER REQUEST - Moved to dedicated page */}
+
 
                 {/* LIVE FEED CONTENT */}
                 {newCount > 0 && (

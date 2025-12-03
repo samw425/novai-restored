@@ -1,9 +1,11 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Logo } from '@/components/ui/Logo';
-import { Calendar, Activity, Radio, FlaskConical, TrendingUp, Shield, Info, Hexagon, Bot, Scale, Wrench, Brain, Youtube, Terminal, Globe } from 'lucide-react';
+import { ProWaitlistModal } from '@/components/modals/ProWaitlistModal';
+import { Calendar, Activity, Radio, FlaskConical, TrendingUp, Shield, Info, Hexagon, Bot, Scale, Wrench, Brain, Youtube, Terminal, Globe, Lock } from 'lucide-react';
 import {
     Tooltip,
     TooltipContent,
@@ -118,6 +120,58 @@ const categoryLinks = [
     },
 ];
 
+const proFeatureLinks = [
+    {
+        id: 'daily-brief',
+        label: 'Daily Brief',
+        icon: Calendar,
+        href: '/pro',
+        tooltip: "Unlock personalized daily AI briefs."
+    },
+    {
+        id: 'emerging-narratives',
+        label: 'Emerging Narratives',
+        icon: TrendingUp,
+        href: '/pro',
+        tooltip: "Track developing storylines and patterns."
+    },
+    {
+        id: 'advanced-filters',
+        label: 'Advanced Filters',
+        icon: Wrench,
+        href: '/pro',
+        tooltip: "Filter feed by source, date, and custom parameters."
+    },
+    {
+        id: 'personalized-feed',
+        label: 'Personalized Feed',
+        icon: Brain,
+        href: '/pro',
+        tooltip: "AI-curated feed based on your interests."
+    },
+    {
+        id: 'ai-tools-analysis',
+        label: 'AI Tools & Analysis',
+        icon: FlaskConical,
+        href: '/pro',
+        tooltip: "Deep analysis and comparison of AI tools."
+    },
+    {
+        id: 'alerts-watchlists',
+        label: 'Alerts & Watchlists',
+        icon: Shield,
+        href: '/pro',
+        tooltip: "Custom alerts for topics and companies you track."
+    },
+    {
+        id: 'pro-reports',
+        label: 'Pro Reports',
+        icon: Terminal,
+        href: '/pro',
+        tooltip: "In-depth analysis reports and trend forecasts."
+    },
+];
+
 const knowledgeLinks = [
     {
         id: 'hacker-news',
@@ -158,6 +212,13 @@ const knowledgeLinks = [
 
 export function Sidebar() {
     const pathname = usePathname();
+    const [proModalOpen, setProModalOpen] = useState(false);
+    const [selectedFeature, setSelectedFeature] = useState<string>('');
+
+    const handleProFeatureClick = (featureName: string) => {
+        setSelectedFeature(featureName);
+        setProModalOpen(true);
+    };
 
     return (
         <div className="sticky top-24 w-full bg-white/80 backdrop-blur-xl min-h-[calc(100vh-6rem)] rounded-2xl p-4 border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
@@ -300,6 +361,36 @@ export function Sidebar() {
                     </nav>
                 </div>
 
+                {/* PRO FEATURES GROUP */}
+                <div className="mb-8">
+                    <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 px-4">
+                        PRO FEATURES
+                    </h3>
+                    <nav className="space-y-1">
+                        {proFeatureLinks.map((link) => {
+                            return (
+                                <Tooltip key={link.id}>
+                                    <TooltipTrigger asChild>
+                                        <button
+                                            onClick={() => handleProFeatureClick(link.label)}
+                                            className="w-full flex items-center justify-between gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative text-gray-400 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 hover:text-blue-600"
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                <link.icon className="h-4 w-4 text-gray-300 group-hover:text-blue-500 transition-colors" />
+                                                {link.label}
+                                            </div>
+                                            <Lock className="h-3 w-3 text-gray-300 group-hover:text-blue-500 transition-colors" />
+                                        </button>
+                                    </TooltipTrigger>
+                                    <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
+                                        {link.tooltip}
+                                    </TooltipContent>
+                                </Tooltip>
+                            );
+                        })}
+                    </nav>
+                </div>
+
                 {/* MARKETS GROUP */}
                 <div className="mb-8">
                     <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 px-4">
@@ -361,6 +452,13 @@ export function Sidebar() {
                 </div>
 
             </TooltipProvider>
+
+            {/* PRO WAITLIST MODAL */}
+            <ProWaitlistModal
+                isOpen={proModalOpen}
+                onClose={() => setProModalOpen(false)}
+                featureName={selectedFeature}
+            />
         </div>
     );
 }

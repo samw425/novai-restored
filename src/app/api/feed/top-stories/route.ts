@@ -100,11 +100,20 @@ export async function GET(request: Request) {
         // 6. Sort by Final Score
         allArticles.sort((a, b) => (b as any).finalScore - (a as any).finalScore);
 
-        // 7. Deduplicate
+        // 7. Deduplicate & DIVERSITY FILTER (Max 3 per source)
         const seenTitles = new Set();
+        const sourceCounts: Record<string, number> = {};
+
         allArticles = allArticles.filter(a => {
+            // Deduplicate by title
             if (seenTitles.has(a.title)) return false;
+
+            // Diversity Check: Max 3 articles per source
+            const currentSourceCount = sourceCounts[a.source] || 0;
+            if (currentSourceCount >= 3) return false;
+
             seenTitles.add(a.title);
+            sourceCounts[a.source] = currentSourceCount + 1;
             return true;
         });
 

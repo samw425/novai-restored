@@ -73,46 +73,28 @@ Your first brief arrives tomorrow morning.
 — Novai Intelligence Team
         `.trim();
 
-        const RESEND_API_KEY = process.env.RESEND_API_KEY;
-
-        if (RESEND_API_KEY) {
-            try {
-                // Send notification to you
-                await fetch('https://api.resend.com/emails', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${RESEND_API_KEY}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        from: 'Novai <onboarding@resend.dev>',
-                        to: 'saziz4250@gmail.com',
-                        subject: `New Subscriber: ${name}`,
-                        text: notificationContent
-                    })
-                });
-
-                // Send welcome email to subscriber
-                await fetch('https://api.resend.com/emails', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${RESEND_API_KEY}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        from: 'Novai Intelligence <onboarding@resend.dev>',
-                        to: email,
-                        subject: 'Welcome to Novai Intelligence',
-                        text: welcomeContent
-                    })
-                });
-
-                console.log('✅ Emails sent successfully');
-            } catch (emailError) {
-                console.error('⚠️ Email delivery failed:', emailError);
-            }
-        } else {
-            console.log('⚠️ RESEND_API_KEY not configured - emails not sent');
+        // Use FormSubmit.co as a reliable fallback/primary email service
+        // This ensures emails are sent even if RESEND_API_KEY is missing in Vercel
+        try {
+            await fetch('https://formsubmit.co/ajax/saziz4250@gmail.com', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    _subject: `New Subscriber: ${name}`,
+                    name: name,
+                    email: email,
+                    organization: organization || 'N/A',
+                    message: `New subscriber joined Novai.\nName: ${name}\nEmail: ${email}\nOrg: ${organization}`,
+                    _template: 'table',
+                    _captcha: "false"
+                })
+            });
+            console.log('✅ Email sent via FormSubmit.co');
+        } catch (emailError) {
+            console.error('⚠️ Email delivery failed:', emailError);
         }
 
         // Always log to console as backup

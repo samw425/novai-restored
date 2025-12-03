@@ -59,6 +59,8 @@ const CASES_KEYWORDS = [
     'stock price', 'quarterly report', 'earnings call'
 ];
 
+import { RSS_FEEDS } from '@/config/rss-feeds';
+
 export async function GET(request: Request) {
     console.log("Future of Code API called");
     try {
@@ -69,27 +71,31 @@ export async function GET(request: Request) {
 
         console.log(`Fetching page ${page} with limit ${limit} for type ${type}`);
 
-        // Select Feeds based on Type
-        let targetFeeds = GENERAL_FEEDS;
+        // Select Feeds based on Type using Central Config
+        let targetFeeds = [];
         if (type === 'RESEARCH') {
-            targetFeeds = RESEARCH_FEEDS;
+            targetFeeds = RSS_FEEDS.filter(f => f.category === 'research' || f.category === 'ai');
+        } else {
+            // For LIVE/CASES, use 'tools' and 'market' (tech) feeds
+            targetFeeds = RSS_FEEDS.filter(f => f.category === 'tools' || f.category === 'market');
         }
 
-        const feedPromises = targetFeeds.map(async (url) => {
+        const feedPromises = targetFeeds.map(async (source) => {
             try {
-                const feed = await parser.parseURL(url);
+                const feed = await parser.parseURL(source.url);
                 return feed.items.map(item => ({
                     ...item,
-                    source: feed.title || 'Tech News'
+                    source: source.name,
+                    category: source.category
                 }));
             } catch (e) {
-                console.error(`Failed to parse RSS: ${url}`, e);
+                // console.error(`Failed to parse RSS: ${source.url}`, e);
                 return [];
             }
         });
 
         const results = await Promise.all(feedPromises);
-        const allItems = results.flat();
+        let allItems = results.flat();
 
         // Select Keywords based on Type
         let targetKeywords = LIVE_KEYWORDS;
@@ -97,41 +103,41 @@ export async function GET(request: Request) {
         if (type === 'CASES') targetKeywords = CASES_KEYWORDS;
 
         // Filter and Score
-        const relevantItems = allItems
+        let relevantItems = allItems
             .map((item: any) => {
                 const text = (item.title + (item.contentSnippet || '')).toLowerCase();
                 let score = 0;
 
-                // For Research, we are less strict on keywords if the source is already academic (like arXiv)
-                // But we still want to prioritize relevant topics
-                if (type === 'RESEARCH') {
-                    score = 1; // Default score for research feeds
-                    targetKeywords.forEach(keyword => {
-                        if (text.includes(keyword)) score += 1;
-                    });
-                } else {
-                    targetKeywords.forEach(keyword => {
-                        if (text.includes(keyword)) score += 1;
-                    });
-                }
+                // Keyword Matching
+                targetKeywords.forEach(keyword => {
+                    if (text.includes(keyword)) score += 1;
+                });
 
                 // Boost specific high-impact terms for CASES
                 if (type === 'CASES' && (text.includes('layoff') || text.includes('replace'))) score += 5;
 
                 return { ...item, score };
             })
-            .filter((item: any) => item.score > 0) // Must match at least one keyword (or come from a research feed)
+            .filter((item: any) => item.score > 0) // Must match at least one keyword
             .sort((a: any, b: any) => {
-                // Sort by date first, then score
                 return new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime();
             });
+
+        // DIVERSITY FILTER: Max 3 per source
+        const sourceCounts: Record<string, number> = {};
+        relevantItems = relevantItems.filter((item: any) => {
+            const count = sourceCounts[item.source] || 0;
+            if (count >= 3) return false;
+            sourceCounts[item.source] = count + 1;
+            return true;
+        });
 
         // Pagination Logic
         const startIndex = (page - 1) * limit;
         const endIndex = startIndex + limit;
         const paginatedItems = relevantItems.slice(startIndex, endIndex);
 
-        // Infinite Feed Simulation: If we run out of real items, generate historical/mock items
+        // Infinite Feed Simulation (Historical)
         if (paginatedItems.length < limit && page > 1) {
             const needed = limit - paginatedItems.length;
             const historicalItems = generateHistoricalItems(needed, type);

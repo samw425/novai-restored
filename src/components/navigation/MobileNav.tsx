@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Logo } from '@/components/ui/Logo';
-import { Menu, X, Calendar, Activity, Radio, FlaskConical, TrendingUp, Shield, Info, Hexagon, Bot, Scale, Wrench, Brain, Youtube } from 'lucide-react';
+import { Menu, X, Calendar, Activity, Radio, FlaskConical, TrendingUp, Shield, Info, Hexagon, Bot, Scale, Wrench, Brain, Youtube, Globe, Terminal } from 'lucide-react';
 
 export function MobileNav() {
     const [isOpen, setIsOpen] = useState(false);
@@ -59,8 +59,9 @@ export function MobileNav() {
                                 <NavLink href="/intelligence-brief" icon={Brain} label="Intelligence Brief" />
                                 <NavLink href="/daily-snapshot" icon={Calendar} label="Daily Snapshot" />
                                 <NavLink href="/global-feed" icon={Activity} label="Global Feed" />
+                                <NavLink href="/global-demographics" icon={Globe} label="Global Demographics" />
                                 <NavLink href="/videos" icon={Youtube} label="Video Feed" />
-                                <NavLink href="/deep-signals" icon={Radio} label="Deep Signals" />
+                                <NavLink href="/future-of-code" icon={Terminal} label="Future of Code" />
                             </div>
                         </div>
 
@@ -69,6 +70,7 @@ export function MobileNav() {
                             <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3 px-4">Categories</h3>
                             <div className="space-y-1">
                                 <NavLink href="/ai" icon={Hexagon} label="AI News" />
+                                <NavLink href="/us-intel" icon={Shield} label="US Intelligence" />
                                 <NavLink href="/robotics" icon={Bot} label="Robotics" />
                                 <NavLink href="/policy" icon={Scale} label="Policy" />
                                 <NavLink href="/research" icon={FlaskConical} label="Research" />

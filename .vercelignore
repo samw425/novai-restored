@@ -1,0 +1,6 @@
+*.zip
+backup_*
+node_modules
+.next
+.git
+backup_*.zip

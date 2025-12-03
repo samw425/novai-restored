@@ -17,7 +17,7 @@ export default function DataGovernance() {
                     Novai Intelligence is committed to the highest standards of data accuracy. Our "Truth-First" architecture ensures that every signal ingested into our platform undergoes a rigorous verification process.
                 </p>
                 <ul className="list-disc pl-5 space-y-2 text-slate-600">
-                    <li><strong>Source Validation:</strong> We only ingest data from a curated list of 70+ verified sources, including government agencies, accredited research labs, and primary industry reports.</li>
+                    <li><strong>Source Validation:</strong> We only ingest data from a curated list of 109+ verified sources, including government agencies, accredited research labs, and primary industry reports.</li>
                     <li><strong>Cross-Referencing:</strong> Critical intelligence is cross-referenced against multiple independent sources before being flagged as high-confidence.</li>
                     <li><strong>Provenance Tracking:</strong> Every data point retains a clear lineage to its original source, allowing for complete auditability.</li>
                 </ul>

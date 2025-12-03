@@ -61,15 +61,15 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
                             <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
                                 <CheckCircle size={32} />
                             </div>
-                            <h3 className="text-2xl font-bold text-slate-900 mb-2">Access Requested</h3>
+                            <h3 className="text-2xl font-bold text-slate-900 mb-2">Subscribed</h3>
                             <p className="text-slate-600">
-                                Your briefing request has been sent to our intelligence team. Check your email for confirmation.
+                                You are now subscribed to our intelligence team. Check your email for confirmation.
                             </p>
                         </div>
                     ) : (
                         <>
                             <div className="text-center mb-8">
-                                <h2 className="text-2xl font-bold text-slate-900 mb-2">Initialize Briefing</h2>
+                                <h2 className="text-2xl font-bold text-slate-900 mb-2">Subscribe to Daily Briefing</h2>
                                 <p className="text-slate-600 text-sm">
                                     Join the elite circle of decision-makers receiving daily Novai intelligence.
                                 </p>
@@ -131,7 +131,7 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
                                             Encrypting...
                                         </>
                                     ) : (
-                                        'Request Access'
+                                        'Subscribe'
                                     )}
                                 </button>
                             </form>

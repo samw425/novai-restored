@@ -11,11 +11,30 @@ export default function FeedbackPage() {
         e.preventDefault();
         setStatus('sending');
 
-        // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        const formData = new FormData(e.target as HTMLFormElement);
+        const data = {
+            name: formData.get('name'),
+            email: formData.get('email'),
+            subject: formData.get('subject'),
+            message: formData.get('message'),
+        };
 
-        // Success state
-        setStatus('success');
+        try {
+            const res = await fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            });
+
+            if (res.ok) {
+                setStatus('success');
+            } else {
+                setStatus('error');
+            }
+        } catch (error) {
+            console.error('Feedback error:', error);
+            setStatus('error');
+        }
     };
 
     return (
@@ -62,6 +81,7 @@ export default function FeedbackPage() {
                                         <input
                                             type="text"
                                             id="name"
+                                            name="name"
                                             required
                                             className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium text-slate-900 placeholder:text-slate-400"
                                             placeholder="Your Name"
@@ -72,6 +92,7 @@ export default function FeedbackPage() {
                                         <input
                                             type="email"
                                             id="email"
+                                            name="email"
                                             required
                                             className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium text-slate-900 placeholder:text-slate-400"
                                             placeholder="name@company.com"
@@ -83,6 +104,7 @@ export default function FeedbackPage() {
                                     <label htmlFor="subject" className="text-xs font-bold uppercase tracking-wider text-slate-500">Subject</label>
                                     <select
                                         id="subject"
+                                        name="subject"
                                         className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium text-slate-900"
                                     >
                                         <option>General Feedback</option>
@@ -97,6 +119,7 @@ export default function FeedbackPage() {
                                     <label htmlFor="message" className="text-xs font-bold uppercase tracking-wider text-slate-500">Message</label>
                                     <textarea
                                         id="message"
+                                        name="message"
                                         required
                                         rows={6}
                                         className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium text-slate-900 placeholder:text-slate-400 resize-none"

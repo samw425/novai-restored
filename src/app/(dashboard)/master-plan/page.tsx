@@ -31,7 +31,7 @@ export default function MasterPlanPage() {
                             </div>
                             <h3 className="text-2xl font-bold mb-3 text-white">Total Awareness</h3>
                             <p className="text-slate-400 leading-relaxed mb-6">
-                                Aggregating global intelligence from 70+ high-signal sources. We are building the world's most comprehensive real-time monitor of AI, robotics, and geopolitical shifts.
+                                Aggregating global intelligence from 109+ high-signal sources. We are building the world's most comprehensive real-time monitor of AI, robotics, and geopolitical shifts.
                             </p>
                             <ul className="space-y-2">
                                 <li className="flex items-center gap-2 text-sm text-slate-300">
