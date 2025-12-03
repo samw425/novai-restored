@@ -1,11 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { Mail, Sparkles, Check, ArrowRight, Shield, Zap, Globe } from 'lucide-react';
+import { Mail, Sparkles, Check, ArrowRight, Shield, Zap, Globe, User } from 'lucide-react';
 import { Logo } from '@/components/ui/Logo';
 
 export default function SignUpPage() {
     const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
     const [submitted, setSubmitted] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -19,7 +20,7 @@ export default function SignUpPage() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     email,
-                    name: 'Daily Brief Subscriber',
+                    name: name || 'Daily Brief Subscriber',
                     subject: 'Daily Brief Signup',
                     message: 'New subscriber joined via /signup landing page',
                     organization: 'Individual',
@@ -42,20 +43,21 @@ export default function SignUpPage() {
 
     if (submitted) {
         return (
-            <div className="min-h-screen bg-[#F8F9FA] flex flex-col items-center justify-center px-4 relative overflow-hidden font-serif">
-                <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
+            <div className="min-h-screen bg-[#FDFBF7] flex flex-col items-center justify-center px-4 relative overflow-hidden font-serif">
+                {/* Rich Paper Texture */}
+                <div className="absolute inset-0 opacity-40 bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] pointer-events-none" />
 
-                <div className="max-w-md w-full bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-200 p-12 text-center relative z-10 animate-in zoom-in-95 duration-700">
-                    <div className="w-16 h-16 mx-auto mb-6 bg-slate-900 rounded-full flex items-center justify-center">
+                <div className="max-w-md w-full bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-stone-200 p-12 text-center relative z-10 animate-in zoom-in-95 duration-700">
+                    <div className="w-16 h-16 mx-auto mb-6 bg-stone-900 rounded-full flex items-center justify-center">
                         <Check className="w-8 h-8 text-white" />
                     </div>
-                    <h2 className="text-3xl font-serif font-bold text-slate-900 mb-4 tracking-tight">You're on the list.</h2>
-                    <p className="text-slate-600 mb-8 text-lg leading-relaxed font-sans">
-                        Welcome to the inner circle. Your first intelligence brief will arrive in your inbox tomorrow morning.
+                    <h2 className="text-3xl font-serif font-bold text-stone-900 mb-4 tracking-tight">Welcome, {name.split(' ')[0] || 'Leader'}.</h2>
+                    <p className="text-stone-600 mb-8 text-lg leading-relaxed font-sans">
+                        You've secured your place in the inner circle. Your first executive summary arrives tomorrow.
                     </p>
                     <a
                         href="/global-feed"
-                        className="inline-flex items-center justify-center gap-2 w-full px-8 py-4 bg-slate-900 text-white rounded-lg font-sans font-bold hover:bg-slate-800 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                        className="inline-flex items-center justify-center gap-2 w-full px-8 py-4 bg-stone-900 text-white rounded-lg font-sans font-bold hover:bg-stone-800 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                     >
                         Read Today's Brief
                         <ArrowRight className="w-4 h-4" />
@@ -66,15 +68,15 @@ export default function SignUpPage() {
     }
 
     return (
-        <div className="min-h-screen bg-[#F8F9FA] flex flex-col relative overflow-hidden">
-            {/* Background Texture - Subtle Grid */}
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_800px_at_50%_-100px,#3b82f615,transparent)] pointer-events-none" />
+        <div className="min-h-screen bg-[#FDFBF7] flex flex-col relative overflow-hidden">
+            {/* Background Texture - Cream Paper for Richness */}
+            <div className="absolute inset-0 opacity-40 bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] pointer-events-none" />
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
 
             {/* Navbar */}
             <nav className="relative z-10 px-6 py-6 flex justify-between items-center max-w-7xl mx-auto w-full">
                 <Logo theme="light" />
-                <a href="/global-feed" className="text-sm font-bold text-slate-500 hover:text-slate-900 transition-colors font-sans">
+                <a href="/global-feed" className="text-sm font-bold text-stone-500 hover:text-stone-900 transition-colors font-sans">
                     View Live Demo
                 </a>
             </nav>
@@ -84,56 +86,76 @@ export default function SignUpPage() {
 
                     {/* Left Column: Copy */}
                     <div className="space-y-10 text-center lg:text-left">
-                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 text-slate-600 text-xs font-bold uppercase tracking-wider shadow-sm">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-stone-200 text-stone-600 text-xs font-bold uppercase tracking-wider shadow-sm">
                             <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
                             Daily Intelligence Brief
                         </div>
 
-                        <h1 className="text-6xl md:text-7xl font-serif font-bold text-slate-900 tracking-tight leading-[1.1]">
+                        <h1 className="text-6xl md:text-7xl font-serif font-bold text-stone-900 tracking-tight leading-[1.1]">
                             The Signal You Need.<br />
-                            <span className="text-slate-300 blur-[2px] select-none transition-all duration-700 hover:blur-0 hover:text-slate-400 cursor-default">
+                            <span className="text-stone-300 blur-[2px] select-none transition-all duration-700 hover:blur-0 hover:text-stone-400 cursor-default">
                                 The Noise You Don't.
                             </span>
                         </h1>
 
-                        <p className="text-xl text-slate-600 leading-relaxed max-w-xl mx-auto lg:mx-0 font-sans font-medium">
+                        <p className="text-xl text-stone-600 leading-relaxed max-w-xl mx-auto lg:mx-0 font-sans font-medium">
                             Join the inner circle of decision-makers who start their day with Novai. A concise, AI-curated briefing on the technological singularity.
                         </p>
 
-                        <div className="flex flex-col sm:flex-row gap-8 justify-center lg:justify-start text-sm font-bold text-slate-500 font-sans border-t border-slate-200 pt-8 w-fit mx-auto lg:mx-0">
+                        <div className="flex flex-col sm:flex-row gap-8 justify-center lg:justify-start text-sm font-bold text-stone-500 font-sans border-t border-stone-200 pt-8 w-fit mx-auto lg:mx-0">
                             <div className="flex items-center gap-3">
-                                <Shield className="w-5 h-5 text-slate-900" />
-                                <span className="text-slate-700">No Ads</span>
+                                <Shield className="w-5 h-5 text-stone-900" />
+                                <span className="text-stone-700">No Ads</span>
                             </div>
                             <div className="flex items-center gap-3">
-                                <Zap className="w-5 h-5 text-slate-900" />
-                                <span className="text-slate-700">5-Minute Read</span>
+                                <Zap className="w-5 h-5 text-stone-900" />
+                                <span className="text-stone-700">Executive Summary</span>
                             </div>
                             <div className="flex items-center gap-3">
-                                <Globe className="w-5 h-5 text-slate-900" />
-                                <span className="text-slate-700">Global Coverage</span>
+                                <Globe className="w-5 h-5 text-stone-900" />
+                                <span className="text-stone-700">Global Coverage</span>
                             </div>
                         </div>
                     </div>
 
                     {/* Right Column: Dossier Card */}
                     <div className="w-full max-w-md mx-auto lg:ml-auto">
-                        <div className="bg-white rounded-xl shadow-[0_20px_50px_rgb(0,0,0,0.1)] border border-slate-200 p-1 relative overflow-hidden group hover:shadow-[0_20px_50px_rgb(0,0,0,0.15)] transition-all duration-500">
+                        <div className="bg-white rounded-xl shadow-[0_20px_60px_rgb(0,0,0,0.12)] border border-stone-200 p-1 relative overflow-hidden group hover:shadow-[0_20px_60px_rgb(0,0,0,0.18)] transition-all duration-500">
                             {/* Inner Border for 'Paper' feel */}
-                            <div className="border border-slate-100 rounded-lg p-8 md:p-10 h-full relative z-10 bg-white">
+                            <div className="border border-stone-100 rounded-lg p-8 md:p-10 h-full relative z-10 bg-white">
 
-                                <div className="mb-8 border-b border-slate-100 pb-6">
-                                    <h3 className="text-2xl font-serif font-bold text-slate-900 mb-2">Subscribe to Briefing</h3>
-                                    <p className="text-slate-500 text-sm font-medium font-sans">Secure. Concise. Essential.</p>
+                                <div className="mb-8 border-b border-stone-100 pb-6">
+                                    <h3 className="text-2xl font-serif font-bold text-stone-900 mb-2">Subscribe to Briefing</h3>
+                                    <p className="text-stone-500 text-sm font-medium font-sans">Secure. Concise. Essential.</p>
                                 </div>
 
-                                <form onSubmit={handleSubmit} className="space-y-6">
+                                <form onSubmit={handleSubmit} className="space-y-5">
+                                    {/* Name Field */}
                                     <div>
-                                        <label htmlFor="email" className="block text-xs font-bold text-slate-900 uppercase tracking-wider mb-2 font-sans">
+                                        <label htmlFor="name" className="block text-xs font-bold text-stone-900 uppercase tracking-wider mb-2 font-sans">
+                                            Full Name
+                                        </label>
+                                        <div className="relative group/input">
+                                            <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-stone-400 group-focus-within/input:text-stone-900 transition-colors" />
+                                            <input
+                                                id="name"
+                                                type="text"
+                                                required
+                                                value={name}
+                                                onChange={(e) => setName(e.target.value)}
+                                                placeholder="John Doe"
+                                                className="w-full pl-12 pr-4 py-4 bg-stone-50 border border-stone-200 rounded-lg text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-900 transition-all font-medium font-sans"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* Email Field */}
+                                    <div>
+                                        <label htmlFor="email" className="block text-xs font-bold text-stone-900 uppercase tracking-wider mb-2 font-sans">
                                             Work Email
                                         </label>
                                         <div className="relative group/input">
-                                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within/input:text-slate-900 transition-colors" />
+                                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-stone-400 group-focus-within/input:text-stone-900 transition-colors" />
                                             <input
                                                 id="email"
                                                 type="email"
@@ -141,7 +163,7 @@ export default function SignUpPage() {
                                                 value={email}
                                                 onChange={(e) => setEmail(e.target.value)}
                                                 placeholder="name@company.com"
-                                                className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900/10 focus:border-slate-900 transition-all font-medium font-sans"
+                                                className="w-full pl-12 pr-4 py-4 bg-stone-50 border border-stone-200 rounded-lg text-stone-900 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-stone-900/10 focus:border-stone-900 transition-all font-medium font-sans"
                                             />
                                         </div>
                                     </div>
@@ -149,7 +171,7 @@ export default function SignUpPage() {
                                     <button
                                         type="submit"
                                         disabled={loading}
-                                        className="w-full py-4 bg-slate-900 hover:bg-slate-800 text-white rounded-lg font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 font-sans group/btn relative overflow-hidden"
+                                        className="w-full py-4 bg-stone-900 hover:bg-stone-800 text-white rounded-lg font-bold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 font-sans group/btn relative overflow-hidden mt-2"
                                     >
                                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-1000" />
                                         {loading ? (
@@ -164,7 +186,7 @@ export default function SignUpPage() {
                                 </form>
 
                                 <div className="mt-6 text-center">
-                                    <p className="text-[10px] text-slate-400 font-medium uppercase tracking-widest font-sans">
+                                    <p className="text-[10px] text-stone-400 font-medium uppercase tracking-widest font-sans">
                                         Trusted by leaders in AI and Tech
                                     </p>
                                 </div>
@@ -172,7 +194,7 @@ export default function SignUpPage() {
                         </div>
 
                         {/* Decorative 'Paper Stack' effect behind */}
-                        <div className="absolute top-4 -right-4 w-full h-full bg-slate-200 rounded-xl -z-10 transform rotate-2 opacity-50" />
+                        <div className="absolute top-4 -right-4 w-full h-full bg-stone-200 rounded-xl -z-10 transform rotate-2 opacity-50" />
                     </div>
                 </div>
             </main>
