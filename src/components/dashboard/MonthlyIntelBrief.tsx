@@ -9,27 +9,27 @@ export function MonthlyIntelBrief() {
     const briefItems = [
         {
             id: 1,
-            category: 'GEOPOLITICS',
-            title: 'Pacific Naval Realignment',
-            summary: 'Satellite analysis confirms significant carrier group movements in the South China Sea. New forward-deployed bases suggest a shift in regional containment strategy, independent of autonomous systems.',
+            category: 'GLOBAL AI RACE',
+            title: 'Sovereign Compute Expansion',
+            summary: 'Satellite imagery reveals massive GPU data center construction in non-aligned nations. State-sponsored AI initiatives are accelerating to reduce dependency on Western silicon.',
             impact: 'CRITICAL',
-            source: 'NRO / ONI',
+            source: 'SAT / INTEL',
             link: '/us-intel'
         },
         {
             id: 2,
-            category: 'WAR ROOM',
-            title: 'Eastern Frontline Shift',
-            summary: 'Conventional artillery barrages have intensified along the Dnieper line. Human intelligence (HUMINT) corroborates reports of a major mechanized offensive preparing for the spring thaw.',
+            category: 'CYBER WARFARE',
+            title: 'Autonomous Defense Grid',
+            summary: 'Pentagon activates "Sentinel Node" - an AI-driven cybersecurity mesh capable of self-patching zero-day vulnerabilities in real-time across critical infrastructure.',
             impact: 'SEVERE',
-            source: 'CIA / MI6',
+            source: 'CYBERCOM',
             link: '/war-room'
         },
         {
             id: 3,
-            category: 'TECHNOLOGY',
+            category: 'MODEL INTELLIGENCE',
             title: 'AGI "Flash" Event Detected',
-            summary: 'Multiple research labs reported a synchronized, non-deterministic surge in model reasoning capabilities. The "Black Box" anomaly suggests models may be self-optimizing beyond human-designed parameters.',
+            summary: 'Multiple research labs reported a synchronized, non-deterministic surge in model reasoning capabilities. The "Black Box" anomaly suggests models may be self-optimizing.',
             impact: 'HIGH',
             source: 'ACADEMIC / OSINT',
             link: '/ai'
