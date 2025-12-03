@@ -10,7 +10,7 @@ export async function GET(request: Request) {
     const limit = parseInt(searchParams.get('limit') || '20');
 
     // Map agency acronyms to feed IDs or categories
-    let targetFeeds = [];
+    let targetFeeds: typeof RSS_FEEDS = [];
 
     if (!agency || agency === 'ALL') {
         targetFeeds = RSS_FEEDS.filter(f => f.category === 'us-intel');
@@ -45,7 +45,7 @@ export async function GET(request: Request) {
                 return feedData.items.map(item => ({
                     title: item.title,
                     link: item.link,
-                    pubDate: item.pubDate,
+                    pubDate: item.pubDate || new Date().toISOString(),
                     contentSnippet: item.contentSnippet || item.content,
                     source: feed.name.replace(' News', '').replace('Dept', ''), // Clean up name
                     agency: feed.name,
@@ -62,7 +62,9 @@ export async function GET(request: Request) {
 
         // Sort by date (newest first)
         allItems.sort((a, b) => {
-            return new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime();
+            const dateA = new Date(a.pubDate || 0).getTime();
+            const dateB = new Date(b.pubDate || 0).getTime();
+            return dateB - dateA;
         });
 
         return NextResponse.json({
