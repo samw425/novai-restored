@@ -48,14 +48,14 @@ export function DossierView({ profile, latestFeedItem }: DossierViewProps) {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 mb-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                     <div className="p-3 bg-slate-50 rounded-lg border border-slate-100">
                         <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">Director</div>
-                        <div className="text-sm font-bold text-slate-900">{profile.director}</div>
+                        <div className="text-sm font-bold text-slate-900 break-words">{profile.director}</div>
                     </div>
                     <div className="p-3 bg-slate-50 rounded-lg border border-slate-100">
                         <div className="text-[10px] font-bold text-slate-400 uppercase mb-1">Budget</div>
-                        <div className="text-sm font-bold text-slate-900 font-mono">{profile.budget}</div>
+                        <div className="text-sm font-bold text-slate-900 font-mono break-words">{profile.budget}</div>
                     </div>
                 </div>
 

@@ -12,7 +12,10 @@ const ANTITRUST_KEYWORDS = [
     'antitrust', 'monopoly', 'doj', 'ftc', 'lina khan', 'vestager',
     'breakup', 'regulation', 'lawsuit', 'investigation', 'compliance',
     'dma', 'dsa', 'gdpr', 'competition market authority', 'cma',
-    'google trial', 'apple app store', 'meta lawsuit', 'amazon antitrust'
+    'google trial', 'apple app store', 'meta lawsuit', 'amazon antitrust',
+    'regulator', 'probe', 'eu commission', 'ban', 'fine', 'court', 'legal',
+    'policy', 'enforcement', 'congress', 'senate', 'executive order',
+    'sovereignty', 'national security', 'export control', 'chips act'
 ];
 
 export async function GET(request: Request) {

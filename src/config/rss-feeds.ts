@@ -26,8 +26,8 @@ export const RSS_FEEDS: FeedSource[] = [
     // ========== MARKET & BUSINESS INTELLIGENCE (Priority 9-10) ==========
     { id: 'techcrunch-ai', name: 'TechCrunch AI', url: 'https://techcrunch.com/category/artificial-intelligence/feed/', category: 'market', priority: 10, region: 'US' },
     { id: 'venturebeat-ai', name: 'VentureBeat AI', url: 'https://venturebeat.com/category/ai/feed/', category: 'market', priority: 10, region: 'US' },
-    { id: 'reuters-tech', name: 'Reuters Technology', url: 'https://www.reutersagency.com/feed/?taxonomy=best-topics&post_type=best', category: 'market', priority: 9, region: 'Global' },
-    { id: 'bloomberg-tech', name: 'Bloomberg Tech', url: 'https://www.bloomberg.com/technology.rss', category: 'market', priority: 9, region: 'Global' },
+    { id: 'nyt-tech', name: 'NYT Technology', url: 'https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml', category: 'market', priority: 9, region: 'US' },
+    { id: 'guardian-tech', name: 'The Guardian Tech', url: 'https://www.theguardian.com/uk/technology/rss', category: 'market', priority: 9, region: 'Europe' },
     { id: 'cnbc-tech', name: 'CNBC Technology', url: 'https://www.cnbc.com/id/19854910/device/rss/rss.html', category: 'market', priority: 8, region: 'US' },
     { id: 'seeking-alpha-tech', name: 'Seeking Alpha Tech', url: 'https://seekingalpha.com/feed.xml', category: 'market', priority: 8, region: 'US' },
     { id: 'investors-business-daily', name: 'Investors Business Daily', url: 'https://www.investors.com/feed/', category: 'market', priority: 8, region: 'US' },
