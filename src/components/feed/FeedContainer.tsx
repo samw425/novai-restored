@@ -1,4 +1,5 @@
 'use client';
+// Force Re-deploy: 2025-12-04 00:08
 
 import { useState, useEffect, useCallback } from 'react';
 import { useInView } from 'react-intersection-observer';
