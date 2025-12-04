@@ -206,7 +206,7 @@ export default function DeepSignalsPage() {
                                                     href={article.url}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="block hover:text-indigo-600 transition-colors truncate"
+                                                    className="block hover:text-indigo-600 transition-colors break-words"
                                                 >
                                                     • {article.title}
                                                 </a>

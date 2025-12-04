@@ -12,6 +12,7 @@ interface GlobalStats {
     totalPopulation: number;
     avgGrowth: number;
     avgUrban: number;
+    avgDensity: number;
     avgMedianAge: string;
     timestamp: string;
 }
@@ -61,34 +62,57 @@ export default function GlobalDemographicsPage() {
             {/* Global Ticker - Responsive Grid */}
             {stats && (
                 <div className="mb-8 w-full bg-white rounded-2xl shadow-sm overflow-hidden">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-slate-100">
-                        <div className="p-4 flex flex-col items-center justify-center text-center overflow-hidden">
-                            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 whitespace-nowrap">Global Pop. Est.</div>
-                            <div className="w-full text-xl md:text-2xl xl:text-3xl font-black font-mono tracking-tight text-slate-900 truncate" title={stats.totalPopulation.toLocaleString()}>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-4">
+                        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                            <div className="flex items-center gap-2 mb-2">
+                                <Users className="text-blue-500" size={20} />
+                                <span className="text-blue-600 text-xs font-bold bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100">
+                                    POPULATION
+                                </span>
+                            </div>
+                            <div className="w-full text-xl md:text-2xl xl:text-3xl font-black font-mono tracking-tight text-slate-900 break-words" title={stats.totalPopulation.toLocaleString()}>
                                 {stats.totalPopulation.toLocaleString()}
                             </div>
+                            <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mt-1">Total Population</div>
                         </div>
 
-                        <div className="p-4 flex flex-col items-center justify-center text-center overflow-hidden">
-                            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 whitespace-nowrap">Avg. Growth</div>
-                            <div className={`w-full text-xl md:text-2xl xl:text-3xl font-black font-mono tracking-tight flex items-center justify-center gap-2 ${stats.avgGrowth >= 0 ? 'text-emerald-600' : 'text-amber-600'}`}>
-                                {stats.avgGrowth >= 0 ? <ArrowUp size={20} className="shrink-0" /> : <ArrowDown size={20} className="shrink-0" />}
-                                <span className="truncate">{stats.avgGrowth.toFixed(2)}%</span>
+                        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                            <div className="flex items-center gap-2 mb-2">
+                                <Activity className="text-emerald-500" size={20} />
+                                <span className="text-emerald-600 text-xs font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">
+                                    GROWTH RATE
+                                </span>
                             </div>
+                            <div className="w-full text-xl md:text-2xl xl:text-3xl font-black font-mono tracking-tight text-emerald-600 break-words">
+                                {stats.avgGrowth >= 0 ? '+' : ''}{stats.avgGrowth.toFixed(2)}%
+                            </div>
+                            <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mt-1">Avg. Annual Growth</div>
                         </div>
 
-                        <div className="p-4 flex flex-col items-center justify-center text-center overflow-hidden">
-                            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 whitespace-nowrap">Urbanization</div>
-                            <div className="w-full text-xl md:text-2xl xl:text-3xl font-black font-mono tracking-tight text-blue-600 truncate">
-                                {stats.avgUrban}%
+                        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                            <div className="flex items-center gap-2 mb-2">
+                                <MapIcon className="text-blue-500" size={20} />
+                                <span className="text-blue-600 text-xs font-bold bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100">
+                                    DENSITY
+                                </span>
                             </div>
+                            <div className="w-full text-xl md:text-2xl xl:text-3xl font-black font-mono tracking-tight text-blue-600 break-words">
+                                {stats.avgDensity.toFixed(1)}
+                            </div>
+                            <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mt-1">Avg. Density (P/KM²)</div>
                         </div>
 
-                        <div className="p-4 flex flex-col items-center justify-center text-center overflow-hidden">
-                            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 whitespace-nowrap">Median Age</div>
-                            <div className="w-full text-xl md:text-2xl xl:text-3xl font-black font-mono tracking-tight text-purple-600 truncate">
-                                {stats.avgMedianAge}
+                        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                            <div className="flex items-center gap-2 mb-2">
+                                <Building2 className="text-purple-500" size={20} />
+                                <span className="text-purple-600 text-xs font-bold bg-purple-50 px-2 py-0.5 rounded-full border border-purple-100">
+                                    URBANIZATION
+                                </span>
                             </div>
+                            <div className="w-full text-xl md:text-2xl xl:text-3xl font-black font-mono tracking-tight text-purple-600 break-words">
+                                {stats.avgUrban.toFixed(1)}%
+                            </div>
+                            <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mt-1">Avg. Urban Population</div>
                         </div>
                     </div>
                 </div>

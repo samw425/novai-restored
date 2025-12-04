@@ -229,8 +229,8 @@ export default function RoboticsPage() {
                     <div className="space-y-4">
                         {ROBOT_SPECS.map((robot) => (
                             <div key={robot.id} className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 group">
-                                <div className="flex flex-col sm:flex-row h-auto sm:h-40">
-                                    <div className="w-full sm:w-1/3 h-40 sm:h-full relative overflow-hidden">
+                                <div className="flex flex-col md:flex-row h-auto md:h-40">
+                                    <div className="w-full md:w-1/3 h-40 md:h-full relative overflow-hidden">
                                         <img
                                             src={robot.imageUrl}
                                             alt={robot.name}
@@ -238,7 +238,7 @@ export default function RoboticsPage() {
                                         />
                                         <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/5" />
                                     </div>
-                                    <div className="w-full sm:w-2/3 p-4 flex flex-col justify-between bg-white">
+                                    <div className="w-full md:w-2/3 p-4 flex flex-col justify-between bg-white">
                                         <div>
                                             <div className="flex justify-between items-start mb-2 gap-2">
                                                 <div>
