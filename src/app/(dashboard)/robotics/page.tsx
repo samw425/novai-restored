@@ -229,8 +229,8 @@ export default function RoboticsPage() {
                     <div className="space-y-4">
                         {ROBOT_SPECS.map((robot) => (
                             <div key={robot.id} className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 group">
-                                <div className="flex h-40">
-                                    <div className="w-1/3 bg-slate-100 relative overflow-hidden">
+                                <div className="flex flex-col sm:flex-row h-auto sm:h-40">
+                                    <div className="w-full sm:w-1/3 h-40 sm:h-full relative overflow-hidden">
                                         <img
                                             src={robot.imageUrl}
                                             alt={robot.name}
@@ -238,7 +238,7 @@ export default function RoboticsPage() {
                                         />
                                         <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/5" />
                                     </div>
-                                    <div className="w-2/3 p-4 flex flex-col justify-between bg-white">
+                                    <div className="w-full sm:w-2/3 p-4 flex flex-col justify-between bg-white">
                                         <div>
                                             <div className="flex justify-between items-start mb-2 gap-2">
                                                 <div>
@@ -246,8 +246,8 @@ export default function RoboticsPage() {
                                                     <span className="text-[10px] font-bold text-slate-500 uppercase block leading-tight tracking-wider">{robot.company}</span>
                                                 </div>
                                                 <span className={`shrink-0 text-[9px] font-black px-2 py-1 rounded-md uppercase tracking-widest ${robot.status === 'PRODUCTION' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' :
-                                                        robot.status === 'PROTOTYPE' ? 'bg-amber-50 text-amber-600 border border-amber-100' :
-                                                            'bg-blue-50 text-blue-600 border border-blue-100'
+                                                    robot.status === 'PROTOTYPE' ? 'bg-amber-50 text-amber-600 border border-amber-100' :
+                                                        'bg-blue-50 text-blue-600 border border-blue-100'
                                                     }`}>
                                                     {robot.status}
                                                 </span>
@@ -264,7 +264,7 @@ export default function RoboticsPage() {
                                                 </div>
                                                 <div className="bg-slate-50 p-1.5 rounded border border-slate-100 flex flex-col justify-center">
                                                     <span className="text-slate-400 block text-[9px] uppercase font-bold mb-0.5">Compute</span>
-                                                    <span className="font-mono text-slate-700 font-bold text-[10px] truncate" title={robot.compute}>
+                                                    <span className="font-mono text-slate-700 font-bold text-[10px] break-words" title={robot.compute}>
                                                         {robot.compute.split(' ')[0]}
                                                     </span>
                                                 </div>
