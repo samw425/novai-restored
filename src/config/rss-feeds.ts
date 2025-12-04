@@ -62,6 +62,7 @@ export const RSS_FEEDS: FeedSource[] = [
     { id: 'stackoverflow-blog', name: 'Stack Overflow', url: 'https://stackoverflow.blog/feed/', category: 'tools', priority: 7, region: 'US' },
 
     // ========== ROBOTICS & HARDWARE (Priority 8) ==========
+    { id: 'techcrunch-robotics', name: 'TechCrunch Robotics', url: 'https://techcrunch.com/category/robotics/feed/', category: 'robotics', priority: 10, region: 'US' },
     { id: 'robot-report', name: 'The Robot Report', url: 'https://www.therobotreport.com/feed/', category: 'robotics', priority: 9, region: 'US' },
     { id: 'ieee-robotics', name: 'IEEE Robotics', url: 'https://spectrum.ieee.org/feeds/topic/robotics.rss', category: 'robotics', priority: 9, region: 'Global' },
     { id: 'robotics-business', name: 'Robotics Business', url: 'https://www.roboticsbusinessreview.com/feed/', category: 'robotics', priority: 8, region: 'US' },
