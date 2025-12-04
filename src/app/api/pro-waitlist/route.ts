@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { Resend } from 'resend';
+
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 export async function POST(request: NextRequest) {
     try {
@@ -11,22 +14,7 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        const RESEND_API_KEY = process.env.RESEND_API_KEY;
 
-        if (!RESEND_API_KEY) {
-            console.error('RESEND_API_KEY not configured');
-            // Still log the signup even if email fails
-            console.log('=== PRO WAITLIST SIGNUP ===');
-            console.log(`Name: ${name}`);
-            console.log(`Email: ${email}`);
-            console.log(`Timestamp: ${new Date().toISOString()}`);
-            console.log('===========================');
-
-            return NextResponse.json({
-                success: true,
-                message: 'Successfully joined waitlist (email pending configuration)',
-            });
-        }
 
         // Send email notification to admin
         const adminEmail = 'saziz4250@gmail.com';
@@ -104,33 +92,21 @@ export async function POST(request: NextRequest) {
 
         // Send email via Resend
         let emailSent = false;
-        if (RESEND_API_KEY) {
+        if (resend) {
             try {
-                const resendResponse = await fetch('https://api.resend.com/emails', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${RESEND_API_KEY}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        from: 'Novai Intelligence <notifications@novai.ai>',
-                        to: adminEmail,
-                        subject: `🎯 New Pro Waitlist Signup: ${name}`,
-                        html: emailHTML
-                    })
+                const data = await resend.emails.send({
+                    from: 'Novai Intelligence <onboarding@resend.dev>',
+                    to: [adminEmail],
+                    subject: `🎯 New Pro Waitlist Signup: ${name}`,
+                    html: emailHTML
                 });
-
-                const resendData = await resendResponse.json();
-
-                if (!resendResponse.ok) {
-                    console.error('Resend API error:', resendData);
-                } else {
-                    console.log('✅ Pro waitlist notification sent to admin via Resend');
-                    emailSent = true;
-                }
-            } catch (emailError) {
-                console.error('Failed to send email via Resend:', emailError);
+                console.log('✅ Pro waitlist notification sent to admin via Resend:', data);
+                emailSent = true;
+            } catch (resendError) {
+                console.error('⚠️ Resend failed, falling back to FormSubmit:', resendError);
             }
+        } else {
+            console.log('ℹ️ RESEND_API_KEY not found. Using FormSubmit.co fallback.');
         }
 
         // Fallback to FormSubmit.co if Resend failed or key is missing

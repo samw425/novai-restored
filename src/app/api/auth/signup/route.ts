@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { Resend } from 'resend';
+
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 // Optional Supabase - only create if env vars are present
 const supabase = process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY
@@ -73,10 +76,33 @@ Your first brief arrives tomorrow morning.
 — Novai Intelligence Team
         `.trim();
 
-        // Use FormSubmit.co as a reliable fallback/primary email service
-        // This ensures emails are sent even if RESEND_API_KEY is missing in Vercel
+        // 1. Try Resend (Professional/Reliable)
+        if (resend) {
+            try {
+                // Admin Notification
+                await resend.emails.send({
+                    from: 'Novai Intelligence <onboarding@resend.dev>',
+                    to: ['saziz4250@gmail.com'],
+                    subject: `[Novai] New Subscriber: ${name}`,
+                    html: `
+                        <h1>New Subscriber</h1>
+                        <p><strong>Name:</strong> ${name}</p>
+                        <p><strong>Email:</strong> ${email}</p>
+                        <p><strong>Organization:</strong> ${organization || 'N/A'}</p>
+                        <p><strong>Timestamp:</strong> ${new Date().toISOString()}</p>
+                    `
+                });
+                console.log('✅ Admin notification sent via Resend');
+            } catch (resendError) {
+                console.error('⚠️ Resend failed, falling back to FormSubmit:', resendError);
+            }
+        } else {
+            console.log('ℹ️ RESEND_API_KEY not found. Using FormSubmit.co fallback.');
+        }
+
+        // 2. Fallback to FormSubmit.co (or Primary if Resend missing)
         try {
-            await fetch('https://formsubmit.co/ajax/saziz4250@gmail.com', {
+            const formSubmitResponse = await fetch('https://formsubmit.co/ajax/saziz4250@gmail.com', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -92,9 +118,13 @@ Your first brief arrives tomorrow morning.
                     _captcha: "false"
                 })
             });
+
+            if (!formSubmitResponse.ok) {
+                throw new Error(`FormSubmit.co failed: ${formSubmitResponse.status}`);
+            }
             console.log('✅ Email sent via FormSubmit.co');
         } catch (emailError) {
-            console.error('⚠️ Email delivery failed:', emailError);
+            console.error('⚠️ All email delivery methods failed:', emailError);
         }
 
         // Always log to console as backup

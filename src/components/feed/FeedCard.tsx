@@ -24,85 +24,54 @@ export function FeedCard({ article }: FeedCardProps) {
     const isLive = new Date(article.publishedAt).getTime() > Date.now() - 1000 * 60 * 120; // 2 hours
 
     return (
-        <article className="group relative">
-            {/* Hover Glow Effect */}
-            <div className="absolute -inset-4 bg-gradient-to-r from-blue-50/0 via-blue-100/30 to-purple-50/0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl -z-10" />
-
-            {/* Card - More Premium */}
-            <div className="relative bg-white border border-gray-100 rounded-3xl p-10 shadow-sm hover:shadow-xl transition-all duration-300 group-hover:-translate-y-0.5">
+        <article className="group relative py-8 first:pt-0 border-b border-gray-100 last:border-0">
+            <div className="relative bg-white transition-all duration-300">
 
                 {/* Meta Bar */}
-                <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-4">
-                        <span className="text-sm font-bold text-gray-900 uppercase tracking-wide">
+                <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                        <span className="text-xs font-bold text-slate-900 uppercase tracking-wider">
                             {article.source}
                         </span>
-                        <div className="h-1 w-1 rounded-full bg-gray-300" />
-                        <span className="text-sm text-gray-400 font-medium">
+                        <span className="text-xs text-slate-400 font-medium">
                             {article.publishedAt ? formatDistanceToNow(new Date(article.publishedAt)) : 'Just now'} ago
                         </span>
                     </div>
 
                     {/* LIVE Badge */}
                     {isLive && (
-                        <div className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-red-500 to-rose-500 text-white text-xs font-black tracking-wider uppercase rounded-full shadow-lg">
-                            <span className="flex h-1.5 w-1.5 relative">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-white"></span>
+                        <div className="flex items-center gap-2">
+                            <span className="relative flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
                             </span>
-                            LIVE
+                            <span className="text-[10px] font-bold text-red-600 tracking-widest uppercase">LIVE</span>
                         </div>
                     )}
                 </div>
 
-                {/* Title - Bigger, Bolder */}
+                {/* Title */}
                 <a
                     href={article.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block mb-5 group/title"
+                    className="block mb-3 group/title"
                 >
-                    <h3 className="text-3xl font-black text-gray-900 leading-tight tracking-tight mb-4 group-hover/title:text-blue-600 transition-colors duration-200">
+                    <h3 className="text-2xl md:text-3xl font-extrabold text-slate-900 leading-[1.1] tracking-tight group-hover/title:text-blue-600 transition-colors duration-200">
                         {article.title}
                     </h3>
                 </a>
 
                 {/* Summary */}
-                <p className="text-lg text-gray-600 leading-relaxed mb-8 line-clamp-3">
+                <p className="text-base md:text-lg text-slate-500 leading-relaxed mb-6 line-clamp-3 font-medium max-w-3xl">
                     {article.summary}
                 </p>
 
-                {/* Related Links */}
-                {article.relatedLinks && article.relatedLinks.length > 0 && (
-                    <div className="mb-8 pt-8 border-t border-gray-100">
-                        <span className="text-xs font-black text-gray-400 uppercase tracking-widest mb-4 block">
-                            Related Intelligence
-                        </span>
-                        <div className="space-y-3">
-                            {article.relatedLinks?.map((link, i) => (
-                                <a
-                                    key={i}
-                                    href={link.url}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="flex items-center gap-3 text-base font-semibold text-gray-600 hover:text-blue-600 transition-colors duration-200 group/link"
-                                >
-                                    <div className="w-2 h-2 rounded-full bg-blue-500 group-hover/link:scale-125 transition-transform" />
-                                    <span className="group-hover/link:underline underline-offset-4">{link.title}</span>
-                                </a>
-                            ))}
-                        </div>
-                    </div>
-                )}
-
-                {/* Footer */}
-                <div className="flex items-center justify-between pt-8 border-t border-gray-100">
-                    <div className="flex gap-2">
-                        <span className="text-xs font-bold text-gray-500 bg-gray-50 border border-gray-100 px-4 py-2 rounded-full uppercase tracking-wider">
+                {/* Footer / Actions */}
+                <div className="flex items-center justify-between">
+                    <div className="flex gap-3">
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                             {article.category}
-                        </span>
-                        <span className="text-xs font-bold text-gray-500 bg-gray-50 border border-gray-100 px-4 py-2 rounded-full">
-                            #{article.topicSlug}
                         </span>
                     </div>
 
@@ -110,10 +79,10 @@ export function FeedCard({ article }: FeedCardProps) {
                         href={article.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 text-base font-black text-gray-900 hover:text-blue-600 transition-colors duration-200 group/read"
+                        className="flex items-center gap-2 text-sm font-bold text-slate-900 hover:text-blue-600 transition-colors duration-200 group/read"
                     >
-                        <span>Read Full Article</span>
-                        <ArrowUpRight size={16} className="group-hover/read:translate-x-0.5 group-hover/read:-translate-y-0.5 transition-transform duration-200" strokeWidth={3} />
+                        <span>Read Source</span>
+                        <ArrowUpRight size={14} className="group-hover/read:translate-x-0.5 group-hover/read:-translate-y-0.5 transition-transform duration-200" strokeWidth={2.5} />
                     </a>
                 </div>
             </div>

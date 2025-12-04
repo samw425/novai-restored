@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Logo } from '@/components/ui/Logo';
 import { ProWaitlistModal } from '@/components/modals/ProWaitlistModal';
-import { Calendar, Activity, Radio, FlaskConical, TrendingUp, Shield, Info, Hexagon, Bot, Scale, Wrench, Brain, Youtube, Terminal, Globe, Lock } from 'lucide-react';
+import { Calendar, Activity, Radio, FlaskConical, TrendingUp, Shield, Info, Hexagon, Bot, Scale, Wrench, Brain, Youtube, Terminal, Globe, Lock, Sparkles } from 'lucide-react';
 import {
     Tooltip,
     TooltipContent,
@@ -14,6 +14,13 @@ import {
 } from "@/components/ui/tooltip";
 
 const intelligenceLinks = [
+    {
+        id: 'oracle',
+        label: 'The Oracle',
+        icon: Sparkles,
+        href: '/oracle',
+        tooltip: "Agentic Synthesis Engine: The God's Eye View."
+    },
     {
         id: 'intelligence-brief',
         label: 'Intelligence Brief',
@@ -221,7 +228,7 @@ export function Sidebar() {
     };
 
     return (
-        <div className="sticky top-24 w-full bg-white/80 backdrop-blur-xl min-h-[calc(100vh-6rem)] rounded-2xl p-4 border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
+        <div className="sticky top-24 w-full min-h-[calc(100vh-6rem)] pl-4 pr-6 py-4">
             <div className="mb-8 px-4 pt-2">
                 <Logo />
             </div>

@@ -536,7 +536,7 @@ export default function USIntelPage() {
                     {/* LEFT COLUMN: Dossier View (Sticky) */}
                     <div className="lg:col-span-4 lg:sticky lg:top-24 h-fit">
                         {activeAgency === 'ALL' ? (
-                            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                            <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
                                 {/* Header */}
                                 <div className="bg-slate-900 px-6 py-4 border-b border-slate-800 flex justify-between items-center">
                                     <div className="flex items-center gap-3">
@@ -596,8 +596,8 @@ export default function USIntelPage() {
 
                     {/* RIGHT COLUMN: Live Feed */}
                     <div className="lg:col-span-8">
-                        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden min-h-[600px]">
-                            <div className="px-6 py-4 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center sticky top-0 z-10 backdrop-blur-sm">
+                        <div className="bg-white rounded-2xl shadow-sm overflow-hidden min-h-[600px]">
+                            <div className="px-8 py-6 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center sticky top-0 z-10 backdrop-blur-sm">
                                 <h3 className="text-xs font-bold text-slate-900 uppercase tracking-widest flex items-center gap-2">
                                     <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
                                     Live Wire: {activeAgency === 'ALL' ? 'All Sources' : AGENCY_PROFILES[activeAgency]?.acronym}
@@ -629,7 +629,7 @@ export default function USIntelPage() {
                                             <div
                                                 key={`${item.link}-${i}`}
                                                 ref={isLastElement ? lastElementRef : null}
-                                                className="p-6 hover:bg-slate-50 transition-colors group animate-in fade-in slide-in-from-bottom-2 duration-500"
+                                                className="p-8 hover:bg-slate-50 transition-colors group animate-in fade-in slide-in-from-bottom-2 duration-500"
                                             >
                                                 <div className="flex items-center justify-between mb-2">
                                                     <div className="flex items-center gap-2">

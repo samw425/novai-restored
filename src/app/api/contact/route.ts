@@ -1,4 +1,7 @@
 import { NextResponse } from 'next/server';
+import { Resend } from 'resend';
+
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 export async function POST(request: Request) {
     try {
@@ -6,13 +9,39 @@ export async function POST(request: Request) {
         const { name, email, subject, message } = body;
 
         // Log the request
-        console.log('--- NEW FEEDBACK RECEIVED ---');
+        console.log('--- NEW FEEDBACK/SIGNUP RECEIVED ---');
         console.log(`From: ${name} <${email}>`);
         console.log(`Subject: ${subject}`);
         console.log('-----------------------------');
 
-        // Use FormSubmit.co for reliable delivery
-        // We use the AJAX endpoint to avoid redirects
+        // 1. Try Resend (Professional/Reliable)
+        if (resend) {
+            try {
+                const data = await resend.emails.send({
+                    from: 'Novai Intelligence <onboarding@resend.dev>', // Default Resend testing domain
+                    to: ['saziz4250@gmail.com'],
+                    subject: `[Novai] ${subject || 'New Subscriber'}`,
+                    html: `
+                        <h1>New Submission</h1>
+                        <p><strong>Name:</strong> ${name}</p>
+                        <p><strong>Email:</strong> ${email}</p>
+                        <p><strong>Subject:</strong> ${subject}</p>
+                        <p><strong>Message:</strong></p>
+                        <blockquote style="background: #f9f9f9; padding: 10px; border-left: 4px solid #ccc;">
+                            ${message}
+                        </blockquote>
+                    `
+                });
+                console.log('✅ Email sent via Resend:', data);
+                return NextResponse.json({ success: true, message: 'Feedback received via Resend' });
+            } catch (resendError) {
+                console.error('⚠️ Resend failed, falling back to FormSubmit:', resendError);
+            }
+        } else {
+            console.log('ℹ️ RESEND_API_KEY not found. Using FormSubmit.co fallback.');
+        }
+
+        // 2. Fallback to FormSubmit.co
         try {
             const formSubmitResponse = await fetch('https://formsubmit.co/ajax/saziz4250@gmail.com', {
                 method: 'POST',
@@ -28,21 +57,18 @@ export async function POST(request: Request) {
                     message: message || 'User signed up via landing page.',
                     _template: 'table',
                     _captcha: "false",
-                    _replyto: email // Important for replying directly
+                    _replyto: email
                 })
             });
 
             if (!formSubmitResponse.ok) {
-                const errorText = await formSubmitResponse.text();
-                console.error('❌ FormSubmit.co error:', formSubmitResponse.status, errorText);
                 throw new Error(`FormSubmit.co failed: ${formSubmitResponse.status}`);
             }
 
             console.log('✅ Feedback email sent via FormSubmit.co');
         } catch (emailError) {
-            console.error('⚠️ Email delivery failed:', emailError);
-            // We still return success to the client so the UI doesn't break, 
-            // but we log the error on the server.
+            console.error('⚠️ All email delivery methods failed:', emailError);
+            // We still return success to not break UI, but log heavily
         }
 
         return NextResponse.json({ success: true, message: 'Feedback received' });
