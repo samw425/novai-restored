@@ -632,6 +632,12 @@ export default function USIntelPage() {
                 agencies={AGENCY_PROFILES}
             />
 
+            {/* Header */}
+            <div className="bg-slate-900 text-white py-12 relative overflow-hidden">
+                <div className="absolute top-2 right-2 text-[10px] text-slate-600 font-mono">v2025.12.04-LIVE</div>
+                <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10"></div>
+            </div>
+
             <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 

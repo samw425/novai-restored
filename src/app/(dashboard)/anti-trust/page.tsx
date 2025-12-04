@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Scale, Gavel, AlertTriangle, ShieldAlert, ArrowUp, Loader2, FileText, Building2, History, Skull, Info } from 'lucide-react';
+import { Scale, Gavel, AlertTriangle, ShieldAlert, ArrowUp, Loader2, FileText, Building2, History, Skull, Info, Globe } from 'lucide-react';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { FeedCard } from '@/components/feed/FeedCard';
 import { ResourceLoader } from '@/components/ui/ResourceLoader';
@@ -92,10 +92,10 @@ export default function AntiTrustPage() {
     };
 
     return (
-        <div className="space-y-12">
-            {/* Docket Ticker */}
-            <div className="bg-slate-900 text-white rounded-lg overflow-hidden flex items-center shadow-md border border-slate-800 h-10">
-                <div className="bg-slate-800 px-4 h-full font-bold text-xs uppercase tracking-wider shrink-0 flex items-center gap-2 border-r border-slate-700">
+        <div className="space-y-12 max-w-[1600px]">
+            {/* Docket Ticker - Kept as it's a functional bar */}
+            <div className="bg-slate-900 text-white rounded-none border-y border-slate-800 h-10 flex items-center w-full -mx-4 lg:-mx-8 px-4 lg:px-8">
+                <div className="font-bold text-xs uppercase tracking-wider shrink-0 flex items-center gap-2 pr-4 border-r border-slate-700 h-full">
                     <Gavel size={14} className="text-amber-500" />
                     THE DOCKET
                 </div>
@@ -115,175 +115,178 @@ export default function AntiTrustPage() {
                 title="Anti-Trust War Room"
                 description="Tracking the global regulatory siege on Big Tech. The end of the monopoly era."
                 insight="Regulators are fighting a two-front war: dismantling the mobile/search monopolies of the last decade (Google, Apple) while trying to prevent a new 'Compute Cartel' from controlling AI."
-                icon={<Scale className="w-8 h-8 text-blue-600" />}
+                icon={
+                    <div className="relative">
+                        <Globe className="w-10 h-10 text-blue-600 animate-[spin_10s_linear_infinite]" />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="w-1 h-1 bg-blue-400 rounded-full"></div>
+                        </div>
+                    </div>
+                }
             />
 
-            {/* SECTION 1: THE CONTEXT (The Kill Zone) */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <div className="lg:col-span-8 space-y-6">
-                    <div className="bg-white border border-slate-200 rounded-xl p-8 shadow-sm">
-                        <h2 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
-                            <Skull className="h-5 w-5 text-slate-800" />
-                            The "Kill Zone"
+            {/* SECTION 1: THE CONTEXT (The Kill Zone) - Clean Text, No Boxes */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 border-b border-slate-200 pb-12">
+                <div className="lg:col-span-8 space-y-8">
+                    <div>
+                        <h2 className="text-2xl font-black text-slate-900 mb-6 flex items-center gap-3 uppercase tracking-tight">
+                            <Skull className="h-6 w-6 text-slate-900" />
+                            The "AI Kill Zone"
                         </h2>
-                        <div className="prose prose-slate max-w-none text-slate-600">
-                            <p className="text-lg leading-relaxed font-medium text-slate-800">
-                                In the modern tech ecosystem, competition is stifled by the "Kill Zone"—the area around Big Tech giants where no startup can survive. This dynamic has now extended from mobile apps to Artificial Intelligence.
-                            </p>
-                            <p>
-                                When a startup shows promise, it faces two fates: <strong>Acquisition</strong> (to neutralize the threat) or <strong>Cloning</strong> (to destroy its market). Now, a third fate has emerged: <strong>Compute Capture</strong>, where AI labs are forced to sell equity for cloud credits.
-                            </p>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 not-prose">
-                                <div className="bg-slate-50 p-4 rounded-lg border border-slate-100">
-                                    <h3 className="font-bold text-slate-900 mb-2 text-sm uppercase tracking-wide">The Playbook</h3>
-                                    <ul className="space-y-2 text-sm text-slate-600">
-                                        <li className="flex items-start gap-2">
-                                            <span className="text-red-500 font-bold">1.</span>
-                                            <span><strong>Buy or Bury:</strong> Acquire rivals early (Instagram, WhatsApp) or copy them (Stories) to maintain dominance.</span>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-slate-700 leading-relaxed">
+                            <div>
+                                <p className="mb-4 font-medium text-lg text-slate-900">
+                                    The era of the "garage startup" is over.
+                                </p>
+                                <p>
+                                    Modern AI requires billions in compute (GPUs) and massive proprietary datasets—resources only the "Big 6" possess. This has created an <strong>"AI Kill Zone"</strong>: a market dynamic where no independent AI lab can scale without selling equity (and control) to a cloud giant.
+                                </p>
+                            </div>
+                            <div className="space-y-4">
+                                <div>
+                                    <h3 className="font-bold text-slate-900 text-sm uppercase tracking-wide border-b border-slate-200 pb-2 mb-2">The New Playbook</h3>
+                                    <ul className="space-y-3 text-sm">
+                                        <li className="flex items-start gap-3">
+                                            <span className="text-red-600 font-bold">01</span>
+                                            <span><strong>Compute Capture:</strong> Invest cloud credits instead of cash to lock startups into infrastructure.</span>
                                         </li>
-                                        <li className="flex items-start gap-2">
-                                            <span className="text-red-500 font-bold">2.</span>
-                                            <span><strong>Gatekeeping:</strong> Use platform control (App Store, Search) to tax or disadvantage competitors.</span>
+                                        <li className="flex items-start gap-3">
+                                            <span className="text-red-600 font-bold">02</span>
+                                            <span><strong>Talent Hoarding:</strong> "Acqui-hire" entire teams to bypass merger review.</span>
                                         </li>
                                     </ul>
                                 </div>
-                                <div className="bg-slate-50 p-4 rounded-lg border border-slate-100">
-                                    <h3 className="font-bold text-slate-900 mb-2 text-sm uppercase tracking-wide">The New Threat</h3>
-                                    <p className="text-sm text-slate-600">
-                                        As AI rises, the same giants are using their cloud infrastructure to lock in the next generation of companies, ensuring the "AI Era" remains under the control of the "Mobile Era" incumbents.
-                                    </p>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {/* Historical Context Sidebar */}
-                <div className="lg:col-span-4">
-                    <div className="bg-slate-900 text-white rounded-xl p-6 shadow-lg h-full">
-                        <h3 className="font-bold text-lg mb-6 flex items-center gap-2 font-mono">
-                            <History className="h-5 w-5 text-amber-500" />
-                            PRECEDENT
-                        </h3>
-                        <div className="space-y-6 relative">
-                            {/* Vertical Line */}
-                            <div className="absolute left-[15px] top-2 bottom-2 w-0.5 bg-slate-700"></div>
-
-                            {HISTORICAL_CASES.map((item, i) => (
-                                <div key={i} className="relative pl-10">
-                                    <div className="absolute left-0 top-1 w-8 h-8 bg-slate-800 rounded-full border-2 border-slate-600 flex items-center justify-center text-[10px] font-bold z-10">
-                                        {item.year}
-                                    </div>
-                                    <div>
-                                        <h4 className="font-bold text-amber-400 text-lg">{item.name}</h4>
-                                        <div className="text-sm font-bold text-white mb-1">{item.outcome}</div>
-                                        <p className="text-xs text-slate-400 leading-relaxed">
-                                            {item.impact}
-                                        </p>
-                                    </div>
+                {/* Historical Context - Clean List, No Box */}
+                <div className="lg:col-span-4 border-l border-slate-200 pl-8">
+                    <h3 className="font-bold text-slate-400 text-xs uppercase tracking-widest mb-6 flex items-center gap-2">
+                        <History className="h-4 w-4" />
+                        Historical Precedent
+                    </h3>
+                    <div className="space-y-8">
+                        {HISTORICAL_CASES.map((item, i) => (
+                            <div key={i} className="relative">
+                                <div className="flex items-baseline gap-3 mb-1">
+                                    <span className="text-xl font-black text-slate-200">{item.year}</span>
+                                    <h4 className="font-bold text-slate-900">{item.name}</h4>
                                 </div>
-                            ))}
-                        </div>
-                        <div className="mt-8 pt-6 border-t border-slate-800 text-center">
-                            <p className="text-xs text-slate-500 font-mono uppercase">
-                                History repeats. The cycle of centralization and breakup is inevitable.
-                            </p>
-                        </div>
+                                <div className="text-xs font-bold text-blue-600 mb-1 uppercase">{item.outcome}</div>
+                                <p className="text-sm text-slate-500 leading-snug">
+                                    {item.impact}
+                                </p>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
 
-            {/* SECTION 2: CURRENT BATTLEFIELD (Risk Board) */}
+            {/* SECTION 2: THREAT MATRIX (Horizontal Table Layout) */}
             <div>
-                <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2 mb-4 font-mono">
-                    <ShieldAlert className="h-5 w-5 text-red-600" />
-                    MONOPOLY RISK BOARD
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {RISK_DATA.map((entity) => (
-                        <div key={entity.name} className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
-                            <div className="flex justify-between items-start mb-4">
-                                <div>
-                                    <h3 className="font-bold text-lg text-slate-900 flex items-center gap-2">
-                                        {entity.name}
-                                        <span className="text-xs font-mono text-slate-400 font-normal">({entity.ticker})</span>
-                                    </h3>
-                                    <div className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide mt-1 ${entity.status === 'CRITICAL' ? 'bg-red-100 text-red-700' :
+                <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-xl font-black text-slate-900 flex items-center gap-3 uppercase tracking-tight">
+                        <ShieldAlert className="h-6 w-6 text-red-600" />
+                        Monopoly Risk Matrix
+                    </h2>
+                    <div className="text-xs font-mono text-slate-400">
+                        LIVE RISK ASSESSMENT // UPDATED {new Date().toLocaleDateString()}
+                    </div>
+                </div>
+
+                <div className="bg-white rounded-none border-t border-b border-slate-200">
+                    {/* Table Header */}
+                    <div className="grid grid-cols-12 gap-4 py-3 px-4 bg-slate-50 border-b border-slate-200 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                        <div className="col-span-3">Entity</div>
+                        <div className="col-span-2">Risk Level</div>
+                        <div className="col-span-2">Score</div>
+                        <div className="col-span-3">Primary Threat</div>
+                        <div className="col-span-2 text-right">Active Cases</div>
+                    </div>
+
+                    {/* Table Rows */}
+                    <div className="divide-y divide-slate-100">
+                        {RISK_DATA.map((entity) => (
+                            <div key={entity.name} className="grid grid-cols-12 gap-4 py-4 px-4 items-center hover:bg-slate-50 transition-colors group">
+                                <div className="col-span-3">
+                                    <div className="font-bold text-slate-900 text-lg">{entity.name}</div>
+                                    <div className="text-xs font-mono text-slate-400">{entity.ticker}</div>
+                                </div>
+                                <div className="col-span-2">
+                                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide ${entity.status === 'CRITICAL' ? 'bg-red-100 text-red-700' :
                                         entity.status === 'HIGH' ? 'bg-orange-100 text-orange-700' :
                                             'bg-yellow-100 text-yellow-700'
                                         }`}>
-                                        {entity.status} RISK
+                                        {entity.status}
+                                    </span>
+                                </div>
+                                <div className="col-span-2">
+                                    <div className="flex items-center gap-3">
+                                        <span className="font-mono font-bold text-slate-900">{entity.riskScore}</span>
+                                        <div className="h-1.5 flex-1 bg-slate-100 rounded-full overflow-hidden max-w-[100px]">
+                                            <div
+                                                className={`h-full ${entity.status === 'CRITICAL' ? 'bg-red-500' :
+                                                    entity.status === 'HIGH' ? 'bg-orange-500' :
+                                                        'bg-yellow-500'
+                                                    }`}
+                                                style={{ width: `${entity.riskScore}%` }}
+                                            ></div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="flex flex-col items-end">
-                                    <span className="text-2xl font-black text-slate-900">{entity.riskScore}</span>
-                                    <span className="text-[10px] text-slate-500 uppercase font-bold">Breakup Prob.</span>
+                                <div className="col-span-3">
+                                    <div className="text-sm font-medium text-slate-700 leading-tight">
+                                        {entity.primaryThreat}
+                                    </div>
+                                </div>
+                                <div className="col-span-2 text-right">
+                                    <div className="inline-flex items-center gap-1.5 text-slate-500 font-mono text-sm">
+                                        <FileText size={14} />
+                                        {entity.activeCases}
+                                    </div>
                                 </div>
                             </div>
-
-                            <div className="space-y-3">
-                                <div className="bg-slate-50 rounded-lg p-3">
-                                    <div className="text-[10px] uppercase text-slate-400 font-bold mb-1">Primary Threat</div>
-                                    <div className="text-xs font-medium text-slate-700 leading-snug">{entity.primaryThreat}</div>
-                                </div>
-                                <div className="flex items-center justify-between text-xs text-slate-500 font-mono">
-                                    <span className="flex items-center gap-1.5">
-                                        <FileText size={12} />
-                                        {entity.activeCases} Active Cases
-                                    </span>
-                                    <span className="flex items-center gap-1.5">
-                                        <Building2 size={12} />
-                                        DOJ/FTC
-                                    </span>
-                                </div>
-                            </div>
-
-                            {/* Progress Bar */}
-                            <div className="absolute bottom-0 left-0 w-full h-1 bg-slate-100">
-                                <div
-                                    className={`h-full ${entity.status === 'CRITICAL' ? 'bg-red-500' :
-                                        entity.status === 'HIGH' ? 'bg-orange-500' :
-                                            'bg-yellow-500'
-                                        }`}
-                                    style={{ width: `${entity.riskScore}%` }}
-                                ></div>
-                            </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </div>
 
-            {/* SECTION 3: LIVE INTELLIGENCE (Feed) */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-white">
-                    <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2 font-mono">
-                        <Gavel className="h-5 w-5 text-blue-600" />
-                        REGULATORY FILINGS & NEWS
+            {/* SECTION 3: LIVE INTELLIGENCE (Feed) - Clean List */}
+            <div>
+                <div className="flex items-center justify-between mb-6 border-b border-slate-200 pb-4">
+                    <h2 className="text-xl font-black text-slate-900 flex items-center gap-3 uppercase tracking-tight">
+                        <Gavel className="h-6 w-6 text-blue-600" />
+                        Regulatory Filings & News
                     </h2>
-                    <span className="text-xs font-bold text-green-600 uppercase flex items-center gap-1">
-                        <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                        LIVE
+                    <span className="text-xs font-bold text-green-600 uppercase flex items-center gap-2">
+                        <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                        </span>
+                        LIVE FEED
                     </span>
                 </div>
 
-                <div className="p-6">
+                <div className="">
                     {loading ? (
-                        <div className="p-12">
+                        <div className="py-12">
                             <ResourceLoader message="Scanning court dockets..." />
                         </div>
                     ) : articles.length > 0 ? (
-                        <div>
+                        <div className="space-y-4">
                             {articles.map(article => (
                                 <FeedCard key={article.id} article={article} />
                             ))}
 
                             {/* Load More */}
-                            <div className="p-6 flex justify-center bg-slate-50/50 mt-6 rounded-lg">
+                            <div className="pt-8 flex justify-center">
                                 {hasMore ? (
                                     <button
                                         onClick={loadMore}
                                         disabled={loadingMore}
-                                        className="px-6 py-2 bg-white border border-slate-200 text-slate-600 font-mono text-xs hover:bg-slate-50 hover:text-blue-600 transition-colors rounded-full flex items-center gap-2 shadow-sm"
+                                        className="px-8 py-3 bg-white border border-slate-200 text-slate-600 font-mono text-xs hover:bg-slate-900 hover:text-white transition-all flex items-center gap-2 shadow-sm uppercase tracking-wider"
                                     >
                                         {loadingMore ? <Loader2 className="h-3 w-3 animate-spin" /> : <ArrowUp className="h-3 w-3 rotate-180" />}
                                         {loadingMore ? 'LOADING...' : 'LOAD OLDER BRIEFS'}
