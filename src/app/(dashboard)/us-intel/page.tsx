@@ -443,6 +443,54 @@ const AGENCY_PROFILES: Record<string, any> = {
             }
         ]
     },
+    ODNI: {
+        name: 'Office of the Director of National Intelligence',
+        acronym: 'ODNI',
+        founded: '2005',
+        headquarters: 'McLean, Virginia',
+        director: 'Tulsi Gabbard',
+        budget: '$70 Billion (NIP)',
+        mission: 'Lead and integrate the Intelligence Community to deliver the most insightful intelligence possible.',
+        mission_url: 'https://www.dni.gov/index.php/who-we-are/mission-vision',
+        jurisdiction: 'Intelligence Integration',
+        ai_stance: 'Orchestrating the IC-wide adoption of AI. Focusing on "Augmented Intelligence" to handle the deluge of sensor data.',
+        active_directives: [
+            { title: 'IC Data Strategy', description: 'Unifying data architecture across all 18 agencies.', link: 'https://www.dni.gov/index.php/newsroom/reports-publications/reports-publications-2023/item/2386-ic-data-strategy-2023-2025' },
+            { title: 'Election Security', description: 'Coordinating efforts to protect the integrity of democratic processes.', link: 'https://www.dni.gov/index.php/cyber-monitor' }
+        ],
+        classified_annex: {
+            codename: 'OVERWATCH',
+            shadow_budget: 'Classified',
+            unacknowledged_projects: ['Project SENTINEL']
+        },
+        education_dossier: `The Director of National Intelligence (DNI) serves as the head of the U.S. Intelligence Community, overseeing and directing the implementation of the National Intelligence Program. The DNI acts as the principal intelligence advisor to the President, the National Security Council, and the Homeland Security Council.
+        
+        **Role:**
+        The ODNI was established after 9/11 to coordinate information sharing among all intelligence agencies and prevent "intelligence failures" due to siloing.`,
+        official_links: [
+            { title: 'Annual Threat Assessment', url: 'https://www.dni.gov/index.php/newsroom/reports-publications', description: 'Top-level strategic analysis.' },
+            { title: 'IC on the Record', url: 'https://icontherecord.tumblr.com/', description: 'Transparency initiative.' }
+        ],
+        issues_discrepancies: `**Bureaucratic Bloat:**
+        Critics argue that the ODNI adds another layer of bureaucracy without operational control.
+        
+        **Politicization:**
+        The role of the DNI has been scrutinized for potential politicization of intelligence assessments.`,
+        novai_analysis: [
+            {
+                title: 'Declassification Push',
+                date: '2025-12-15',
+                type: 'Policy',
+                content: 'DNI Gabbard has ordered a sweeping review of classification standards, aiming to "restore public trust" by releasing historical files on controversial programs.'
+            },
+            {
+                title: 'IC Integration Audit',
+                date: '2025-11-01',
+                type: 'Reform',
+                content: 'A new directive requires all agencies to share raw intelligence data in real-time, eliminating the "need-to-know" silos that previously hindered cooperation.'
+            }
+        ]
+    },
     DOJ: {
         name: 'Department of Justice',
         acronym: 'DOJ',
@@ -624,7 +672,7 @@ export default function USIntelPage() {
 
                                     {/* Agency Grid Status */}
                                     <div className="grid grid-cols-2 gap-3 mb-6">
-                                        {['CIA', 'FBI', 'NSA', 'DOD', 'State Dept', 'DHS', 'DOJ'].map((agency) => (
+                                        {['ODNI', 'CIA', 'FBI', 'NSA', 'DOD', 'State Dept', 'DHS', 'DOJ'].map((agency) => (
                                             <div key={agency} className="flex items-center justify-between p-2 bg-slate-50 rounded border border-slate-100">
                                                 <span className="text-[10px] font-bold text-slate-700">{agency}</span>
                                                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
