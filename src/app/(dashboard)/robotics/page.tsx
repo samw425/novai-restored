@@ -253,16 +253,16 @@ export default function RoboticsPage() {
                                                 </span>
                                             </div>
 
-                                            <div className="grid grid-cols-3 gap-2 text-xs mb-2">
-                                                <div className="bg-slate-50 p-1.5 rounded border border-slate-100">
+                                            <div className="flex gap-2 text-xs mb-2">
+                                                <div className="bg-slate-50 p-1.5 rounded border border-slate-100 flex-1 min-w-0">
                                                     <span className="text-slate-400 block text-[9px] uppercase font-bold mb-0.5">Height</span>
-                                                    <span className="font-mono text-slate-700 font-bold text-[10px]">{robot.height.split('(')[0]}</span>
+                                                    <span className="font-mono text-slate-700 font-bold text-[10px] break-words">{robot.height.split('(')[0]}</span>
                                                 </div>
-                                                <div className="bg-slate-50 p-1.5 rounded border border-slate-100">
+                                                <div className="bg-slate-50 p-1.5 rounded border border-slate-100 flex-1 min-w-0">
                                                     <span className="text-slate-400 block text-[9px] uppercase font-bold mb-0.5">Weight</span>
-                                                    <span className="font-mono text-slate-700 font-bold text-[10px]">{robot.weight.split('(')[0]}</span>
+                                                    <span className="font-mono text-slate-700 font-bold text-[10px] break-words">{robot.weight.split('(')[0]}</span>
                                                 </div>
-                                                <div className="bg-slate-50 p-1.5 rounded border border-slate-100 flex flex-col justify-center">
+                                                <div className="bg-slate-50 p-1.5 rounded border border-slate-100 flex-[1.5] flex flex-col justify-center min-w-0">
                                                     <span className="text-slate-400 block text-[9px] uppercase font-bold mb-0.5">Compute</span>
                                                     <span className="font-mono text-slate-700 font-bold text-[10px] break-words" title={robot.compute}>
                                                         {robot.compute.split(' ')[0]}

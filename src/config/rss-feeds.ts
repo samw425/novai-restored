@@ -65,7 +65,7 @@ export const RSS_FEEDS: FeedSource[] = [
 
     // ========== ROBOTICS & HARDWARE (Priority 8) ==========
     { id: 'techcrunch-robotics', name: 'TechCrunch Robotics', url: 'https://techcrunch.com/category/robotics/feed/', category: 'robotics', priority: 10, region: 'US' },
-    { id: 'science-robotics', name: 'Science Robotics', url: 'https://www.science.org/toc/robotics/current.rss', category: 'robotics', priority: 10, region: 'Global' },
+    { id: 'mit-robotics', name: 'MIT News - Robotics', url: 'https://news.mit.edu/rss/topic/robotics', category: 'robotics', priority: 10, region: 'Global' },
     { id: 'arxiv-ro', name: 'arXiv Robotics', url: 'http://export.arxiv.org/rss/cs.RO', category: 'robotics', priority: 10, region: 'Global' },
     { id: 'robot-report', name: 'The Robot Report', url: 'https://www.therobotreport.com/feed/', category: 'robotics', priority: 9, region: 'US' },
     { id: 'ieee-robotics', name: 'IEEE Robotics', url: 'https://spectrum.ieee.org/feeds/topic/robotics.rss', category: 'robotics', priority: 9, region: 'Global' },
