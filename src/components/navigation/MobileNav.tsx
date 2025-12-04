@@ -52,25 +52,24 @@ export function MobileNav() {
                 <div className="fixed inset-0 top-16 bg-white z-[99] overflow-y-auto pb-32 animate-in fade-in slide-in-from-top-2 duration-200">
                     <div className="py-6 space-y-8">
 
-                        {/* Platform */}
+                        {/* INTELLIGENCE (Platform) */}
                         <div>
-                            <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-6 font-mono">Platform</h3>
+                            <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-6 font-mono">Intelligence</h3>
                             <div className="space-y-0.5">
-                                <NavLink href="/intelligence-brief" icon={Brain} label="Intelligence Brief" />
-                                <NavLink href="/daily-snapshot" icon={Calendar} label="Daily Snapshot" />
                                 <NavLink href="/global-feed" icon={Activity} label="Global Feed" />
-                                <NavLink href="/global-demographics" icon={Globe} label="Global Demographics" />
-                                <NavLink href="/videos" icon={Youtube} label="Video Feed" />
+                                <NavLink href="/intelligence-brief" icon={Brain} label="Daily Intelligence Brief" />
+                                <NavLink href="/daily-snapshot" icon={Calendar} label="Daily Snapshot" />
                                 <NavLink href="/future-of-code" icon={Terminal} label="Future of Code" />
+                                <NavLink href="/videos" icon={Youtube} label="Video Feed" />
                             </div>
                         </div>
 
-                        {/* Categories */}
+                        {/* SECTORS (Categories) */}
                         <div>
-                            <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-6 font-mono">Categories</h3>
+                            <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-6 font-mono">Sectors</h3>
                             <div className="space-y-0.5">
                                 <NavLink href="/ai" icon={Hexagon} label="AI News" />
-                                <NavLink href="/us-intel" icon={Shield} label="US Intelligence" />
+                                <NavLink href="/llms" icon={Brain} label="LLMs & Models" />
                                 <NavLink href="/robotics" icon={Bot} label="Robotics" />
                                 <NavLink href="/policy" icon={Scale} label="Policy" />
                                 <NavLink href="/research" icon={FlaskConical} label="Research" />
@@ -79,18 +78,27 @@ export function MobileNav() {
                             </div>
                         </div>
 
-                        {/* Knowledge */}
+                        {/* COMMAND CENTER */}
+                        <div>
+                            <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-6 font-mono">Command Center</h3>
+                            <div className="space-y-0.5">
+                                <NavLink href="/us-intel" icon={Shield} label="US Intelligence" />
+                                <NavLink href="/global-demographics" icon={Globe} label="Global Demographics" />
+                                <NavLink href="/war-room" icon={Shield} label="War Room" />
+                            </div>
+                        </div>
+
+                        {/* KNOWLEDGE */}
                         <div>
                             <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-6 font-mono">Knowledge</h3>
                             <div className="space-y-0.5">
                                 <NavLink href="/hacker-news" icon={Radio} label="Hacker News" />
                                 <NavLink href="/lab-tools" icon={FlaskConical} label="Lab & Tools" />
                                 <NavLink href="/trend-watch" icon={TrendingUp} label="Trend Watch" />
-                                <NavLink href="/war-room" icon={Shield} label="War Room" />
                             </div>
                         </div>
 
-                        {/* System */}
+                        {/* SYSTEM */}
                         <div>
                             <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-6 font-mono">System</h3>
                             <div className="space-y-0.5">

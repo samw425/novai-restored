@@ -35,28 +35,37 @@ export default async function Image() {
                         top: '50%',
                         left: '50%',
                         transform: 'translate(-50%, -50%)',
-                        width: '800px',
-                        height: '800px',
+                        width: '900px',
+                        height: '900px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        opacity: 0.3,
+                        opacity: 0.4,
                     }}
                 >
-                    <svg width="800" height="800" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <svg width="900" height="900" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                         <defs>
                             <radialGradient id="globeGrad" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
-                                <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.2" />
+                                <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.3" />
                                 <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
                             </radialGradient>
                         </defs>
-                        <circle cx="100" cy="100" r="90" fill="url(#globeGrad)" stroke="#3b82f6" strokeWidth="0.5" strokeOpacity="0.5" />
-                        <ellipse cx="100" cy="100" rx="90" ry="30" fill="none" stroke="#3b82f6" strokeWidth="0.5" strokeOpacity="0.5" />
-                        <ellipse cx="100" cy="100" rx="90" ry="60" fill="none" stroke="#3b82f6" strokeWidth="0.5" strokeOpacity="0.5" />
-                        <ellipse cx="100" cy="100" rx="30" ry="90" fill="none" stroke="#3b82f6" strokeWidth="0.5" strokeOpacity="0.5" />
-                        <ellipse cx="100" cy="100" rx="60" ry="90" fill="none" stroke="#3b82f6" strokeWidth="0.5" strokeOpacity="0.5" />
-                        <line x1="100" y1="10" x2="100" y2="190" stroke="#3b82f6" strokeWidth="0.5" strokeOpacity="0.5" />
-                        <line x1="10" y1="100" x2="190" y2="100" stroke="#3b82f6" strokeWidth="0.5" strokeOpacity="0.5" />
+                        {/* Core Sphere */}
+                        <circle cx="100" cy="100" r="80" fill="url(#globeGrad)" stroke="#3b82f6" strokeWidth="0.5" strokeOpacity="0.6" />
+
+                        {/* Latitudes */}
+                        <ellipse cx="100" cy="100" rx="80" ry="20" fill="none" stroke="#3b82f6" strokeWidth="0.5" strokeOpacity="0.5" />
+                        <ellipse cx="100" cy="100" rx="80" ry="40" fill="none" stroke="#3b82f6" strokeWidth="0.5" strokeOpacity="0.5" />
+                        <ellipse cx="100" cy="100" rx="80" ry="60" fill="none" stroke="#3b82f6" strokeWidth="0.5" strokeOpacity="0.5" />
+
+                        {/* Longitudes */}
+                        <ellipse cx="100" cy="100" rx="20" ry="80" fill="none" stroke="#3b82f6" strokeWidth="0.5" strokeOpacity="0.5" />
+                        <ellipse cx="100" cy="100" rx="40" ry="80" fill="none" stroke="#3b82f6" strokeWidth="0.5" strokeOpacity="0.5" />
+                        <ellipse cx="100" cy="100" rx="60" ry="80" fill="none" stroke="#3b82f6" strokeWidth="0.5" strokeOpacity="0.5" />
+
+                        {/* Axis */}
+                        <line x1="100" y1="20" x2="100" y2="180" stroke="#3b82f6" strokeWidth="1" strokeOpacity="0.8" />
+                        <line x1="20" y1="100" x2="180" y2="100" stroke="#3b82f6" strokeWidth="1" strokeOpacity="0.8" />
                     </svg>
                 </div>
 
@@ -139,7 +148,7 @@ export default async function Image() {
                             borderBottom: '1px solid rgba(255,255,255,0.1)',
                         }}
                     >
-                        The World's Operating System.
+                        Global Intelligence For the AI Era
                     </div>
                 </div>
 
@@ -160,9 +169,7 @@ export default async function Image() {
                         <span>System Online</span>
                     </div>
                     <span>•</span>
-                    <span>Global Coverage</span>
-                    <span>•</span>
-                    <span>Real-time Analysis</span>
+                    <span>v2.0.0 (Electric Blue)</span>
                 </div>
             </div>
         ),
