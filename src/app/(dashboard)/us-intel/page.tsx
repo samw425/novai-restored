@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { AgencySelector } from '@/components/intel/AgencySelector';
 import { DossierView } from '@/components/intel/DossierView';
-import { MonthlyIntelBrief } from '@/components/dashboard/MonthlyIntelBrief';
 import { Loader2, AlertTriangle, BrainCircuit, ExternalLink } from 'lucide-react';
 
 // --- DATA ---
@@ -536,8 +535,7 @@ export default function USIntelPage() {
 
                     {/* LEFT COLUMN: Dossier View (Sticky) */}
                     <div className="lg:col-span-4 lg:sticky lg:top-24 h-fit space-y-6">
-                        {/* 30-DAY BRIEF */}
-                        <MonthlyIntelBrief />
+                        {/* 30-DAY BRIEF REMOVED PER USER REQUEST */}
 
                         {activeAgency === 'ALL' ? (
                             <div className="bg-white rounded-2xl shadow-sm overflow-hidden">

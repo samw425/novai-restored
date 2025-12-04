@@ -253,11 +253,11 @@ export default function WarRoomPage() {
                             </h3>
                             <span className="text-xs text-slate-400 font-mono">LIVE FEED</span>
                         </div>
-                        <div className="p-0 flex-1 bg-slate-50/50">
+                        <div className="p-6 flex-1 bg-white">
                             {warFeedsLoading ? (
                                 <div className="p-12"><ResourceLoader message="Establishing uplink..." /></div>
                             ) : (
-                                <div className="space-y-4">
+                                <div>
                                     {israelGazaArticles.map(article => (
                                         <FeedCard key={article.id} article={article} />
                                     ))}
@@ -275,11 +275,11 @@ export default function WarRoomPage() {
                             </h3>
                             <span className="text-xs text-slate-400 font-mono">LIVE FEED</span>
                         </div>
-                        <div className="p-0 flex-1 bg-slate-50/50">
+                        <div className="p-6 flex-1 bg-white">
                             {warFeedsLoading ? (
                                 <div className="p-12"><ResourceLoader message="Establishing uplink..." /></div>
                             ) : (
-                                <div className="space-y-4">
+                                <div>
                                     {russiaUkraineArticles.map(article => (
                                         <FeedCard key={article.id} article={article} />
                                     ))}
@@ -296,7 +296,7 @@ export default function WarRoomPage() {
 
                     {/* Active Incidents (Real-Time Feed) */}
                     <div className="lg:col-span-2 bg-white rounded-xl shadow-sm overflow-hidden">
-                        <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                        <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-white">
                             <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2 font-mono">
                                 <Activity className="h-5 w-5 text-blue-500" />
                                 RAW INTEL STREAM
@@ -307,13 +307,13 @@ export default function WarRoomPage() {
                             </span>
                         </div>
 
-                        <div className="p-0">
+                        <div className="p-6">
                             {loading ? (
                                 <div className="p-8">
                                     <ResourceLoader message="Decrypting global intelligence streams..." />
                                 </div>
                             ) : articles.length > 0 ? (
-                                <div className="space-y-4">
+                                <div>
                                     {articles.map(article => (
                                         <FeedCard key={article.id} article={article} />
                                     ))}

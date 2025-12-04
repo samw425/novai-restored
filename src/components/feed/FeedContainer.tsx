@@ -137,12 +137,12 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
 
-                {/* 30-DAY BRIEF HERO SECTION */}
-                {!forcedCategory && (
+                {/* 30-DAY BRIEF HERO SECTION - REMOVED PER USER FEEDBACK */}
+                {/* {!forcedCategory && (
                     <div className="mb-12">
                         <MonthlyIntelBrief />
                     </div>
-                )}
+                )} */}
 
 
                 {/* LIVE FEED CONTENT */}
@@ -170,10 +170,12 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
                 </div>
 
                 {/* List Layout */}
-                <div className="max-w-3xl mx-auto space-y-6">
-                    {articles.map((article) => (
-                        <FeedCard key={article.id} article={article} />
-                    ))}
+                <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 p-6">
+                    <div>
+                        {articles.map((article) => (
+                            <FeedCard key={article.id} article={article} />
+                        ))}
+                    </div>
                 </div>
 
                 {/* Loading / End Sentinel */}

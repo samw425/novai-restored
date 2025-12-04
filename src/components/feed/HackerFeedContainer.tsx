@@ -143,10 +143,12 @@ export function HackerFeedContainer() {
                         </div>
 
                         {/* List Layout */}
-                        <div className="max-w-3xl mx-auto space-y-6">
-                            {articles.map((article) => (
-                                <FeedCard key={article.id} article={article} />
-                            ))}
+                        <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 p-6">
+                            <div>
+                                {articles.map((article) => (
+                                    <FeedCard key={article.id} article={article} />
+                                ))}
+                            </div>
                         </div>
 
                         {/* Loading / End Sentinel */}

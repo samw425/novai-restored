@@ -24,8 +24,8 @@ export function FeedCard({ article }: FeedCardProps) {
     const isLive = new Date(article.publishedAt).getTime() > Date.now() - 1000 * 60 * 120; // 2 hours
 
     return (
-        <article className="group relative py-8 first:pt-0 last:border-0">
-            <div className="relative bg-white transition-all duration-300">
+        <article className="group relative py-8 first:pt-0 border-b border-gray-100 last:border-0">
+            <div className="relative bg-transparent transition-all duration-300">
 
                 {/* Meta Bar */}
                 <div className="flex items-center justify-between mb-3">

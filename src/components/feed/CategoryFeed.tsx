@@ -48,15 +48,17 @@ export function CategoryFeed({ category, title, description, insight, icon, show
                 />
             )}
 
-            <div className="space-y-6">
+            <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 p-6">
                 {loading ? (
                     <div className="flex items-center justify-center py-12">
                         <Loader2 className="animate-spin text-accent" size={32} />
                     </div>
                 ) : articles.length > 0 ? (
-                    articles.map(article => (
-                        <FeedCard key={article.id} article={article} />
-                    ))
+                    <div>
+                        {articles.map(article => (
+                            <FeedCard key={article.id} article={article} />
+                        ))}
+                    </div>
                 ) : (
                     <div className="bg-white rounded-xl border border-[#E5E7EB] p-12 text-center">
                         <p className="text-[#64748B] mb-4">No articles found in this category yet.</p>
