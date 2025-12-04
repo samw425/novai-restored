@@ -18,8 +18,8 @@ let briefCache: {
     timestamp: number;
 } | null = null;
 
-const CACHE_DURATION = 0; // Disabled for dev
-// const CACHE_DURATION = 60 * 60 * 1000; // 1 hour
+// const CACHE_DURATION = 0; // Disabled for dev
+const CACHE_DURATION = 60 * 60 * 1000; // 1 hour
 
 export async function GET() {
     try {
