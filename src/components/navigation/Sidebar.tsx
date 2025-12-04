@@ -248,6 +248,33 @@ export function Sidebar() {
                         INTELLIGENCE
                     </h3>
                     <nav className="space-y-1">
+                        {/* 1. Global Feed */}
+                        {platformLinks.filter(link => link.id === 'global-feed').map((link) => {
+                            const isActive = pathname === link.href;
+                            return (
+                                <Tooltip key={link.id}>
+                                    <TooltipTrigger asChild>
+                                        <Link
+                                            href={link.href}
+                                            className={`flex items-center justify-between px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${isActive
+                                                ? 'bg-purple-50 text-purple-700 font-bold'
+                                                : 'text-gray-500 hover:bg-purple-50 hover:text-purple-700'
+                                                }`}
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                <link.icon className={`h-4 w-4 ${isActive ? 'text-purple-700' : 'text-gray-400 group-hover:text-purple-700'}`} />
+                                                {link.label}
+                                            </div>
+                                        </Link>
+                                    </TooltipTrigger>
+                                    <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
+                                        {link.tooltip}
+                                    </TooltipContent>
+                                </Tooltip>
+                            );
+                        })}
+
+                        {/* 2. Daily Intelligence Brief */}
                         {intelligenceLinks.filter(link => link.id !== 'oracle').map((link) => {
                             const isActive = pathname === link.href;
                             return (
@@ -272,6 +299,60 @@ export function Sidebar() {
                                 </Tooltip>
                             );
                         })}
+
+                        {/* 3. Daily Snapshot */}
+                        {platformLinks.filter(link => link.id === 'daily-snapshot').map((link) => {
+                            const isActive = pathname === link.href;
+                            return (
+                                <Tooltip key={link.id}>
+                                    <TooltipTrigger asChild>
+                                        <Link
+                                            href={link.href}
+                                            className={`flex items-center justify-between px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${isActive
+                                                ? 'bg-purple-50 text-purple-700 font-bold'
+                                                : 'text-gray-500 hover:bg-purple-50 hover:text-purple-700'
+                                                }`}
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                <link.icon className={`h-4 w-4 ${isActive ? 'text-purple-700' : 'text-gray-400 group-hover:text-purple-700'}`} />
+                                                {link.label}
+                                            </div>
+                                        </Link>
+                                    </TooltipTrigger>
+                                    <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
+                                        {link.tooltip}
+                                    </TooltipContent>
+                                </Tooltip>
+                            );
+                        })}
+
+                        {/* 4. Future of Code */}
+                        {platformLinks.filter(link => link.id === 'future-of-code').map((link) => {
+                            const isActive = pathname === link.href;
+                            return (
+                                <Tooltip key={link.id}>
+                                    <TooltipTrigger asChild>
+                                        <Link
+                                            href={link.href}
+                                            className={`flex items-center justify-between px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${isActive
+                                                ? 'bg-purple-50 text-purple-700 font-bold'
+                                                : 'text-gray-500 hover:bg-purple-50 hover:text-purple-700'
+                                                }`}
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                <link.icon className={`h-4 w-4 ${isActive ? 'text-purple-700' : 'text-gray-400 group-hover:text-purple-700'}`} />
+                                                {link.label}
+                                            </div>
+                                        </Link>
+                                    </TooltipTrigger>
+                                    <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
+                                        {link.tooltip}
+                                    </TooltipContent>
+                                </Tooltip>
+                            );
+                        })}
+
+                        {/* 5. Video Feed */}
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <Link
