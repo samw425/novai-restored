@@ -22,6 +22,10 @@ export const RSS_FEEDS: FeedSource[] = [
     { id: 'baair', name: 'Berkeley AI Research', url: 'https://bair.berkeley.edu/blog/feed.xml', category: 'research', priority: 9, region: 'US' },
     { id: 'stanford-hai', name: 'Stanford HAI', url: 'https://hai.stanford.edu/news/feed', category: 'research', priority: 9, region: 'US' },
     { id: 'mit-csail', name: 'MIT CSAIL', url: 'https://www.csail.mit.edu/news/rss', category: 'research', priority: 9, region: 'US' },
+    { id: 'nature-mi', name: 'Nature Machine Intelligence', url: 'https://www.nature.com/natmachintell.rss', category: 'research', priority: 10, region: 'Global' },
+    { id: 'science-robotics', name: 'Science Robotics', url: 'https://www.science.org/toc/robotics/current.rss', category: 'research', priority: 10, region: 'Global' },
+    { id: 'arxiv-ai', name: 'arXiv AI', url: 'http://export.arxiv.org/rss/cs.AI', category: 'research', priority: 10, region: 'Global' },
+    { id: 'arxiv-ro', name: 'arXiv Robotics', url: 'http://export.arxiv.org/rss/cs.RO', category: 'research', priority: 10, region: 'Global' },
 
     // ========== MARKET & BUSINESS INTELLIGENCE (Priority 9-10) ==========
     { id: 'techcrunch-ai', name: 'TechCrunch AI', url: 'https://techcrunch.com/category/artificial-intelligence/feed/', category: 'market', priority: 10, region: 'US' },
