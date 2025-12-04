@@ -202,6 +202,13 @@ const knowledgeLinks = [
         tooltip: "Macro trends shaping AI over weeks and months."
     },
     {
+        id: 'anti-trust',
+        label: 'Anti-Trust',
+        icon: Scale,
+        href: '/anti-trust',
+        tooltip: "The Regulatory War Room. Tracking the breakup of Big Tech."
+    },
+    {
         id: 'war-room',
         label: 'War Room',
         icon: Shield,
