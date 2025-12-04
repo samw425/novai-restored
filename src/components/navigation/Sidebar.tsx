@@ -248,13 +248,18 @@ export function Sidebar() {
                                     <TooltipTrigger asChild>
                                         <Link
                                             href={link.href}
-                                            className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${isActive
+                                            className={`flex items-center justify-between px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${isActive
                                                 ? 'bg-gray-900 text-white shadow-md'
                                                 : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
                                                 }`}
                                         >
-                                            <link.icon className={`h-4 w-4 ${isActive ? 'text-white' : 'text-gray-400 group-hover:text-gray-600'}`} />
-                                            {link.label}
+                                            <div className="flex items-center gap-3">
+                                                <link.icon className={`h-4 w-4 ${isActive ? 'text-white' : 'text-gray-400 group-hover:text-gray-600'}`} />
+                                                {link.label}
+                                            </div>
+                                            {link.id === 'oracle' && (
+                                                <Lock className={`h-3 w-3 ${isActive ? 'text-gray-400' : 'text-gray-300 group-hover:text-gray-500'}`} />
+                                            )}
                                         </Link>
                                     </TooltipTrigger>
                                     <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
