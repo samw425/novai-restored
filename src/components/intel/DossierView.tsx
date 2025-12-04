@@ -21,10 +21,10 @@ export function DossierView({ profile, latestFeedItem }: DossierViewProps) {
             <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden p-6 relative">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-slate-50 rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
 
-                <div className="flex items-start justify-between relative z-10 mb-6">
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between relative z-10 mb-6 gap-4">
                     <div>
                         <div className="flex items-center gap-3 mb-2">
-                            <div className="w-12 h-12 rounded-xl bg-slate-900 flex items-center justify-center shadow-lg">
+                            <div className="w-12 h-12 rounded-xl bg-slate-900 flex items-center justify-center shadow-lg shrink-0">
                                 <Shield className="text-white" size={24} />
                             </div>
                             <div>
@@ -37,8 +37,8 @@ export function DossierView({ profile, latestFeedItem }: DossierViewProps) {
                             </div>
                         </div>
                     </div>
-                    <div className="flex flex-col items-end gap-2">
-                        <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold border border-emerald-200 flex items-center gap-1.5">
+                    <div className="flex flex-col items-start sm:items-end gap-2">
+                        <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold border border-emerald-200 flex items-center gap-1.5 whitespace-nowrap">
                             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                             ACTIVE MONITORING
                         </span>
