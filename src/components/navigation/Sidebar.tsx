@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Logo } from '@/components/ui/Logo';
 import { ProWaitlistModal } from '@/components/modals/ProWaitlistModal';
-import { Calendar, Activity, Radio, FlaskConical, TrendingUp, Shield, Info, Hexagon, Bot, Scale, Wrench, Brain, Youtube, Terminal, Globe, Lock, Sparkles } from 'lucide-react';
+import { Calendar, Activity, Radio, FlaskConical, TrendingUp, Shield, Info, Hexagon, Bot, Scale, Wrench, Brain, Youtube, Terminal, Globe, Lock, Sparkles, ShieldAlert } from 'lucide-react';
 import {
     Tooltip,
     TooltipContent,
