@@ -248,7 +248,7 @@ export function Sidebar() {
                         INTELLIGENCE
                     </h3>
                     <nav className="space-y-1">
-                        {intelligenceLinks.map((link) => {
+                        {intelligenceLinks.filter(link => link.id !== 'oracle').map((link) => {
                             const isActive = pathname === link.href;
                             return (
                                 <Tooltip key={link.id}>
@@ -264,9 +264,6 @@ export function Sidebar() {
                                                 <link.icon className={`h-4 w-4 ${isActive ? 'text-purple-700' : 'text-gray-400 group-hover:text-purple-700'}`} />
                                                 {link.label}
                                             </div>
-                                            {link.id === 'oracle' && (
-                                                <Sparkles className={`h-3 w-3 ${isActive ? 'text-purple-500' : 'text-gray-300 group-hover:text-purple-500'}`} />
-                                            )}
                                         </Link>
                                     </TooltipTrigger>
                                     <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
@@ -457,6 +454,56 @@ export function Sidebar() {
                                 </Tooltip>
                             );
                         })}
+                    </nav>
+                </div>
+
+                {/* PRO FEATURES GROUP */}
+                <div className="mb-8">
+                    <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 px-4 flex items-center gap-2">
+                        PRO FEATURES <span className="text-[9px] bg-gradient-to-r from-purple-600 to-blue-600 text-white px-1.5 py-0.5 rounded-full">BETA</span>
+                    </h3>
+                    <nav className="space-y-1">
+                        {/* The Oracle */}
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Link
+                                    href="/oracle"
+                                    className={`flex items-center justify-between px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === '/oracle'
+                                        ? 'bg-purple-50 text-purple-700 font-bold'
+                                        : 'text-gray-500 hover:bg-purple-50 hover:text-purple-700'
+                                        }`}
+                                >
+                                    <div className="flex items-center gap-3">
+                                        <Sparkles className={`h-4 w-4 ${pathname === '/oracle' ? 'text-purple-700' : 'text-gray-400 group-hover:text-purple-700'}`} />
+                                        The Oracle
+                                    </div>
+                                </Link>
+                            </TooltipTrigger>
+                            <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
+                                Agentic Synthesis Engine: The God's Eye View.
+                            </TooltipContent>
+                        </Tooltip>
+
+                        {/* Other Pro Features */}
+                        {proFeatureLinks.map((link) => (
+                            <Tooltip key={link.id}>
+                                <TooltipTrigger asChild>
+                                    <button
+                                        onClick={() => handleProFeatureClick(link.label)}
+                                        className="w-full flex items-center justify-between px-4 h-10 rounded-lg text-[13px] font-medium text-gray-400 hover:bg-gray-50 hover:text-gray-600 transition-all group"
+                                    >
+                                        <div className="flex items-center gap-3">
+                                            <link.icon className="h-4 w-4 text-gray-300 group-hover:text-gray-500" />
+                                            {link.label}
+                                        </div>
+                                        <Lock className="h-3 w-3 text-gray-300" />
+                                    </button>
+                                </TooltipTrigger>
+                                <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
+                                    {link.tooltip}
+                                </TooltipContent>
+                            </Tooltip>
+                        ))}
                     </nav>
                 </div>
 
