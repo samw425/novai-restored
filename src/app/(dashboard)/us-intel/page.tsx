@@ -13,7 +13,7 @@ const AGENCY_PROFILES: Record<string, any> = {
         acronym: 'CIA',
         founded: '1947',
         headquarters: 'Langley, Virginia',
-        director: 'William J. Burns',
+        director: 'John Ratcliffe',
         budget: '$32 Billion (Est.)',
         mission: 'Collect, analyze, evaluate, and disseminate foreign intelligence to assist the President and senior US government policymakers in making decisions relating to national security.',
         mission_url: 'https://www.cia.gov/about/mission-vision/',
@@ -39,7 +39,7 @@ const AGENCY_PROFILES: Record<string, any> = {
         • **Directorate of Support (DS):** Provides administrative and logistical support.
         • **Directorate of Digital Innovation (DDI):** Focused on cyber intelligence and digital threats.`,
         official_links: [
-            { title: 'CIA World Factbook', url: 'https://www.cia.gov/the-world-factbook/', description: 'Comprehensive data on every country.' },
+            { title: 'CIA News & Statements', url: 'https://www.cia.gov/stories/', description: 'Official agency updates and stories.' },
             { title: 'Freedom of Information Act (FOIA)', url: 'https://www.cia.gov/readingroom/home', description: 'Declassified documents archive.' },
             { title: 'Center for the Study of Intelligence', url: 'https://www.cia.gov/resources/csi/', description: 'Historical analysis and lessons learned.' }
         ],
@@ -70,7 +70,7 @@ const AGENCY_PROFILES: Record<string, any> = {
         acronym: 'FBI',
         founded: '1908',
         headquarters: 'Washington, D.C.',
-        director: 'Christopher Wray',
+        director: 'Kash Patel',
         budget: '$10.8 Billion',
         mission: 'Protect the American people and uphold the Constitution of the United States.',
         mission_url: 'https://www.fbi.gov/about/mission',
@@ -182,7 +182,7 @@ const AGENCY_PROFILES: Record<string, any> = {
         acronym: 'DOD',
         founded: '1947',
         headquarters: 'The Pentagon',
-        director: 'Lloyd Austin (SecDef)',
+        director: 'Pete Hegseth (SecDef)',
         budget: '$842 Billion',
         mission: 'Provide the military forces needed to deter war and ensure our nation\'s security.',
         mission_url: 'https://www.defense.gov/Our-Story/',
@@ -239,7 +239,7 @@ const AGENCY_PROFILES: Record<string, any> = {
         acronym: 'DHS',
         founded: '2002',
         headquarters: 'Washington, D.C.',
-        director: 'Alejandro Mayorkas',
+        director: 'Kristi Noem',
         budget: '$60 Billion',
         mission: 'Secure the nation from the many threats we face.',
         mission_url: 'https://www.dhs.gov/mission',
@@ -294,7 +294,7 @@ const AGENCY_PROFILES: Record<string, any> = {
         acronym: 'DOS',
         founded: '1789',
         headquarters: 'Harry S Truman Building',
-        director: 'Antony Blinken',
+        director: 'Marco Rubio',
         budget: '$58 Billion',
         mission: 'Protect and promote U.S. security, prosperity, and democratic values.',
         mission_url: 'https://www.state.gov/about/',
@@ -345,7 +345,7 @@ const AGENCY_PROFILES: Record<string, any> = {
         acronym: 'NSC',
         founded: '1947',
         headquarters: '1600 Pennsylvania Avenue',
-        director: 'Jake Sullivan (NSA)',
+        director: 'Mike Waltz (NSA)',
         budget: 'N/A',
         mission: 'Advise and assist the President on national security and foreign policies.',
         mission_url: 'https://www.whitehouse.gov/nsc/',
@@ -396,7 +396,7 @@ const AGENCY_PROFILES: Record<string, any> = {
         acronym: 'USDT',
         founded: '1789',
         headquarters: 'Washington, D.C.',
-        director: 'Janet Yellen',
+        director: 'Scott Bessent',
         budget: '$16 Billion',
         mission: 'Maintain a strong economy and create economic and job opportunities.',
         mission_url: 'https://home.treasury.gov/about/role-of-the-treasury',
@@ -440,6 +440,60 @@ const AGENCY_PROFILES: Record<string, any> = {
                 date: '2025-09-18',
                 type: 'Economic Policy',
                 content: 'The Federal Reserve and Treasury are quietly advancing a pilot program for a Central Bank Digital Currency (CBDC). The goal is to maintain the dollar\'s dominance in an increasingly digitized global economy.'
+            }
+        ]
+    },
+    DOJ: {
+        name: 'Department of Justice',
+        acronym: 'DOJ',
+        founded: '1870',
+        headquarters: 'Robert F. Kennedy Building',
+        director: 'Pam Bondi',
+        budget: '$37 Billion',
+        mission: 'Enforce the law and defend the interests of the United States according to the law.',
+        mission_url: 'https://www.justice.gov/about',
+        jurisdiction: 'Federal Law Enforcement',
+        ai_stance: 'Aggressively monitoring AI monopolies. The Antitrust Division is using AI tools to analyze market concentration and algorithmic collusion.',
+        active_directives: [
+            { title: 'Project Breakwater', description: 'Major antitrust initiative targeting Big Tech monopolies.', link: 'https://www.justice.gov/atr' },
+            { title: 'Algorithmic Accountability', description: 'Prosecuting companies using pricing algorithms to fix markets.', link: 'https://www.justice.gov/opa/pr/justice-department-sues-realpage-algorithmic-pricing-scheme' }
+        ],
+        classified_annex: {
+            codename: 'GAVEL STRIKE',
+            shadow_budget: '$150M (Grey)',
+            unacknowledged_projects: ['Operation Clean Sweep']
+        },
+        education_dossier: `The Department of Justice (DOJ) is the federal executive department of the United States government tasked with the enforcement of federal law and administration of justice in the United States.
+
+        **Antitrust Division:**
+        The tip of the spear in the administration's war on corporate monopolies. The division has been significantly empowered to break up conglomerates that stifle innovation.
+
+        **Key Components:**
+        • **Federal Bureau of Investigation (FBI):** Operates under DOJ jurisdiction (though listed separately for Intel purposes).
+        • **Drug Enforcement Administration (DEA):** Combats drug smuggling and distribution.
+        • **U.S. Marshals Service:** Protects the judiciary and apprehends fugitives.`,
+        official_links: [
+            { title: 'Antitrust Division', url: 'https://www.justice.gov/atr', description: 'Promoting economic competition.' },
+            { title: 'Press Releases', url: 'https://www.justice.gov/news', description: 'Official DOJ news.' },
+            { title: 'Office of Legal Counsel', url: 'https://www.justice.gov/olc', description: 'Legal advice to the President.' }
+        ],
+        issues_discrepancies: `**Politicization Concerns:**
+        Critics argue that the DOJ is being used as a weapon against political opponents, citing recent high-profile indictments.
+
+        **Overreach:**
+        Debates continue regarding the scope of federal law enforcement versus state sovereignty.`,
+        novai_analysis: [
+            {
+                title: 'Big Tech Breakup Imminent',
+                date: '2025-12-10',
+                type: 'Antitrust',
+                content: 'Sources indicate the DOJ is finalizing a landmark lawsuit aimed at breaking up a major AI conglomerate, citing "monopolization of compute resources."'
+            },
+            {
+                title: 'RICO for Cartels',
+                date: '2025-11-05',
+                type: 'Law Enforcement',
+                content: 'The AG has authorized the use of RICO statutes to target transnational criminal organizations involved in human trafficking, signaling a more aggressive posture.'
             }
         ]
     }
@@ -570,7 +624,7 @@ export default function USIntelPage() {
 
                                     {/* Agency Grid Status */}
                                     <div className="grid grid-cols-2 gap-3 mb-6">
-                                        {['CIA', 'FBI', 'NSA', 'DOD', 'State Dept', 'DHS'].map((agency) => (
+                                        {['CIA', 'FBI', 'NSA', 'DOD', 'State Dept', 'DHS', 'DOJ'].map((agency) => (
                                             <div key={agency} className="flex items-center justify-between p-2 bg-slate-50 rounded border border-slate-100">
                                                 <span className="text-[10px] font-bold text-slate-700">{agency}</span>
                                                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
@@ -585,14 +639,17 @@ export default function USIntelPage() {
                                         <div>
                                             <h4 className="text-xs font-bold text-blue-900 uppercase mb-1">Live Synthesis Active</h4>
                                             <p className="text-[11px] text-blue-700 leading-snug">
-                                                Processing incoming signals. Select a specific agency above for classified dossier access.
+                                                Processing incoming signals. Select a specific agency above for detailed dossier view.
                                             </p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         ) : (
-                            <DossierView profile={AGENCY_PROFILES[activeAgency]} />
+                            <DossierView
+                                profile={AGENCY_PROFILES[activeAgency]}
+                                latestFeedItem={feedItems.length > 0 ? feedItems[0] : undefined}
+                            />
                         )}
                     </div>
 

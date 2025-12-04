@@ -4,7 +4,7 @@ export const AGENCY_PROFILES = {
         acronym: 'FBI',
         founded: '1908',
         headquarters: 'J. Edgar Hoover Building, D.C.',
-        director: 'Christopher Wray (OFFICIAL)',
+        director: 'Kash Patel',
         budget: '$10.8 Billion (FY2024)',
         mission: 'Protect the American people and uphold the Constitution of the United States.',
         mission_url: 'https://www.fbi.gov/about/mission',
@@ -32,7 +32,7 @@ export const AGENCY_PROFILES = {
             }
         ],
         key_personnel: [
-            { name: "Christopher Wray", role: "Director" },
+            { name: "Kash Patel", role: "Director" },
             { name: "Paul Abbate", role: "Deputy Director" }
         ],
         classified_annex: {
@@ -52,7 +52,7 @@ export const AGENCY_PROFILES = {
         acronym: 'CIA',
         founded: '1947',
         headquarters: 'Langley, Virginia',
-        director: 'William J. Burns',
+        director: 'John Ratcliffe',
         budget: '$15 Billion+ (Est.)',
         mission: 'Preempt threats and further US national security objectives by collecting intelligence that matters.',
         mission_url: 'https://www.cia.gov/about/mission-vision/',
@@ -80,7 +80,7 @@ export const AGENCY_PROFILES = {
             }
         ],
         key_personnel: [
-            { name: "William J. Burns", role: "Director" },
+            { name: "John Ratcliffe", role: "Director" },
             { name: "David S. Cohen", role: "Deputy Director" }
         ],
         classified_annex: {
@@ -160,7 +160,7 @@ export const AGENCY_PROFILES = {
         acronym: 'DHS',
         founded: '2002',
         headquarters: 'St. Elizabeths, D.C.',
-        director: 'Alejandro Mayorkas',
+        director: 'Kristi Noem',
         budget: '$60.4 Billion (FY2024)',
         mission: 'Secure the nation from the many threats we face. This requires the dedication of more than 240,000 employees.',
         mission_url: 'https://www.dhs.gov/mission',
@@ -203,7 +203,7 @@ export const AGENCY_PROFILES = {
             }
         ],
         key_personnel: [
-            { name: 'Alejandro Mayorkas', role: 'Secretary', notes: 'Facing ongoing political impeachment inquiries.' },
+            { name: 'Kristi Noem', role: 'Secretary', notes: 'Appointed January 2025.' },
             { name: 'Jen Easterly', role: 'Director, CISA', notes: 'Leads civilian cyber defense.' }
         ],
         classified_annex: {

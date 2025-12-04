@@ -1,13 +1,14 @@
 'use client';
 
-import { Shield, ArrowUpRight, BrainCircuit, Lock, Target, Activity, FileText } from 'lucide-react';
+import { Shield, ArrowUpRight, BrainCircuit, Lock, Target, Activity, FileText, Radio } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface DossierViewProps {
     profile: any;
+    latestFeedItem?: any;
 }
 
-export function DossierView({ profile }: DossierViewProps) {
+export function DossierView({ profile, latestFeedItem }: DossierViewProps) {
     if (!profile) return null;
 
     return (
@@ -65,6 +66,42 @@ export function DossierView({ profile }: DossierViewProps) {
                     </p>
                 </div>
             </div>
+
+            {/* LIVE READ CARD */}
+            {latestFeedItem && (
+                <div className="bg-red-50 rounded-2xl border border-red-100 shadow-sm p-6 relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 p-4 opacity-5">
+                        <Radio size={80} className="text-red-600" />
+                    </div>
+
+                    <div className="relative z-10">
+                        <div className="flex items-center justify-between mb-3">
+                            <h3 className="text-xs font-black text-red-600 uppercase tracking-widest flex items-center gap-2">
+                                <span className="relative flex h-2 w-2">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                                </span>
+                                LIVE READ // {profile.acronym}
+                            </h3>
+                            <span className="text-[10px] font-mono text-red-400">
+                                {new Date(latestFeedItem.pubDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </span>
+                        </div>
+
+                        <a href={latestFeedItem.link} target="_blank" rel="noopener noreferrer" className="block group-hover:opacity-80 transition-opacity">
+                            <h4 className="text-sm font-bold text-slate-900 mb-2 leading-snug line-clamp-2">
+                                {latestFeedItem.title}
+                            </h4>
+                            <p className="text-xs text-slate-600 leading-relaxed line-clamp-3 mb-3">
+                                {latestFeedItem.contentSnippet}
+                            </p>
+                            <div className="flex items-center gap-1 text-[10px] font-bold text-red-600 uppercase tracking-wide">
+                                Read Full Report <ArrowUpRight size={10} />
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            )}
 
             {/* AI Stance Card */}
             {profile.ai_stance && (

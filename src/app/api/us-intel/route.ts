@@ -18,11 +18,12 @@ const FEEDS = {
     NSA: 'https://www.nsa.gov/rss/news/',
     DHS: 'http://feeds.feedburner.com/dhs/zOAi',
     CISA: 'https://www.cisa.gov/cybersecurity-advisories/all.xml',
-    CIA: 'https://www.cia.gov/news-information/feed', // Direct CIA News (Note: CIA feed URL often changes, using generic placeholder logic if fails)
+    CIA: 'https://www.cia.gov/rss/cia-news-and-information.rss', // CIA News RSS
     ODNI: 'https://www.dni.gov/index.php/newsroom?format=feed&type=rss', // Office of Director of National Intelligence
     STATE: 'https://www.state.gov/rss/channels/press.xml', // State Dept Press
-    DEFENSE: 'https://www.defense.gov/DesktopModules/ArticleCS/RSS.ashx?ContentType=1&Site=945&max=10', // DoD Official
+    DOD: 'https://www.defense.gov/DesktopModules/ArticleCS/RSS.ashx?ContentType=1&Site=945&max=10', // DoD Official
     JUSTICE: 'https://www.justice.gov/feeds/opa/justice-news.xml', // DOJ (often covers espionage/cyber indictments)
+    WHITE_HOUSE: 'https://www.whitehouse.gov/feed/', // White House Briefings
 };
 
 // KEYWORDS TO FILTER FOR (The "Novai Filter")
