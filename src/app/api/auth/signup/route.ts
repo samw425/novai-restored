@@ -76,6 +76,8 @@ Your first brief arrives tomorrow morning.
 — Novai Intelligence Team
         `.trim();
 
+        let emailSent = false;
+
         // 1. Try Resend (Professional/Reliable)
         if (resend) {
             try {
@@ -93,6 +95,7 @@ Your first brief arrives tomorrow morning.
                     `
                 });
                 console.log('✅ Admin notification sent via Resend');
+                emailSent = true;
             } catch (resendError) {
                 console.error('⚠️ Resend failed, falling back to FormSubmit:', resendError);
             }
@@ -101,30 +104,32 @@ Your first brief arrives tomorrow morning.
         }
 
         // 2. Fallback to FormSubmit.co (or Primary if Resend missing)
-        try {
-            const formSubmitResponse = await fetch('https://formsubmit.co/ajax/saziz4250@gmail.com', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({
-                    _subject: `New Subscriber: ${name}`,
-                    name: name,
-                    email: email,
-                    organization: organization || 'N/A',
-                    message: `New subscriber joined Novai.\nName: ${name}\nEmail: ${email}\nOrg: ${organization}`,
-                    _template: 'table',
-                    _captcha: "false"
-                })
-            });
+        if (!emailSent) {
+            try {
+                const formSubmitResponse = await fetch('https://formsubmit.co/ajax/saziz4250@gmail.com', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        _subject: `New Subscriber: ${name}`,
+                        name: name,
+                        email: email,
+                        organization: organization || 'N/A',
+                        message: `New subscriber joined Novai.\nName: ${name}\nEmail: ${email}\nOrg: ${organization}`,
+                        _template: 'table',
+                        _captcha: "false"
+                    })
+                });
 
-            if (!formSubmitResponse.ok) {
-                throw new Error(`FormSubmit.co failed: ${formSubmitResponse.status}`);
+                if (!formSubmitResponse.ok) {
+                    throw new Error(`FormSubmit.co failed: ${formSubmitResponse.status}`);
+                }
+                console.log('✅ Email sent via FormSubmit.co');
+            } catch (emailError) {
+                console.error('⚠️ All email delivery methods failed:', emailError);
             }
-            console.log('✅ Email sent via FormSubmit.co');
-        } catch (emailError) {
-            console.error('⚠️ All email delivery methods failed:', emailError);
         }
 
         // Always log to console as backup

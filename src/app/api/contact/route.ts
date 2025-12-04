@@ -14,6 +14,8 @@ export async function POST(request: Request) {
         console.log(`Subject: ${subject}`);
         console.log('-----------------------------');
 
+        let emailSent = false;
+
         // 1. Try Resend (Professional/Reliable)
         if (resend) {
             try {
@@ -33,7 +35,7 @@ export async function POST(request: Request) {
                     `
                 });
                 console.log('✅ Email sent via Resend:', data);
-                return NextResponse.json({ success: true, message: 'Feedback received via Resend' });
+                emailSent = true;
             } catch (resendError) {
                 console.error('⚠️ Resend failed, falling back to FormSubmit:', resendError);
             }
@@ -42,33 +44,35 @@ export async function POST(request: Request) {
         }
 
         // 2. Fallback to FormSubmit.co
-        try {
-            const formSubmitResponse = await fetch('https://formsubmit.co/ajax/saziz4250@gmail.com', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({
-                    _subject: `[Novai Signup] ${subject || 'New Subscriber'}`,
-                    name: name || 'Anonymous',
-                    email: email,
-                    subject: subject || 'New Signup',
-                    message: message || 'User signed up via landing page.',
-                    _template: 'table',
-                    _captcha: "false",
-                    _replyto: email
-                })
-            });
+        if (!emailSent) {
+            try {
+                const formSubmitResponse = await fetch('https://formsubmit.co/ajax/saziz4250@gmail.com', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        _subject: `[Novai Signup] ${subject || 'New Subscriber'}`,
+                        name: name || 'Anonymous',
+                        email: email,
+                        subject: subject || 'New Signup',
+                        message: message || 'User signed up via landing page.',
+                        _template: 'table',
+                        _captcha: "false",
+                        _replyto: email
+                    })
+                });
 
-            if (!formSubmitResponse.ok) {
-                throw new Error(`FormSubmit.co failed: ${formSubmitResponse.status}`);
+                if (!formSubmitResponse.ok) {
+                    throw new Error(`FormSubmit.co failed: ${formSubmitResponse.status}`);
+                }
+
+                console.log('✅ Feedback email sent via FormSubmit.co');
+            } catch (emailError) {
+                console.error('⚠️ All email delivery methods failed:', emailError);
+                // We still return success to not break UI, but log heavily
             }
-
-            console.log('✅ Feedback email sent via FormSubmit.co');
-        } catch (emailError) {
-            console.error('⚠️ All email delivery methods failed:', emailError);
-            // We still return success to not break UI, but log heavily
         }
 
         return NextResponse.json({ success: true, message: 'Feedback received' });
