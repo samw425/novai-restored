@@ -20,19 +20,19 @@ interface RiskEntity {
 }
 
 const RISK_DATA: RiskEntity[] = [
-    { name: 'NVIDIA', ticker: 'NVDA', riskScore: 95, status: 'CRITICAL', activeCases: 2, primaryThreat: 'GPU Allocation / CUDA Lock-in' },
-    { name: 'Google', ticker: 'GOOGL', riskScore: 92, status: 'CRITICAL', activeCases: 4, primaryThreat: 'AI Search Monopoly / Gemini Integration' },
-    { name: 'Microsoft', ticker: 'MSFT', riskScore: 88, status: 'HIGH', activeCases: 3, primaryThreat: 'OpenAI "Capture" / Cloud Compute Dominance' },
-    { name: 'Apple', ticker: 'AAPL', riskScore: 85, status: 'HIGH', activeCases: 3, primaryThreat: 'App Store AI Gatekeeping / Apple Intelligence' },
-    { name: 'Amazon', ticker: 'AMZN', riskScore: 75, status: 'HIGH', activeCases: 2, primaryThreat: 'AWS AI Cloud Infrastructure' },
-    { name: 'Meta', ticker: 'META', riskScore: 70, status: 'MODERATE', activeCases: 2, primaryThreat: 'Weaponized Open Source (Llama) Strategy' },
+    { name: 'Google', ticker: 'GOOGL', riskScore: 92, status: 'CRITICAL', activeCases: 4, primaryThreat: 'Ad Tech Breakup & AI Search Monopoly' },
+    { name: 'Apple', ticker: 'AAPL', riskScore: 85, status: 'HIGH', activeCases: 3, primaryThreat: 'App Store Monopoly & AI Gatekeeping' },
+    { name: 'NVIDIA', ticker: 'NVDA', riskScore: 80, status: 'HIGH', activeCases: 2, primaryThreat: 'GPU Allocation / CUDA Lock-in' },
+    { name: 'Meta', ticker: 'META', riskScore: 78, status: 'HIGH', activeCases: 2, primaryThreat: 'Social Monopoly (Instagram/WhatsApp)' },
+    { name: 'Amazon', ticker: 'AMZN', riskScore: 75, status: 'HIGH', activeCases: 2, primaryThreat: 'E-Commerce Predation & AWS Lock-in' },
+    { name: 'Microsoft', ticker: 'MSFT', riskScore: 65, status: 'MODERATE', activeCases: 1, primaryThreat: 'Cloud Dominance & OpenAI "Capture"' },
 ];
 
 const DOCKET_ITEMS = [
+    "US v. Google (Ad Tech): Closing Arguments Scheduled",
     "DOJ vs NVIDIA: Subpoenas Issued over GPU Allocation",
-    "FTC Inquiry: Microsoft/Inflection 'Acqui-hire' Loophole",
-    "EU AI Act: General Purpose AI Compliance Deadline",
-    "US v. Google (Ad Tech): Implications for AI Ads",
+    "FTC v. Amazon: Discovery Phase Ongoing",
+    "EU DMA: Apple Compliance Investigation Active",
     "NYT v. OpenAI: Copyright & Training Data Trial",
 ];
 
@@ -112,45 +112,45 @@ export default function AntiTrustPage() {
             </div>
 
             <PageHeader
-                title="Anti-Trust & AI Sovereignty"
-                description="Tracking the battle for control of Artificial General Intelligence."
-                insight="The next monopoly won't be about oil or phone lines—it will be about Intelligence itself. We are tracking the 'Compute Cartel' and the regulatory war to prevent a singular AGI monopoly."
+                title="Anti-Trust War Room"
+                description="Tracking the global regulatory siege on Big Tech. The end of the monopoly era."
+                insight="Regulators are fighting a two-front war: dismantling the mobile/search monopolies of the last decade (Google, Apple) while trying to prevent a new 'Compute Cartel' from controlling AI."
                 icon={<Scale className="w-8 h-8 text-blue-600" />}
             />
 
-            {/* SECTION 1: THE CONTEXT (The AI Kill Zone) */}
+            {/* SECTION 1: THE CONTEXT (The Kill Zone) */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 <div className="lg:col-span-8 space-y-6">
                     <div className="bg-white border border-slate-200 rounded-xl p-8 shadow-sm">
                         <h2 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
                             <Skull className="h-5 w-5 text-slate-800" />
-                            The "AI Kill Zone"
+                            The "Kill Zone"
                         </h2>
                         <div className="prose prose-slate max-w-none text-slate-600">
                             <p className="text-lg leading-relaxed font-medium text-slate-800">
-                                The era of the "garage startup" is over. Modern AI requires billions in compute (GPUs) and massive proprietary datasets—resources only the "Big 6" possess.
+                                In the modern tech ecosystem, competition is stifled by the "Kill Zone"—the area around Big Tech giants where no startup can survive. This dynamic has now extended from mobile apps to Artificial Intelligence.
                             </p>
                             <p>
-                                This has created an <strong>"AI Kill Zone"</strong>: a market dynamic where no independent AI lab can scale without selling equity (and control) to a cloud giant.
+                                When a startup shows promise, it faces two fates: <strong>Acquisition</strong> (to neutralize the threat) or <strong>Cloning</strong> (to destroy its market). Now, a third fate has emerged: <strong>Compute Capture</strong>, where AI labs are forced to sell equity for cloud credits.
                             </p>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 not-prose">
                                 <div className="bg-slate-50 p-4 rounded-lg border border-slate-100">
-                                    <h3 className="font-bold text-slate-900 mb-2 text-sm uppercase tracking-wide">The New Playbook</h3>
+                                    <h3 className="font-bold text-slate-900 mb-2 text-sm uppercase tracking-wide">The Playbook</h3>
                                     <ul className="space-y-2 text-sm text-slate-600">
                                         <li className="flex items-start gap-2">
                                             <span className="text-red-500 font-bold">1.</span>
-                                            <span><strong>Compute Capture:</strong> Invest cloud credits instead of cash (e.g., Microsoft/OpenAI, Amazon/Anthropic) to lock startups into infrastructure.</span>
+                                            <span><strong>Buy or Bury:</strong> Acquire rivals early (Instagram, WhatsApp) or copy them (Stories) to maintain dominance.</span>
                                         </li>
                                         <li className="flex items-start gap-2">
                                             <span className="text-red-500 font-bold">2.</span>
-                                            <span><strong>Talent Hoarding:</strong> "Acqui-hire" entire teams to bypass merger review (e.g., Microsoft/Inflection).</span>
+                                            <span><strong>Gatekeeping:</strong> Use platform control (App Store, Search) to tax or disadvantage competitors.</span>
                                         </li>
                                     </ul>
                                 </div>
                                 <div className="bg-slate-50 p-4 rounded-lg border border-slate-100">
-                                    <h3 className="font-bold text-slate-900 mb-2 text-sm uppercase tracking-wide">The Stakes</h3>
+                                    <h3 className="font-bold text-slate-900 mb-2 text-sm uppercase tracking-wide">The New Threat</h3>
                                     <p className="text-sm text-slate-600">
-                                        If one entity controls the AGI substrate (chips + cloud + model), they become the "governing power" of the digital age. Antitrust is no longer just about prices; it's about sovereignty.
+                                        As AI rises, the same giants are using their cloud infrastructure to lock in the next generation of companies, ensuring the "AI Era" remains under the control of the "Mobile Era" incumbents.
                                     </p>
                                 </div>
                             </div>
