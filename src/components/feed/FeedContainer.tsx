@@ -137,8 +137,12 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
 
-                {/* 30-DAY BRIEF HERO SECTION (Only on main feed) */}
-                {/* 30-DAY BRIEF HERO SECTION REMOVED PER USER REQUEST - Moved to dedicated page */}
+                {/* 30-DAY BRIEF HERO SECTION */}
+                {!forcedCategory && (
+                    <div className="mb-12">
+                        <MonthlyIntelBrief />
+                    </div>
+                )}
 
 
                 {/* LIVE FEED CONTENT */}

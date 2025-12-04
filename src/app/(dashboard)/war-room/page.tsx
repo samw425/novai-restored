@@ -245,8 +245,8 @@ export default function WarRoomPage() {
             {activeTab === 'CURRENT_WARS' && (
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12 animate-in fade-in slide-in-from-bottom-4">
                     {/* Israel / Gaza Column */}
-                    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm flex flex-col h-full">
-                        <div className="p-4 bg-slate-900 text-white border-b border-slate-800 flex justify-between items-center">
+                    <div className="bg-white rounded-xl shadow-sm flex flex-col h-full overflow-hidden">
+                        <div className="p-6 bg-slate-900 text-white flex justify-between items-center">
                             <h3 className="font-bold font-mono flex items-center gap-2 text-lg">
                                 <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
                                 ISRAEL / GAZA
@@ -257,7 +257,7 @@ export default function WarRoomPage() {
                             {warFeedsLoading ? (
                                 <div className="p-12"><ResourceLoader message="Establishing uplink..." /></div>
                             ) : (
-                                <div className="divide-y divide-gray-200">
+                                <div className="space-y-4">
                                     {israelGazaArticles.map(article => (
                                         <FeedCard key={article.id} article={article} />
                                     ))}
@@ -267,8 +267,8 @@ export default function WarRoomPage() {
                     </div>
 
                     {/* Russia / Ukraine Column */}
-                    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm flex flex-col h-full">
-                        <div className="p-4 bg-slate-900 text-white border-b border-slate-800 flex justify-between items-center">
+                    <div className="bg-white rounded-xl shadow-sm flex flex-col h-full overflow-hidden">
+                        <div className="p-6 bg-slate-900 text-white flex justify-between items-center">
                             <h3 className="font-bold font-mono flex items-center gap-2 text-lg">
                                 <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
                                 RUSSIA / UKRAINE
@@ -279,7 +279,7 @@ export default function WarRoomPage() {
                             {warFeedsLoading ? (
                                 <div className="p-12"><ResourceLoader message="Establishing uplink..." /></div>
                             ) : (
-                                <div className="divide-y divide-gray-200">
+                                <div className="space-y-4">
                                     {russiaUkraineArticles.map(article => (
                                         <FeedCard key={article.id} article={article} />
                                     ))}
@@ -295,7 +295,7 @@ export default function WarRoomPage() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
                     {/* Active Incidents (Real-Time Feed) */}
-                    <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+                    <div className="lg:col-span-2 bg-white rounded-xl shadow-sm overflow-hidden">
                         <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
                             <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2 font-mono">
                                 <Activity className="h-5 w-5 text-blue-500" />
@@ -313,7 +313,7 @@ export default function WarRoomPage() {
                                     <ResourceLoader message="Decrypting global intelligence streams..." />
                                 </div>
                             ) : articles.length > 0 ? (
-                                <div className="divide-y divide-gray-100">
+                                <div className="space-y-4">
                                     {articles.map(article => (
                                         <FeedCard key={article.id} article={article} />
                                     ))}
@@ -343,7 +343,7 @@ export default function WarRoomPage() {
                     </div>
 
                     {/* Security Status */}
-                    <div className="bg-gray-900 text-white rounded-xl border border-gray-800 p-6 shadow-2xl h-fit sticky top-6">
+                    <div className="bg-gray-900 text-white rounded-xl p-8 shadow-2xl h-fit sticky top-6">
                         <h2 className="text-lg font-bold text-white mb-6 flex items-center gap-2 font-mono">
                             <Lock className="h-5 w-5 text-gray-400" />
                             SYSTEM STATUS

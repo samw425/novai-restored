@@ -60,7 +60,7 @@ export default function GlobalDemographicsPage() {
 
             {/* Global Ticker - Responsive Grid */}
             {stats && (
-                <div className="mb-8 w-full bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div className="mb-8 w-full bg-white rounded-2xl shadow-sm overflow-hidden">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-slate-100">
                         <div className="p-4 flex flex-col items-center justify-center text-center overflow-hidden">
                             <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 whitespace-nowrap">Global Pop. Est.</div>
@@ -96,7 +96,7 @@ export default function GlobalDemographicsPage() {
 
             <div className="space-y-8">
                 {/* Map Section - Full Width */}
-                <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200">
+                <div className="bg-white rounded-2xl overflow-hidden shadow-sm">
                     <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
                         <h3 className="text-sm font-bold text-slate-700 uppercase tracking-widest flex items-center gap-2">
                             <MapIcon size={16} className="text-blue-600" />
@@ -123,7 +123,7 @@ export default function GlobalDemographicsPage() {
                 </div>
 
                 {/* TABBED DASHBOARD */}
-                <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden min-h-[600px]">
+                <div className="bg-white rounded-2xl shadow-sm overflow-hidden min-h-[600px]">
                     {/* Tabs Header */}
                     <div className="flex border-b border-slate-100 overflow-x-auto bg-slate-50/50">
                         {[
@@ -303,7 +303,7 @@ export default function GlobalDemographicsPage() {
             </div>
 
             {/* Insights Section */}
-            <div className="bg-slate-900 rounded-2xl p-10 border border-slate-800 shadow-2xl">
+            <div className="bg-slate-900 rounded-2xl p-10 shadow-2xl">
                 <h3 className="text-lg font-bold text-white uppercase tracking-widest mb-8 flex items-center gap-3">
                     <Sparkles size={20} className="text-yellow-400" />
                     Key Demographic Shifts
@@ -373,7 +373,7 @@ function TickerItem({ label, value, trend, valueColor = 'text-slate-900' }: { la
 
 function OverviewCard({ title, icon, children }: { title: string, icon: React.ReactNode, children: React.ReactNode }) {
     return (
-        <div className="bg-white p-6 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+        <div className="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow">
             <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2 border-b border-slate-50 pb-3">
                 {icon}
                 {title}
