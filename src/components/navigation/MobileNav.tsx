@@ -82,9 +82,10 @@ export function MobileNav() {
                         <div>
                             <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-6 font-mono">Command Center</h3>
                             <div className="space-y-0.5">
+                                <NavLink href="/war-room" icon={Shield} label="War Room" />
+                                <NavLink href="/anti-trust" icon={Globe} label="Regulatory Command" />
                                 <NavLink href="/us-intel" icon={Shield} label="US Intelligence" />
                                 <NavLink href="/global-demographics" icon={Globe} label="Global Demographics" />
-                                <NavLink href="/war-room" icon={Shield} label="War Room" />
                             </div>
                         </div>
 
