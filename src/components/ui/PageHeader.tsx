@@ -38,18 +38,20 @@ export function PageHeader({ title, description, insight, icon }: PageHeaderProp
                 {description}
             </p>
 
-            {/* Insight (Clean, No Box) */}
+            {/* Insight (Analyst Note - Blue Card Style) */}
             {insight && (
-                <div className="flex items-start gap-4 pt-6 mt-2">
-                    <div className="shrink-0 mt-1">
-                        <NovaiLogo className="w-4 h-4 text-blue-600" />
-                    </div>
-                    <div className="space-y-1">
-                        <span className="block text-[10px] font-bold text-blue-600 uppercase tracking-widest">
-                            Novai Analyst Note
-                        </span>
-                        <div className="text-sm text-slate-700 font-medium leading-relaxed max-w-2xl">
-                            {insight}
+                <div className="mt-8 bg-blue-50 border border-blue-100 rounded-lg p-4 max-w-3xl">
+                    <div className="flex items-start gap-4">
+                        <div className="shrink-0 mt-0.5">
+                            <NovaiLogo className="w-5 h-5 text-blue-600" />
+                        </div>
+                        <div className="space-y-1">
+                            <span className="block text-[10px] font-black text-blue-600 uppercase tracking-widest">
+                                Novai Analyst Note
+                            </span>
+                            <div className="text-sm text-slate-800 font-medium leading-relaxed">
+                                {insight}
+                            </div>
                         </div>
                     </div>
                 </div>

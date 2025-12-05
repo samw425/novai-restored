@@ -41,11 +41,11 @@ export function FeedCard({ article }: FeedCardProps) {
                     {/* Badges Container */}
                     <div className="flex items-center gap-3">
                         {/* Impact Score Badge - Only show for high impact */}
-                        {article.score && article.score >= 8 && (
+                        {article.importanceScore && article.importanceScore >= 8 && (
                             <div className="flex items-center gap-1.5 bg-slate-900 text-white px-2 py-0.5 rounded-full">
                                 <span className="text-[10px] font-bold tracking-wider">IMPACT</span>
-                                <span className={`text-[10px] font-black ${article.score >= 9 ? 'text-red-400' : 'text-amber-400'}`}>
-                                    {article.score}/10
+                                <span className={`text-[10px] font-black ${article.importanceScore >= 9 ? 'text-red-400' : 'text-amber-400'}`}>
+                                    {article.importanceScore}/10
                                 </span>
                             </div>
                         )}

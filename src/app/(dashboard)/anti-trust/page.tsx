@@ -212,103 +212,49 @@ export default function AntiTrustPage() {
                 </div>
             </div>
 
-            {/* SECTION 1.5: KEY PLAYERS (2025 Enforcers vs. Legacy Architects) */}
-            <div className="space-y-8">
-                {/* CURRENT ENFORCERS (2025) */}
-                <div>
-                    <h3 className="font-bold text-slate-900 text-xs uppercase tracking-wide mb-4 flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                        Current Command (2025)
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {[
-                            {
-                                name: 'Andrew Ferguson',
-                                role: 'Chair, FTC',
-                                status: 'DEREGULATOR',
-                                target: 'Agency Overreach',
-                                recentMove: 'Ending "dubious" consumer cases',
-                                image: ''
-                            },
-                            {
-                                name: 'Gail Slater',
-                                role: 'AAG, DOJ Antitrust',
-                                status: 'PRAGMATIST',
-                                target: 'Big Tech Settlements',
-                                recentMove: 'Reviewing Google breakup remedies',
-                                image: ''
-                            },
-                            {
-                                name: 'Teresa Ribera',
-                                role: 'EVP, EU Commission',
-                                status: 'STRATEGIST',
-                                target: 'Green/Tech Nexus',
-                                recentMove: 'Integrating climate into competition',
-                                image: ''
-                            }
-                        ].map((player) => (
-                            <div key={player.name} className="bg-white border border-slate-200 p-4 flex items-center gap-4 shadow-sm">
-                                <div className="h-12 w-12 rounded-full bg-slate-100 overflow-hidden shrink-0 border border-slate-200">
-                                    <div className="w-full h-full flex items-center justify-center bg-slate-800 text-white font-bold text-sm">
-                                        {player.name.split(' ').map(n => n[0]).join('')}
-                                    </div>
-                                </div>
-                                <div>
-                                    <div className="text-[10px] font-black text-slate-400 uppercase tracking-wider mb-0.5">{player.role}</div>
-                                    <div className="font-bold text-slate-900 leading-tight">{player.name}</div>
-                                    <div className="text-[10px] font-mono text-slate-500 mt-1">
-                                        <span className="text-green-600 font-bold">AGENDA:</span> {player.recentMove}
-                                    </div>
-                                </div>
+            {/* SECTION 1.5: KEY PLAYERS (2025 Command) */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {[
+                    {
+                        name: 'Andrew Ferguson',
+                        role: 'Chair, FTC',
+                        status: 'DEREGULATOR',
+                        target: 'Agency Overreach',
+                        recentMove: 'Ending "dubious" consumer cases',
+                        image: ''
+                    },
+                    {
+                        name: 'Gail Slater',
+                        role: 'AAG, DOJ Antitrust',
+                        status: 'PRAGMATIST',
+                        target: 'Big Tech Settlements',
+                        recentMove: 'Reviewing Google breakup remedies',
+                        image: ''
+                    },
+                    {
+                        name: 'Teresa Ribera',
+                        role: 'EVP, EU Commission',
+                        status: 'STRATEGIST',
+                        target: 'Green/Tech Nexus',
+                        recentMove: 'Integrating climate into competition',
+                        image: ''
+                    }
+                ].map((player) => (
+                    <div key={player.name} className="bg-slate-50 border border-slate-200 p-4 flex items-center gap-4 group hover:border-slate-300 transition-colors">
+                        <div className="h-12 w-12 rounded-full bg-slate-200 overflow-hidden shrink-0 border border-slate-300 group-hover:border-slate-400 transition-all">
+                            <div className="w-full h-full flex items-center justify-center bg-slate-300 text-slate-500 font-bold text-sm">
+                                {player.name.split(' ').map(n => n[0]).join('')}
                             </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* LEGACY ARCHITECTS */}
-                <div className="opacity-75 hover:opacity-100 transition-opacity">
-                    <h3 className="font-bold text-slate-400 text-xs uppercase tracking-wide mb-4 flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-slate-300"></span>
-                        The Architects (2021-2024 Legacy)
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {[
-                            {
-                                name: 'Lina Khan',
-                                role: 'Former Chair, FTC',
-                                status: 'ARCHITECT',
-                                recentMove: 'Launched modern antitrust revival',
-                            },
-                            {
-                                name: 'Jonathan Kanter',
-                                role: 'Former AAG, DOJ',
-                                status: 'ARCHITECT',
-                                recentMove: 'Filed landmark Search monopoly suit',
-                            },
-                            {
-                                name: 'Margrethe Vestager',
-                                role: 'Former EVP, EU',
-                                status: 'PIONEER',
-                                recentMove: 'Established Digital Markets Act',
-                            }
-                        ].map((player) => (
-                            <div key={player.name} className="bg-slate-50 border border-slate-100 p-3 flex items-center gap-3 grayscale">
-                                <div className="h-10 w-10 rounded-full bg-slate-200 overflow-hidden shrink-0">
-                                    <div className="w-full h-full flex items-center justify-center bg-slate-300 text-slate-500 font-bold text-xs">
-                                        {player.name.split(' ').map(n => n[0]).join('')}
-                                    </div>
-                                </div>
-                                <div>
-                                    <div className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">{player.role}</div>
-                                    <div className="font-bold text-slate-700 text-sm leading-tight">{player.name}</div>
-                                    <div className="text-[9px] font-mono text-slate-400 mt-0.5">
-                                        Legacy: {player.recentMove}
-                                    </div>
-                                </div>
+                        </div>
+                        <div>
+                            <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-0.5">{player.role}</div>
+                            <div className="font-bold text-slate-900 leading-tight">{player.name}</div>
+                            <div className="text-[10px] font-mono text-slate-500 mt-1">
+                                <span className="text-blue-600 font-bold">AGENDA:</span> {player.recentMove}
                             </div>
-                        ))}
+                        </div>
                     </div>
-                </div>
+                ))}
             </div>
 
             {/* SECTION 1.6: MAJOR CASE TIMELINE */}
@@ -327,7 +273,7 @@ export default function AntiTrustPage() {
                             { date: 'JUN 2026', case: 'DOJ v. Apple', event: 'Discovery Phase Concludes', status: 'PROJECTED' }
                         ].map((event, i) => (
                             <div key={i} className="relative bg-white p-4 border border-slate-200 md:border-transparent md:bg-transparent md:p-0">
-                                {/* Circle Node Removed for Cleaner Aesthetic */}
+                                <div className="hidden md:block absolute top-1/2 left-1/2 w-3 h-3 bg-white border-2 border-blue-600 rounded-full -translate-x-1/2 -translate-y-1/2 z-10"></div>
                                 <div className="md:text-center space-y-1">
                                     <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{event.date}</div>
                                     <div className="font-bold text-blue-600 text-sm">{event.case}</div>
