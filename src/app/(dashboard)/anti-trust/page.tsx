@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Scale, Gavel, AlertTriangle, ShieldAlert, ArrowUp, Loader2, FileText, Building2, History, Skull, Info, Globe } from 'lucide-react';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { FeedCard } from '@/components/feed/FeedCard';
@@ -43,6 +43,8 @@ const HISTORICAL_CASES = [
 ];
 
 export default function AntiTrustPage() {
+    const [showMajorOnly, setShowMajorOnly] = useState(false);
+    const observerTarget = useRef(null);
     const [articles, setArticles] = useState<Article[]>([]);
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
@@ -50,9 +52,14 @@ export default function AntiTrustPage() {
     const [loadingMore, setLoadingMore] = useState(false);
 
     useEffect(() => {
+        setArticles([]);
+        setPage(1);
+        setHasMore(true);
+        setLoading(true);
+
         const fetchData = async () => {
             try {
-                const res = await fetch('/api/feed/anti-trust?page=1&limit=20', { cache: 'no-store' });
+                const res = await fetch(`/api/feed/anti-trust?page=1&limit=20&major=${showMajorOnly}`, { cache: 'no-store' });
                 const data = await res.json();
                 if (data.items) {
                     setArticles(data.items);
@@ -66,7 +73,7 @@ export default function AntiTrustPage() {
         };
 
         fetchData();
-    }, []);
+    }, [showMajorOnly]);
 
     const loadMore = async () => {
         if (loadingMore || !hasMore) return;
@@ -74,7 +81,7 @@ export default function AntiTrustPage() {
 
         try {
             const nextPage = page + 1;
-            const res = await fetch(`/api/feed/anti-trust?page=${nextPage}&limit=20`, { cache: 'no-store' });
+            const res = await fetch(`/api/feed/anti-trust?page=${nextPage}&limit=20&major=${showMajorOnly}`, { cache: 'no-store' });
             const data = await res.json();
 
             if (data.items && data.items.length > 0) {
@@ -90,6 +97,27 @@ export default function AntiTrustPage() {
             setLoadingMore(false);
         }
     };
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            entries => {
+                if (entries[0].isIntersecting && hasMore && !loadingMore && !loading) {
+                    loadMore();
+                }
+            },
+            { threshold: 1.0 }
+        );
+
+        if (observerTarget.current) {
+            observer.observe(observerTarget.current);
+        }
+
+        return () => {
+            if (observerTarget.current) {
+                observer.unobserve(observerTarget.current);
+            }
+        };
+    }, [observerTarget, hasMore, loadingMore, loading]);
 
     return (
         <div className="space-y-12 max-w-[1600px]">
@@ -184,6 +212,133 @@ export default function AntiTrustPage() {
                 </div>
             </div>
 
+            {/* SECTION 1.5: KEY PLAYERS (2025 Enforcers vs. Legacy Architects) */}
+            <div className="space-y-8">
+                {/* CURRENT ENFORCERS (2025) */}
+                <div>
+                    <h3 className="font-bold text-slate-900 text-xs uppercase tracking-wide mb-4 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                        Current Command (2025)
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {[
+                            {
+                                name: 'Andrew Ferguson',
+                                role: 'Chair, FTC',
+                                status: 'DEREGULATOR',
+                                target: 'Agency Overreach',
+                                recentMove: 'Ending "dubious" consumer cases',
+                                image: ''
+                            },
+                            {
+                                name: 'Gail Slater',
+                                role: 'AAG, DOJ Antitrust',
+                                status: 'PRAGMATIST',
+                                target: 'Big Tech Settlements',
+                                recentMove: 'Reviewing Google breakup remedies',
+                                image: ''
+                            },
+                            {
+                                name: 'Teresa Ribera',
+                                role: 'EVP, EU Commission',
+                                status: 'STRATEGIST',
+                                target: 'Green/Tech Nexus',
+                                recentMove: 'Integrating climate into competition',
+                                image: ''
+                            }
+                        ].map((player) => (
+                            <div key={player.name} className="bg-white border border-slate-200 p-4 flex items-center gap-4 shadow-sm">
+                                <div className="h-12 w-12 rounded-full bg-slate-100 overflow-hidden shrink-0 border border-slate-200">
+                                    <div className="w-full h-full flex items-center justify-center bg-slate-800 text-white font-bold text-sm">
+                                        {player.name.split(' ').map(n => n[0]).join('')}
+                                    </div>
+                                </div>
+                                <div>
+                                    <div className="text-[10px] font-black text-slate-400 uppercase tracking-wider mb-0.5">{player.role}</div>
+                                    <div className="font-bold text-slate-900 leading-tight">{player.name}</div>
+                                    <div className="text-[10px] font-mono text-slate-500 mt-1">
+                                        <span className="text-green-600 font-bold">AGENDA:</span> {player.recentMove}
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* LEGACY ARCHITECTS */}
+                <div className="opacity-75 hover:opacity-100 transition-opacity">
+                    <h3 className="font-bold text-slate-400 text-xs uppercase tracking-wide mb-4 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-slate-300"></span>
+                        The Architects (2021-2024 Legacy)
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {[
+                            {
+                                name: 'Lina Khan',
+                                role: 'Former Chair, FTC',
+                                status: 'ARCHITECT',
+                                recentMove: 'Launched modern antitrust revival',
+                            },
+                            {
+                                name: 'Jonathan Kanter',
+                                role: 'Former AAG, DOJ',
+                                status: 'ARCHITECT',
+                                recentMove: 'Filed landmark Search monopoly suit',
+                            },
+                            {
+                                name: 'Margrethe Vestager',
+                                role: 'Former EVP, EU',
+                                status: 'PIONEER',
+                                recentMove: 'Established Digital Markets Act',
+                            }
+                        ].map((player) => (
+                            <div key={player.name} className="bg-slate-50 border border-slate-100 p-3 flex items-center gap-3 grayscale">
+                                <div className="h-10 w-10 rounded-full bg-slate-200 overflow-hidden shrink-0">
+                                    <div className="w-full h-full flex items-center justify-center bg-slate-300 text-slate-500 font-bold text-xs">
+                                        {player.name.split(' ').map(n => n[0]).join('')}
+                                    </div>
+                                </div>
+                                <div>
+                                    <div className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">{player.role}</div>
+                                    <div className="font-bold text-slate-700 text-sm leading-tight">{player.name}</div>
+                                    <div className="text-[9px] font-mono text-slate-400 mt-0.5">
+                                        Legacy: {player.recentMove}
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            {/* SECTION 1.6: MAJOR CASE TIMELINE */}
+            <div className="border-t border-b border-slate-200 py-8">
+                <h3 className="font-bold text-slate-900 text-sm uppercase tracking-wide mb-6 flex items-center gap-2">
+                    <Scale className="h-4 w-4" />
+                    Active Litigation Timeline (2025-2026)
+                </h3>
+                <div className="relative">
+                    <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-slate-100 -translate-y-1/2 hidden md:block"></div>
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                        {[
+                            { date: 'DEC 2025', case: 'US v. Google', event: 'Remedies Phase: Breakup Proposed', status: 'CURRENT' },
+                            { date: 'FEB 2026', case: 'EU DMA', event: 'Gatekeeper Status Review', status: 'UPCOMING' },
+                            { date: 'APR 2026', case: 'FTC v. Amazon', event: 'Trial Scheduled to Begin', status: 'SCHEDULED' },
+                            { date: 'JUN 2026', case: 'DOJ v. Apple', event: 'Discovery Phase Concludes', status: 'PROJECTED' }
+                        ].map((event, i) => (
+                            <div key={i} className="relative bg-white p-4 border border-slate-200 md:border-transparent md:bg-transparent md:p-0">
+                                {/* Circle Node Removed for Cleaner Aesthetic */}
+                                <div className="md:text-center space-y-1">
+                                    <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{event.date}</div>
+                                    <div className="font-bold text-blue-600 text-sm">{event.case}</div>
+                                    <div className="text-xs text-slate-600 font-medium leading-tight">{event.event}</div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
             {/* SECTION 2: THREAT MATRIX (Horizontal Table Layout) */}
             <div>
                 <div className="flex items-center justify-between mb-6">
@@ -256,10 +411,29 @@ export default function AntiTrustPage() {
             {/* SECTION 3: LIVE INTELLIGENCE (Feed) - Clean List */}
             <div>
                 <div className="flex items-center justify-between mb-6 border-b border-slate-200 pb-4">
-                    <h2 className="text-xl font-black text-slate-900 flex items-center gap-3 uppercase tracking-tight">
-                        <Gavel className="h-6 w-6 text-blue-600" />
-                        Regulatory Filings & News
-                    </h2>
+                    <div className="flex items-center gap-6">
+                        <h2 className="text-xl font-black text-slate-900 flex items-center gap-3 uppercase tracking-tight">
+                            <Gavel className="h-6 w-6 text-blue-600" />
+                            Regulatory Filings & News
+                        </h2>
+
+                        {/* Toggle Switch */}
+                        <div className="flex items-center bg-slate-100 rounded-full p-1 border border-slate-200">
+                            <button
+                                onClick={() => setShowMajorOnly(false)}
+                                className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide transition-all ${!showMajorOnly ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                            >
+                                Live Feed
+                            </button>
+                            <button
+                                onClick={() => setShowMajorOnly(true)}
+                                className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide transition-all ${showMajorOnly ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                            >
+                                Groundbreaking Cases
+                            </button>
+                        </div>
+                    </div>
+
                     <span className="text-xs font-bold text-green-600 uppercase flex items-center gap-2">
                         <span className="relative flex h-2 w-2">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
@@ -280,25 +454,22 @@ export default function AntiTrustPage() {
                                 <FeedCard key={article.id} article={article} />
                             ))}
 
-                            {/* Load More */}
-                            <div className="pt-8 flex justify-center">
-                                {hasMore ? (
-                                    <button
-                                        onClick={loadMore}
-                                        disabled={loadingMore}
-                                        className="px-8 py-3 bg-white border border-slate-200 text-slate-600 font-mono text-xs hover:bg-slate-900 hover:text-white transition-all flex items-center gap-2 shadow-sm uppercase tracking-wider"
-                                    >
-                                        {loadingMore ? <Loader2 className="h-3 w-3 animate-spin" /> : <ArrowUp className="h-3 w-3 rotate-180" />}
-                                        {loadingMore ? 'LOADING...' : 'LOAD OLDER BRIEFS'}
-                                    </button>
-                                ) : (
-                                    <span className="text-slate-400 font-mono text-xs">END OF DOCKET</span>
+                            {/* Infinite Scroll Target */}
+                            <div ref={observerTarget} className="py-8 flex justify-center w-full">
+                                {loadingMore && (
+                                    <div className="flex items-center gap-2 text-slate-400 text-xs font-mono uppercase tracking-widest">
+                                        <Loader2 className="h-4 w-4 animate-spin" />
+                                        Loading older briefs...
+                                    </div>
+                                )}
+                                {!hasMore && articles.length > 0 && (
+                                    <span className="text-slate-300 font-mono text-xs uppercase tracking-widest">End of Docket</span>
                                 )}
                             </div>
                         </div>
                     ) : (
                         <div className="text-center py-12 text-slate-400 font-mono">
-                            No active filings found.
+                            {showMajorOnly ? 'No major groundbreaking cases found recently.' : 'No active filings found.'}
                         </div>
                     )}
                 </div>

@@ -21,7 +21,9 @@ export default function LLMsPage() {
         v.title.includes('Apple') ||
         v.title.includes('NVIDIA') ||
         v.title.includes('Figure') ||
-        v.title.includes('Tesla')
+        v.title.includes('Tesla') ||
+        v.title.includes('AI') ||
+        v.title.includes('Intelligence')
     );
 
     return (

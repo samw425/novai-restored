@@ -7,15 +7,42 @@ export const dynamic = 'force-dynamic';
 
 const parser = new Parser();
 
-// Keywords to filter for antitrust content
-const ANTITRUST_KEYWORDS = [
-    'antitrust', 'monopoly', 'doj', 'ftc', 'lina khan', 'vestager',
-    'breakup', 'regulation', 'lawsuit', 'investigation', 'compliance',
-    'dma', 'dsa', 'gdpr', 'competition market authority', 'cma',
-    'google trial', 'apple app store', 'meta lawsuit', 'amazon antitrust',
-    'regulator', 'probe', 'eu commission', 'ban', 'fine', 'court', 'legal',
-    'policy', 'enforcement', 'congress', 'senate', 'executive order',
-    'sovereignty', 'national security', 'export control', 'chips act'
+// Strong signals: If any of these appear, it's almost certainly relevant
+const STRONG_KEYWORDS = [
+    'antitrust', 'monopoly', 'monopolistic', 'cartel', 'collusion',
+    'ftc', 'lina khan', 'jonathan kanter', 'vestager', 'doj lawsuit',
+    'breakup', 'divestiture', 'sherman act', 'clayton act',
+    'dma', 'digital markets act', 'dsa', 'digital services act',
+    'gatekeeper', 'self-preferencing', 'sideloading', 'app store tax',
+    'google trial', 'us v google', 'ftc v amazon', 'ftc v meta',
+    'cma', 'competition and markets authority', 'ec commission',
+    'regulatory crackdown', 'market power', 'anti-competitive'
+];
+
+// Weak signals: These need to be paired with a company name or another signal
+// REMOVED: 'policy', 'compliance', 'court', 'ruling' (too broad)
+const WEAK_KEYWORDS = [
+    'lawsuit', 'sued', 'investigation', 'probe',
+    'regulation', 'regulator', 'ban', 'fine',
+    'enforcement', 'congress', 'senate hearing', 'subpoena',
+    'acquisition', 'merger', 'blocked', 'injunction',
+    'federal trade commission', 'department of justice'
+];
+
+// Major Cases / Groundbreaking News Keywords
+const MAJOR_CASE_KEYWORDS = [
+    'us v google', 'google trial', 'ad tech trial',
+    'ftc v amazon', 'amazon monopoly',
+    'ftc v meta', 'instagram breakup', 'whatsapp breakup',
+    'doj v apple', 'apple monopoly', 'smartphone monopoly',
+    'microsoft activision', 'eu dma', 'gatekeeper designation',
+    'nvidia subpoena', 'doj nvidia'
+];
+
+// Companies to watch (The "Kill Zone" targets)
+const WATCHLIST_COMPANIES = [
+    'google', 'alphabet', 'apple', 'meta', 'facebook', 'amazon', 'microsoft',
+    'nvidia', 'openai', 'tiktok', 'bytedance', 'qualcomm', 'broadcom'
 ];
 
 export async function GET(request: Request) {
@@ -23,6 +50,7 @@ export async function GET(request: Request) {
         const { searchParams } = new URL(request.url);
         const page = parseInt(searchParams.get('page') || '1');
         const limit = parseInt(searchParams.get('limit') || '20');
+        const onlyMajor = searchParams.get('major') === 'true';
 
         // Select relevant feeds (Market, Policy, US Intel)
         const targetFeeds = RSS_FEEDS.filter(f =>
@@ -30,7 +58,6 @@ export async function GET(request: Request) {
         );
 
         // We'll fetch a subset of high-priority feeds to avoid timeouts
-        // Prioritize: Reuters, Bloomberg, WSJ, FT, Verge, Wired, Stratechery, 404 Media
         const prioritizedFeeds = targetFeeds.filter(f =>
             f.id.includes('reuters') ||
             f.id.includes('bloomberg') ||
@@ -42,18 +69,40 @@ export async function GET(request: Request) {
             f.id.includes('404') ||
             f.id.includes('nytimes') ||
             f.id.includes('washington-post') ||
+            f.id.includes('politico') ||
             f.priority >= 9
-        ).slice(0, 15); // Limit to 15 feeds to keep it fast
+        ).slice(0, 25);
 
         const feedPromises = prioritizedFeeds.map(async (feedSource) => {
             try {
                 const feed = await parser.parseURL(feedSource.url);
                 return feed.items
-                    .filter(item => {
+                    .map(item => {
                         const text = `${item.title} ${item.contentSnippet || ''}`.toLowerCase();
-                        return ANTITRUST_KEYWORDS.some(keyword => text.includes(keyword));
+
+                        // 1. Check for Strong Keywords (Automatic Pass)
+                        const hasStrong = STRONG_KEYWORDS.some(k => text.includes(k));
+
+                        // 2. Check for Weak Keyword + Watchlist Company (Contextual Pass)
+                        const hasWeak = WEAK_KEYWORDS.some(k => text.includes(k));
+                        const hasCompany = WATCHLIST_COMPANIES.some(c => text.includes(c));
+
+                        const isRelevant = hasStrong || (hasWeak && hasCompany);
+
+                        // 3. Check for Major Case
+                        const isMajor = MAJOR_CASE_KEYWORDS.some(k => text.includes(k)) || (hasStrong && hasCompany);
+
+                        return {
+                            item,
+                            isRelevant,
+                            isMajor
+                        };
                     })
-                    .map(item => ({
+                    .filter(({ isRelevant, isMajor }) => {
+                        if (onlyMajor) return isMajor;
+                        return isRelevant;
+                    })
+                    .map(({ item, isMajor }) => ({
                         id: item.guid || item.link || Math.random().toString(),
                         title: item.title,
                         description: item.contentSnippet || item.content,
@@ -62,7 +111,8 @@ export async function GET(request: Request) {
                         publishedAt: item.pubDate,
                         category: 'antitrust',
                         image_url: null,
-                        score: 9 // High relevance
+                        score: isMajor ? 10 : 8, // Higher score for major cases
+                        isMajor // Pass this flag to frontend
                     }));
             } catch (e) {
                 console.error(`Failed to fetch feed ${feedSource.name}:`, e);

@@ -155,6 +155,14 @@ export async function GET(request: Request) {
                     if (devKeywords.some(k => text.includes(k))) return true;
                 }
 
+                // RESEARCH EXCEPTION: High trust for research labs (OpenAI, DeepMind, etc.)
+                if (article.category === 'research') {
+                    // These sources are highly specific, so we can be very lenient.
+                    // Just check for basic relevance to avoid completely unrelated posts (e.g. "hiring")
+                    const researchKeywords = ['model', 'paper', 'research', 'learning', 'reasoning', 'agent', 'training', 'inference', 'benchmark', 'release', 'announce', 'introducing', 'update', ...strongSignals, ...weakSignals];
+                    if (researchKeywords.some(k => text.includes(k))) return true;
+                }
+
                 const strongMatches = strongSignals.filter(signal => text.includes(signal)).length;
                 const weakMatches = weakSignals.filter(signal => text.includes(signal)).length;
 

@@ -59,12 +59,16 @@ export async function GET() {
     const avgUrban = Math.round(countriesWithFlux.reduce((acc, curr) => acc + (curr.urban || 0), 0) / countriesWithFlux.length);
     const avgMedianAge = (countriesWithFlux.reduce((acc, curr) => acc + (curr.medianAge || 0), 0) / countriesWithFlux.length).toFixed(1);
 
+    // Mock density for now since we don't have area data in the mock DB
+    const avgDensity = 145.2;
+
     return NextResponse.json({
         countries: countriesWithFlux,
         globalStats: {
             totalPopulation,
             avgGrowth,
             avgUrban,
+            avgDensity,
             avgMedianAge,
             timestamp: new Date().toISOString()
         }

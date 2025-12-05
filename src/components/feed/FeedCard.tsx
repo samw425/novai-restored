@@ -38,16 +38,29 @@ export function FeedCard({ article }: FeedCardProps) {
                         </span>
                     </div>
 
-                    {/* LIVE Badge */}
-                    {isLive && (
-                        <div className="flex items-center gap-2">
-                            <span className="relative flex h-2 w-2">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
-                            </span>
-                            <span className="text-[10px] font-bold text-red-600 tracking-widest uppercase">LIVE</span>
-                        </div>
-                    )}
+                    {/* Badges Container */}
+                    <div className="flex items-center gap-3">
+                        {/* Impact Score Badge - Only show for high impact */}
+                        {article.score && article.score >= 8 && (
+                            <div className="flex items-center gap-1.5 bg-slate-900 text-white px-2 py-0.5 rounded-full">
+                                <span className="text-[10px] font-bold tracking-wider">IMPACT</span>
+                                <span className={`text-[10px] font-black ${article.score >= 9 ? 'text-red-400' : 'text-amber-400'}`}>
+                                    {article.score}/10
+                                </span>
+                            </div>
+                        )}
+
+                        {/* LIVE Badge */}
+                        {isLive && (
+                            <div className="flex items-center gap-2">
+                                <span className="relative flex h-2 w-2">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
+                                </span>
+                                <span className="text-[10px] font-bold text-red-600 tracking-widest uppercase">LIVE</span>
+                            </div>
+                        )}
+                    </div>
                 </div>
 
                 {/* Title */}

@@ -10,6 +10,14 @@ interface VideoFeedProps {
 }
 
 export function VideoFeed({ videos }: VideoFeedProps) {
+    if (!videos || videos.length === 0) {
+        return (
+            <div className="w-full py-12 text-center bg-slate-50 rounded-xl border border-slate-200 border-dashed">
+                <p className="text-slate-500 font-medium">No videos found matching your criteria.</p>
+            </div>
+        );
+    }
+
     return (
         <div className="space-y-4">
             {videos.map((video) => (

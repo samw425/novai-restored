@@ -1,4 +1,3 @@
-import { Sparkles } from 'lucide-react';
 import { NovaiLogo } from '@/components/Logo';
 
 interface PageHeaderProps {
@@ -10,53 +9,51 @@ interface PageHeaderProps {
 
 export function PageHeader({ title, description, insight, icon }: PageHeaderProps) {
     return (
-        <div className="mb-8 space-y-6">
-            {/* Title & Description */}
-            <div className="space-y-3">
-                <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-3">
-                        {icon}
-                        <h1 className="text-3xl font-bold text-[#0F172A]">{title}</h1>
-                    </div>
-                    <div className="hidden md:flex items-center gap-2 px-3 py-1 bg-emerald-50 border border-emerald-100 rounded-full">
-                        <span className="relative flex h-2 w-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                        </span>
-                        <span className="text-[10px] font-bold text-emerald-700 tracking-wider">REAL-TIME INTEL</span>
-                    </div>
+        <div className="relative pt-8 pb-8 md:pt-12 md:pb-10">
+            <div className="space-y-6 max-w-4xl">
+
+                {/* Badge / Icon Row */}
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                    {icon && <span className="flex items-center justify-center [&>svg]:w-3 [&>svg]:h-3 text-slate-500">{icon}</span>}
+                    <span>Sector Intelligence</span>
                 </div>
-                <p className="text-[#64748B] text-lg max-w-3xl">{description}</p>
+
+                {/* Live Indicator */}
+                <div className="hidden md:flex items-center gap-2 px-3 py-1 bg-emerald-50 border border-emerald-100 rounded-full">
+                    <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    <span className="text-[10px] font-bold text-emerald-700 tracking-wider">REAL-TIME INTEL</span>
+                </div>
             </div>
 
-            {/* Novai Thoughts / Analyst Note */}
-            {
-                insight && (
-                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-xl p-5 relative overflow-hidden group">
-                        <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M3 3V21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-blue-600" />
-                                <path d="M21 3V21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-blue-600" />
-                                <path d="M3 21L21 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-blue-600" />
-                            </svg>
-                        </div>
+            {/* Title (Massive Typography) */}
+            <h1 className="text-5xl md:text-7xl font-sans font-extrabold text-slate-900 tracking-tighter leading-[0.9]">
+                {title}
+            </h1>
 
-                        <div className="relative z-10 flex gap-4">
-                            <div className="shrink-0 mt-1">
-                                <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center shadow-sm">
-                                    <NovaiLogo className="w-5 h-5" />
-                                </div>
-                            </div>
-                            <div>
-                                <h3 className="text-sm font-bold text-blue-900 uppercase tracking-wider mb-1">Novai Intelligence</h3>
-                                <div className="text-blue-800 leading-relaxed font-medium">
-                                    {insight}
-                                </div>
-                            </div>
+            {/* Description */}
+            <p className="text-xl text-slate-500 font-medium max-w-2xl leading-relaxed font-sans tracking-tight">
+                {description}
+            </p>
+
+            {/* Insight (Clean, No Box) */}
+            {insight && (
+                <div className="flex items-start gap-4 pt-6 mt-2">
+                    <div className="shrink-0 mt-1">
+                        <NovaiLogo className="w-4 h-4 text-blue-600" />
+                    </div>
+                    <div className="space-y-1">
+                        <span className="block text-[10px] font-bold text-blue-600 uppercase tracking-widest">
+                            Novai Analyst Note
+                        </span>
+                        <div className="text-sm text-slate-700 font-medium leading-relaxed max-w-2xl">
+                            {insight}
                         </div>
                     </div>
-                )
-            }
-        </div >
+                </div>
+            )}
+        </div>
     );
 }
