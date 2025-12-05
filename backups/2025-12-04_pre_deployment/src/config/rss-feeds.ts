@@ -1,4 +1,4 @@
-export type FeedCategory = 'research' | 'tools' | 'policy' | 'market' | 'robotics' | 'ai' | 'security' | 'us-intel' | 'current-wars' | 'built-world';
+export type FeedCategory = 'research' | 'tools' | 'policy' | 'market' | 'robotics' | 'ai' | 'security' | 'us-intel' | 'current-wars';
 
 export interface FeedSource {
     id: string;
@@ -22,8 +22,6 @@ export const RSS_FEEDS: FeedSource[] = [
     { id: 'baair', name: 'Berkeley AI Research', url: 'https://bair.berkeley.edu/blog/feed.xml', category: 'research', priority: 9, region: 'US' },
     { id: 'stanford-hai', name: 'Stanford HAI', url: 'https://hai.stanford.edu/news/feed', category: 'research', priority: 9, region: 'US' },
     { id: 'mit-csail', name: 'MIT CSAIL', url: 'https://www.csail.mit.edu/news/rss', category: 'research', priority: 9, region: 'US' },
-    { id: 'nature-mi', name: 'Nature Machine Intelligence', url: 'https://www.nature.com/natmachintell.rss', category: 'research', priority: 10, region: 'Global' },
-    { id: 'arxiv-ai', name: 'arXiv AI', url: 'http://export.arxiv.org/rss/cs.AI', category: 'research', priority: 10, region: 'Global' },
 
     // ========== MARKET & BUSINESS INTELLIGENCE (Priority 9-10) ==========
     { id: 'techcrunch-ai', name: 'TechCrunch AI', url: 'https://techcrunch.com/category/artificial-intelligence/feed/', category: 'market', priority: 10, region: 'US' },
@@ -65,8 +63,6 @@ export const RSS_FEEDS: FeedSource[] = [
 
     // ========== ROBOTICS & HARDWARE (Priority 8) ==========
     { id: 'techcrunch-robotics', name: 'TechCrunch Robotics', url: 'https://techcrunch.com/category/robotics/feed/', category: 'robotics', priority: 10, region: 'US' },
-    { id: 'mit-robotics', name: 'MIT News - Robotics', url: 'https://news.mit.edu/rss/topic/robotics', category: 'robotics', priority: 10, region: 'Global' },
-    { id: 'arxiv-ro', name: 'arXiv Robotics', url: 'http://export.arxiv.org/rss/cs.RO', category: 'robotics', priority: 10, region: 'Global' },
     { id: 'robot-report', name: 'The Robot Report', url: 'https://www.therobotreport.com/feed/', category: 'robotics', priority: 9, region: 'US' },
     { id: 'ieee-robotics', name: 'IEEE Robotics', url: 'https://spectrum.ieee.org/feeds/topic/robotics.rss', category: 'robotics', priority: 9, region: 'Global' },
     { id: 'robotics-business', name: 'Robotics Business', url: 'https://www.roboticsbusinessreview.com/feed/', category: 'robotics', priority: 8, region: 'US' },
@@ -153,17 +149,6 @@ export const RSS_FEEDS: FeedSource[] = [
     { id: 'stratechery-daily', name: 'Stratechery Daily', url: 'https://stratechery.com/feed/', category: 'market', priority: 9, region: 'US' },
     { id: 'platformer', name: 'Platformer', url: 'https://www.platformer.news/feed', category: 'market', priority: 9, region: 'US' },
     { id: '404-media', name: '404 Media', url: 'https://www.404media.co/rss/', category: 'market', priority: 9, region: 'US' },
-
-    // ========== THE BUILT WORLD (AI Infrastructure) ==========
-    // Commercial / Compute
-    { id: 'data-center-dynamics', name: 'Data Center Dynamics', url: 'https://www.datacenterdynamics.com/en/rss/', category: 'built-world', priority: 10, region: 'Global' },
-    { id: 'data-center-knowledge', name: 'Data Center Knowledge', url: 'https://www.datacenterknowledge.com/rss.xml', category: 'built-world', priority: 9, region: 'US' },
-    { id: 'commercial-observer-tech', name: 'Commercial Observer', url: 'https://commercialobserver.com/feed/', category: 'built-world', priority: 8, region: 'US' },
-
-    // Residential / PropTech / Smart Cities
-    { id: 'smart-cities-world', name: 'Smart Cities World', url: 'https://www.smartcitiesworld.net/rss/news', category: 'built-world', priority: 9, region: 'Global' },
-    { id: 'propmodo', name: 'Propmodo', url: 'https://www.propmodo.com/feed/', category: 'built-world', priority: 8, region: 'US' },
-    { id: 'place-tech', name: 'PlaceTech', url: 'https://placetech.net/feed/', category: 'built-world', priority: 8, region: 'Europe' },
 ];
 
 // Helper functions
