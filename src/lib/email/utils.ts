@@ -140,7 +140,7 @@ export async function sendSubscriberEmail(
         // Render React email to HTML
         const htmlContent = await render(reactElement);
 
-        const sentFrom = new Sender('noreply@trial-pxkjn41nymjgz781.mlsender.net', 'Novai Daily Intelligence');
+        const sentFrom = new Sender('noreply@test-86org8ek12ngew13.mlsender.net', 'Novai Daily Intelligence');
         const recipients = [new Recipient(to, to)];
 
         const emailParams = new EmailParams()
