@@ -147,13 +147,13 @@ export const MASTER_VIDEO_DB: VideoItem[] = [
         description: "New capabilities of Tesla's humanoid robot, including delicate object manipulation.",
         thumbnailUrl: "https://i.ytimg.com/vi/D2vj0WcvH5c/hqdefault.jpg",
         videoUrl: "https://www.youtube.com/watch?v=D2vj0WcvH5c",
-        source: "Tesla",
-        publishedAt: "Dec 13, 2024",
-        duration: "01:45",
-        views: "3.2M",
-        category: "Demo",
+        source: "OpenAI",
+        publishedAt: "Dec 13, 2025",
+        views: "2.1M",
+        duration: "14:20",
+        category: "model",
         aiScore: 92,
-        timestamp: 1734091200000 // Dec 13, 2024
+        timestamp: 1765627200000 // Dec 13, 2025
     },
     {
         id: 'apple-intelligence',

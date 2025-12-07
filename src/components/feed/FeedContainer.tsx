@@ -30,6 +30,8 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
     const [newCount, setNewCount] = useState(0);
     const [isSignUpOpen, setIsSignUpOpen] = useState(false);
 
+    const [viewMode, setViewMode] = useState<'live' | '30-day'>('live');
+
     const { ref, inView } = useInView();
 
     const loadArticles = useCallback(async (reset = false) => {
@@ -38,21 +40,36 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
         setLoading(true);
 
         try {
-            const newArticles = await fetchArticles(10, category);
+            let newArticles: Article[] = [];
+            if (viewMode === 'live') {
+                newArticles = await fetchArticles(10, category);
+            } else {
+                // Fetch 30-day top stories
+                const response = await fetch(`/api/feed/top-30d?category=${category}`);
+                const data = await response.json();
+                newArticles = data.articles || [];
+            }
+
             setArticles(prev => {
                 if (reset) return newArticles;
                 // Filter out duplicates based on ID
                 const uniqueNew = newArticles.filter(n => !prev.some(p => p.id === n.id));
                 return [...prev, ...uniqueNew];
             });
+
+            // If in 30-day mode, we loaded everything at once, so no more to load
+            if (viewMode === '30-day') {
+                setHasMore(false);
+            }
+
         } catch (error) {
             console.error("Failed to load articles", error);
         } finally {
             setLoading(false);
         }
-    }, [cursor, category, loading]);
+    }, [cursor, category, loading, viewMode]);
 
-    // Initial load & Category change
+    // Initial load & Category/ViewMode change
     useEffect(() => {
         setCursor(undefined);
         setHasMore(true);
@@ -65,29 +82,41 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
                 const targetCategory = forcedCategory || category;
                 const apiCategory = targetCategory === 'all' ? 'All' : targetCategory;
 
-                const response = await fetch(`/api/feed/live?category=${apiCategory}&limit=30`, {
+                let url = `/api/feed/live?category=${apiCategory}&limit=30`;
+                if (viewMode === '30-day') {
+                    url = `/api/feed/top-30d?category=${apiCategory}`;
+                }
+
+                const response = await fetch(url, {
                     cache: 'no-store'
                 });
                 const data = await response.json();
                 setArticles(data.articles || []);
-                setHasMore(true);
+
+                if (viewMode === '30-day') {
+                    setHasMore(false);
+                } else {
+                    setHasMore(true);
+                }
             } finally {
                 setLoading(false);
             }
         };
         init();
 
-    }, [category, forcedCategory]);
+    }, [category, forcedCategory, viewMode]);
 
     // Infinite scroll trigger
     useEffect(() => {
-        if (inView && hasMore && !loading) {
+        if (inView && hasMore && !loading && viewMode === 'live') {
             loadArticles();
         }
-    }, [inView, hasMore, loading, loadArticles]);
+    }, [inView, hasMore, loading, loadArticles, viewMode]);
 
-    // Poll for new articles every 15s
+    // Poll for new articles every 15s (Only in Live Mode)
     useEffect(() => {
+        if (viewMode !== 'live') return;
+
         const interval = setInterval(async () => {
             if (articles.length > 0) {
                 const count = await checkNewArticles(articles[0].id);
@@ -95,7 +124,7 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
             }
         }, 15000);
         return () => clearInterval(interval);
-    }, [articles]);
+    }, [articles, viewMode]);
 
     const handleRefresh = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -138,16 +167,34 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
 
-                {/* 30-DAY BRIEF HERO SECTION - REMOVED PER USER FEEDBACK */}
-                {/* {!forcedCategory && (
-                    <div className="mb-12">
-                        <MonthlyIntelBrief />
+                {/* 30-DAY BRIEF TOGGLE */}
+                <div className="flex justify-center mb-8">
+                    <div className="bg-slate-100 p-1 rounded-lg inline-flex items-center">
+                        <button
+                            onClick={() => setViewMode('live')}
+                            className={`px-4 py-1.5 rounded-md text-sm font-bold transition-all ${viewMode === 'live'
+                                ? 'bg-white text-slate-900 shadow-sm'
+                                : 'text-slate-500 hover:text-slate-700'
+                                }`}
+                        >
+                            LIVE FEED
+                        </button>
+                        <button
+                            onClick={() => setViewMode('30-day')}
+                            className={`px-4 py-1.5 rounded-md text-sm font-bold transition-all flex items-center gap-2 ${viewMode === '30-day'
+                                ? 'bg-white text-blue-600 shadow-sm'
+                                : 'text-slate-500 hover:text-slate-700'
+                                }`}
+                        >
+                            30-DAY BRIEF
+                            <span className="bg-blue-100 text-blue-700 text-[10px] px-1.5 py-0.5 rounded-full">TOP</span>
+                        </button>
                     </div>
-                )} */}
+                </div>
 
 
                 {/* LIVE FEED CONTENT */}
-                {newCount > 0 && (
+                {newCount > 0 && viewMode === 'live' && (
                     <div
                         onClick={handleRefresh}
                         className="sticky top-32 z-30 mx-auto w-fit mb-6 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg cursor-pointer hover:bg-blue-700 transition-all flex items-center gap-2 text-sm font-bold animate-in slide-in-from-top-2"
@@ -161,11 +208,22 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
                 <div className="flex items-center gap-4 mb-6">
                     <div className="h-px flex-1 bg-gradient-to-r from-transparent via-blue-200 to-transparent opacity-50"></div>
                     <div className="flex items-center gap-2">
-                        <span className="relative flex h-2 w-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-                        </span>
-                        <span className="text-[10px] font-mono text-blue-600 font-bold uppercase tracking-[0.2em]">NEURAL FEED // LIVE SIGNALS</span>
+                        {viewMode === 'live' ? (
+                            <>
+                                <span className="relative flex h-2 w-2">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                                </span>
+                                <span className="text-[10px] font-mono text-blue-600 font-bold uppercase tracking-[0.2em]">NEURAL FEED // LIVE SIGNALS</span>
+                            </>
+                        ) : (
+                            <>
+                                <span className="relative flex h-2 w-2">
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                                </span>
+                                <span className="text-[10px] font-mono text-amber-600 font-bold uppercase tracking-[0.2em]">ARCHIVE // TOP STORIES (30D)</span>
+                            </>
+                        )}
                     </div>
                     <div className="h-px flex-1 bg-gradient-to-r from-transparent via-blue-200 to-transparent opacity-50"></div>
                 </div>
@@ -173,16 +231,22 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
                 {/* List Layout */}
                 <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 p-6">
                     <div>
-                        {articles.map((article) => (
-                            <FeedCard key={article.id} article={article} />
-                        ))}
+                        {articles.length === 0 && !loading ? (
+                            <div className="text-center py-12 text-slate-400">
+                                <p>No top stories found for this period.</p>
+                            </div>
+                        ) : (
+                            articles.map((article) => (
+                                <FeedCard key={article.id} article={article} />
+                            ))
+                        )}
                     </div>
                 </div>
 
                 {/* Loading / End Sentinel */}
                 <div ref={ref} className="py-12 flex justify-center w-full">
                     {loading && <Loader2 className="h-8 w-8 animate-spin text-gray-400" />}
-                    {!hasMore && articles.length > 0 && (
+                    {!hasMore && articles.length > 0 && viewMode === 'live' && (
                         <p className="text-gray-400 text-sm font-medium">End of Stream.</p>
                     )}
                 </div>

@@ -29,6 +29,14 @@ CREATE TABLE IF NOT EXISTS daily_snapshots (
   created_at timestamptz DEFAULT now()
 );
 
+-- Subscribers
+CREATE TABLE IF NOT EXISTS subscribers (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  email text UNIQUE NOT NULL,
+  active boolean DEFAULT true,
+  created_at timestamptz DEFAULT now()
+);
+
 -- Deep signals
 CREATE TABLE IF NOT EXISTS signals (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),

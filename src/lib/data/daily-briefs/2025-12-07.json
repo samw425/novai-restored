@@ -1,0 +1,16 @@
+{
+  "date": "2025-12-07",
+  "generatedAt": "2025-12-07T08:19:36.466Z",
+  "headline": "AI-INTEL BRIEF: SYSTEM UPDATE",
+  "isFallback": true,
+  "keySignals": [
+    {
+      "title": "Daily Brief Generation Delayed",
+      "summary": "Today's live brief is delayed due to a system update. We will send an updated briefing shortly.",
+      "link": "undefined/global-feed",
+      "category": "SYSTEM"
+    }
+  ],
+  "marketImpact": "Check the live Global Feed for real-time market signals.",
+  "warRoomNote": "Visit the War Room for live geopolitical updates."
+}

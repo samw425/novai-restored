@@ -5,6 +5,7 @@ import { Brain, Cpu, Network } from 'lucide-react';
 import { VideoFeed } from '@/components/feed/VideoFeed';
 import { CategoryFeed } from '@/components/feed/CategoryFeed';
 import { LIVE_VIDEOS } from '@/lib/data/video-feed';
+import { ModelLeaderboard } from '@/components/llms/ModelLeaderboard';
 
 export default function LLMsPage() {
     // Filter for LLM-related videos from our master feed
@@ -35,6 +36,9 @@ export default function LLMsPage() {
             />
 
             <div className="space-y-16 mb-12">
+                {/* SECTION 0: LEADERBOARD */}
+                <ModelLeaderboard />
+
                 {/* SECTION 1: LATEST LAB NEWS */}
                 <div className="space-y-6">
                     <div className="flex items-center justify-between mb-6 border-b border-slate-200 pb-4">

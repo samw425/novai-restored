@@ -164,6 +164,16 @@ export const RSS_FEEDS: FeedSource[] = [
     { id: 'smart-cities-world', name: 'Smart Cities World', url: 'https://www.smartcitiesworld.net/rss/news', category: 'built-world', priority: 9, region: 'Global' },
     { id: 'propmodo', name: 'Propmodo', url: 'https://www.propmodo.com/feed/', category: 'built-world', priority: 8, region: 'US' },
     { id: 'place-tech', name: 'PlaceTech', url: 'https://placetech.net/feed/', category: 'built-world', priority: 8, region: 'Europe' },
+
+    // ========== AI POLICY & GOVERNANCE (Priority 10) ==========
+    { id: 'tech-policy-press', name: 'Tech Policy Press', url: 'https://techpolicy.press/rss/', category: 'policy', priority: 10, region: 'Global' },
+    { id: 'brookings-ai', name: 'Brookings AI', url: 'https://www.brookings.edu/topic/artificial-intelligence/feed/', category: 'policy', priority: 10, region: 'US' },
+    { id: 'cset-georgetown', name: 'CSET Georgetown', url: 'https://cset.georgetown.edu/feed/', category: 'policy', priority: 10, region: 'US' },
+    { id: 'ada-lovelace', name: 'Ada Lovelace Inst', url: 'https://www.adalovelaceinstitute.org/feed/', category: 'policy', priority: 9, region: 'Europe' },
+    { id: 'oecd-ai', name: 'OECD.AI Policy', url: 'https://oecd.ai/en/rss', category: 'policy', priority: 9, region: 'Global' },
+    { id: 'stanford-cyber', name: 'Stanford Cyber', url: 'https://cyber.fsi.stanford.edu/news/rss', category: 'policy', priority: 9, region: 'US' },
+    { id: 'lawfare', name: 'Lawfare', url: 'https://www.lawfaremedia.org/feeds/rss', category: 'policy', priority: 9, region: 'US' },
+    { id: 'ai-now', name: 'AI Now Institute', url: 'https://ainowinstitute.org/feed', category: 'policy', priority: 9, region: 'US' },
 ];
 
 // Helper functions

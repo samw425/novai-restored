@@ -5,7 +5,7 @@ import { Shield, Activity, Globe, Lock, Loader2, ArrowUp, AlertOctagon, Radio } 
 import { PageHeader } from '@/components/ui/PageHeader';
 import { FeedCard } from '@/components/feed/FeedCard';
 import { ResourceLoader } from '@/components/ui/ResourceLoader';
-import { MonthlyIntelBrief } from '@/components/dashboard/MonthlyIntelBrief';
+// MonthlyIntelBrief import removed
 import { InteractiveMap } from '@/components/ui/InteractiveMap';
 import { Article } from '@/types';
 
@@ -409,10 +409,7 @@ export default function WarRoomPage() {
                     </div>
                 </div>
             )}
-            {/* 30-Day Brief */}
-            <div className="mt-12 pt-8 border-t border-gray-200">
-                <MonthlyIntelBrief />
-            </div>
+            {/* 30-Day Brief Removed per Hotfix Exception */}
         </div>
     );
 }

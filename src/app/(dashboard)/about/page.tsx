@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Shield, Zap, Globe, Brain, ArrowRight } from 'lucide-react';
 import { SignupModal } from '@/components/ui/SignupModal';
+import { DemoHero } from '@/components/landing/DemoHero';
 
 export default function AboutPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -12,24 +13,7 @@ export default function AboutPage() {
             <SignupModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
 
             {/* Hero Section */}
-            <div className="relative rounded-3xl overflow-hidden bg-slate-900 text-white mb-16 shadow-2xl shadow-slate-200">
-                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop')] bg-cover bg-center opacity-20 mix-blend-overlay"></div>
-                <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-900/90 to-blue-900/40"></div>
-
-                <div className="relative z-10 p-12 md:p-24 text-center">
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-widest mb-8 backdrop-blur-sm">
-                        <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
-                        Mission Critical
-                    </div>
-                    <h1 className="text-5xl md:text-7xl font-black tracking-tight mb-8 leading-tight">
-                        Intelligence for the <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">Post-Human Era.</span>
-                    </h1>
-                    <p className="text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto leading-relaxed font-light">
-                        We aggregate, synthesize, and verify the world's most critical data streams to give you an unfair advantage in the age of AGI.
-                    </p>
-                </div>
-            </div>
+            <DemoHero />
 
             {/* Core Values Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">

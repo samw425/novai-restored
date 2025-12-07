@@ -1,0 +1,53 @@
+[
+  {
+    "id": "brief-2025-12-06",
+    "date": "2025-12-06",
+    "clearanceLevel": "TOP SECRET // NOFORN",
+    "headline": "AI-INTEL BRIEF: ACCELERATED THREATSCAPE",
+    "items": [
+      {
+        "id": "1",
+        "category": "GLOBAL AI RACE",
+        "title": "SOVEREIGN AI: ESCALATION",
+        "summary": "Global AI race intensifies as nations invest heavily in sovereign AI clouds, signaling an accelerated competition for AGI dominance and strategic advantage. The concentration of compute and algorithmic control within national borders presents significant geopolitical risks.",
+        "impact": "CRITICAL",
+        "source": "Reuters",
+        "link": "unavailable"
+      },
+      {
+        "id": "2",
+        "category": "GEOPOLITICS",
+        "title": "EU AI ACT: DEADLINES LOOM",
+        "summary": "The EU AI Act introduces stringent compliance deadlines for companies, mandating transparency and robust risk management frameworks. Non-compliance will result in significant penalties, potentially hindering innovation and market access for non-EU entities. Global firms face critical strategic choices.",
+        "impact": "HIGH",
+        "source": "Bloomberg",
+        "link": "unavailable"
+      },
+      {
+        "id": "3",
+        "category": "MARKET SIGNAL",
+        "title": "ROBOTICS: FACTORY FLOOR",
+        "summary": "Major auto manufacturers are rapidly deploying humanoid robots on assembly lines, indicating a significant shift towards automation and workforce restructuring. This trend is expected to accelerate across other industrial sectors, impacting global employment and supply chain dynamics.",
+        "impact": "MEDIUM",
+        "source": "TechCrunch",
+        "link": "unavailable"
+      },
+      {
+        "id": "4",
+        "category": "CYBER WARFARE",
+        "title": "AI PHISHING: EXECS TARGETED",
+        "summary": "Security researchers have identified new, highly personalized AI-generated phishing attacks specifically targeting executive leadership. These advanced vectors exploit contextual knowledge and mimic communication styles, posing a severe threat to sensitive corporate data and strategic decision-making processes. Enhanced detection and mitigation protocols are paramount.",
+        "impact": "SEVERE",
+        "source": "Wired",
+        "link": "unavailable"
+      }
+    ]
+  },
+  {
+    "id": "brief-1",
+    "date": "2025-01-01",
+    "headline": "INITIAL SYSTEM CALIBRATION",
+    "clearanceLevel": "SECRET",
+    "items": []
+  }
+]

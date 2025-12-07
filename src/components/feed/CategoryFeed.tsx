@@ -8,14 +8,25 @@ import { PageHeader } from '@/components/ui/PageHeader';
 
 interface CategoryFeedProps {
     category: string;
-    title: string;
-    description: string;
+    title?: string;
+    description?: string;
     insight?: string;
     icon?: React.ReactNode;
     showHeader?: boolean;
+    variant?: 'default' | 'minimal';
+    className?: string;
 }
 
-export function CategoryFeed({ category, title, description, insight, icon, showHeader = true }: CategoryFeedProps) {
+export function CategoryFeed({
+    category,
+    title,
+    description,
+    insight,
+    icon,
+    showHeader = true,
+    variant = 'default',
+    className = ''
+}: CategoryFeedProps) {
     const [articles, setArticles] = useState<Article[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -37,9 +48,17 @@ export function CategoryFeed({ category, title, description, insight, icon, show
         fetchCategoryFeed();
     }, [category]);
 
+    const containerClasses = variant === 'minimal'
+        ? `space-y-0 ${className}`
+        : `bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 p-6 ${className}`;
+
+    const wrapperClasses = variant === 'minimal'
+        ? "w-full pb-12"
+        : "max-w-3xl mx-auto pb-12";
+
     return (
-        <div className="max-w-3xl mx-auto pb-12">
-            {showHeader && (
+        <div className={wrapperClasses}>
+            {showHeader && title && description && (
                 <PageHeader
                     title={title}
                     description={description}
@@ -48,13 +67,13 @@ export function CategoryFeed({ category, title, description, insight, icon, show
                 />
             )}
 
-            <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 p-6">
+            <div className={containerClasses}>
                 {loading ? (
                     <div className="flex items-center justify-center py-12">
                         <Loader2 className="animate-spin text-accent" size={32} />
                     </div>
                 ) : articles.length > 0 ? (
-                    <div>
+                    <div className={variant === 'minimal' ? "divide-y divide-slate-100" : ""}>
                         {articles.map(article => (
                             <FeedCard key={article.id} article={article} />
                         ))}

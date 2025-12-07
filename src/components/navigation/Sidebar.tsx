@@ -216,6 +216,13 @@ const knowledgeLinks = [
         tooltip: "Risks, incidents, and policy heat you should watch."
     },
     {
+        id: 'mission',
+        label: 'Mission',
+        icon: Building2,
+        href: '/landing',
+        tooltip: "The Citizen Intelligence Agency."
+    },
+    {
         id: 'about',
         label: 'About Novai',
         icon: Info,
