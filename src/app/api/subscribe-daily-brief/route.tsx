@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
-import WelcomeDailyBriefEmail from '@/emails/WelcomeDailyBriefEmail';
+import WelcomeDailyBriefEmail from '../../../../emails/WelcomeDailyBriefEmail';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 

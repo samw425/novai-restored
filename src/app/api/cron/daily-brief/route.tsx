@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { render } from '@react-email/render';
-import DailyBriefEmail from '@/emails/DailyBriefEmail';
+import DailyBriefEmail from '../../../../emails/DailyBriefEmail';
 
 // Force dynamic to ensure fresh data
 export const dynamic = 'force-dynamic';
