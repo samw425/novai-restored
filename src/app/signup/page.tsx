@@ -92,9 +92,9 @@ export default function SignUpPage() {
                         </div>
 
                         <h1 className="text-6xl md:text-7xl font-serif font-bold text-stone-900 tracking-tight leading-[1.1]">
-                            Intelligence Infrastructure<br />
-                            <span className="text-stone-400">
-                                For the AI Era.
+                            The Signal You Need.<br />
+                            <span className="text-stone-300 blur-[2px] select-none transition-all duration-700 hover:blur-0 hover:text-stone-400 cursor-default">
+                                The Noise You Don't.
                             </span>
                         </h1>
 
