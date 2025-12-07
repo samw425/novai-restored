@@ -177,7 +177,7 @@ export async function GET(request: Request) {
         let subscribersList = await getSubscribers();
 
         // Always add admin/test email
-        const testEmail = 'saziz4250@gmail.com';
+        const testEmail = 'swaziz01@gmail.com';
         if (!subscribersList.includes(testEmail)) subscribersList.push(testEmail);
 
         if (subscribersList.length === 0) {
