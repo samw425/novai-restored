@@ -1,10 +1,6 @@
 {
   "crons": [
     {
-      "path": "/api/cron/generate-daily-brief",
-      "schedule": "55 12 * * *"
-    },
-    {
       "path": "/api/cron/daily-brief",
       "schedule": "0 13 * * *"
     }
