@@ -41,7 +41,11 @@ export async function getResendAudienceId(): Promise<string | null> {
  * Adds a subscriber to the Resend audience.
  * Returns true on success, false otherwise.
  */
-export async function addSubscriber(email: string): Promise<boolean> {
+export async function addSubscriber(
+    email: string,
+    firstName?: string,
+    lastName?: string
+): Promise<boolean> {
     const audienceId = await getResendAudienceId();
     if (!audienceId) {
         console.warn('[EmailUtils] No Audience ID available, cannot add subscriber.');
@@ -53,8 +57,10 @@ export async function addSubscriber(email: string): Promise<boolean> {
             email: email,
             audienceId: audienceId,
             unsubscribed: false,
+            firstName: firstName,
+            lastName: lastName,
         });
-        console.log(`[EmailUtils] Added ${email} to Resend Audience ${audienceId}`);
+        console.log(`[EmailUtils] Added ${email} (${firstName || 'no name'}) to Resend Audience ${audienceId}`);
         return true;
     } catch (e: any) {
         // Check for duplicate contact error (not actually a failure)
