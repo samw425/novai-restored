@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { addSubscriber, sendEmail } from '@/lib/email/utils';
+import { addSubscriber, sendSubscriberEmail, sendAdminEmail } from '@/lib/email/utils';
 import WelcomeDailyBriefEmail from '@emails/WelcomeDailyBriefEmail';
 
 // Optional Supabase - only create if env vars are present
@@ -43,7 +43,7 @@ export async function POST(request: Request) {
             }
         }
 
-        // Add to Resend Contacts
+        // Add to Resend Contacts (for tracking)
         const nameParts = name.split(' ');
         const firstName = nameParts[0];
         const lastName = nameParts.slice(1).join(' ');
@@ -53,8 +53,8 @@ export async function POST(request: Request) {
             console.warn(`[Signup] Could not add ${email} to Resend audience`);
         }
 
-        // Send Welcome Email to subscriber
-        const { error: welcomeError } = await sendEmail(
+        // Send Welcome Email to subscriber via Mailersend
+        const { error: welcomeError } = await sendSubscriberEmail(
             email,
             'Welcome to Novai — Your Daily Intelligence Brief',
             WelcomeDailyBriefEmail() as React.ReactElement
@@ -66,8 +66,8 @@ export async function POST(request: Request) {
             console.log(`[Signup] Welcome email sent to ${email}`);
         }
 
-        // Send notification to admin
-        const { error: notifError } = await sendEmail(
+        // Send notification to admin via Resend
+        const { error: notifError } = await sendAdminEmail(
             'saziz4250@gmail.com',
             `[Novai] New Subscriber: ${name}`,
             `
@@ -76,7 +76,7 @@ export async function POST(request: Request) {
                 <p><strong>Email:</strong> ${email}</p>
                 <p><strong>Organization:</strong> ${organization || 'N/A'}</p>
                 <p><strong>Timestamp:</strong> ${new Date().toISOString()}</p>
-            ` as any
+            `
         );
 
         if (notifError) {

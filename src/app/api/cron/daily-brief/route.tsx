@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getSubscribers, sendEmail } from '@/lib/email/utils';
+import { getSubscribers, sendSubscriberEmail } from '@/lib/email/utils';
 import DailyBriefEmail from '@emails/DailyBriefEmail';
 
 // Force dynamic to ensure fresh data
@@ -211,7 +211,7 @@ export async function GET(request: Request) {
                     { label: 'War Room Updates', url: `${baseUrl}/war-room` }
                 ].filter(link => link.url && link.label);
 
-                const { id, error } = await sendEmail(
+                const { id, error } = await sendSubscriberEmail(
                     email,
                     `Novai Daily Brief — ${today}`,
                     DailyBriefEmail({

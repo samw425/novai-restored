@@ -1,15 +1,19 @@
 import { Resend } from 'resend';
+import { MailerSend, EmailParams, Sender, Recipient } from 'mailersend';
+import { render } from '@react-email/render';
 
 // ----------------------------------------------------------------------------
-// RESEND CLIENT
+// EMAIL CLIENTS
 // ----------------------------------------------------------------------------
 const resend = new Resend(process.env.RESEND_API_KEY);
+const mailersend = new MailerSend({
+    apiKey: process.env.MAILERSEND_API_KEY || '',
+});
 
 /**
- * Get the sender address. Uses a custom domain if RESEND_FROM_EMAIL is set,
- * otherwise defaults to the Resend testing domain.
+ * Get the sender address for Resend (admin notifications).
  */
-export function getSenderAddress(): string {
+export function getResendSenderAddress(): string {
     return process.env.RESEND_FROM_EMAIL || 'Novai Daily Intelligence <briefing@resend.dev>';
 }
 
@@ -38,8 +42,7 @@ export async function getResendAudienceId(): Promise<string | null> {
 }
 
 /**
- * Adds a subscriber to the Resend audience.
- * Returns true on success, false otherwise.
+ * Adds a subscriber to the Resend audience (for tracking).
  */
 export async function addSubscriber(
     email: string,
@@ -98,33 +101,60 @@ export async function getSubscribers(): Promise<string[]> {
 }
 
 /**
- * Sends an email via Resend.
- * @param to - recipient email address(es)
- * @param subject - email subject
- * @param reactElement - the React email component to render
- * @returns The email ID on success, or null on failure.
+ * Sends an email to ADMIN via Resend (for notifications).
  */
-export async function sendEmail(
+export async function sendAdminEmail(
     to: string | string[],
     subject: string,
-    reactElement: React.ReactElement
+    htmlContent: string
 ): Promise<{ id: string | null; error: string | null }> {
     const toArray = Array.isArray(to) ? to : [to];
     try {
         const { data, error } = await resend.emails.send({
-            from: getSenderAddress(),
+            from: getResendSenderAddress(),
             to: toArray,
             subject: subject,
-            react: reactElement,
+            html: htmlContent,
         });
 
         if (error) {
-            console.error('[EmailUtils] Email send error:', error);
+            console.error('[EmailUtils] Admin email error:', error);
             return { id: null, error: error.message };
         }
         return { id: data?.id || null, error: null };
     } catch (e: any) {
-        console.error('[EmailUtils] Email send exception:', e);
+        console.error('[EmailUtils] Admin email exception:', e);
+        return { id: null, error: e.message || 'Unknown error' };
+    }
+}
+
+/**
+ * Sends an email to SUBSCRIBERS via Mailersend.
+ */
+export async function sendSubscriberEmail(
+    to: string,
+    subject: string,
+    reactElement: React.ReactElement
+): Promise<{ id: string | null; error: string | null }> {
+    try {
+        // Render React email to HTML
+        const htmlContent = await render(reactElement);
+
+        const sentFrom = new Sender('noreply@trial-pxkjn41nymjgz781.mlsender.net', 'Novai Daily Intelligence');
+        const recipients = [new Recipient(to, to)];
+
+        const emailParams = new EmailParams()
+            .setFrom(sentFrom)
+            .setTo(recipients)
+            .setSubject(subject)
+            .setHtml(htmlContent);
+
+        const response = await mailersend.email.send(emailParams);
+
+        console.log(`[EmailUtils] Subscriber email sent to ${to}`);
+        return { id: response.body?.message_id || null, error: null };
+    } catch (e: any) {
+        console.error('[EmailUtils] Subscriber email error:', e);
         return { id: null, error: e.message || 'Unknown error' };
     }
 }
