@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
-import { Resend } from 'resend';
-import { render } from '@react-email/render';
-import DailyBriefEmail from '../../../../emails/DailyBriefEmail';
+import { getSubscribers, sendEmail } from '@/lib/email/utils';
+import DailyBriefEmail from '@emails/DailyBriefEmail';
 
 // Force dynamic to ensure fresh data
 export const dynamic = 'force-dynamic';
@@ -11,7 +10,6 @@ export const dynamic = 'force-dynamic';
 // ----------------------------------------------------------------------------
 const MAX_RETRIES = 2; // Reduced to fit Vercel 10s limit
 const RETRY_DELAY_MS = 1000;
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 // ----------------------------------------------------------------------------
 // HELPERS
@@ -143,7 +141,7 @@ export async function GET(request: Request) {
         try {
             const [feedResponse, warRoomResponse] = await Promise.all([
                 fetch(`${baseUrl}/api/feed/live?category=All&limit=15`),
-                fetch(`${baseUrl}/api/feed/war-room`) // Corrected URL
+                fetch(`${baseUrl}/api/feed/war-room`)
             ]);
 
             const feedData = await feedResponse.json();
@@ -153,7 +151,6 @@ export async function GET(request: Request) {
             warRoomEvents = warRoomData.incidents?.slice(0, 5) || [];
         } catch (e) {
             console.error('[DailyBrief] Data fetch warning:', e);
-            // Proceed with whatever we have (or empty for fallback)
         }
 
         // 3. Generate Brief (AI with Retry)
@@ -175,37 +172,9 @@ export async function GET(request: Request) {
             dailyBrief = createFallbackBrief(today, articles);
         }
 
-        // 4. Fetch Subscribers (Resend)
+        // 4. Fetch Subscribers (using centralized util)
         console.log('[DailyBrief] Fetching subscribers from Resend...');
-        let subscribersList: string[] = [];
-        try {
-            // Try to find audience ID or just list default contacts if possible? 
-            // NOTE: resend.contacts.list REQUIRES audienceId.
-            let audienceId = process.env.RESEND_AUDIENCE_ID;
-            if (!audienceId) {
-                // @ts-ignore
-                const audiences = await resend.audiences.list();
-                // @ts-ignore
-                if (audiences.data && audiences.data.length > 0) {
-                    // @ts-ignore
-                    audienceId = audiences.data[0].id;
-                }
-            }
-
-            if (audienceId) {
-                const contacts = await resend.contacts.list({ audienceId });
-                // @ts-ignore
-                if (contacts.data && contacts.data.data) {
-                    // @ts-ignore
-                    subscribersList = contacts.data.data.filter((c: any) => !c.unsubscribed).map((c: any) => c.email);
-                } else if (contacts.data && Array.isArray(contacts.data)) {
-                    // @ts-ignore
-                    subscribersList = contacts.data.filter((c: any) => !c.unsubscribed).map((c: any) => c.email);
-                }
-            }
-        } catch (e) {
-            console.error('[DailyBrief] Subscriber fetch failed:', e);
-        }
+        let subscribersList = await getSubscribers();
 
         // Always add admin/test email
         const testEmail = 'saziz4250@gmail.com';
@@ -215,11 +184,10 @@ export async function GET(request: Request) {
             return NextResponse.json({ message: 'No subscribers found' });
         }
 
-        // 5. Send Emails
+        // 5. Send Emails (using centralized util)
         console.log(`[DailyBrief] Sending to ${subscribersList.length} subscribers...`);
         const emailResults = await Promise.all(subscribersList.map(async (email) => {
             try {
-                // Determine analyst notes, alerts etc from brief
                 const notes = dailyBrief.keySignals.map((s: any) => ({
                     title: s.title,
                     summary: s.summary,
@@ -232,21 +200,31 @@ export async function GET(request: Request) {
                     severity: 'critical'
                 } : undefined;
 
-                const { data, error } = await resend.emails.send({
-                    from: 'Novai Intelligence <brief@novai.intelligence>',
-                    to: [email],
-                    subject: dailyBrief.headline,
-                    react: DailyBriefEmail({
+                // Build 3-5 deeper intelligence links from source articles
+                const baseUrl = process.env.NEXT_PUBLIC_URL || 'https://novaibeta.vercel.app';
+                const deeperLinks = [
+                    ...dailyBrief.keySignals.slice(0, 3).map((s: any) => ({
+                        label: s.title?.slice(0, 50) + (s.title?.length > 50 ? '...' : ''),
+                        url: s.link
+                    })),
+                    { label: 'Browse the Global Feed', url: `${baseUrl}/global-feed` },
+                    { label: 'War Room Updates', url: `${baseUrl}/war-room` }
+                ].filter(link => link.url && link.label);
+
+                const { id, error } = await sendEmail(
+                    email,
+                    `Novai Daily Brief — ${today}`,
+                    DailyBriefEmail({
                         date: today,
                         analystNotes: notes,
-                        warRoomAlert: alert, // Fix type mismatch if generic any
+                        warRoomAlert: alert,
                         marketImpact: dailyBrief.marketImpact,
-                        extraLinks: []
-                    }) as React.ReactElement,
-                });
-                return { email, status: error ? 'failed' : 'sent', id: data?.id, error };
-            } catch (e) {
-                return { email, status: 'failed', error: e };
+                        extraLinks: deeperLinks.slice(0, 5)
+                    }) as React.ReactElement
+                );
+                return { email, status: error ? 'failed' : 'sent', id, error };
+            } catch (e: any) {
+                return { email, status: 'failed', error: e.message };
             }
         }));
 
@@ -267,3 +245,4 @@ export async function GET(request: Request) {
         return NextResponse.json({ error: metricError.message }, { status: 500 });
     }
 }
+
