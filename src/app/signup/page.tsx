@@ -88,19 +88,47 @@ export default function SignUpPage() {
                     <div className="space-y-10 text-center lg:text-left">
                         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-stone-200 text-stone-600 text-xs font-bold uppercase tracking-wider shadow-sm">
                             <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
-                            Daily Intelligence Brief
+                            Invitation Only — Limited Access
                         </div>
 
                         <h1 className="text-6xl md:text-7xl font-serif font-bold text-stone-900 tracking-tight leading-[1.1]">
-                            The Signal You Need.<br />
-                            <span className="text-stone-300 blur-[2px] select-none transition-all duration-700 hover:blur-0 hover:text-stone-400 cursor-default">
-                                The Noise You Don't.
+                            Intelligence Infrastructure<br />
+                            <span className="text-stone-400">
+                                For the AI Era.
                             </span>
                         </h1>
 
-                        <p className="text-xl text-stone-600 leading-relaxed max-w-xl mx-auto lg:mx-0 font-sans font-medium">
-                            Join the inner circle of decision-makers who start their day with Novai. A concise, AI-curated briefing on the technological singularity.
-                        </p>
+                        <div className="space-y-6 max-w-xl mx-auto lg:mx-0">
+                            <p className="text-xl text-stone-600 leading-relaxed font-sans font-medium">
+                                <strong className="text-stone-900">This is not a newsletter.</strong> It's a next-generation intelligence briefing system designed for decision-makers shaping the future of technology.
+                            </p>
+
+                            <p className="text-lg text-stone-500 leading-relaxed font-sans">
+                                As artificial intelligence reshapes global power structures, information asymmetry becomes the defining advantage. Novai exists to eliminate that gap for those building the future.
+                            </p>
+
+                            <div className="bg-stone-50 border border-stone-200 rounded-lg p-6 space-y-4">
+                                <h3 className="text-sm font-bold text-stone-900 uppercase tracking-wider font-sans">Early Access Includes:</h3>
+                                <ul className="space-y-3 text-sm text-stone-700 font-sans">
+                                    <li className="flex items-start gap-3">
+                                        <span className="text-blue-600 mt-0.5">→</span>
+                                        <span><strong>Pre-launch access</strong> to intelligence infrastructure before public release</span>
+                                    </li>
+                                    <li className="flex items-start gap-3">
+                                        <span className="text-blue-600 mt-0.5">→</span>
+                                        <span><strong>Founding member status</strong> with permanent platform benefits</span>
+                                    </li>
+                                    <li className="flex items-start gap-3">
+                                        <span className="text-blue-600 mt-0.5">→</span>
+                                        <span><strong>Direct influence</strong> on feature development and intelligence priorities</span>
+                                    </li>
+                                    <li className="flex items-start gap-3">
+                                        <span className="text-blue-600 mt-0.5">→</span>
+                                        <span><strong>Exclusive briefings</strong> on AI developments, geopolitics, and emerging technology</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
 
                         <div className="flex flex-col sm:flex-row gap-8 justify-center lg:justify-start text-sm font-bold text-stone-500 font-sans border-t border-stone-200 pt-8 w-fit mx-auto lg:mx-0">
                             <div className="flex items-center gap-3">
@@ -109,7 +137,7 @@ export default function SignUpPage() {
                             </div>
                             <div className="flex items-center gap-3">
                                 <Zap className="w-5 h-5 text-stone-900" />
-                                <span className="text-stone-700">Executive Summary</span>
+                                <span className="text-stone-700">AI-Synthesized</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <Globe className="w-5 h-5 text-stone-900" />
@@ -125,7 +153,7 @@ export default function SignUpPage() {
                             <div className="border border-stone-100 rounded-lg p-8 md:p-10 h-full relative z-10 bg-white">
 
                                 <div className="mb-8 border-b border-stone-100 pb-6">
-                                    <h3 className="text-2xl font-serif font-bold text-stone-900 mb-2">Subscribe to Briefing</h3>
+                                    <h3 className="text-2xl font-serif font-bold text-stone-900 mb-2">Join the Waitlist</h3>
                                     <p className="text-stone-500 text-sm font-medium font-sans">Secure. Concise. Essential.</p>
                                 </div>
 
@@ -178,7 +206,7 @@ export default function SignUpPage() {
                                             'Processing...'
                                         ) : (
                                             <>
-                                                Subscribe Free
+                                                Join Waitlist
                                                 <ArrowRight className="w-5 h-5" />
                                             </>
                                         )}
