@@ -27,14 +27,6 @@ export function BreadcrumbHeader() {
 
                 {/* Actions */}
                 <div className="flex items-center gap-3 md:gap-4 ml-auto lg:ml-0">
-                    <button
-                        onClick={() => setIsSignUpOpen(true)}
-                        className="flex items-center gap-2 bg-[#0F172A] hover:bg-gray-800 text-white text-xs font-bold px-4 py-2 rounded-lg transition-all shadow-sm"
-                    >
-                        <UserPlus className="h-3 w-3" />
-                        GET DAILY BRIEFS
-                    </button>
-
                     <div className="relative hidden md:block group">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors" size={14} />
                         <input

@@ -619,11 +619,6 @@ export function Sidebar() {
                         <Link href="/about" className="hover:text-gray-600 transition-colors">Status</Link>
                         <Link href="/about" className="hover:text-gray-600 transition-colors">Privacy</Link>
                     </div>
-
-                    <Link href="/signup" className="w-full bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold py-3 rounded-lg flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
-                        <span className="text-white/80">→</span>
-                        GET DAILY BRIEFS
-                    </Link>
                 </div>
 
             </TooltipProvider>

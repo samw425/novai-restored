@@ -39,7 +39,7 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
                 }, 3000);
             }
         } catch (error) {
-            console.error('Signup failed', error);
+            console.error('Waitlist signup failed', error);
         } finally {
             setIsLoading(false);
         }
@@ -61,17 +61,17 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
                             <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
                                 <CheckCircle size={32} />
                             </div>
-                            <h3 className="text-2xl font-bold text-slate-900 mb-2">Subscribed</h3>
+                            <h3 className="text-2xl font-bold text-slate-900 mb-2">You're on the list</h3>
                             <p className="text-slate-600">
-                                You are now subscribed to our intelligence team. Check your email for confirmation.
+                                We'll notify you when Novai Intelligence launches. Get ready for a new era of strategic insight.
                             </p>
                         </div>
                     ) : (
                         <>
                             <div className="text-center mb-8">
-                                <h2 className="text-2xl font-bold text-slate-900 mb-2">Subscribe to Daily Briefing</h2>
+                                <h2 className="text-2xl font-bold text-slate-900 mb-2">Join the Waitlist</h2>
                                 <p className="text-slate-600 text-sm">
-                                    Join the elite circle of decision-makers receiving daily Novai intelligence.
+                                    Be among the first to access next-generation intelligence infrastructure designed for decision-makers shaping the AI era.
                                 </p>
                             </div>
 
@@ -128,10 +128,10 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
                                     {isLoading ? (
                                         <>
                                             <Loader2 size={18} className="animate-spin" />
-                                            Encrypting...
+                                            Joining...
                                         </>
                                     ) : (
-                                        'Subscribe'
+                                        'Join Waitlist'
                                     )}
                                 </button>
                             </form>
