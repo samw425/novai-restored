@@ -154,7 +154,7 @@ export default function SignUpPage() {
 
                                 <div className="mb-8 border-b border-stone-100 pb-6">
                                     <h3 className="text-2xl font-serif font-bold text-stone-900 mb-2">Join the Waitlist</h3>
-                                    <p className="text-stone-500 text-sm font-medium font-sans">Secure. Concise. Essential.</p>
+                                    <p className="text-stone-500 text-sm font-medium font-sans">Request early access. Limited invitations.</p>
                                 </div>
 
                                 <form onSubmit={handleSubmit} className="space-y-5">
