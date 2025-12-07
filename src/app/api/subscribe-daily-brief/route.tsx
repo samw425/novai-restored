@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { addSubscriber, sendEmail } from '@/lib/email/utils';
+import { addSubscriber, sendSubscriberEmail } from '@/lib/email/utils';
 import WelcomeDailyBriefEmail from '@emails/WelcomeDailyBriefEmail';
 
 export async function POST(request: Request) {
@@ -18,8 +18,8 @@ export async function POST(request: Request) {
             console.warn(`[Subscribe] Could not add ${email} to audience, but proceeding with welcome email.`);
         }
 
-        // 2. Send Welcome Email
-        const { error } = await sendEmail(
+        // 2. Send Welcome Email via Mailersend
+        const { error } = await sendSubscriberEmail(
             email,
             'Welcome to Novai — Your Daily Intelligence Brief',
             WelcomeDailyBriefEmail() as React.ReactElement
