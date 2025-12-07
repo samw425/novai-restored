@@ -30,9 +30,9 @@ export async function GET(request: Request) {
         // Fetch War Room data
         let warRoomEvents: any[] = [];
         try {
-            const warRoomResponse = await fetch(`${baseUrl}/api/war-room`);
+            const warRoomResponse = await fetch(`${baseUrl}/api/feed/war-room`);
             const warRoomData = await warRoomResponse.json();
-            warRoomEvents = warRoomData.events?.slice(0, 5) || [];
+            warRoomEvents = warRoomData.incidents?.slice(0, 5) || [];
         } catch (e) {
             console.warn('[GenerateBrief] War Room fetch failed, proceeding without:', e);
         }

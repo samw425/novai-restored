@@ -1,16 +1,40 @@
 {
   "date": "2025-12-07",
-  "generatedAt": "2025-12-07T08:19:36.466Z",
-  "headline": "AI-INTEL BRIEF: SYSTEM UPDATE",
+  "generatedAt": "2025-12-07T08:37:54.667Z",
+  "headline": "AI-INTEL BRIEF: MASTERING ISTIO CANARY DEPLOYMENTS:",
   "isFallback": true,
   "keySignals": [
     {
-      "title": "Daily Brief Generation Delayed",
-      "summary": "Today's live brief is delayed due to a system update. We will send an updated briefing shortly.",
-      "link": "undefined/global-feed",
-      "category": "SYSTEM"
+      "title": "Mastering Istio Canary Deployments: Full CI/CD Pipeline with Jenkins, GitHub Actions & ArgoCD",
+      "summary": "Modern DevOps teams want zero downtime, safe deployments, and fast rollbacks. With Istio + CI/CD, we can automate:\nDeploying microservices\nTagging versions\nUpdating Kubernetes manifests\nGradually shif",
+      "link": "https://dev.to/srinivasamcjf/mastering-istio-canary-deployments-full-cicd-pipeline-with-jenkins-github-actions-argocd-l1l",
+      "category": "AI_MODELS"
+    },
+    {
+      "title": "Creator IShowSpeed sued for allegedly punching, choking viral humanoid Rizzbot",
+      "summary": "Creator IShowSpeed sued after punching, choking viral humanoid Rizzbot.",
+      "link": "https://techcrunch.com/2025/12/06/creator-ishowspeed-sued-for-allegedly-punching-choking-viral-humanoid-rizzbot/",
+      "category": "ROBOTICS"
+    },
+    {
+      "title": "How robots learn to handle the heat with synthetic data",
+      "summary": "Thermal sensors and synthetic data can help train robots for a wider range of scenarios than traditional sensors alone, says Bifrost AI.\nThe post How robots learn to handle the heat with synthetic dat",
+      "link": "https://www.therobotreport.com/synthetic-data-helps-robots-learn-handle-heat/",
+      "category": "ROBOTICS"
+    },
+    {
+      "title": "Why your crypto wealth may never make it to the next generation",
+      "summary": "Crypto investors face a wide range of estate planning issues that could leave digital assets tied up in court or lost forever rather than passed to heirs.",
+      "link": "https://www.cnbc.com/2025/12/06/crypto-investors-estate-planning-taxes-mistakes.html",
+      "category": "MARKET"
+    },
+    {
+      "title": "Hyundai Motor Group unveils its first mass-produced mobility robot platform",
+      "summary": "Hyundai Motor Group's mobile platform is available in two configurations, adapted to suit various industry needs.\nThe post Hyundai Motor Group unveils its first mass-produced mobility robot platform a",
+      "link": "https://www.therobotreport.com/hyundai-motor-group-unveils-first-mass-produced-mobility-robot-platform/",
+      "category": "ROBOTICS"
     }
   ],
-  "marketImpact": "Check the live Global Feed for real-time market signals.",
-  "warRoomNote": "Visit the War Room for live geopolitical updates."
+  "marketImpact": "Visit the Global Feed for real-time market and capital flow updates.",
+  "warRoomNote": "Check the War Room for live geopolitical developments."
 }
