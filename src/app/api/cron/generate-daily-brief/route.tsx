@@ -81,7 +81,7 @@ export async function GET(request: Request) {
         const finalBrief = {
             id: `brief-${today}`,
             date: dailyBrief.date || today,
-            clearanceLevel: 'TOP SECRET // NOFORN',
+            clearanceLevel: 'RESTRICTED // INTERNAL',
             headline: dailyBrief.headline,
             generatedAt: new Date().toISOString(),
             isFallback: dailyBrief.isFallback || false,
@@ -160,7 +160,7 @@ async function generateBriefWithAI(articles: any[], warRoomEvents: any[], date: 
         : '- No major war room alerts today.';
 
     const prompt = `
-    You are an elite AI Intelligence Analyst operating at a TOP SECRET // NOFORN level.
+    You are an elite AI Intelligence Analyst operating at a SENSITIVE // INTERNAL level.
     Your mission is to generate today's "${date}" Daily Intelligence Brief.
 
     RAW INTELLIGENCE STREAMS:

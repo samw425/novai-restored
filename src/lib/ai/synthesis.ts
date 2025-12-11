@@ -36,14 +36,14 @@ export class SynthesisService {
         - "impact": Choose from 'CRITICAL', 'SEVERE', 'HIGH', 'MEDIUM'.
         - "category": Match the input categories or use 'GLOBAL AI RACE', 'CYBER WARFARE', 'MODEL INTELLIGENCE', 'GEOPOLITICS', 'MARKET SIGNAL', 'WAR ROOM'.
         - "headline": Create a short, punchy, 3-word uppercase title like "AI-INTEL BRIEF: [SUBJECT]".
-        - "clearanceLevel": 'TOP SECRET // NOFORN'.
+        - "clearanceLevel": 'RESTRICTED // INTERNAL'.
 
         OUTPUT FORMAT:
         Return ONLY valid JSON. No markdown formatting.
         {
           "id": "brief-${today}",
           "date": "${today}",
-          "clearanceLevel": "TOP SECRET // NOFORN",
+          "clearanceLevel": "RESTRICTED // INTERNAL",
           "headline": "AI-INTEL BRIEF: ...",
           "items": [
             {
@@ -78,7 +78,7 @@ export class SynthesisService {
       return {
         id: `brief-${today}-sim`,
         date: today,
-        clearanceLevel: 'TOP SECRET // NOFORN',
+        clearanceLevel: 'RESTRICTED // INTERNAL',
         headline: 'AI-INTEL BRIEF: SYSTEM OFFLINE',
         items: [
           {

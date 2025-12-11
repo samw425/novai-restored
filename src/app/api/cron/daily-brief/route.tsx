@@ -83,7 +83,7 @@ async function generateBriefWithAI(articles: any[], warRoomEvents: any[], date: 
         : '- No major war room alerts today.';
 
     const prompt = `
-    You are an elite AI Intelligence Analyst operating at a TOP SECRET // NOFORN level.
+    You are an elite AI Intelligence Analyst operating at a SENSITIVE // INTERNAL level.
     Your mission is to generate today's "${date}" Daily Intelligence Brief.
 
     RAW INTELLIGENCE STREAMS:

@@ -11,7 +11,7 @@ export interface BriefItem {
 export interface DailyBrief {
     id: string;
     date: string; // YYYY-MM-DD
-    clearanceLevel: 'TOP SECRET // NOFORN' | 'SECRET' | 'CONFIDENTIAL';
+    clearanceLevel: 'RESTRICTED // INTERNAL' | 'SENSITIVE' | 'PUBLIC';
     headline: string;
     items: BriefItem[];
 }
@@ -20,7 +20,7 @@ export const DAILY_BRIEFS: DailyBrief[] = [
     {
         id: 'brief-2025-12-05',
         date: '2025-12-05',
-        clearanceLevel: 'TOP SECRET // NOFORN',
+        clearanceLevel: 'RESTRICTED // INTERNAL',
         headline: 'AI-INTEL BRIEF: SOVEREIGN COMPUTE SURGE',
         items: [
             {
@@ -64,7 +64,7 @@ export const DAILY_BRIEFS: DailyBrief[] = [
     {
         id: 'brief-2025-12-04',
         date: '2025-12-04',
-        clearanceLevel: 'SECRET',
+        clearanceLevel: 'SENSITIVE',
         headline: 'AI-INTEL BRIEF: REGULATORY SIEGE',
         items: [
             {

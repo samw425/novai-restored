@@ -133,7 +133,7 @@ export function DossierView({ profile, latestFeedItem }: DossierViewProps) {
                     <div className="relative z-10">
                         <div className="flex items-center gap-2 mb-6">
                             <Lock size={16} className="text-amber-500" />
-                            <h3 className="text-xs font-black text-amber-500 uppercase tracking-[0.2em]">Classified Annex // NOFORN</h3>
+                            <h3 className="text-xs font-black text-amber-500 uppercase tracking-[0.2em]">Restricted Analysis // INTERNAL</h3>
                         </div>
 
                         <div className="space-y-4">
