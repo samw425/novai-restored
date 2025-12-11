@@ -302,25 +302,28 @@ export default function AntiTrustPage() {
                     <Scale className="h-4 w-4" />
                     Active Litigation Timeline (2025-2026)
                 </h3>
-                <div className="relative">
-                    <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-slate-100 -translate-y-1/2 hidden md:block"></div>
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                        {[
-                            { date: 'DEC 2025', case: 'US v. Google', event: 'Remedies Phase: Breakup Proposed', status: 'CURRENT' },
-                            { date: 'FEB 2026', case: 'EU DMA', event: 'Gatekeeper Status Review', status: 'UPCOMING' },
-                            { date: 'APR 2026', case: 'FTC v. Amazon', event: 'Trial Scheduled to Begin', status: 'SCHEDULED' },
-                            { date: 'JUN 2026', case: 'DOJ v. Apple', event: 'Discovery Phase Concludes', status: 'PROJECTED' }
-                        ].map((event, i) => (
-                            <div key={i} className="relative bg-white p-4 border border-slate-200 md:border-transparent md:bg-transparent md:p-0">
-                                <div className="hidden md:block absolute top-1/2 left-1/2 w-3 h-3 bg-white border-2 border-blue-600 rounded-full -translate-x-1/2 -translate-y-1/2 z-10"></div>
-                                <div className="md:text-center space-y-1">
-                                    <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{event.date}</div>
-                                    <div className="font-bold text-blue-600 text-sm">{event.case}</div>
-                                    <div className="text-xs text-slate-600 font-medium leading-tight">{event.event}</div>
-                                </div>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    {[
+                        { date: 'DEC 2025', case: 'US v. Google', event: 'Remedies Phase: Breakup Proposed', url: 'https://www.justice.gov/atr/case/us-v-google-llc-2020' },
+                        { date: 'FEB 2026', case: 'EU DMA', event: 'Gatekeeper Status Review', url: 'https://ec.europa.eu/commission/presscorner/detail/en/ip_24_3433' },
+                        { date: 'APR 2026', case: 'FTC v. Amazon', event: 'Trial Scheduled to Begin', url: 'https://www.ftc.gov/legal-library/browse/cases-proceedings/2210077-amazoncom-inc-ftc-v' },
+                        { date: 'JUN 2026', case: 'DOJ v. Apple', event: 'Discovery Phase Concludes', url: 'https://www.justice.gov/atr/case/us-v-apple-inc' }
+                    ].map((event, i) => (
+                        <a
+                            key={i}
+                            href={event.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block bg-white p-4 border border-slate-200 hover:border-blue-400 hover:shadow-md rounded-lg transition-all group"
+                        >
+                            <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{event.date}</div>
+                            <div className="font-bold text-blue-600 text-sm group-hover:text-blue-700 transition-colors">{event.case}</div>
+                            <div className="text-xs text-slate-600 font-medium leading-tight mt-1">{event.event}</div>
+                            <div className="text-[10px] font-bold text-slate-400 group-hover:text-blue-600 uppercase tracking-wide mt-2 transition-colors">
+                                View Docket →
                             </div>
-                        ))}
-                    </div>
+                        </a>
+                    ))}
                 </div>
             </div>
 
