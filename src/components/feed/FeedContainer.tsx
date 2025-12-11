@@ -159,7 +159,7 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
             <SignUpModal isOpen={isSignUpOpen} onClose={() => setIsSignUpOpen(false)} />
 
             {/* System Header Components */}
-            <div className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-200">
+            <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-gray-200">
                 {showTicker && (
                     <>
                         <div className="flex items-center justify-between pr-4">
