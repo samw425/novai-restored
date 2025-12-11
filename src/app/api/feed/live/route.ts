@@ -47,7 +47,7 @@ export async function GET(request: Request) {
                 try {
                     const feed = await parser.parseURL(source.url);
                     // Limit to 3 items per source at ingestion level to save memory
-                    return feed.items.slice(0, 3).map((item, itemIndex) => ({
+                    return feed.items.slice(0, 10).map((item, itemIndex) => ({
                         id: `${source.id}-${Date.now()}-${sourceIndex}-${itemIndex}-${item.guid || item.link || Math.random()}`,
                         source: source.name,
                         title: item.title || 'Untitled',
@@ -163,6 +163,12 @@ export async function GET(request: Request) {
                     if (researchKeywords.some(k => text.includes(k))) return true;
                 }
 
+                // POLICY EXCEPTION: Ensure regulatory news isn't filtered out
+                if (article.category === 'policy') {
+                    const policyKeywords = ['regulation', 'law', 'act', 'bill', 'congress', 'senate', 'parliament', 'eu', 'commission', 'ftc', 'doj', 'compliance', 'safety', 'governance', 'ethics', 'ban', 'restriction', 'tariffs', 'trade', 'export control', 'white house', 'biden', 'trump', 'executive order'];
+                    if (policyKeywords.some(k => text.includes(k))) return true;
+                }
+
                 const strongMatches = strongSignals.filter(signal => text.includes(signal)).length;
                 const weakMatches = weakSignals.filter(signal => text.includes(signal)).length;
 
@@ -214,7 +220,7 @@ export async function GET(request: Request) {
         // Filter by category if needed
         let filteredArticles = articlesCache;
 
-        if (category !== 'All') {
+        if (category.toLowerCase() !== 'all') {
             const targetCategory = category.toLowerCase();
             filteredArticles = articlesCache.filter(a => a.category === targetCategory);
             console.log(`Filtering for category '${targetCategory}': found ${filteredArticles.length} articles`);
@@ -230,7 +236,15 @@ export async function GET(request: Request) {
             console.log(`Filtering for search '${searchQuery}': found ${filteredArticles.length} articles`);
         }
 
-        const articles = filteredArticles.slice(0, limit);
+        // Filter by specific source if needed (optional)
+        const sourceParam = searchParams.get('source');
+        if (sourceParam) {
+            filteredArticles = filteredArticles.filter(a => a.source === sourceParam);
+        }
+
+        const page = parseInt(searchParams.get('page') || '1');
+        const offset = (page - 1) * limit;
+        const articles = filteredArticles.slice(offset, offset + limit);
 
         return NextResponse.json({
             articles,

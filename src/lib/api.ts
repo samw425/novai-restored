@@ -3,9 +3,9 @@ import { Article, MarketTicker, RiskEvent, Tool, Trend, Signal, DailyBriefing } 
 /**
  * Fetch articles from live multi-source RSS aggregator
  */
-export const fetchArticles = async (limit = 20, category = 'All', search?: string): Promise<Article[]> => {
+export const fetchArticles = async (limit = 20, category = 'All', search?: string, page = 1): Promise<Article[]> => {
     try {
-        let url = `/api/feed/live?category=${encodeURIComponent(category)}&limit=${limit}`;
+        let url = `/api/feed/live?category=${encodeURIComponent(category)}&limit=${limit}&page=${page}`;
         if (search) {
             url += `&search=${encodeURIComponent(search)}`;
         }
@@ -131,5 +131,23 @@ export const fetchTrends = async (): Promise<Trend[]> => {
 };
 
 export const checkNewArticles = async (lastId: string): Promise<number> => {
-    return 0;
+    try {
+        // Fetch only the latest 5 articles to check for new ones
+        const articles = await fetchArticles(5, 'All');
+        if (articles.length === 0) return 0;
+
+        // Find position of lastId
+        const index = articles.findIndex(a => a.id === lastId);
+
+        // If lastId not found, potentially all 5 are new (or user is very far behind)
+        if (index === -1) return 1; // Indicate at least 1 new
+
+        // If found at index 0, no new articles
+        if (index === 0) return 0;
+
+        // If found at index > 0, that many new articles
+        return index;
+    } catch (e) {
+        return 0;
+    }
 };

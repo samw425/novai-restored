@@ -97,24 +97,51 @@ export default function IntelligenceBriefPage() {
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-12">
-                                    {dailyBrief.items.map((item) => (
-                                        <div key={item.id} className="group">
-                                            <div className="flex items-center gap-2 mb-3">
-                                                <span className={`w-2 h-2 rounded-full ${item.impact === 'CRITICAL' ? 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.5)]' :
-                                                    item.impact === 'SEVERE' ? 'bg-orange-500' :
-                                                        item.impact === 'HIGH' ? 'bg-blue-500' : 'bg-slate-400'
-                                                    }`} />
-                                                <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-                                                    {item.category}
-                                                </span>
-                                            </div>
-                                            <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-blue-700 transition-colors">
-                                                {item.title}
-                                            </h3>
-                                            <p className="text-slate-600 leading-relaxed">
-                                                {item.summary}
-                                            </p>
+                                {/* Single Column "Report" Layout */}
+                                <div className="max-w-3xl mx-auto space-y-16">
+                                    {dailyBrief.items.map((item, index) => (
+                                        <div key={item.id} className="group relative">
+                                            {/* Connector Line (except for last item) */}
+                                            {index !== dailyBrief.items.length - 1 && (
+                                                <div className="absolute left-[11px] top-12 bottom-[-64px] w-[2px] bg-slate-100 group-hover:bg-blue-50 transition-colors" />
+                                            )}
+
+                                            <a
+                                                href={item.link}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="block pl-10 relative"
+                                            >
+                                                {/* Status Dot */}
+                                                <div className={`absolute left-0 top-2 w-6 h-6 rounded-full border-4 border-white shadow-sm flex items-center justify-center ${item.impact === 'CRITICAL' ? 'bg-red-500' :
+                                                        item.impact === 'SEVERE' ? 'bg-orange-500' :
+                                                            item.impact === 'HIGH' ? 'bg-blue-500' : 'bg-slate-400'
+                                                    }`}>
+                                                    <div className="w-1.5 h-1.5 bg-white rounded-full opacity-50" />
+                                                </div>
+
+                                                <div className="flex items-center gap-3 mb-3">
+                                                    <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">
+                                                        {item.category}
+                                                    </span>
+                                                    <span className="text-xs font-medium text-slate-300">|</span>
+                                                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                                                        Source: {item.source || 'INTEL WIRE'}
+                                                    </span>
+                                                </div>
+
+                                                <h3 className="text-2xl font-bold text-slate-900 mb-4 group-hover:text-blue-700 transition-colors leading-tight">
+                                                    {item.title}
+                                                </h3>
+
+                                                <p className="text-slate-600 leading-relaxed text-lg border-l-2 border-slate-100 pl-6 group-hover:border-blue-200 transition-colors">
+                                                    {item.summary}
+                                                </p>
+
+                                                <div className="mt-4 pl-6 flex items-center gap-2 text-sm font-bold text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-wide">
+                                                    Read Full Source <ExternalLink className="w-4 h-4" />
+                                                </div>
+                                            </a>
                                         </div>
                                     ))}
                                 </div>

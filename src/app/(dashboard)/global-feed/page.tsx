@@ -19,7 +19,7 @@ export default function GlobalFeedPage() {
                         <h1 className="text-6xl md:text-8xl font-sans font-extrabold text-slate-900 tracking-tighter leading-[0.9]">
                             Global Intelligence.
                             <br />
-                            <span className="text-slate-900">For the AI Era.</span>
+                            <span className="text-royal-gradient">For the AI Era.</span>
                         </h1>
                         <p className="text-xl md:text-2xl text-slate-500 font-medium max-w-2xl mx-auto leading-relaxed font-sans tracking-tight">
                             The signal you need. The noise you don't.
@@ -28,7 +28,7 @@ export default function GlobalFeedPage() {
 
                     {/* Stats/Badges - Command Center Style */}
                     <div className="flex flex-wrap items-center justify-center gap-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
-                        <div className="flex items-center gap-3 px-5 py-2.5 bg-white border border-slate-200 rounded-lg shadow-sm hover:border-slate-300 transition-colors group">
+                        <div className="glass-premium flex items-center gap-3 px-5 py-2.5 bg-white/60 border-slate-200/50 rounded-lg shadow-sm hover:border-blue-200 transition-colors group">
                             <div className="relative">
                                 <div className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></div>
                                 <div className="absolute inset-0 w-2 h-2 rounded-full bg-emerald-500 blur-sm opacity-50"></div>
@@ -39,7 +39,7 @@ export default function GlobalFeedPage() {
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-3 px-5 py-2.5 bg-white border border-slate-200 rounded-lg shadow-sm hover:border-slate-300 transition-colors group">
+                        <div className="glass-premium flex items-center gap-3 px-5 py-2.5 bg-white/60 border-slate-200/50 rounded-lg shadow-sm hover:border-blue-200 transition-colors group">
                             <div className="relative">
                                 <div className="w-2 h-2 rounded-full bg-amber-500"></div>
                                 <div className="absolute inset-0 w-2 h-2 rounded-full bg-amber-400 blur-sm opacity-50"></div>
@@ -50,7 +50,7 @@ export default function GlobalFeedPage() {
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-3 px-5 py-2.5 bg-white border border-slate-200 rounded-lg shadow-sm hover:border-slate-300 transition-colors group">
+                        <div className="glass-premium flex items-center gap-3 px-5 py-2.5 bg-white/60 border-slate-200/50 rounded-lg shadow-sm hover:border-blue-200 transition-colors group">
                             <div className="relative">
                                 <div className="w-2 h-2 rounded-full bg-slate-600"></div>
                                 <div className="absolute inset-0 w-2 h-2 rounded-full bg-slate-500 blur-sm opacity-50"></div>

@@ -83,33 +83,49 @@ async function generateBriefWithAI(articles: any[], warRoomEvents: any[], date: 
         : '- No major war room alerts today.';
 
     const prompt = `
-    You are an elite AI Intelligence Analyst. Create today's "${date}" Daily Intelligence Brief.
+    You are an elite AI Intelligence Analyst operating at a TOP SECRET // NOFORN level.
+    Your mission is to generate today's "${date}" Daily Intelligence Brief.
 
-    RAW DATA:
-    === GLOBAL FEED ===
+    RAW INTELLIGENCE STREAMS:
+    
+    === GLOBAL FEED (Tech/Market Signals) ===
     ${articlesContext}
-    === WAR ROOM ===
+    
+    === WAR ROOM (Geopolitical Threats) ===
     ${warRoomContext}
 
-    MISSION:
-    Summarize TOP 3-5 most significant AI/tech developments.
-    Tone: Professional intelligence-report. No fluff.
+    COMMANDER'S INTENT:
+    Generate a highly detailed, executive-level intelligence synthesis of the 4 most critical developments.
+    
+    REQUIREMENTS:
+    1. **DEPTH IS CRITICAL**: Do NOT write short summaries. Each signal must have a **6-8 sentence "Deep Dive" paragraph** explaining the *strategic implication*, not just the news.
+    2. **STRICT ATTRIBUTION**: Every single point MUST have a valid source link from the provided data.
+    3. **TONE**: Extremely professional, objective, high-stakes intelligence reporting.
+    4. **NO FLUFF**: Every sentence must add value.
+
+    Use these categories ONLY:
+    - GLOBAL AI RACE
+    - CYBER WARFARE
+    - MODEL INTELLIGENCE
+    - MARKET SIGNAL
 
     OUTPUT FORMAT (JSON ONLY):
     {
       "date": "${date}",
-      "headline": "AI-INTEL BRIEF: [2-4 word summary]",
+      "headline": "AI-INTEL BRIEF: [POWERFUL 3-WORD THEME]",
       "keySignals": [
         {
-          "title": "Signal headline",
-          "summary": "1-2 sentence summary.",
-          "link": "source URL from data",
-          "category": "AI_MODELS | POLICY | CHIPS | ROBOTICS | MARKET | GEOPOLITICS"
+          "title": "Compelling Headline",
+          "summary": "Full 6-8 sentence analysis. Sentence 1: The Event. Sentence 2-4: Context & Details. Sentence 5-8: Strategic Implications & Future Outlook.",
+          "link": "URL_FROM_SOURCE_DATA_ONLY",
+          "category": "CATEGORY_FROM_LIST_ABOVE"
         }
       ],
-      "marketImpact": "One sentence on market implications.",
-      "warRoomNote": "One sentence on key geopolitical development."
-    }`;
+      "marketImpact": "Strategic analysis of capital flow implications.",
+      "warRoomNote": "Brief status update on active conflict zones."
+    }
+    
+    Return ONLY valid JSON. No markdown.`;
 
     const result = await model.generateContent(prompt);
     const responseText = result.response.text();

@@ -34,6 +34,8 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
 
     const { ref, inView } = useInView();
 
+    const [page, setPage] = useState(1);
+
     const loadArticles = useCallback(async (reset = false) => {
         if (loading) return;
 
@@ -41,13 +43,20 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
 
         try {
             let newArticles: Article[] = [];
+            const targetPage = reset ? 1 : page + 1;
+
             if (viewMode === 'live') {
-                newArticles = await fetchArticles(10, category);
+                newArticles = await fetchArticles(10, category, undefined, targetPage);
             } else {
                 // Fetch 30-day top stories
                 const response = await fetch(`/api/feed/top-30d?category=${category}`);
                 const data = await response.json();
                 newArticles = data.articles || [];
+            }
+
+            // Check if we hit end of stream
+            if (viewMode === 'live' && newArticles.length < 10) {
+                setHasMore(false);
             }
 
             setArticles(prev => {
@@ -57,7 +66,11 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
                 return [...prev, ...uniqueNew];
             });
 
-            // If in 30-day mode, we loaded everything at once, so no more to load
+            if (viewMode === 'live') {
+                setPage(targetPage);
+            }
+
+            // If in 30-day mode, we loaded everything at once
             if (viewMode === '30-day') {
                 setHasMore(false);
             }
@@ -67,36 +80,32 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
         } finally {
             setLoading(false);
         }
-    }, [cursor, category, loading, viewMode]);
+    }, [category, loading, viewMode, page]);
 
     // Initial load & Category/ViewMode change
     useEffect(() => {
         setCursor(undefined);
         setHasMore(true);
         setArticles([]);
+        setPage(1);
 
         const init = async () => {
             setLoading(true);
             try {
                 // Use forcedCategory if present, otherwise current state category
                 const targetCategory = forcedCategory || category;
-                const apiCategory = targetCategory === 'all' ? 'All' : targetCategory;
+                // ... rest of init logic remains logically similar but using fetchArticles
+                const articles = await fetchArticles(10, targetCategory, undefined, 1); // Page 1
+                setArticles(articles || []);
 
-                let url = `/api/feed/live?category=${apiCategory}&limit=30`;
-                if (viewMode === '30-day') {
-                    url = `/api/feed/top-30d?category=${apiCategory}`;
-                }
-
-                const response = await fetch(url, {
-                    cache: 'no-store'
-                });
-                const data = await response.json();
-                setArticles(data.articles || []);
-
-                if (viewMode === '30-day') {
-                    setHasMore(false);
-                } else {
+                if (viewMode === 'live') {
+                    setPage(1);
                     setHasMore(true);
+                } else if (viewMode === '30-day') {
+                    const res = await fetch(`/api/feed/top-30d?category=${targetCategory}`);
+                    const data = await res.json();
+                    setArticles(data.articles || []);
+                    setHasMore(false);
                 }
             } finally {
                 setLoading(false);
@@ -129,12 +138,14 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
     const handleRefresh = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
         setNewCount(0);
+        setPage(1);
+        setHasMore(true);
+
         const refresh = async () => {
             setLoading(true);
             try {
-                const articles = await fetchArticles(10);
+                const articles = await fetchArticles(10, category, undefined, 1);
                 setArticles(articles);
-                setHasMore(true);
             } finally {
                 setLoading(false);
             }

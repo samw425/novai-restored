@@ -163,7 +163,7 @@ export function MonthlyIntelBrief() {
                                                 {item.title}
                                             </h3>
 
-                                            <p className="text-xs text-slate-400 leading-relaxed mb-4 line-clamp-4 border-l-2 border-slate-700 pl-3 group-hover:border-blue-500/50 transition-colors flex-1">
+                                            <p className="text-xs text-slate-400 leading-relaxed mb-4 border-l-2 border-slate-700 pl-3 group-hover:border-blue-500/50 transition-colors flex-1">
                                                 {item.summary}
                                             </p>
 

@@ -77,8 +77,29 @@ export async function GET(request: Request) {
             fs.mkdirSync(briefsDir, { recursive: true });
         }
 
+        // Transform to match DailyBrief interface
+        const finalBrief = {
+            id: `brief-${today}`,
+            date: dailyBrief.date || today,
+            clearanceLevel: 'TOP SECRET // NOFORN',
+            headline: dailyBrief.headline,
+            generatedAt: new Date().toISOString(),
+            isFallback: dailyBrief.isFallback || false,
+            items: dailyBrief.keySignals.map((s: any, idx: number) => ({
+                id: `${today}-${idx}`,
+                category: s.category || 'GLOBAL AI RACE',
+                title: s.title,
+                summary: s.summary,
+                impact: 'HIGH', // Default impact if missing
+                source: 'AI INTELLIGENCE', // Default source
+                link: s.link
+            })),
+            marketImpact: dailyBrief.marketImpact,
+            warRoomNote: dailyBrief.warRoomNote
+        };
+
         const todayFilePath = path.join(briefsDir, `${today}.json`);
-        fs.writeFileSync(todayFilePath, JSON.stringify(dailyBrief, null, 2));
+        fs.writeFileSync(todayFilePath, JSON.stringify(finalBrief, null, 2));
         console.log(`[GenerateBrief] ✅ Saved brief to ${todayFilePath}`);
 
         // 5. Archive management: Keep only last 30 days
@@ -139,45 +160,49 @@ async function generateBriefWithAI(articles: any[], warRoomEvents: any[], date: 
         : '- No major war room alerts today.';
 
     const prompt = `
-You are an elite AI Intelligence Analyst. Your task is to create today's "${date}" Daily Intelligence Brief.
+    You are an elite AI Intelligence Analyst operating at a TOP SECRET // NOFORN level.
+    Your mission is to generate today's "${date}" Daily Intelligence Brief.
 
-AVAILABLE RAW DATA (from last 24 hours):
+    RAW INTELLIGENCE STREAMS:
+    
+    === GLOBAL FEED (Tech/Market Signals) ===
+    ${articlesContext}
+    
+    === WAR ROOM (Geopolitical Threats) ===
+    ${warRoomContext}
 
-=== GLOBAL FEED (AI/Tech Developments) ===
-${articlesContext}
+    COMMANDER'S INTENT:
+    Generate a highly detailed, executive-level intelligence synthesis of the 4 most critical developments.
+    
+    REQUIREMENTS:
+    1. **DEPTH IS CRITICAL**: Do NOT write short summaries. Each signal must have a **6-8 sentence "Deep Dive" paragraph** explaining the *strategic implication*, not just the news.
+    2. **STRICT ATTRIBUTION**: Every single point MUST have a valid source link from the provided data.
+    3. **TONE**: Extremely professional, objective, high-stakes intelligence reporting.
+    4. **NO FLUFF**: Every sentence must add value.
 
-=== WAR ROOM (Geopolitical/Conflict Activity) ===
-${warRoomContext}
+    Use these categories ONLY:
+    - GLOBAL AI RACE
+    - CYBER WARFARE
+    - MODEL INTELLIGENCE
+    - MARKET SIGNAL
 
-=== YOUR MISSION ===
-Create a FRESH, NEW brief that summarizes the TOP 3-5 most significant AI/tech developments from the data above.
-
-CRITICAL RULES:
-1. Content must be NEW - do NOT reuse old content or generic descriptions.
-2. Only include stories that actually appear in the data above.
-3. Each signal must have: title, 1-2 sentence summary, and the source link.
-4. Professional intelligence-report tone: clean, concise, no fluff, no opinions.
-5. Use accurate policy/military/market language.
-6. Prioritize: frontier AI models, policy changes, major funding, chip/hardware news, geopolitics affecting tech.
-
-OUTPUT FORMAT (strict JSON, no markdown):
-{
-  "date": "${date}",
-  "generatedAt": "${new Date().toISOString()}",
-  "headline": "AI-INTEL BRIEF: [2-4 word summary of top story]",
-  "keySignals": [
+    OUTPUT FORMAT (JSON ONLY):
     {
-      "title": "Signal headline",
-      "summary": "1-2 sentence professional summary of what happened and why it matters.",
-      "link": "source URL from the data",
-      "category": "AI_MODELS | POLICY | CHIPS | ROBOTICS | MARKET | GEOPOLITICS"
+      "date": "${date}",
+      "headline": "AI-INTEL BRIEF: [POWERFUL 3-WORD THEME]",
+      "keySignals": [
+        {
+          "title": "Compelling Headline",
+          "summary": "Full 6-8 sentence analysis. Sentence 1: The Event. Sentence 2-4: Context & Details. Sentence 5-8: Strategic Implications & Future Outlook.",
+          "link": "URL_FROM_SOURCE_DATA_ONLY",
+          "category": "CATEGORY_FROM_LIST_ABOVE"
+        }
+      ],
+      "marketImpact": "Strategic analysis of capital flow implications.",
+      "warRoomNote": "Brief status update on active conflict zones."
     }
-  ],
-  "marketImpact": "One sentence on any notable market/capital flow implications.",
-  "warRoomNote": "One sentence summary of key geopolitical/conflict development, if any."
-}
-
-Return ONLY valid JSON. No markdown, no explanation text.`;
+    
+    Return ONLY valid JSON. No markdown.`;
 
     const result = await model.generateContent(prompt);
     const responseText = result.response.text();

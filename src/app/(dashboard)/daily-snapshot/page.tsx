@@ -20,6 +20,7 @@ export default function DailySnapshotPage() {
         const fetchData = async () => {
             try {
                 // 1. Fetch Daily Brief (Latest + Archive)
+                let latestBrief: DailyBrief | null = null;
                 try {
                     const [latestRes, archiveRes] = await Promise.all([
                         fetch('/api/brief?mode=latest'),
@@ -29,18 +30,21 @@ export default function DailySnapshotPage() {
                     const latestData = await latestRes.json();
                     const archiveData = await archiveRes.json();
 
-                    if (latestData.brief) setDailyBrief(latestData.brief);
+                    if (latestData.brief) {
+                        setDailyBrief(latestData.brief);
+                        latestBrief = latestData.brief;
+                    }
                     if (archiveData.briefs) setPastBriefs(archiveData.briefs);
 
                 } catch (e) {
                     console.error('Brief fetch failed', e);
                 }
 
-                // 2. Fetch Articles (Live Feed Logic)
+                // 2. Fetch Live Articles (for Rapid Fire & Fallback)
                 const [aiRes, roboticsRes, researchRes] = await Promise.all([
                     fetch('/api/feed/live?category=ai&limit=20'),
                     fetch('/api/feed/live?category=robotics&limit=10'),
-                    fetch('/api/feed/live?category=research&limit=10')
+                    fetch('/api/feed/live?category=research&limit=5')
                 ]);
 
                 const aiData = await aiRes.json();
@@ -54,23 +58,41 @@ export default function DailySnapshotPage() {
                     ...(roboticsData.articles || [])
                 ];
 
-                // FALLBACK: If no articles, fetch from ALL
-                if (allArticles.length === 0) {
-                    const fallbackRes = await fetch('/api/feed/live?limit=30');
-                    const fallbackData = await fallbackRes.json();
-                    allArticles = fallbackData.articles || [];
-                }
-
                 // Remove duplicates based on ID
                 const uniqueArticles = Array.from(new Map(allArticles.map(item => [item.id, item])).values());
 
-                // CRITICAL: Sort by freshness to ensure Lead Story is the absolute latest
+                // Sort by freshness
                 uniqueArticles.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
 
-                if (uniqueArticles.length > 0) {
-                    setLeadStory(uniqueArticles[0]);
-                    setKeyDevelopments(uniqueArticles.slice(1, 4));
-                    setRapidFire(uniqueArticles.slice(4, 14));
+                // 3. ASSIGN CONTENT: Prefer Generated Brief for Main Stories
+                if (latestBrief && latestBrief.items && latestBrief.items.length >= 4) {
+                    console.log("Using Generated Brief for Main Stories");
+
+                    // Map BriefItems to Articles
+                    const briefArticles: Article[] = latestBrief.items.map(item => ({
+                        id: item.id,
+                        title: item.title,
+                        summary: item.summary,
+                        url: item.link,
+                        source: item.source,
+                        publishedAt: latestBrief!.date, // Use brief date
+                        category: item.category,
+                        topicSlug: 'brief-item',
+                        importanceScore: 100
+                    }));
+
+                    setLeadStory(briefArticles[0]);
+                    setKeyDevelopments(briefArticles.slice(1, 4));
+
+                    // Use Real-time RSS for Rapid Fire to keep it "Live"
+                    setRapidFire(uniqueArticles.slice(0, 10)); // Take top 10 live items
+                } else {
+                    console.log("Fallback to Live RSS for Main Stories");
+                    if (uniqueArticles.length > 0) {
+                        setLeadStory(uniqueArticles[0]);
+                        setKeyDevelopments(uniqueArticles.slice(1, 4));
+                        setRapidFire(uniqueArticles.slice(4, 14));
+                    }
                 }
 
             } catch (error) {
@@ -133,7 +155,12 @@ export default function DailySnapshotPage() {
                                             <div className="flex items-center gap-4 text-sm text-slate-500 font-medium border-l-2 border-slate-200 pl-4">
                                                 <span className="text-slate-900 font-bold uppercase tracking-wide text-xs">{leadStory.source}</span>
                                                 <span>•</span>
-                                                <span className="font-mono text-xs">{new Date(leadStory.publishedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                                <span className="font-mono text-xs">
+                                                    {/* Check if publishedAt is a valid date string before parsing */}
+                                                    {leadStory.publishedAt && !isNaN(Date.parse(leadStory.publishedAt))
+                                                        ? new Date(leadStory.publishedAt).toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' })
+                                                        : 'Today'}
+                                                </span>
                                             </div>
                                         </div>
 
@@ -143,7 +170,7 @@ export default function DailySnapshotPage() {
 
                                         <div className="flex items-center justify-end">
                                             <a href={leadStory.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-bold text-slate-900 hover:text-blue-600 transition-colors group/link bg-slate-50 px-4 py-2 rounded-lg border border-slate-200 hover:border-blue-200">
-                                                Read Full Analysis
+                                                Read Source
                                                 <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
                                             </a>
                                         </div>
@@ -172,13 +199,17 @@ export default function DailySnapshotPage() {
                                                 <span className="text-[10px] font-bold text-blue-600 uppercase tracking-wide">
                                                     {article.category}
                                                 </span>
-                                                <span className="text-[10px] font-mono text-slate-400">
-                                                    {new Date(article.publishedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                                </span>
+
                                             </div>
-                                            <h4 className="text-xl font-bold text-slate-900 leading-tight mb-2 group-hover:text-blue-700 transition-colors">
+                                            <h4 className="text-xl font-bold text-slate-900 leading-tight mb-4 group-hover:text-blue-700 transition-colors">
                                                 {article.title}
                                             </h4>
+
+                                            {/* Summary for Key Developments too */}
+                                            <p className="text-slate-600 leading-relaxed mb-4 text-base font-serif">
+                                                {article.summary}
+                                            </p>
+
                                             <div className="flex items-center gap-2 text-xs font-bold text-slate-400">
                                                 <span className="w-1.5 h-1.5 rounded-full bg-slate-300 group-hover:bg-blue-500 transition-colors"></span>
                                                 {article.source}
@@ -211,7 +242,9 @@ export default function DailySnapshotPage() {
                                                     {article.source}
                                                 </span>
                                                 <span className="text-[10px] text-slate-400 font-mono">
-                                                    {new Date(article.publishedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                    {article.publishedAt && !isNaN(Date.parse(article.publishedAt))
+                                                        ? new Date(article.publishedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                                                        : ''}
                                                 </span>
                                             </div>
                                             <h3 className="text-sm font-medium text-slate-700 leading-snug group-hover:text-slate-900 transition-colors line-clamp-3">

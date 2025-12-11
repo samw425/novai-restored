@@ -51,6 +51,12 @@
   --accent-platinum: #E2E8F0;
   /* Platinum for borders/subtle bg */
 
+  /* Deep Royal Palette */
+  --accent-royal: #0c1842;
+  /* Deeper, richer navy */
+  --accent-royal-light: #1e3a8a;
+  /* Bright royal highlight */
+
   --success-green: #059669;
   --danger-red: #DC2626;
 }
@@ -58,25 +64,27 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #020617;
-    /* Richer Black/Blue */
     --foreground: #F8FAFC;
-    --surface-white: #0F172A;
-    /* Deep Navy Surface */
-    --surface-soft: #1E293B;
+    --surface-white: #0c1222;
+    /* Darker navy surface */
+    --surface-soft: #172033;
+
     --text-primary: #F8FAFC;
     --text-secondary: #CBD5E1;
     --text-muted: #64748B;
-    --border: #1E293B;
+
+    --border: #1e293b;
+
     --accent-blue: #38BDF8;
-    /* Lighter Blue for Dark Mode contrast */
     --accent-blue-hover: #0EA5E9;
-    --accent-gold: #EAB308;
+    --accent-royal: #1e3a8a;
   }
 }
 
 @theme {
   --animate-marquee: marquee 120s linear infinite;
   --animate-spin-slow: spin 8s linear infinite;
+  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 
   @keyframes marquee {
     from {
@@ -107,24 +115,33 @@ body {
     scrollbar-width: none;
   }
 
+  .glass-premium {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  }
+
+  .glass-premium-dark {
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
   .animate-marquee {
     animation: marquee 120s linear infinite;
   }
 
-  @keyframes marquee {
-    0% {
-      transform: translateX(0);
-    }
-
-    100% {
-      transform: translateX(-50%);
-    }
+  .text-royal-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-[#1e3a8a];
   }
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -132,10 +149,10 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 4px;
+  background: #cbd5e1;
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted);
+  background: #94a3b8;
 }
