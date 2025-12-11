@@ -35,7 +35,9 @@ export async function GET(request: Request) {
             'Treasury': 'treasury-news',
             'DHS': 'dhs-news',
             'White House': 'white-house-news',
-            'NSC': 'white-house-news'
+            'NSC': 'white-house-news',
+            'ODNI': 'dni-news',
+            'DOJ': 'doj-news'
         };
 
         const feedId = agencyMap[agency];

@@ -90,6 +90,8 @@ export const RSS_FEEDS: FeedSource[] = [
     { id: 'nsa-news', name: 'NSA News', url: 'https://news.google.com/rss/search?q=site:nsa.gov&hl=en-US&gl=US&ceid=US:en', category: 'us-intel', priority: 10, region: 'US' },
     { id: 'dhs-news', name: 'DHS News', url: 'https://news.google.com/rss/search?q=site:dhs.gov&hl=en-US&gl=US&ceid=US:en', category: 'us-intel', priority: 9, region: 'US' },
     { id: 'white-house-news', name: 'White House', url: 'https://news.google.com/rss/search?q=site:whitehouse.gov&hl=en-US&gl=US&ceid=US:en', category: 'us-intel', priority: 10, region: 'US' },
+    { id: 'dni-news', name: 'ODNI News', url: 'https://news.google.com/rss/search?q=ODNI&hl=en-US&gl=US&ceid=US:en', category: 'us-intel', priority: 9, region: 'US' },
+    { id: 'doj-news', name: 'DOJ News', url: 'https://www.justice.gov/news/rss', category: 'us-intel', priority: 10, region: 'US' },
 
     // ========== CURRENT WARS (Priority 10) ==========
     // Israel / Gaza
