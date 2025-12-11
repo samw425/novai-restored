@@ -17,15 +17,54 @@ interface RiskEntity {
     status: 'CRITICAL' | 'HIGH' | 'MODERATE' | 'LOW';
     activeCases: number;
     primaryThreat: string;
+    cases: { name: string; url: string }[];
 }
 
 const RISK_DATA: RiskEntity[] = [
-    { name: 'Google', ticker: 'GOOGL', riskScore: 92, status: 'CRITICAL', activeCases: 4, primaryThreat: 'Ad Tech Breakup & AI Search Monopoly' },
-    { name: 'Apple', ticker: 'AAPL', riskScore: 85, status: 'HIGH', activeCases: 3, primaryThreat: 'App Store Monopoly & AI Gatekeeping' },
-    { name: 'NVIDIA', ticker: 'NVDA', riskScore: 80, status: 'HIGH', activeCases: 2, primaryThreat: 'GPU Allocation / CUDA Lock-in' },
-    { name: 'Meta', ticker: 'META', riskScore: 78, status: 'HIGH', activeCases: 2, primaryThreat: 'Social Monopoly (Instagram/WhatsApp)' },
-    { name: 'Amazon', ticker: 'AMZN', riskScore: 75, status: 'HIGH', activeCases: 2, primaryThreat: 'E-Commerce Predation & AWS Lock-in' },
-    { name: 'Microsoft', ticker: 'MSFT', riskScore: 65, status: 'MODERATE', activeCases: 1, primaryThreat: 'Cloud Dominance & OpenAI "Capture"' },
+    {
+        name: 'Google', ticker: 'GOOGL', riskScore: 92, status: 'CRITICAL', activeCases: 4, primaryThreat: 'Ad Tech Breakup & AI Search Monopoly',
+        cases: [
+            { name: 'US v. Google (Search)', url: 'https://www.justice.gov/atr/case/us-v-google-llc-2020' },
+            { name: 'US v. Google (Ad Tech)', url: 'https://www.justice.gov/atr/case/us-v-google-llc-2023' },
+            { name: 'DOJ Chrome Divestiture', url: 'https://www.justice.gov/atr/case/us-v-google-llc-2020' },
+            { name: 'Epic v. Google', url: 'https://www.courtlistener.com/docket/17442392/epic-games-inc-v-google-llc/' }
+        ]
+    },
+    {
+        name: 'Apple', ticker: 'AAPL', riskScore: 85, status: 'HIGH', activeCases: 3, primaryThreat: 'App Store Monopoly & AI Gatekeeping',
+        cases: [
+            { name: 'DOJ v. Apple', url: 'https://www.justice.gov/atr/case/us-v-apple-inc' },
+            { name: 'Epic v. Apple', url: 'https://www.courtlistener.com/docket/17442391/epic-games-inc-v-apple-inc/' },
+            { name: 'EU DMA Investigation', url: 'https://ec.europa.eu/commission/presscorner/detail/en/ip_24_3433' }
+        ]
+    },
+    {
+        name: 'NVIDIA', ticker: 'NVDA', riskScore: 80, status: 'HIGH', activeCases: 2, primaryThreat: 'GPU Allocation / CUDA Lock-in',
+        cases: [
+            { name: 'DOJ Antitrust Probe', url: 'https://www.justice.gov/atr/antitrust-case-filings' },
+            { name: 'FTC ARM Acquisition Block', url: 'https://www.ftc.gov/news-events/news/press-releases/2021/12/ftc-sues-block-40-billion-semiconductor-chip-merger' }
+        ]
+    },
+    {
+        name: 'Meta', ticker: 'META', riskScore: 78, status: 'HIGH', activeCases: 2, primaryThreat: 'Social Monopoly (Instagram/WhatsApp)',
+        cases: [
+            { name: 'FTC v. Meta', url: 'https://www.ftc.gov/legal-library/browse/cases-proceedings/191-0134-facebook-inc-ftc-v' },
+            { name: 'EU DSA/DMA Proceedings', url: 'https://ec.europa.eu/commission/presscorner/detail/en/ip_24_1722' }
+        ]
+    },
+    {
+        name: 'Amazon', ticker: 'AMZN', riskScore: 75, status: 'HIGH', activeCases: 2, primaryThreat: 'E-Commerce Predation & AWS Lock-in',
+        cases: [
+            { name: 'FTC v. Amazon', url: 'https://www.ftc.gov/legal-library/browse/cases-proceedings/2210077-amazoncom-inc-ftc-v' },
+            { name: 'State AGs Lawsuit', url: 'https://www.courtlistener.com/docket/67707983/district-of-columbia-v-amazoncom-inc/' }
+        ]
+    },
+    {
+        name: 'Microsoft', ticker: 'MSFT', riskScore: 65, status: 'MODERATE', activeCases: 1, primaryThreat: 'Cloud Dominance & OpenAI "Capture"',
+        cases: [
+            { name: 'FTC OpenAI Investigation', url: 'https://www.ftc.gov/news-events/news/press-releases/2024/01/ftc-launches-inquiry-generative-artificial-intelligence-investments-partnerships' }
+        ]
+    },
 ];
 
 const DOCKET_ITEMS = [
@@ -310,43 +349,60 @@ export default function AntiTrustPage() {
                     {/* Table Rows */}
                     <div className="divide-y divide-slate-100">
                         {RISK_DATA.map((entity) => (
-                            <div key={entity.name} className="grid grid-cols-12 gap-4 py-4 px-4 items-center hover:bg-slate-50 transition-colors group">
-                                <div className="col-span-3">
-                                    <div className="font-bold text-slate-900 text-lg">{entity.name}</div>
-                                    <div className="text-xs font-mono text-slate-400">{entity.ticker}</div>
-                                </div>
-                                <div className="col-span-2">
-                                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide ${entity.status === 'CRITICAL' ? 'bg-red-100 text-red-700' :
-                                        entity.status === 'HIGH' ? 'bg-orange-100 text-orange-700' :
-                                            'bg-yellow-100 text-yellow-700'
-                                        }`}>
-                                        {entity.status}
-                                    </span>
-                                </div>
-                                <div className="col-span-2">
-                                    <div className="flex items-center gap-3">
-                                        <span className="font-mono font-bold text-slate-900">{entity.riskScore}</span>
-                                        <div className="h-1.5 flex-1 bg-slate-100 rounded-full overflow-hidden max-w-[100px]">
-                                            <div
-                                                className={`h-full ${entity.status === 'CRITICAL' ? 'bg-red-500' :
-                                                    entity.status === 'HIGH' ? 'bg-orange-500' :
-                                                        'bg-yellow-500'
-                                                    }`}
-                                                style={{ width: `${entity.riskScore}%` }}
-                                            ></div>
+                            <div key={entity.name} className="py-4 px-4 hover:bg-slate-50 transition-colors group">
+                                <div className="grid grid-cols-12 gap-4 items-center">
+                                    <div className="col-span-3">
+                                        <div className="font-bold text-slate-900 text-lg">{entity.name}</div>
+                                        <div className="text-xs font-mono text-slate-400">{entity.ticker}</div>
+                                    </div>
+                                    <div className="col-span-2">
+                                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide ${entity.status === 'CRITICAL' ? 'bg-red-100 text-red-700' :
+                                            entity.status === 'HIGH' ? 'bg-orange-100 text-orange-700' :
+                                                'bg-yellow-100 text-yellow-700'
+                                            }`}>
+                                            {entity.status}
+                                        </span>
+                                    </div>
+                                    <div className="col-span-2">
+                                        <div className="flex items-center gap-3">
+                                            <span className="font-mono font-bold text-slate-900">{entity.riskScore}</span>
+                                            <div className="h-1.5 flex-1 bg-slate-100 rounded-full overflow-hidden max-w-[100px]">
+                                                <div
+                                                    className={`h-full ${entity.status === 'CRITICAL' ? 'bg-red-500' :
+                                                        entity.status === 'HIGH' ? 'bg-orange-500' :
+                                                            'bg-yellow-500'
+                                                        }`}
+                                                    style={{ width: `${entity.riskScore}%` }}
+                                                ></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-span-3">
+                                        <div className="text-sm font-medium text-slate-700 leading-tight">
+                                            {entity.primaryThreat}
+                                        </div>
+                                    </div>
+                                    <div className="col-span-2 text-right">
+                                        <div className="inline-flex items-center gap-1.5 text-blue-600 font-mono text-sm font-bold">
+                                            <FileText size={14} />
+                                            {entity.activeCases} Cases
                                         </div>
                                     </div>
                                 </div>
-                                <div className="col-span-3">
-                                    <div className="text-sm font-medium text-slate-700 leading-tight">
-                                        {entity.primaryThreat}
-                                    </div>
-                                </div>
-                                <div className="col-span-2 text-right">
-                                    <div className="inline-flex items-center gap-1.5 text-slate-500 font-mono text-sm">
-                                        <FileText size={14} />
-                                        {entity.activeCases}
-                                    </div>
+                                {/* Expandable Case Links */}
+                                <div className="mt-3 pt-3 border-t border-slate-100 flex flex-wrap gap-2">
+                                    {entity.cases.map((c, idx) => (
+                                        <a
+                                            key={idx}
+                                            href={c.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-300 rounded text-xs font-medium text-slate-600 hover:text-blue-700 transition-colors"
+                                        >
+                                            <FileText size={12} />
+                                            {c.name}
+                                        </a>
+                                    ))}
                                 </div>
                             </div>
                         ))}

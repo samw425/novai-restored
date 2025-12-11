@@ -53,7 +53,7 @@ export default function SignUpPage() {
                     </div>
                     <h2 className="text-3xl font-serif font-bold text-stone-900 mb-4 tracking-tight">Welcome, {name.split(' ')[0] || 'Leader'}.</h2>
                     <p className="text-stone-600 mb-8 text-lg leading-relaxed font-sans">
-                        You've secured your place in the inner circle. Your first executive summary arrives tomorrow.
+                        You're on the list. We'll notify you when early access opens—you'll be among the first to experience Novai Pro.
                     </p>
                     <a
                         href="/global-feed"
