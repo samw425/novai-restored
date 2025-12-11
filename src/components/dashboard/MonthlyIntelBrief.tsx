@@ -97,11 +97,6 @@ export function MonthlyIntelBrief() {
                     </div>
 
                     <div className="flex items-center gap-4">
-                        <div className="text-right hidden md:block">
-                            <div className="text-[10px] font-bold text-blue-400/60 uppercase tracking-widest">Clearance Level</div>
-                            <div className="text-xs font-bold text-white font-mono tracking-wider">{brief?.clearanceLevel || 'TOP SECRET'}</div>
-                        </div>
-                        <div className="h-8 w-px bg-blue-500/20 hidden md:block"></div>
 
                         {/* Archive Toggle */}
                         {viewMode === 'LATEST' ? (
