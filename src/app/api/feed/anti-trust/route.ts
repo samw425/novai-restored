@@ -4,6 +4,7 @@ import { RSS_FEEDS } from '@/config/rss-feeds';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
+export const revalidate = 3600; // Revalidate every hour for fresh court docket updates
 
 const parser = new Parser();
 
@@ -52,26 +53,14 @@ export async function GET(request: Request) {
         const limit = parseInt(searchParams.get('limit') || '20');
         const onlyMajor = searchParams.get('major') === 'true';
 
-        // Select relevant feeds (Market, Policy, US Intel)
-        const targetFeeds = RSS_FEEDS.filter(f =>
-            ['market', 'policy', 'us-intel', 'ai'].includes(f.category)
-        );
+        // Select relevant feeds - PRIORITIZE antitrust category first, then others
+        const antitrustFeeds = RSS_FEEDS.filter(f => f.category === 'antitrust');
+        const otherRelevantFeeds = RSS_FEEDS.filter(f =>
+            ['market', 'policy', 'us-intel', 'ai'].includes(f.category) && f.priority >= 9
+        ).slice(0, 15);
 
-        // We'll fetch a subset of high-priority feeds to avoid timeouts
-        const prioritizedFeeds = targetFeeds.filter(f =>
-            f.id.includes('reuters') ||
-            f.id.includes('bloomberg') ||
-            f.id.includes('wsj') ||
-            f.id.includes('ft') ||
-            f.id.includes('verge') ||
-            f.id.includes('wired') ||
-            f.id.includes('stratechery') ||
-            f.id.includes('404') ||
-            f.id.includes('nytimes') ||
-            f.id.includes('washington-post') ||
-            f.id.includes('politico') ||
-            f.priority >= 9
-        ).slice(0, 25);
+        // Combine: all antitrust feeds + top priority from other categories
+        const prioritizedFeeds = [...antitrustFeeds, ...otherRelevantFeeds];
 
         const feedPromises = prioritizedFeeds.map(async (feedSource) => {
             try {

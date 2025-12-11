@@ -1,4 +1,4 @@
-export type FeedCategory = 'research' | 'tools' | 'policy' | 'market' | 'robotics' | 'ai' | 'security' | 'us-intel' | 'current-wars' | 'built-world';
+export type FeedCategory = 'research' | 'tools' | 'policy' | 'market' | 'robotics' | 'ai' | 'security' | 'us-intel' | 'current-wars' | 'built-world' | 'antitrust';
 
 export interface FeedSource {
     id: string;
@@ -174,6 +174,24 @@ export const RSS_FEEDS: FeedSource[] = [
     { id: 'stanford-cyber', name: 'Stanford Cyber', url: 'https://cyber.fsi.stanford.edu/news/rss', category: 'policy', priority: 9, region: 'US' },
     { id: 'lawfare', name: 'Lawfare', url: 'https://www.lawfaremedia.org/feeds/rss', category: 'policy', priority: 9, region: 'US' },
     { id: 'ai-now', name: 'AI Now Institute', url: 'https://ainowinstitute.org/feed', category: 'policy', priority: 9, region: 'US' },
+
+    // ========== ANTITRUST & COURT DOCKETS (Priority 10) ==========
+    // Official Government Sources
+    { id: 'doj-antitrust', name: 'DOJ Antitrust Division', url: 'https://www.justice.gov/atr/press-releases/feed', category: 'antitrust', priority: 10, region: 'US' },
+    { id: 'ftc-competition', name: 'FTC Competition', url: 'https://www.ftc.gov/news-events/news/press-releases/feed', category: 'antitrust', priority: 10, region: 'US' },
+    { id: 'ftc-cases', name: 'FTC Cases & Proceedings', url: 'https://www.ftc.gov/legal-library/browse/cases-proceedings/feed', category: 'antitrust', priority: 10, region: 'US' },
+    { id: 'eu-competition', name: 'EU Competition Policy', url: 'https://ec.europa.eu/competition/rss.cfm', category: 'antitrust', priority: 10, region: 'Europe' },
+
+    // Court Document Tracking
+    { id: 'courtlistener-recap', name: 'RECAP Court Docs', url: 'https://www.courtlistener.com/feed/search/?q=antitrust&type=r', category: 'antitrust', priority: 10, region: 'US' },
+    { id: 'google-antitrust-feed', name: 'Google Antitrust News', url: 'https://news.google.com/rss/search?q=google+antitrust+DOJ&hl=en-US&gl=US&ceid=US:en', category: 'antitrust', priority: 9, region: 'US' },
+    { id: 'apple-antitrust-feed', name: 'Apple Antitrust News', url: 'https://news.google.com/rss/search?q=apple+antitrust+DOJ&hl=en-US&gl=US&ceid=US:en', category: 'antitrust', priority: 9, region: 'US' },
+    { id: 'amazon-ftc-feed', name: 'Amazon FTC News', url: 'https://news.google.com/rss/search?q=amazon+FTC+antitrust&hl=en-US&gl=US&ceid=US:en', category: 'antitrust', priority: 9, region: 'US' },
+    { id: 'meta-ftc-feed', name: 'Meta FTC News', url: 'https://news.google.com/rss/search?q=meta+facebook+FTC+antitrust&hl=en-US&gl=US&ceid=US:en', category: 'antitrust', priority: 9, region: 'US' },
+
+    // Legal Analysis
+    { id: 'competition-policy-intl', name: 'Competition Policy Intl', url: 'https://www.competitionpolicyinternational.com/feed/', category: 'antitrust', priority: 8, region: 'Global' },
+    { id: 'mlexwatch', name: 'MLex Antitrust', url: 'https://mlexwatch.com/feed/', category: 'antitrust', priority: 8, region: 'Global' },
 ];
 
 // Helper functions
