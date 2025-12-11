@@ -1,12 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Shield, Activity, Globe, Lock, Loader2, ArrowUp, AlertOctagon, Radio } from 'lucide-react';
+import { Shield, Activity, Globe, Lock, Loader2, ArrowUp, AlertOctagon, Radio, ExternalLink } from 'lucide-react';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { FeedCard } from '@/components/feed/FeedCard';
 import { ResourceLoader } from '@/components/ui/ResourceLoader';
 // MonthlyIntelBrief import removed
-import { ThreatGlobe } from '@/components/visualizations/ThreatGlobe';
+import { InteractiveMap } from '@/components/ui/InteractiveMap';
 import { Article } from '@/types';
 
 // Prevent static generation for this page to ensure real-time data
@@ -123,12 +123,52 @@ export default function WarRoomPage() {
         }
     };
 
+    const [selectedFilter, setSelectedFilter] = useState<'ALL' | 'CONFLICT' | 'CYBER' | 'NAVAL'>('ALL');
+    const [focusedLocation, setFocusedLocation] = useState<{ lat: number; lng: number } | null>(null);
+    const [isAutoPatrol, setIsAutoPatrol] = useState(false);
+
     // Calculate DEFCON level based on critical incidents
     const criticalCount = incidents.filter(i => i.severity === 'critical').length;
     const defconLevel = criticalCount > 5 ? 2 : criticalCount > 2 ? 3 : 4;
     const defconColor = defconLevel === 2 ? 'text-red-600 bg-red-50 border-red-200' :
         defconLevel === 3 ? 'text-orange-600 bg-orange-50 border-orange-200' :
             'text-yellow-600 bg-yellow-50 border-yellow-200';
+
+    // Filter incidents based on selection - USE incidents (raw data) not articles (mapped)
+    const filteredIncidents = incidents.filter(inc => {
+        if (selectedFilter === 'ALL') return true;
+        if (selectedFilter === 'CONFLICT') return inc.type === 'conflict' || inc.type === 'air' || inc.type === 'earthquake'; // Using 'type' from raw data
+        if (selectedFilter === 'CYBER') return inc.type === 'cyber';
+        if (selectedFilter === 'NAVAL') return inc.type === 'naval';
+        return true;
+    });
+
+    // Auto-Patrol Logic Removed
+
+
+    // Manual Interaction Handler
+    const handleManualFocus = (loc: { lat: number; lng: number } | null) => {
+        setIsAutoPatrol(false); // Stop patrol on user interaction
+        setFocusedLocation(loc);
+    };
+
+    // Determine Globe Color based on filter
+    const getGlobeColor = (): [number, number, number] => {
+        switch (selectedFilter) {
+            case 'CYBER': return [0.1, 0.8, 0.8]; // Cyan
+            case 'NAVAL': return [0.1, 0.3, 1]; // Blue
+            case 'CONFLICT': return [1, 0.2, 0.2]; // Red
+            default: return [1, 0.5, 0]; // Orange/Gold for All
+        }
+    };
+
+    // Find the currently focused incident details
+    const focusedIncident = incidents.find(inc =>
+        focusedLocation &&
+        inc.location &&
+        Math.abs(inc.location.lat - focusedLocation.lat) < 0.001 &&
+        Math.abs(inc.location.lng - focusedLocation.lng) < 0.001
+    );
 
     return (
         <div className="space-y-6">
@@ -139,6 +179,7 @@ export default function WarRoomPage() {
                         <Radio size={14} />
                         LIVE INTEL
                     </div>
+                    {/* ... ticker content ... */}
                     <div className="overflow-hidden whitespace-nowrap w-full relative">
                         {/* Slowed down ticker for readability */}
                         <div className="inline-block animate-marquee pl-4 text-sm font-mono text-green-400 py-2" style={{ animationDuration: '120s' }}>
@@ -159,102 +200,101 @@ export default function WarRoomPage() {
                 </div>
             </div>
 
-            {/* Tab Navigation (Segmented Control) */}
-            <div className="flex justify-center mb-8">
-                <div className="bg-slate-900 p-1 rounded-lg inline-flex border border-slate-800 shadow-sm">
-                    <button
-                        onClick={() => setActiveTab('GLOBAL_INTEL')}
-                        className={`px-6 py-2 rounded-md text-sm font-mono transition-all duration-200 flex items-center gap-2 ${activeTab === 'GLOBAL_INTEL' ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/20' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}
-                    >
-                        <Globe size={14} />
-                        GLOBAL INTEL
-                    </button>
-                    <button
-                        onClick={() => setActiveTab('CURRENT_WARS')}
-                        className={`px-6 py-2 rounded-md text-sm font-mono transition-all duration-200 flex items-center gap-2 ${activeTab === 'CURRENT_WARS' ? 'bg-red-600 text-white shadow-lg shadow-red-900/20' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}
-                    >
-                        <AlertOctagon size={14} />
-                        CURRENT WARS
-                    </button>
-                </div>
+            {/* View Selection Tabs */}
+            <div className="flex border-b border-gray-200">
+                <button
+                    onClick={() => setActiveTab('GLOBAL_INTEL')}
+                    className={`px-6 py-3 font-mono text-sm font-bold border-b-2 transition-colors ${activeTab === 'GLOBAL_INTEL'
+                        ? 'border-black text-black'
+                        : 'border-transparent text-gray-400 hover:text-gray-600'
+                        }`}
+                >
+                    GLOBAL INTEL
+                </button>
+                <button
+                    onClick={() => setActiveTab('CURRENT_WARS')}
+                    className={`px-6 py-3 font-mono text-sm font-bold border-b-2 transition-colors ${activeTab === 'CURRENT_WARS'
+                        ? 'border-red-600 text-red-600'
+                        : 'border-transparent text-gray-400 hover:text-gray-600'
+                        }`}
+                >
+                    CURRENT WARS
+                </button>
             </div>
-
-            {/* Header */}
-            <div className="flex flex-col md:flex-row justify-between items-end mb-6 gap-4">
-                <div className="flex-1">
-                    <PageHeader
-                        title="War Room"
-                        description="GLOBAL SITUATION ROOM // LIVE"
-                        insight="Direct uplink to global intelligence streams. Tracking kinetic warfare, naval maneuvers, and cyber threats in real-time. Data is aggregated from classified and open sources."
-                        icon={<Shield className="w-8 h-8 text-red-600 animate-pulse" />}
-                    />
-                    <div className="mt-2 flex items-center gap-2">
-                        <span className="relative flex h-2 w-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                        </span>
-                        <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">
-                            UPDATED BY THE MINUTE
-                        </span>
-                    </div>
-                </div>
-                <div className={`flex items-center gap-3 px-6 py-3 rounded-xl border shadow-lg ${defconColor}`}>
-                    <div className="flex flex-col items-end">
-                        <span className="text-[10px] font-bold uppercase tracking-widest opacity-70">Threat Level</span>
-                        <span className="text-2xl font-black tracking-tighter">DEFCON {defconLevel}</span>
-                    </div>
-                    <div className="h-10 w-px bg-current opacity-20 mx-2"></div>
-                    <span className="relative flex h-4 w-4">
-                        <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${defconLevel === 2 ? 'bg-red-400' : 'bg-orange-400'}`}></span>
-                        <span className={`relative inline-flex rounded-full h-4 w-4 ${defconLevel === 2 ? 'bg-red-500' : 'bg-orange-500'}`}></span>
-                    </span>
-                </div>
-            </div>
-
-            {/* Active Military Alarms Banner */}
-            {criticalCount > 0 && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 flex items-start gap-4 animate-in fade-in slide-in-from-top-4 shadow-sm">
-                    <AlertOctagon className="text-red-600 shrink-0 mt-0.5" />
-                    <div>
-                        <h3 className="text-red-700 font-bold text-sm uppercase tracking-widest mb-1">Active Military Alarms</h3>
-                        <p className="text-red-900 text-sm font-mono font-medium">
-                            {criticalCount} critical incidents detected requiring immediate attention. Global force posture elevated.
-                        </p>
-                    </div>
-                </div>
-            )}
 
             {/* Interactive Global Threat Map (Only in Global Intel Tab) */}
             {activeTab === 'GLOBAL_INTEL' && (
-                <div className="mb-8 bg-slate-900 rounded-xl overflow-hidden relative shadow-2xl border border-slate-800">
-                    <div className="absolute top-0 left-0 w-full p-4 flex justify-between items-start z-10 pointer-events-none">
-                        <div>
-                            <h2 className="text-lg font-bold text-white flex items-center gap-2 font-mono tracking-tight drop-shadow-md">
-                                <Globe className="h-5 w-5 text-blue-400" />
-                                LIVE SATELLITE TRACKING
-                            </h2>
-                            <div className="text-xs font-mono text-blue-300 mt-1">
-                                ASSETS TRACKED: {incidents.length} // LATENCY: 24ms
-                            </div>
+                <div className="mb-8 grid grid-cols-1 lg:grid-cols-4 gap-6">
+                    {/* Main Globe Display */}
+                    {/* Main Map Display */}
+                    <div className="lg:col-span-3">
+                        {/* Interactive Legend / Filter Bar - Moved outside for Flat Map clarity */}
+                        <div className="flex flex-wrap gap-2 mb-4">
+                            {[
+                                { id: 'ALL', label: 'ALL SECTORS', color: 'bg-orange-500' },
+                                { id: 'CONFLICT', label: 'KINETIC / AIR', color: 'bg-red-500' },
+                                { id: 'NAVAL', label: 'NAVAL / MARITIME', color: 'bg-blue-600' },
+                                { id: 'CYBER', label: 'CYBER / INFRA', color: 'bg-cyan-400' }
+                            ].map((filter) => (
+                                <button
+                                    key={filter.id}
+                                    onClick={() => setSelectedFilter(filter.id as any)}
+                                    className={`px-3 py-1.5 rounded text-[10px] font-bold font-mono uppercase tracking-wider border transition-all ${selectedFilter === filter.id
+                                        ? `${filter.color} text-white border-transparent shadow-lg scale-105`
+                                        : 'bg-white border-gray-200 text-gray-400 hover:border-gray-400 hover:text-gray-600'
+                                        }`}
+                                >
+                                    <span className={`inline-block w-2 h-2 rounded-full mr-2 ${filter.color}`}></span>
+                                    {filter.label}
+                                </button>
+                            ))}
                         </div>
-                        <div className="flex flex-col items-end gap-1">
-                            <span className="flex items-center gap-1.5 bg-black/50 backdrop-blur px-2 py-1 rounded text-[10px] font-mono text-red-400 border border-red-900/50">
-                                <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
-                                KINETIC HOTSPOTS
-                            </span>
-                            <span className="flex items-center gap-1.5 bg-black/50 backdrop-blur px-2 py-1 rounded text-[10px] font-mono text-cyan-400 border border-cyan-900/50">
-                                <span className="w-1.5 h-1.5 rounded-full bg-cyan-500"></span>
-                                CYBER NODES
-                            </span>
-                        </div>
+
+                        {/* Flat Map Component */}
+                        <InteractiveMap incidents={filteredIncidents} />
                     </div>
 
-                    <div className="w-full aspect-square md:aspect-[2/1] bg-gradient-to-b from-slate-900 via-[#050510] to-slate-900 relative">
-                        <ThreatGlobe />
-
-                        {/* Grid Overlay */}
-                        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-20 pointer-events-none"></div>
-                        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent pointer-events-none"></div>
+                    {/* Quick Select / Recent Alerts Panel */}
+                    <div className="bg-black border border-gray-800 rounded-xl p-4 overflow-y-auto max-h-[500px] hidden lg:block shadow-2xl">
+                        <h3 className="text-xs font-bold text-red-500 uppercase tracking-widest mb-4 font-mono flex items-center gap-2 border-b border-gray-800 pb-2">
+                            <Activity className="w-3 h-3 animate-pulse" />
+                            Active Vectors
+                        </h3>
+                        <div className="space-y-2">
+                            {filteredIncidents.slice(0, 8).map((inc) => (
+                                <div key={inc.id} className="w-full flex items-center gap-2 group">
+                                    <button
+                                        onClick={() => handleManualFocus(inc.location ? { lat: inc.location.lat, lng: inc.location.lng } : null)}
+                                        className={`flex-1 text-left p-3 rounded border transition-all duration-200 ${focusedLocation?.lat === inc.location?.lat
+                                            ? 'bg-gray-800 border-red-500 ring-1 ring-red-500/50'
+                                            : 'bg-gray-900/50 hover:bg-gray-900 border-gray-800 hover:border-blue-500'
+                                            }`}
+                                    >
+                                        <div className="flex justify-between items-start mb-1">
+                                            <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded font-mono ${inc.severity === 'critical' ? 'bg-red-950 text-red-400 border border-red-900' : 'bg-blue-950 text-blue-400 border border-blue-900'
+                                                }`}>
+                                                {inc.type?.toUpperCase() || 'UNKNOWN'}
+                                            </span>
+                                            <span className="text-[10px] text-gray-500 font-mono">
+                                                {new Date(inc.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                            </span>
+                                        </div>
+                                        <div className="text-xs font-medium text-gray-300 group-hover:text-white group-hover:shadow-[0_0_10px_rgba(59,130,246,0.3)] transition-all line-clamp-2 leading-snug font-mono mt-1">
+                                            {inc.title}
+                                        </div>
+                                    </button>
+                                    <a
+                                        href={inc.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="p-3 h-full flex items-center justify-center bg-gray-900 border border-gray-800 hover:bg-blue-600 hover:border-blue-500 text-gray-500 hover:text-white rounded transition-all duration-200 shadow-sm"
+                                        title="Open Intel Source"
+                                    >
+                                        <ExternalLink size={14} />
+                                    </a>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             )}

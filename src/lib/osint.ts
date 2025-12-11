@@ -18,6 +18,7 @@ export interface WarRoomIncident {
     url: string;
     country?: 'US' | 'RU' | 'CN' | 'IR' | 'UK' | 'OTHER';
     assetType?: string;
+    isTrusted?: boolean;
 }
 
 // USGS Earthquake Feed (Last hour, 2.5+ magnitude)
@@ -371,6 +372,20 @@ export async function fetchConflictIncidents(): Promise<WarRoomIncident[]> {
                         else if (type === 'naval') assetType = 'Naval Vessel';
                         else if (type === 'air') assetType = 'Military Aircraft';
 
+                        const isTrustedSource =
+                            sourceName.includes('DEPT') ||
+                            sourceName.includes('MINISTRY') ||
+                            sourceName.includes('NATO') ||
+                            sourceName.includes('ISW') ||
+                            sourceName.includes('CSIS') ||
+                            sourceName.includes('RAND') ||
+                            sourceName.includes('MOSSAD') ||
+                            sourceName.includes('CIA') ||
+                            sourceName.includes('NSA') ||
+                            url.includes('.gov') ||
+                            url.includes('.mil') ||
+                            url.includes('.int');
+
                         incidents.push({
                             id: item.guid || item.link || `conflict-${Date.now()}-${Math.random()}`,
                             type: type as WarRoomIncident['type'],
@@ -382,7 +397,8 @@ export async function fetchConflictIncidents(): Promise<WarRoomIncident[]> {
                             source: sourceName,
                             url: item.link || '#',
                             country: country,
-                            assetType: assetType
+                            assetType: assetType,
+                            isTrusted: isTrustedSource
                         });
                     }
                 });
@@ -455,7 +471,8 @@ const FAILSAFE_WAR_ROOM_DATA: WarRoomIncident[] = [
         source: 'ISW (WAR STUDY)',
         url: 'https://www.understandingwar.org',
         country: 'OTHER',
-        assetType: 'Artillery'
+        assetType: 'Artillery',
+        isTrusted: true,
     },
     {
         id: 'failsafe-ua-2',
