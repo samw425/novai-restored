@@ -24,45 +24,45 @@ const RISK_DATA: RiskEntity[] = [
     {
         name: 'Google', ticker: 'GOOGL', riskScore: 92, status: 'CRITICAL', activeCases: 4, primaryThreat: 'Ad Tech Breakup & AI Search Monopoly',
         cases: [
-            { name: 'US v. Google (Search)', url: 'https://www.justice.gov/atr/case/us-v-google-llc-2020' },
-            { name: 'US v. Google (Ad Tech)', url: 'https://www.justice.gov/atr/case/us-v-google-llc-2023' },
-            { name: 'DOJ Chrome Divestiture', url: 'https://www.justice.gov/atr/case/us-v-google-llc-2020' },
-            { name: 'Epic v. Google', url: 'https://www.courtlistener.com/docket/17442392/epic-games-inc-v-google-llc/' }
+            { name: 'US v. Google (Search)', url: 'https://www.justice.gov/atr/case/us-and-plaintiff-states-v-google-llc' },
+            { name: 'US v. Google (Ad Tech)', url: 'https://www.justice.gov/opa/pr/justice-department-sues-google-monopolizing-digital-advertising-technologies' },
+            { name: 'DOJ Remedies Filing', url: 'https://www.justice.gov/atr/case-document/proposed-final-judgment-0' },
+            { name: 'Epic v. Google', url: 'https://www.theverge.com/23994174/epic-google-trial-jury-verdict-monopoly-google-play' }
         ]
     },
     {
         name: 'Apple', ticker: 'AAPL', riskScore: 85, status: 'HIGH', activeCases: 3, primaryThreat: 'App Store Monopoly & AI Gatekeeping',
         cases: [
             { name: 'DOJ v. Apple (2024)', url: 'https://www.justice.gov/opa/pr/justice-department-sues-apple-monopolizing-smartphone-markets' },
-            { name: 'Epic v. Apple', url: 'https://storage.courtlistener.com/recap/gov.uscourts.cand.364265/gov.uscourts.cand.364265.812.0.pdf' },
+            { name: 'Epic v. Apple', url: 'https://www.theverge.com/2021/9/10/22662320/epic-apple-ruling-injunction-judge-fortnite' },
             { name: 'EU DMA Investigation', url: 'https://ec.europa.eu/commission/presscorner/detail/en/ip_24_3433' }
         ]
     },
     {
         name: 'NVIDIA', ticker: 'NVDA', riskScore: 80, status: 'HIGH', activeCases: 2, primaryThreat: 'GPU Allocation / CUDA Lock-in',
         cases: [
-            { name: 'DOJ Antitrust Probe', url: 'https://www.justice.gov/atr/antitrust-case-filings' },
-            { name: 'FTC ARM Acquisition Block', url: 'https://www.ftc.gov/news-events/news/press-releases/2021/12/ftc-sues-block-40-billion-semiconductor-chip-merger' }
+            { name: 'DOJ Antitrust Probe', url: 'https://www.reuters.com/technology/nvidia-receives-doj-subpoena-antitrust-probe-bloomberg-news-reports-2024-09-03/' },
+            { name: 'FTC ARM Block (2022)', url: 'https://www.ftc.gov/news-events/news/press-releases/2021/12/ftc-sues-block-40-billion-semiconductor-chip-merger' }
         ]
     },
     {
         name: 'Meta', ticker: 'META', riskScore: 78, status: 'HIGH', activeCases: 2, primaryThreat: 'Social Monopoly (Instagram/WhatsApp)',
         cases: [
-            { name: 'FTC v. Meta', url: 'https://www.ftc.gov/legal-library/browse/cases-proceedings/191-0134-facebook-inc-ftc-v' },
-            { name: 'EU DSA/DMA Proceedings', url: 'https://ec.europa.eu/commission/presscorner/detail/en/ip_24_1722' }
+            { name: 'FTC v. Meta', url: 'https://www.ftc.gov/news-events/news/press-releases/2020/12/ftc-sues-facebook-illegal-monopolization' },
+            { name: 'EU DMA Proceedings', url: 'https://ec.europa.eu/commission/presscorner/detail/en/ip_24_3582' }
         ]
     },
     {
         name: 'Amazon', ticker: 'AMZN', riskScore: 75, status: 'HIGH', activeCases: 2, primaryThreat: 'E-Commerce Predation & AWS Lock-in',
         cases: [
             { name: 'FTC v. Amazon', url: 'https://www.ftc.gov/news-events/news/press-releases/2023/09/ftc-sues-amazon-illegally-maintaining-monopoly-power' },
-            { name: 'State AGs Lawsuit', url: 'https://www.naag.org/attorney-general-journal/state-attorneys-general-join-historic-ftc-antitrust-lawsuit-against-amazon/' }
+            { name: 'State AGs Lawsuit', url: 'https://oag.dc.gov/release/ag-racine-announces-lawsuit-against-amazon' }
         ]
     },
     {
         name: 'Microsoft', ticker: 'MSFT', riskScore: 65, status: 'MODERATE', activeCases: 1, primaryThreat: 'Cloud Dominance & OpenAI "Capture"',
         cases: [
-            { name: 'FTC OpenAI Investigation', url: 'https://www.ftc.gov/news-events/news/press-releases/2024/01/ftc-launches-inquiry-generative-artificial-intelligence-investments-partnerships' }
+            { name: 'FTC OpenAI Inquiry', url: 'https://www.ftc.gov/news-events/news/press-releases/2024/01/ftc-launches-inquiry-generative-artificial-intelligence-investments-partnerships' }
         ]
     },
 ];
@@ -304,7 +304,7 @@ export default function AntiTrustPage() {
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     {[
-                        { date: 'DEC 2025', case: 'US v. Google', event: 'Remedies Phase: Breakup Proposed', url: 'https://www.justice.gov/opa/pr/justice-department-sues-google-monopolizing-digital-advertising-technologies' },
+                        { date: 'DEC 2025', case: 'US v. Google', event: 'Remedies Phase: Breakup Proposed', url: 'https://www.justice.gov/atr/case/us-and-plaintiff-states-v-google-llc' },
                         { date: 'FEB 2026', case: 'EU DMA', event: 'Gatekeeper Status Review', url: 'https://digital-markets-act.ec.europa.eu/gatekeepers_en' },
                         { date: 'APR 2026', case: 'FTC v. Amazon', event: 'Trial Scheduled to Begin', url: 'https://www.ftc.gov/news-events/news/press-releases/2023/09/ftc-sues-amazon-illegally-maintaining-monopoly-power' },
                         { date: 'JUN 2026', case: 'DOJ v. Apple', event: 'Discovery Phase Concludes', url: 'https://www.justice.gov/opa/pr/justice-department-sues-apple-monopolizing-smartphone-markets' }
