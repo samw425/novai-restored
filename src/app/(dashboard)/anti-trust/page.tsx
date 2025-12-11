@@ -33,8 +33,8 @@ const RISK_DATA: RiskEntity[] = [
     {
         name: 'Apple', ticker: 'AAPL', riskScore: 85, status: 'HIGH', activeCases: 3, primaryThreat: 'App Store Monopoly & AI Gatekeeping',
         cases: [
-            { name: 'DOJ v. Apple', url: 'https://www.justice.gov/atr/case/us-v-apple-inc' },
-            { name: 'Epic v. Apple', url: 'https://www.courtlistener.com/docket/17442391/epic-games-inc-v-apple-inc/' },
+            { name: 'DOJ v. Apple (2024)', url: 'https://www.justice.gov/opa/pr/justice-department-sues-apple-monopolizing-smartphone-markets' },
+            { name: 'Epic v. Apple', url: 'https://storage.courtlistener.com/recap/gov.uscourts.cand.364265/gov.uscourts.cand.364265.812.0.pdf' },
             { name: 'EU DMA Investigation', url: 'https://ec.europa.eu/commission/presscorner/detail/en/ip_24_3433' }
         ]
     },
@@ -55,8 +55,8 @@ const RISK_DATA: RiskEntity[] = [
     {
         name: 'Amazon', ticker: 'AMZN', riskScore: 75, status: 'HIGH', activeCases: 2, primaryThreat: 'E-Commerce Predation & AWS Lock-in',
         cases: [
-            { name: 'FTC v. Amazon', url: 'https://www.ftc.gov/legal-library/browse/cases-proceedings/2210077-amazoncom-inc-ftc-v' },
-            { name: 'State AGs Lawsuit', url: 'https://www.courtlistener.com/docket/67707983/district-of-columbia-v-amazoncom-inc/' }
+            { name: 'FTC v. Amazon', url: 'https://www.ftc.gov/news-events/news/press-releases/2023/09/ftc-sues-amazon-illegally-maintaining-monopoly-power' },
+            { name: 'State AGs Lawsuit', url: 'https://www.naag.org/attorney-general-journal/state-attorneys-general-join-historic-ftc-antitrust-lawsuit-against-amazon/' }
         ]
     },
     {
@@ -304,10 +304,10 @@ export default function AntiTrustPage() {
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     {[
-                        { date: 'DEC 2025', case: 'US v. Google', event: 'Remedies Phase: Breakup Proposed', url: 'https://www.justice.gov/atr/case/us-v-google-llc-2020' },
-                        { date: 'FEB 2026', case: 'EU DMA', event: 'Gatekeeper Status Review', url: 'https://ec.europa.eu/commission/presscorner/detail/en/ip_24_3433' },
-                        { date: 'APR 2026', case: 'FTC v. Amazon', event: 'Trial Scheduled to Begin', url: 'https://www.ftc.gov/legal-library/browse/cases-proceedings/2210077-amazoncom-inc-ftc-v' },
-                        { date: 'JUN 2026', case: 'DOJ v. Apple', event: 'Discovery Phase Concludes', url: 'https://www.justice.gov/atr/case/us-v-apple-inc' }
+                        { date: 'DEC 2025', case: 'US v. Google', event: 'Remedies Phase: Breakup Proposed', url: 'https://www.justice.gov/opa/pr/justice-department-sues-google-monopolizing-digital-advertising-technologies' },
+                        { date: 'FEB 2026', case: 'EU DMA', event: 'Gatekeeper Status Review', url: 'https://digital-markets-act.ec.europa.eu/gatekeepers_en' },
+                        { date: 'APR 2026', case: 'FTC v. Amazon', event: 'Trial Scheduled to Begin', url: 'https://www.ftc.gov/news-events/news/press-releases/2023/09/ftc-sues-amazon-illegally-maintaining-monopoly-power' },
+                        { date: 'JUN 2026', case: 'DOJ v. Apple', event: 'Discovery Phase Concludes', url: 'https://www.justice.gov/opa/pr/justice-department-sues-apple-monopolizing-smartphone-markets' }
                     ].map((event, i) => (
                         <a
                             key={i}
