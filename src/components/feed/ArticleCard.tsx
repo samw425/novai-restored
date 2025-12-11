@@ -2,8 +2,9 @@
 
 import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
-import { Globe, FileText, Cpu, ShieldAlert, TrendingUp, Bot, Scale, Hexagon } from 'lucide-react';
+import { Globe, FileText, Cpu, ShieldAlert, TrendingUp, Bot, Scale, Hexagon, ArrowUpRight } from 'lucide-react';
 import { Article, Category } from '@/types';
+import { motion } from 'framer-motion';
 
 const categoryIcons: Record<Category, any> = {
     research: FileText,
@@ -23,9 +24,17 @@ const categoryColors: Record<Category, string> = {
     ai: 'bg-indigo-50 text-indigo-700 border-indigo-100',
 };
 
-export function ArticleCard({ article }: { article: Article }) {
+interface ArticleCardProps {
+    article: Article;
+    index?: number; // For stagger animation
+}
+
+export function ArticleCard({ article, index = 0 }: ArticleCardProps) {
     const Icon = categoryIcons[article.category as Category] || Globe;
     const timeAgo = formatDistanceToNow(new Date(article.publishedAt), { addSuffix: true });
+
+    // Check if article is from last 2 hours for "fresh" indicator
+    const isFresh = new Date(article.publishedAt).getTime() > Date.now() - 1000 * 60 * 120;
 
     return (
         <Link
@@ -34,37 +43,94 @@ export function ArticleCard({ article }: { article: Article }) {
             rel="noopener noreferrer"
             className="block group"
         >
-            <article className="bg-white rounded-xl border border-[#E5E7EB] p-5 transition-all duration-200 hover:shadow-md hover:border-blue-200 relative overflow-hidden">
+            <motion.article
+                className="bg-white rounded-xl border border-[#E5E7EB] p-5 transition-all duration-200 hover:shadow-lg hover:border-blue-200 relative overflow-hidden"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                    duration: 0.4,
+                    delay: index * 0.05,
+                    ease: [0.25, 0.46, 0.45, 0.94]
+                }}
+                whileHover={{
+                    y: -2,
+                    transition: { duration: 0.2, ease: 'easeOut' }
+                }}
+            >
+                {/* Fresh article indicator pulse */}
+                {isFresh && (
+                    <motion.div
+                        className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-500"
+                        initial={{ scaleX: 0, opacity: 0 }}
+                        animate={{ scaleX: 1, opacity: 1 }}
+                        transition={{ duration: 0.5, delay: index * 0.05 + 0.2 }}
+                    />
+                )}
+
                 <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-2 text-xs text-gray-500">
-                        <span className="font-semibold text-gray-900 flex items-center gap-1.5">
+                        <motion.span
+                            className="font-semibold text-gray-900 flex items-center gap-1.5"
+                            whileHover={{ scale: 1.02 }}
+                        >
                             {article.source}
-                        </span>
+                        </motion.span>
                         <span>•</span>
-                        <span>{timeAgo}</span>
+                        <span className="tabular-nums">{timeAgo}</span>
+                        {isFresh && (
+                            <motion.span
+                                className="flex items-center gap-1 text-blue-600 font-bold"
+                                initial={{ opacity: 0, x: -10 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: index * 0.05 + 0.3 }}
+                            >
+                                <span className="relative flex h-1.5 w-1.5">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-blue-500"></span>
+                                </span>
+                                NEW
+                            </motion.span>
+                        )}
                     </div>
 
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border uppercase tracking-wide ${categoryColors[article.category as Category] || 'bg-gray-50 text-gray-700 border-gray-100'}`}>
+                    <motion.span
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full border uppercase tracking-wide ${categoryColors[article.category as Category] || 'bg-gray-50 text-gray-700 border-gray-100'}`}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                    >
                         {article.category}
-                    </span>
+                    </motion.span>
                 </div>
 
-                <h3 className="text-lg font-bold text-[#0F172A] mb-2 leading-tight group-hover:text-blue-600 transition-colors">
-                    {article.title}
-                </h3>
+                <motion.h3
+                    className="text-lg font-bold text-[#0F172A] mb-2 leading-tight group-hover:text-blue-600 transition-colors flex items-start gap-2"
+                    whileHover={{ x: 2 }}
+                    transition={{ duration: 0.15 }}
+                >
+                    <span className="flex-1">{article.title}</span>
+                    <ArrowUpRight
+                        size={16}
+                        className="flex-shrink-0 mt-1 opacity-0 group-hover:opacity-100 transition-opacity text-blue-500"
+                    />
+                </motion.h3>
 
                 <p className="text-sm text-gray-600 leading-relaxed line-clamp-2 mb-3">
                     {article.summary}
                 </p>
 
                 {article.topicSlug && (
-                    <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-medium text-gray-400 bg-gray-50 px-2 py-1 rounded-md">
+                    <motion.div
+                        className="flex items-center gap-2"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: index * 0.05 + 0.2 }}
+                    >
+                        <span className="text-[10px] font-medium text-gray-400 bg-gray-50 px-2 py-1 rounded-md hover:bg-gray-100 transition-colors">
                             #{article.topicSlug}
                         </span>
-                    </div>
+                    </motion.div>
                 )}
-            </article>
+            </motion.article>
         </Link>
     );
 }

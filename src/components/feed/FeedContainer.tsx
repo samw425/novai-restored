@@ -8,6 +8,7 @@ import { fetchArticles, checkNewArticles } from '@/lib/api';
 import { FeedCard } from './FeedCard';
 import { FeedHeader } from './FeedHeader';
 import { Loader2, ArrowUp } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import { LiveTicker } from '@/components/dashboard/LiveTicker';
 import { SystemStatus } from '@/components/dashboard/SystemStatus';
@@ -206,13 +207,46 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
 
                 {/* LIVE FEED CONTENT */}
                 {newCount > 0 && viewMode === 'live' && (
-                    <div
+                    <motion.div
                         onClick={handleRefresh}
-                        className="sticky top-32 z-30 mx-auto w-fit mb-6 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg cursor-pointer hover:bg-blue-700 transition-all flex items-center gap-2 text-sm font-bold animate-in slide-in-from-top-2"
+                        className="sticky top-32 z-30 mx-auto w-fit mb-6 bg-gradient-to-r from-blue-600 to-blue-500 text-white px-5 py-2.5 rounded-full shadow-lg cursor-pointer hover:from-blue-700 hover:to-blue-600 transition-all flex items-center gap-2 text-sm font-bold"
+                        initial={{ opacity: 0, y: -20, scale: 0.9 }}
+                        animate={{
+                            opacity: 1,
+                            y: 0,
+                            scale: 1,
+                            boxShadow: [
+                                '0 0 0 0 rgba(59, 130, 246, 0.5)',
+                                '0 0 0 8px rgba(59, 130, 246, 0)',
+                                '0 0 0 0 rgba(59, 130, 246, 0)'
+                            ]
+                        }}
+                        transition={{
+                            duration: 0.4,
+                            boxShadow: {
+                                duration: 2,
+                                repeat: Infinity,
+                                ease: 'easeOut'
+                            }
+                        }}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
                     >
-                        <ArrowUp className="h-4 w-4" />
-                        {newCount} New Updates
-                    </div>
+                        <motion.div
+                            animate={{ y: [0, -2, 0] }}
+                            transition={{ duration: 0.6, repeat: Infinity }}
+                        >
+                            <ArrowUp className="h-4 w-4" />
+                        </motion.div>
+                        <span className="relative">
+                            {newCount} New Updates
+                            <motion.span
+                                className="absolute -right-2 -top-1 w-2 h-2 bg-white rounded-full"
+                                animate={{ scale: [1, 1.3, 1], opacity: [1, 0.7, 1] }}
+                                transition={{ duration: 1, repeat: Infinity }}
+                            />
+                        </span>
+                    </motion.div>
                 )}
 
                 {/* Section Header */}
@@ -247,9 +281,33 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
                                 <p>No top stories found for this period.</p>
                             </div>
                         ) : (
-                            articles.map((article) => (
-                                <FeedCard key={article.id} article={article} />
-                            ))
+                            <AnimatePresence mode="popLayout">
+                                {articles.map((article, idx) => (
+                                    <motion.div
+                                        key={article.id}
+                                        layout
+                                        initial={{
+                                            opacity: 0,
+                                            y: -30,
+                                            scale: 0.98,
+                                        }}
+                                        animate={{
+                                            opacity: 1,
+                                            y: 0,
+                                            scale: 1,
+                                        }}
+                                        exit={{ opacity: 0, scale: 0.95, x: -20 }}
+                                        transition={{
+                                            duration: 0.4,
+                                            delay: idx * 0.08,
+                                            ease: [0.25, 0.46, 0.45, 0.94]
+                                        }}
+                                        className="rounded-xl overflow-hidden"
+                                    >
+                                        <FeedCard article={article} isNew={idx < 3 && newCount > 0} />
+                                    </motion.div>
+                                ))}
+                            </AnimatePresence>
                         )}
                     </div>
                 </div>

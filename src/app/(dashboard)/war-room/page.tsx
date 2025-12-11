@@ -6,7 +6,7 @@ import { PageHeader } from '@/components/ui/PageHeader';
 import { FeedCard } from '@/components/feed/FeedCard';
 import { ResourceLoader } from '@/components/ui/ResourceLoader';
 // MonthlyIntelBrief import removed
-import { InteractiveMap } from '@/components/ui/InteractiveMap';
+import { ThreatGlobe } from '@/components/visualizations/ThreatGlobe';
 import { Article } from '@/types';
 
 // Prevent static generation for this page to ensure real-time data
@@ -226,18 +226,36 @@ export default function WarRoomPage() {
 
             {/* Interactive Global Threat Map (Only in Global Intel Tab) */}
             {activeTab === 'GLOBAL_INTEL' && (
-                <div className="mb-8">
-                    <div className="flex items-center justify-between mb-4 px-2">
-                        <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2 font-mono tracking-tight">
-                            <Globe className="h-5 w-5 text-blue-600" />
-                            LIVE SATELLITE TRACKING
-                        </h2>
-                        <div className="text-xs font-mono text-gray-500">
-                            ASSETS TRACKED: {incidents.length} // UPDATED: {new Date().toLocaleTimeString()}
+                <div className="mb-8 bg-slate-900 rounded-xl overflow-hidden relative shadow-2xl border border-slate-800">
+                    <div className="absolute top-0 left-0 w-full p-4 flex justify-between items-start z-10 pointer-events-none">
+                        <div>
+                            <h2 className="text-lg font-bold text-white flex items-center gap-2 font-mono tracking-tight drop-shadow-md">
+                                <Globe className="h-5 w-5 text-blue-400" />
+                                LIVE SATELLITE TRACKING
+                            </h2>
+                            <div className="text-xs font-mono text-blue-300 mt-1">
+                                ASSETS TRACKED: {incidents.length} // LATENCY: 24ms
+                            </div>
+                        </div>
+                        <div className="flex flex-col items-end gap-1">
+                            <span className="flex items-center gap-1.5 bg-black/50 backdrop-blur px-2 py-1 rounded text-[10px] font-mono text-red-400 border border-red-900/50">
+                                <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
+                                KINETIC HOTSPOTS
+                            </span>
+                            <span className="flex items-center gap-1.5 bg-black/50 backdrop-blur px-2 py-1 rounded text-[10px] font-mono text-cyan-400 border border-cyan-900/50">
+                                <span className="w-1.5 h-1.5 rounded-full bg-cyan-500"></span>
+                                CYBER NODES
+                            </span>
                         </div>
                     </div>
 
-                    <InteractiveMap incidents={incidents} />
+                    <div className="w-full aspect-square md:aspect-[2/1] bg-gradient-to-b from-slate-900 via-[#050510] to-slate-900 relative">
+                        <ThreatGlobe />
+
+                        {/* Grid Overlay */}
+                        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-20 pointer-events-none"></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent pointer-events-none"></div>
+                    </div>
                 </div>
             )}
 

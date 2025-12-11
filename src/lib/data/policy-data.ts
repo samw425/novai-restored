@@ -6,6 +6,7 @@ export interface PolicyBill {
     riskLevel: 'HIGH' | 'MEDIUM' | 'LOW';
     impact: string;
     lastUpdated: string;
+    docketUrl: string;
 }
 
 export interface SovereignStatus {
@@ -23,7 +24,8 @@ export const GLOBAL_POLICIES: PolicyBill[] = [
         status: 'IMPLEMENTATION',
         riskLevel: 'HIGH',
         impact: 'Forces immediate audit of all foundation models. Non-compliant US labs risk losing access to the entire EU single market. Penalties up to 7% of global turnover.',
-        lastUpdated: '2025-11-15'
+        lastUpdated: '2025-11-15',
+        docketUrl: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R1689'
     },
     {
         id: 'us-eo-14110',
@@ -32,7 +34,8 @@ export const GLOBAL_POLICIES: PolicyBill[] = [
         status: 'ENACTED',
         riskLevel: 'MEDIUM',
         impact: 'Mandates "Red Teaming" reports for models >10^26 FLOPs. Effectively creates a "license to train" for frontier labs (OpenAI, Anthropic, Google).',
-        lastUpdated: '2025-10-30'
+        lastUpdated: '2025-10-30',
+        docketUrl: 'https://www.federalregister.gov/documents/2023/11/01/2023-24283/safe-secure-and-trustworthy-development-and-use-of-artificial-intelligence'
     },
     {
         id: 'china-interim',
@@ -41,7 +44,8 @@ export const GLOBAL_POLICIES: PolicyBill[] = [
         status: 'ENACTED',
         riskLevel: 'HIGH',
         impact: 'Strict content control requires alignment with "Socialist Core Values". Creates a bifurcated AI ecosystem: one for China, one for the world.',
-        lastUpdated: '2025-08-15'
+        lastUpdated: '2025-08-15',
+        docketUrl: 'http://www.cac.gov.cn/2023-07/13/c_1690898327029107.htm'
     },
     {
         id: 'uk-safety-inst',
@@ -50,7 +54,8 @@ export const GLOBAL_POLICIES: PolicyBill[] = [
         status: 'PROPOSED',
         riskLevel: 'LOW',
         impact: 'Establishes the UK as the global "neutral arbiter" for safety evaluations. Voluntary compliance now, but likely precursor to binding standards.',
-        lastUpdated: '2025-12-01'
+        lastUpdated: '2025-12-01',
+        docketUrl: 'https://www.gov.uk/government/organisations/ai-safety-institute'
     },
     {
         id: 'un-ai-advisory',
@@ -59,7 +64,8 @@ export const GLOBAL_POLICIES: PolicyBill[] = [
         status: 'DRAFTING',
         riskLevel: 'MEDIUM',
         impact: 'First attempt at a "Global AI Treaty". Likely to fail on enforcement but will set the normative standards for "Equitable Access" to compute.',
-        lastUpdated: '2025-11-20'
+        lastUpdated: '2025-11-20',
+        docketUrl: 'https://www.un.org/en/ai-advisory-body'
     }
 ];
 

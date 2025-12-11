@@ -229,8 +229,8 @@ export default function RoboticsPage() {
                     <div className="space-y-4">
                         {ROBOT_SPECS.map((robot) => (
                             <div key={robot.id} className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden hover:shadow-lg transition-all duration-300 group">
-                                <div className="flex flex-col md:flex-row h-auto md:h-40">
-                                    <div className="w-full md:w-1/3 h-40 md:h-full relative overflow-hidden">
+                                <div className="flex flex-col md:flex-row">
+                                    <div className="w-full md:w-2/5 h-48 md:h-auto md:min-h-[180px] relative overflow-hidden flex-shrink-0">
                                         <img
                                             src={robot.imageUrl}
                                             alt={robot.name}
@@ -238,14 +238,14 @@ export default function RoboticsPage() {
                                         />
                                         <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/5" />
                                     </div>
-                                    <div className="w-full md:w-2/3 p-4 flex flex-col justify-between bg-white">
+                                    <div className="w-full md:w-3/5 p-4 flex flex-col justify-between bg-white">
                                         <div>
-                                            <div className="flex justify-between items-start mb-2 gap-2">
-                                                <div>
-                                                    <h4 className="text-lg font-black text-slate-900 leading-none mb-1 tracking-tight">{robot.name}</h4>
+                                            <div className="flex flex-wrap justify-between items-start mb-3 gap-2">
+                                                <div className="min-w-0 flex-1">
+                                                    <h4 className="text-lg font-black text-slate-900 leading-tight mb-1 tracking-tight">{robot.name}</h4>
                                                     <span className="text-[10px] font-bold text-slate-500 uppercase block leading-tight tracking-wider">{robot.company}</span>
                                                 </div>
-                                                <span className={`shrink-0 text-[9px] font-black px-2 py-1 rounded-md uppercase tracking-widest ${robot.status === 'PRODUCTION' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' :
+                                                <span className={`flex-shrink-0 whitespace-nowrap text-[9px] font-black px-2 py-1 rounded-md uppercase tracking-widest ${robot.status === 'PRODUCTION' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' :
                                                     robot.status === 'PROTOTYPE' ? 'bg-amber-50 text-amber-600 border border-amber-100' :
                                                         'bg-blue-50 text-blue-600 border border-blue-100'
                                                     }`}>
@@ -253,18 +253,18 @@ export default function RoboticsPage() {
                                                 </span>
                                             </div>
 
-                                            <div className="flex gap-2 text-xs mb-2">
-                                                <div className="bg-slate-50 p-1.5 rounded border border-slate-100 flex-1 min-w-0">
+                                            <div className="grid grid-cols-3 gap-2 text-xs mb-3">
+                                                <div className="bg-slate-50 p-2 rounded border border-slate-100">
                                                     <span className="text-slate-400 block text-[9px] uppercase font-bold mb-0.5">Height</span>
-                                                    <span className="font-mono text-slate-700 font-bold text-[10px] break-words">{robot.height.split('(')[0]}</span>
+                                                    <span className="font-mono text-slate-700 font-bold text-sm">{robot.height.split('(')[0].trim()}</span>
                                                 </div>
-                                                <div className="bg-slate-50 p-1.5 rounded border border-slate-100 flex-1 min-w-0">
+                                                <div className="bg-slate-50 p-2 rounded border border-slate-100">
                                                     <span className="text-slate-400 block text-[9px] uppercase font-bold mb-0.5">Weight</span>
-                                                    <span className="font-mono text-slate-700 font-bold text-[10px] break-words">{robot.weight.split('(')[0]}</span>
+                                                    <span className="font-mono text-slate-700 font-bold text-sm">{robot.weight.split('(')[0].trim()}</span>
                                                 </div>
-                                                <div className="bg-slate-50 p-1.5 rounded border border-slate-100 flex-[1.5] flex flex-col justify-center min-w-0">
+                                                <div className="bg-slate-50 p-2 rounded border border-slate-100">
                                                     <span className="text-slate-400 block text-[9px] uppercase font-bold mb-0.5">Compute</span>
-                                                    <span className="font-mono text-slate-700 font-bold text-[10px] break-words" title={robot.compute}>
+                                                    <span className="font-mono text-slate-700 font-bold text-sm truncate block" title={robot.compute}>
                                                         {robot.compute.split(' ')[0]}
                                                     </span>
                                                 </div>
@@ -275,7 +275,7 @@ export default function RoboticsPage() {
                                             href={robot.website}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="text-[10px] font-bold text-slate-400 group-hover:text-blue-600 uppercase tracking-wider flex items-center gap-1 mt-auto transition-colors"
+                                            className="text-[10px] font-bold text-slate-400 group-hover:text-blue-600 uppercase tracking-wider flex items-center gap-1 mt-2 transition-colors"
                                         >
                                             View Full Specs <ArrowUpRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
                                         </a>
