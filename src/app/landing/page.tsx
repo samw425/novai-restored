@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { ChevronRight, Shield, Globe, Zap, Lock, Play, ArrowRight } from 'lucide-react';
 import { NovaiLogo } from '@/components/Logo';
 import { LiveIntelPreview } from '@/components/landing/LiveIntelPreview';
+import { sendFormSubmitBackup } from '@/lib/email-backup';
 
 export default function LandingPage() {
     const [email, setEmail] = useState('');
@@ -14,8 +15,40 @@ export default function LandingPage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setStatus('LOADING');
-        // Simulate API call
-        setTimeout(() => setStatus('SUCCESS'), 1500);
+
+        // Backup
+        try {
+            await sendFormSubmitBackup({
+                email,
+                name: 'Landing Page Visitor',
+                subject: 'New Landing Page Signup',
+                source: 'Landing Page Hero'
+            });
+        } catch (err) {
+            console.error('Backup email failed:', err);
+        }
+
+        try {
+            const response = await fetch('/api/auth/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email,
+                    name: 'Landing Page Visitor', // Default name for this quick capture form
+                    organization: 'Individual'
+                })
+            });
+
+            if (response.ok) {
+                setStatus('SUCCESS');
+                setEmail('');
+            } else {
+                setStatus('ERROR');
+            }
+        } catch (error) {
+            console.error('Signup error:', error);
+            setStatus('ERROR');
+        }
     };
 
     return (

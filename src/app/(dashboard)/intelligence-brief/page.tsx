@@ -28,10 +28,11 @@ export default function IntelligenceBriefPage() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Parallel fetch with resilience: Brief (Pipeline A) + Themes (Pipeline B)
+                // Parallel fetch with cache-busting to ensure fresh On-Demand generation
+                const timestamp = Date.now();
                 const [briefResult, themesResult] = await Promise.allSettled([
-                    fetch('/api/brief'),
-                    fetch('/api/intelligence/synthesize')
+                    fetch(`/api/brief?t=${timestamp}`, { cache: 'no-store' }),
+                    fetch(`/api/intelligence/synthesize?t=${timestamp}`, { cache: 'no-store' })
                 ]);
 
                 // Handle Brief Result
@@ -114,8 +115,8 @@ export default function IntelligenceBriefPage() {
                                             >
                                                 {/* Status Dot */}
                                                 <div className={`absolute left-0 top-2 w-6 h-6 rounded-full border-4 border-white shadow-sm flex items-center justify-center ${item.impact === 'CRITICAL' ? 'bg-red-500' :
-                                                        item.impact === 'SEVERE' ? 'bg-orange-500' :
-                                                            item.impact === 'HIGH' ? 'bg-blue-500' : 'bg-slate-400'
+                                                    item.impact === 'SEVERE' ? 'bg-orange-500' :
+                                                        item.impact === 'HIGH' ? 'bg-blue-500' : 'bg-slate-400'
                                                     }`}>
                                                     <div className="w-1.5 h-1.5 bg-white rounded-full opacity-50" />
                                                 </div>

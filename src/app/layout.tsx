@@ -25,8 +25,8 @@ export const metadata: Metadata = {
     description: "The central nervous system for the post-AI world. Autonomously monitoring 109+ high-signal sources.",
   },
   icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon.ico',
+    icon: '/logo.png',
+    shortcut: '/logo.png',
     apple: '/logo.png',
   },
 };

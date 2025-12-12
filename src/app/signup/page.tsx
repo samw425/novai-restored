@@ -15,16 +15,13 @@ export default function SignUpPage() {
         setLoading(true);
 
         try {
-            const response = await fetch('/api/contact', {
+            const response = await fetch('/api/auth/signup', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
+                    name,
                     email,
-                    name: name || 'Daily Brief Subscriber',
-                    subject: 'Daily Brief Signup',
-                    message: 'New subscriber joined via /signup landing page',
-                    organization: 'Individual',
-                    interest: 'Daily Brief'
+                    organization: 'Individual'
                 })
             });
 

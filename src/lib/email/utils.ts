@@ -5,16 +5,16 @@ import { render } from '@react-email/render';
 // ----------------------------------------------------------------------------
 // EMAIL CLIENTS
 // ----------------------------------------------------------------------------
-const resend = new Resend(process.env.RESEND_API_KEY);
-const mailersend = new MailerSend({
-    apiKey: process.env.MAILERSEND_API_KEY || '',
-});
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+const mailersend = process.env.MAILERSEND_API_KEY ? new MailerSend({
+    apiKey: process.env.MAILERSEND_API_KEY,
+}) : null;
 
 /**
  * Get the sender address for Resend (admin notifications).
  */
 export function getResendSenderAddress(): string {
-    return process.env.RESEND_FROM_EMAIL || 'Novai Daily Intelligence <briefing@resend.dev>';
+    return process.env.RESEND_FROM_EMAIL || 'Novai Daily Intelligence <onboarding@resend.dev>';
 }
 
 /**
@@ -24,6 +24,11 @@ export async function getResendAudienceId(): Promise<string | null> {
     let audienceId = process.env.RESEND_AUDIENCE_ID;
 
     if (!audienceId) {
+        if (!resend) {
+            console.warn('[EmailUtils] Resend client not initialized (missing API key)');
+            return null;
+        }
+
         try {
             const audiences = await resend.audiences.list();
             if (audiences.data && audiences.data.data && audiences.data.data.length > 0) {
@@ -56,6 +61,8 @@ export async function addSubscriber(
     }
 
     try {
+        if (!resend) return false;
+
         await resend.contacts.create({
             email: email,
             audienceId: audienceId,
@@ -87,6 +94,7 @@ export async function getSubscribers(): Promise<string[]> {
     }
 
     try {
+        if (!resend) return [];
         const contacts = await resend.contacts.list({ audienceId });
         if (contacts.data && contacts.data.data) {
             return contacts.data.data
@@ -109,23 +117,53 @@ export async function sendAdminEmail(
     htmlContent: string
 ): Promise<{ id: string | null; error: string | null }> {
     const toArray = Array.isArray(to) ? to : [to];
-    try {
-        const { data, error } = await resend.emails.send({
-            from: getResendSenderAddress(),
-            to: toArray,
-            subject: subject,
-            html: htmlContent,
-        });
+    let resendError = null;
 
-        if (error) {
-            console.error('[EmailUtils] Admin email error:', error);
-            return { id: null, error: error.message };
+    // 1. Try Resend
+    if (resend) {
+        try {
+            const { data, error } = await resend.emails.send({
+                from: getResendSenderAddress(),
+                to: toArray,
+                subject: subject,
+                html: htmlContent,
+            });
+
+            if (!error) {
+                return { id: data?.id || null, error: null };
+            }
+            resendError = error.message;
+            console.warn(`[EmailUtils] Resend failed (${resendError}), trying Mailersend fallback...`);
+        } catch (e: any) {
+            resendError = e.message;
+            console.warn(`[EmailUtils] Resend exception (${resendError}), trying Mailersend fallback...`);
         }
-        return { id: data?.id || null, error: null };
-    } catch (e: any) {
-        console.error('[EmailUtils] Admin email exception:', e);
-        return { id: null, error: e.message || 'Unknown error' };
+    } else {
+        console.warn('[EmailUtils] Resend not initialized, trying Mailersend directly...');
     }
+
+    // 2. Fallback to Mailersend
+    if (mailersend) {
+        try {
+            const sentFrom = new Sender('noreply@test-86org8ek12ngew13.mlsender.net', 'Novai Notifications');
+            const recipients = toArray.map(email => new Recipient(email, email));
+
+            const emailParams = new EmailParams()
+                .setFrom(sentFrom)
+                .setTo(recipients)
+                .setSubject(subject + ' (via Mailersend Backup)')
+                .setHtml(htmlContent);
+
+            const response = await mailersend.email.send(emailParams);
+            console.log('[EmailUtils] Admin email sent via Mailersend backup');
+            return { id: response.body?.message_id || 'mailersend_backup', error: null };
+        } catch (me: any) {
+            console.error('[EmailUtils] Mailersend fallback failed:', me);
+            return { id: null, error: `Resend: ${resendError}, Mailersend: ${me.message}` };
+        }
+    }
+
+    return { id: null, error: resendError || 'No email providers initialized' };
 }
 
 /**
@@ -148,6 +186,11 @@ export async function sendSubscriberEmail(
             .setTo(recipients)
             .setSubject(subject)
             .setHtml(htmlContent);
+
+        if (!mailersend) {
+            console.warn('[EmailUtils] Mailersend client not initialized');
+            return { id: null, error: 'Mailersend API key missing' };
+        }
 
         const response = await mailersend.email.send(emailParams);
 

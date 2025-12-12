@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { X, Check, Loader2, Mail } from 'lucide-react';
+import { sendFormSubmitBackup } from '@/lib/email-backup';
 
 interface WaitlistModalProps {
     isOpen: boolean;
@@ -19,21 +20,30 @@ export function WaitlistModal({ isOpen, onClose, source = 'General' }: WaitlistM
         e.preventDefault();
         setStatus('loading');
 
+        // Dual Dispatch: Client-side backup
         try {
-            // Use FormSubmit.co to send email directly to the user
-            const response = await fetch('https://formsubmit.co/ajax/saziz4250@gmail.com', {
+            await sendFormSubmitBackup({
+                email,
+                subject: `Waitlist Join (${source})`,
+                source: source,
+                message: 'User joined Pro Waitlist via Modal'
+            });
+        } catch (err) {
+            console.error('Backup email failed:', err);
+        }
+
+        try {
+            // Use internal API which handles Resend + FormSubmit fallback + Database
+            const response = await fetch('/api/pro-waitlist', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
                 body: JSON.stringify({
-                    _subject: `Novai Waitlist Signup: ${email}`,
-                    email: email,
-                    source: source,
-                    message: `New user joined the waitlist from ${source}.`,
-                    _template: 'table',
-                    _captcha: "false"
+                    email,
+                    name: 'Waitlist User', // Generic name since this modal only asks for email
+                    feature: source || 'General Waitlist'
                 }),
             });
 

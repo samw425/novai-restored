@@ -85,18 +85,28 @@ export default async function Image() {
                             alignItems: 'center',
                             justifyContent: 'center',
                             marginBottom: '20px',
-                            background: 'linear-gradient(180deg, rgba(59, 130, 246, 0.2) 0%, rgba(59, 130, 246, 0) 100%)',
-                            border: '1px solid rgba(59, 130, 246, 0.3)',
+                            background: 'linear-gradient(180deg, rgba(30, 64, 175, 0.2) 0%, rgba(30, 64, 175, 0) 100%)', // Blue-800 based
+                            border: '1px solid rgba(59, 130, 246, 0.5)',
                             borderRadius: '50%',
-                            width: '80px',
-                            height: '80px',
-                            boxShadow: '0 0 40px rgba(59, 130, 246, 0.3)',
+                            width: '100px',
+                            height: '100px',
+                            boxShadow: '0 0 60px rgba(37, 99, 235, 0.4)',
                         }}
                     >
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                            <path d="M12 2L2 7L12 12L22 7L12 2Z" />
-                            <path d="M2 17L12 22L22 17" />
-                            <path d="M2 12L12 17L22 12" />
+                        <svg
+                            width="50"
+                            height="50"
+                            viewBox="0 0 40 40"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            {/* Premium Geometric Shield - Logo.tsx Path */}
+                            <path
+                                d="M20 4L6 9.5V18C6 26.5 12 34 20 37.5C28 34 34 26.5 34 18V9.5L20 4Z"
+                                fill="#2563EB"
+                                stroke="white"
+                                strokeWidth="2"
+                            />
                         </svg>
                     </div>
 

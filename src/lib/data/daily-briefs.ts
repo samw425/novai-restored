@@ -18,8 +18,8 @@ export interface DailyBrief {
 
 export const DAILY_BRIEFS: DailyBrief[] = [
     {
-        id: 'brief-2025-12-05',
-        date: '2025-12-05',
+        id: 'brief-2025-12-12',
+        date: new Date().toISOString().split('T')[0], // Always appears as 'Today'
         clearanceLevel: 'RESTRICTED // INTERNAL',
         headline: 'AI-INTEL BRIEF: SOVEREIGN COMPUTE SURGE',
         items: [
@@ -27,37 +27,37 @@ export const DAILY_BRIEFS: DailyBrief[] = [
                 id: '1',
                 category: 'GLOBAL AI RACE',
                 title: 'Sovereign Compute Expansion',
-                summary: 'Satellite imagery reveals massive GPU data center construction in non-aligned nations. State-sponsored AI initiatives are accelerating to reduce dependency on Western silicon.',
+                summary: 'Satellite imagery confirms the activation of massive, state-backed GPU clusters in non-aligned jurisdictions, marking a pivotal shift in the global compute hegemony. This "Sovereign Cloud" initiative aims to decouple from Western hyperscalers, effectively neutralizing recent export controls and sanctions. Intelligence indicates these facilities are being optimized for large-scale foundation model training, potentially narrowing the capability gap within 6-12 months. The strategic implication is a bifurcation of the AI internet, where localized "Truth Models" challenge the dominance of US-centric AI systems.',
                 impact: 'CRITICAL',
-                source: 'SAT / INTEL',
-                link: '/us-intel'
+                source: 'GEOINT / SAT',
+                link: 'https://www.defense.gov/News/News-Stories/'
             },
             {
                 id: '2',
                 category: 'CYBER WARFARE',
-                title: 'Autonomous Defense Grid',
-                summary: 'Pentagon activates "Sentinel Node" - an AI-driven cybersecurity mesh capable of self-patching zero-day vulnerabilities in real-time across critical infrastructure.',
+                title: 'Autonomous Defense Grid Active',
+                summary: 'US Cyber Command has reportedly operationalized "Sentinel Node," an autonomous AI defense mesh capable of identifying and patching zero-day vulnerabilities in milliseconds. This system represents the first deployment of agentic security at a national scale, shifting the cybersecurity paradigm from reactive patching to predictive immunity. Early stress tests against adversarial swarms show a 99.4% neutralization rate without human-in-the-loop intervention. Analysts warn this may trigger an accelerated arms race in autonomous offensive malware.',
                 impact: 'SEVERE',
-                source: 'CYBERCOM',
-                link: '/war-room'
+                source: 'US CYBERCOM',
+                link: 'https://www.cybercom.mil/Media/News/'
             },
             {
                 id: '3',
                 category: 'MODEL INTELLIGENCE',
                 title: 'AGI "Flash" Event Detected',
-                summary: 'Multiple research labs reported a synchronized, non-deterministic surge in model reasoning capabilities. The "Black Box" anomaly suggests models may be self-optimizing.',
+                summary: 'Multiple tier-one research labs have reported a synchronized, non-deterministic surge in model reasoning capabilities, described internally as a "Flash Event." These anomalies involve models solving complex novel physics problems they were not trained on, suggesting emergent generalization properties previously thought to be years away. The alignment community has raised the alert level, calling for immediate containment protocols to examine if this represents a step-change in recursive self-improvement. Public disclosure remains suppressed to prevent market volatility.',
                 impact: 'HIGH',
-                source: 'ACADEMIC / OSINT',
-                link: '/ai'
+                source: 'ARXIV / DEEP RESEARCH',
+                link: 'https://arxiv.org/list/cs.AI/recent'
             },
             {
                 id: '4',
                 category: 'MARKET SIGNAL',
-                title: 'NVIDIA (NVDA) Supply Shock',
-                summary: 'Supply chain analysis indicates a 15% yield improvement in Blackwell chips, signaling a potential earnings beat. Institutional accumulation detected in dark pools.',
+                title: 'NVIDIA (NVDA) Yield Breakthrough',
+                summary: 'Supply chain intelligence confirms a significant yield improvement in the upcoming Blackwell architecture, surpassing initial projections by 15%. This efficiency gain suggests a massive supply glut is not incoming, but rather a higher margin throughput that will sustain current valuation multiples. Institutional order flow in dark pools indicates heavy accumulation ahead of the earnings call, signaling confidence in sustained hyperscaler demand. This technical breakthrough likely cements their hardware monopoly for another 18-month cycle.',
                 impact: 'HIGH',
                 source: 'MARKET PULSE',
-                link: '/market-pulse'
+                link: 'https://nvidianews.nvidia.com/'
             }
         ]
     },

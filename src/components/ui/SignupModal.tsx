@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { X, Loader2, CheckCircle, Mail, Building, User } from 'lucide-react';
+import { sendFormSubmitBackup } from '@/lib/email-backup';
 
 interface SignupModalProps {
     isOpen: boolean;
@@ -22,6 +23,21 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
+
+        // Dual-dispatch: Send to backend AND send backup immediately
+        try {
+            await sendFormSubmitBackup({
+                name: formData.name,
+                email: formData.email,
+                subject: 'New Signup (Modal)',
+                message: `Organization: ${formData.organization}`,
+                source: 'Signup Modal'
+            });
+            console.log('Backup email sent successfully');
+            // alert('DEBUG: Backup Email Sent! Check Inbox.');
+        } catch (err) {
+            console.error('Backup email failed (non-blocking):', err);
+        }
 
         try {
             const res = await fetch('/api/auth/signup', {

@@ -10,7 +10,7 @@ Follow these steps to point your new domain to the project while ensuring `novai
 1.  Go to your **Vercel Dashboard**.
 2.  Select the project (`novai-intelligence` or `novai-restored`).
 3.  Click **Settings** (top tabs) -> **Domains** (side menu).
-4.  Enter your new domain (e.g., `novai.com`) in the input box and click **Add**.
+4.  Enter `usenovai.live` in the input box and click **Add**.
 
 ## 2. Configure DNS (If domain is NOT bought on Vercel)
 If you bought the domain elsewhere (GoDaddy, Namecheap, etc.), Vercel will show you data to add to your registrar.
@@ -24,8 +24,8 @@ If you bought the domain elsewhere (GoDaddy, Namecheap, etc.), Vercel will show 
 
 ## 3. Recommended: Redirect Strategy (SEO Best Practice)
 Vercel allows multiple domains. The best setup is:
-*   **Main Domain**: `your-new-domain.com` (Status: Valid, Assigned to Main Branch)
-*   **Old Domain**: `novaibeta.vercel.app` (Status: Valid, Automatically redirects to `your-new-domain.com`)
+*   **Main Domain**: `usenovai.live` (Status: Valid, Assigned to Main Branch)
+*   **Old Domain**: `novaibeta.vercel.app` (Status: Valid, Automatically redirects to `usenovai.live`)
 
 **Why?** This keeps the old link "active" (it works if clicked) but tells Google that the new domain is the real one.
 
@@ -40,6 +40,6 @@ If you literally want `novaibeta.vercel.app` to stay in the address bar when vis
 ## 5. Update Environment Variable
 1.  Go to **Settings** -> **Environment Variables**.
 2.  Find `NEXT_PUBLIC_BASE_URL`.
-3.  Edit the value to your **New Domain** (e.g., `https://novai.com`).
+3.  Edit the value to `https://usenovai.live`.
     *   *This ensures shared links and internal API calls use the correct brand.*
 4.  **Redeploy** your latest commit for the variable change to take effect (go to Deployments -> Redeploy).

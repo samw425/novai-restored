@@ -14,12 +14,29 @@ export function ComingSoon({ title, description, eta = "Q4 2025", icon }: Coming
     const [email, setEmail] = useState('');
     const [submitted, setSubmitted] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (email) {
-            setSubmitted(true);
-            // In a real app, you would send this to your backend
-            console.log(`Waitlist signup for ${title}: ${email}`);
+            try {
+                // Send to backend via Pro Waitlist API (generic enough for feature waitlists)
+                const response = await fetch('/api/pro-waitlist', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email,
+                        name: 'Coming Soon User', // Placeholder name as we only capture email here
+                        feature: `Coming Soon: ${title}`
+                    }),
+                });
+
+                if (response.ok) {
+                    setSubmitted(true);
+                } else {
+                    console.error('Failed to join waitlist');
+                }
+            } catch (error) {
+                console.error('Error submitting waitlist:', error);
+            }
         }
     };
 

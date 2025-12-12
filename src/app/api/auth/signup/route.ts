@@ -80,7 +80,30 @@ export async function POST(request: Request) {
         );
 
         if (notifError) {
-            console.warn('[Signup] Admin notification failed:', notifError);
+            console.warn('[Signup] Admin notification via Resend failed, trying FormSubmit fallback:', notifError);
+
+            // Fallback: Send via FormSubmit.co
+            try {
+                await fetch('https://formsubmit.co/ajax/22bfde7008713e559bd8ac55808d9e8a', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        _subject: `[Novai] New Subscriber: ${name} (Fallback)`,
+                        name: name,
+                        email: email,
+                        organization: organization || 'N/A',
+                        message: 'New subscriber signed up. (Sent via fallback)',
+                        _template: 'table',
+                        _captcha: "false"
+                    })
+                });
+                console.log('[Signup] Backup notification sent via FormSubmit.co');
+            } catch (fallbackErr) {
+                console.error('[Signup] Both Resend and Fallback failed:', fallbackErr);
+            }
         }
 
         return NextResponse.json({ success: true });
