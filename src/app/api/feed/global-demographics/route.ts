@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server';
+export const runtime = 'edge';
+
 
 // Mock Data for Global Demographics
 const COUNTRIES = [
@@ -37,7 +39,7 @@ const COUNTRIES = [
 
 export async function GET() {
     // Simulate real-time flux
-    const countriesWithFlux = COUNTRIES.map(c => {
+    const countriesWithFlux = COUNTRIES.map((c: any) => {
         // Add a tiny random variation to simulate live counting
         const flux = Math.floor(Math.random() * 10) - 3;
         return {

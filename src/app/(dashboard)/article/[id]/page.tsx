@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+export const runtime = 'edge';
 import { useParams } from 'next/navigation';
 import { createClient } from '@supabase/supabase-js';
 import { ArrowLeft, ExternalLink, Clock, Tag } from 'lucide-react';

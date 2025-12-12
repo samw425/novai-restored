@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getSubscribers, sendSubscriberEmail } from '@/lib/email/utils';
 import DailyBriefEmail from '@emails/DailyBriefEmail';
+export const runtime = 'edge';
+
 
 // Force dynamic to ensure fresh data
 export const dynamic = 'force-dynamic';

@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { model } from '@/lib/gemini';
+export const runtime = 'edge';
 
-export const runtime = 'nodejs';
+
 export const dynamic = 'force-dynamic';
 
 export async function POST(request: Request) {

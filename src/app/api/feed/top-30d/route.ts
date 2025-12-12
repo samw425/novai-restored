@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getTopStories } from '@/lib/data/top-stories-30d';
+export const runtime = 'edge';
 
-export const runtime = 'nodejs';
+
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {

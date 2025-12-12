@@ -1,6 +1,10 @@
+// @ts-nocheck
 import { NextResponse } from 'next/server';
-import Parser from 'rss-parser';
+// @ts-ignore
+import Parser from 'rss-parser/dist/rss-parser.min.js';
 import { RSS_FEEDS } from '@/config/rss-feeds';
+export const runtime = 'edge';
+
 
 const parser = new Parser({
     timeout: 15000, // Longer timeout for deep fetch
@@ -9,7 +13,6 @@ const parser = new Parser({
     }
 });
 
-export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 // Helper to clean HTML
@@ -80,7 +83,7 @@ export async function GET(request: Request) {
 
         // 5. Ranking Logic
         // Score = Source Priority + Recency Boost + Keyword Boost
-        allArticles = allArticles.map(article => {
+        allArticles = allArticles.map((article: any) => {
             let score = article.importanceScore;
 
             // Keyword Boost

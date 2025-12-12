@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { fetchYouTubeRSS } from '@/lib/youtube-rss';
 import { LIVE_VIDEOS } from '@/lib/data/video-feed';
+export const runtime = 'edge';
+
 
 export async function GET() {
     try {
@@ -14,7 +16,7 @@ export async function GET() {
         const allVideos = [...rssVideos, ...LIVE_VIDEOS];
 
         // Deduplicate by ID
-        const uniqueVideos = Array.from(new Map(allVideos.map(item => [item.id, item])).values());
+        const uniqueVideos = Array.from(new Map(allVideos.map((item: any) => [item.id, item])).values());
 
         // Sort by timestamp (newest first)
         uniqueVideos.sort((a, b) => b.timestamp - a.timestamp);

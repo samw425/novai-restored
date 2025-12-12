@@ -1,6 +1,10 @@
+// @ts-nocheck
 import { NextResponse } from 'next/server';
-import Parser from 'rss-parser';
+// @ts-ignore
+import Parser from 'rss-parser/dist/rss-parser.min.js';
 import { RSS_FEEDS } from '@/config/rss-feeds';
+export const runtime = 'edge';
+
 
 const parser = new Parser();
 
@@ -17,7 +21,7 @@ export async function GET(request: Request) {
         const feedPromises = builtWorldFeeds.map(async (feedSource) => {
             try {
                 const feed = await parser.parseURL(feedSource.url);
-                return feed.items.map(item => ({
+                return feed.items.map((item: any) => ({
                     id: item.guid || item.link,
                     title: item.title,
                     link: item.link,

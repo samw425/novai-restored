@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { OpenAI } from 'openai';
+export const runtime = 'edge';
 
-export const runtime = 'nodejs';
+
 export const dynamic = 'force-dynamic';
 
 const openai = new OpenAI({

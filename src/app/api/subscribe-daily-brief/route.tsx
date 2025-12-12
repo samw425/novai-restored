@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { addSubscriber, sendSubscriberEmail } from '@/lib/email/utils';
 import WelcomeDailyBriefEmail from '@emails/WelcomeDailyBriefEmail';
+export const runtime = 'edge';
+
 
 export async function POST(request: Request) {
     try {

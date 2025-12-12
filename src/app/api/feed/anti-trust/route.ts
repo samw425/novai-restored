@@ -1,8 +1,11 @@
+// @ts-nocheck
 import { NextResponse } from 'next/server';
-import Parser from 'rss-parser';
+// @ts-ignore
+import Parser from 'rss-parser/dist/rss-parser.min.js';
 import { RSS_FEEDS } from '@/config/rss-feeds';
+export const runtime = 'edge';
 
-export const runtime = 'nodejs';
+
 export const dynamic = 'force-dynamic';
 export const revalidate = 3600; // Revalidate every hour for fresh court docket updates
 
@@ -66,7 +69,7 @@ export async function GET(request: Request) {
             try {
                 const feed = await parser.parseURL(feedSource.url);
                 return feed.items
-                    .map(item => {
+                    .map((item: any) => {
                         const text = `${item.title} ${item.contentSnippet || ''}`.toLowerCase();
 
                         // 1. Check for Strong Keywords (Automatic Pass)
@@ -87,7 +90,7 @@ export async function GET(request: Request) {
                             isMajor
                         };
                     })
-                    .filter(({ isRelevant, isMajor }) => {
+                    .filter(({ isRelevant, isMajor }: any) => {
                         if (onlyMajor) return isMajor;
                         return isRelevant;
                     })

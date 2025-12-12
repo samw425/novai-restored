@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getLatestBrief } from '@/lib/data/daily-briefs';
+export const runtime = 'edge';
 
 // ----------------------------------------------------------------------------
 // CONFIGURATION

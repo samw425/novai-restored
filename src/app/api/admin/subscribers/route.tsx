@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabaseClient';
 import { Resend } from 'resend';
 import WelcomeDailyBriefEmail from '../../../../../emails/WelcomeDailyBriefEmail';
+export const runtime = 'edge';
+
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 

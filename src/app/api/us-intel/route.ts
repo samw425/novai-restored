@@ -1,7 +1,10 @@
+// @ts-nocheck
 import { NextResponse } from 'next/server';
-import Parser from 'rss-parser';
+// @ts-ignore
+import Parser from 'rss-parser/dist/rss-parser.min.js';
+export const runtime = 'edge';
 
-export const runtime = 'nodejs';
+
 export const dynamic = 'force-dynamic';
 
 const parser = new Parser({

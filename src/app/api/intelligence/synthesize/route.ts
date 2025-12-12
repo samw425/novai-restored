@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { model } from '@/lib/gemini';
+export const runtime = 'edge';
 
-export const runtime = 'nodejs';
+
 export const dynamic = 'force-dynamic';
 
 interface Theme {
@@ -62,7 +63,7 @@ export async function GET() {
 
         // Synthesize each theme with Gemini
         const synthesizedThemes = await Promise.all(
-            themes.map(theme => synthesizeTheme(theme))
+            themes.map((theme: any) => synthesizeTheme(theme))
         );
 
         let finalThemes = synthesizedThemes.filter(t => t !== null);
@@ -211,7 +212,7 @@ async function generateGlobalMetrics(articles: any[]): Promise<{ sentiment: numb
     console.log('Generating global metrics with', articles.length, 'articles');
     try {
         // Sample top 25 articles for broader global context
-        const sample = articles.slice(0, 25).map(a => `${a.title}: ${a.summary}`).join('\n');
+        const sample = articles.slice(0, 25).map((a: any) => `${a.title}: ${a.summary}`).join('\n');
 
         const prompt = `You are the Chief Intelligence Officer for a global AI research lab. Write a comprehensive "Daily Intelligence Briefing" for the CEO.
         

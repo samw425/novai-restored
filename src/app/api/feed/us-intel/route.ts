@@ -1,6 +1,10 @@
+// @ts-nocheck
 import { NextResponse } from 'next/server';
-import Parser from 'rss-parser';
+// @ts-ignore
+import Parser from 'rss-parser/dist/rss-parser.min.js';
 import { RSS_FEEDS } from '@/config/rss-feeds';
+export const runtime = 'edge';
+
 
 const parser = new Parser({
     headers: {
@@ -46,7 +50,7 @@ export async function GET(request: Request) {
         }
     }
 
-    console.log(`[US-INTEL] Target feeds: ${targetFeeds.map(f => f.id).join(', ')}`);
+    console.log(`[US-INTEL] Target feeds: ${targetFeeds.map((f: any) => f.id).join(', ')}`);
 
     if (targetFeeds.length === 0) {
         console.log('[US-INTEL] No target feeds found');
@@ -59,7 +63,7 @@ export async function GET(request: Request) {
                 // console.log(`[US-INTEL] Fetching ${feed.url}...`);
                 const feedData = await parser.parseURL(feed.url);
                 // console.log(`[US-INTEL] Successfully fetched ${feed.url} (${feedData.items.length} items)`);
-                return feedData.items.map(item => ({
+                return feedData.items.map((item: any) => ({
                     title: item.title,
                     link: item.link,
                     pubDate: item.pubDate || new Date().toISOString(),

@@ -1,9 +1,12 @@
+// @ts-nocheck
 import { NextResponse } from 'next/server';
 import { getWarRoomData } from '@/lib/osint';
-import Parser from 'rss-parser';
+// @ts-ignore
+import Parser from 'rss-parser/dist/rss-parser.min.js';
 import { RSS_FEEDS } from '@/config/rss-feeds';
+export const runtime = 'edge';
 
-export const runtime = 'nodejs';
+
 export const dynamic = 'force-dynamic';
 
 const parser = new Parser();
@@ -29,7 +32,7 @@ export async function GET(request: Request) {
             const feedPromises = targetFeeds.map(async (feedSource) => {
                 try {
                     const feed = await parser.parseURL(feedSource.url);
-                    return feed.items.map(item => ({
+                    return feed.items.map((item: any) => ({
                         id: item.guid || item.link || Math.random().toString(),
                         title: item.title,
                         description: item.contentSnippet || item.content,

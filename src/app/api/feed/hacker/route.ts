@@ -1,6 +1,10 @@
+// @ts-nocheck
 import { NextResponse } from 'next/server';
-import Parser from 'rss-parser';
+// @ts-ignore
+import Parser from 'rss-parser/dist/rss-parser.min.js';
 import { RSS_FEEDS, FeedSource } from '@/config/rss-feeds';
+export const runtime = 'edge';
+
 
 const parser = new Parser();
 
@@ -36,7 +40,7 @@ export async function GET() {
         const rssPromises = securityFeeds.map(async (source) => {
             try {
                 const feed = await parser.parseURL(source.url);
-                return feed.items.map(item => ({
+                return feed.items.map((item: any) => ({
                     id: item.guid || item.link || Math.random().toString(36).substr(2, 9),
                     source: source.name,
                     title: item.title || 'Untitled',

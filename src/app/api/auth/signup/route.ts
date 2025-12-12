@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { addSubscriber, sendSubscriberEmail, sendAdminEmail } from '@/lib/email/utils';
 import WelcomeDailyBriefEmail from '@emails/WelcomeDailyBriefEmail';
+export const runtime = 'edge';
+
 
 // Optional Supabase - only create if env vars are present
 const supabase = process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY
