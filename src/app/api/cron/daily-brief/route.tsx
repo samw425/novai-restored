@@ -217,7 +217,7 @@ export async function GET(request: Request) {
                 } : undefined;
 
                 // Build 3-5 deeper intelligence links from source articles
-                const baseUrl = process.env.NEXT_PUBLIC_URL || 'https://novaibeta.vercel.app';
+                const baseUrl = process.env.NEXT_PUBLIC_URL || 'https://usenovai.live';
                 const deeperLinks = [
                     ...dailyBrief.keySignals.slice(0, 3).map((s: any) => ({
                         label: s.title?.slice(0, 50) + (s.title?.length > 50 ? '...' : ''),

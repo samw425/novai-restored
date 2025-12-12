@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: '--font-mono' });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://novaibeta.vercel.app'),
+  metadataBase: new URL('https://usenovai.live'),
   title: "Novai Intelligence",
   description: "The central nervous system for the post-AI world. Autonomously monitoring 109+ high-signal sources to provide a God's Eye View of the technological singularity.",
   keywords: ["AI intelligence", "artificial intelligence news", "AI market", "tech intelligence", "real-time AI tracking"],
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     title: "Novai Intelligence",
     description: "The central nervous system for the post-AI world. Autonomously monitoring 109+ high-signal sources to provide a God's Eye View of the technological singularity.",
     type: "website",
-    url: "https://novaibeta.vercel.app",
+    url: 'https://usenovai.live',
     siteName: "Novai Intelligence",
   },
   twitter: {

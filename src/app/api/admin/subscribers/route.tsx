@@ -38,7 +38,7 @@ export async function POST(request: Request) {
         if (sendWelcome && resend) {
             try {
                 await resend.emails.send({
-                    from: 'Novai Daily Intelligence <intel@novaibeta.vercel.app>',
+                    from: 'Novai Daily Intelligence <intel@usenovai.live>',
                     to: email,
                     subject: 'Welcome to Novai — Your Daily Intelligence Brief',
                     react: WelcomeDailyBriefEmail(),
