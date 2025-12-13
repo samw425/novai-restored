@@ -1,0 +1,15 @@
+name = "novai-intelligence"
+compatibility_date = "2024-04-01"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".vercel/output/static"
+
+# We will use this to run the cron trigger locally for testing
+# Usage: npx wrangler pages dev .vercel/output/static
+
+[vars]
+# Placeholder for environment variables
+NEXT_PUBLIC_URL = "http://localhost:3000"
+
+# Cron Trigger Configuration (Standard Worker Approach)
+# Note: For Pages, we often use a separate worker or the dashboard.
+# But keeping this config here helps us manage it code-side.
