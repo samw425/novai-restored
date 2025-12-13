@@ -7,6 +7,7 @@
     "build": "next build",
     "pages:build": "npx @cloudflare/next-on-pages",
     "start": "next start",
+    "deploy": "vercel deploy --prod --yes",
     "lint": "eslint"
   },
   "dependencies": {
@@ -14,10 +15,8 @@
     "@radix-ui/react-tooltip": "^1.2.8",
     "@react-email/components": "^1.0.1",
     "@react-email/render": "^2.0.0",
-    "@supabase/supabase-js": "^2.86.0",
+    "@supabase/supabase-js": "^2.87.1",
     "@tanstack/react-query": "^5.90.11",
-    "@vercel/analytics": "^1.6.1",
-    "cheerio": "1.0.0-rc.12",
     "clsx": "^2.1.1",
     "cobe": "^0.6.5",
     "date-fns": "^4.1.0",

@@ -1,6 +1,6 @@
-import { FeedContainer } from '@/components/feed/FeedContainer';
+import { FeedContainerClient as FeedContainer } from '@/components/feed/FeedContainerClient';
 import { Globe, Activity } from 'lucide-react';
-import { PremiumGlobe } from '@/components/ui/PremiumGlobe';
+import { PremiumGlobeClient as PremiumGlobe } from '@/components/ui/PremiumGlobeClient';
 
 export default function GlobalFeedPage() {
     return (

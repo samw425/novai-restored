@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getSubscribers, sendSubscriberEmail } from '@/lib/email/utils';
+import { getSubscribers, sendSubscriberEmail, sendSubscriberEmailBatch } from '@/lib/email/utils';
 import DailyBriefEmail from '@emails/DailyBriefEmail';
 export const runtime = 'edge';
 
@@ -239,51 +239,56 @@ export async function GET(request: Request) {
             return NextResponse.json({ message: 'No subscribers found' });
         }
 
-        // 5. Send Emails (using centralized util)
-        console.log(`[DailyBrief] Sending to ${subscribersList.length} subscribers...`);
-        const emailResults = await Promise.all(subscribersList.map(async (email) => {
-            try {
-                const notes = dailyBrief.keySignals.map((s: any) => ({
-                    title: s.title,
-                    summary: s.summary,
-                    url: s.link
-                }));
-                const alert = dailyBrief.warRoomNote ? {
-                    title: 'Geopolitical Update',
-                    summary: dailyBrief.warRoomNote,
-                    link: `${process.env.NEXT_PUBLIC_URL}/war-room`,
-                    severity: 'critical'
-                } : undefined;
+        // 5. Send Emails (using centralized batch util)
+        console.log(`[DailyBrief] Sending to ${subscribersList.length} subscribers (Batch Mode)...`);
 
-                // Build 3-5 deeper intelligence links from source articles
-                const baseUrl = process.env.NEXT_PUBLIC_URL || 'https://usenovai.live';
-                const deeperLinks = [
-                    ...dailyBrief.keySignals.slice(0, 3).map((s: any) => ({
-                        label: s.title?.slice(0, 50) + (s.title?.length > 50 ? '...' : ''),
-                        url: s.link
-                    })),
-                    { label: 'Browse the Global Feed', url: `${baseUrl}/global-feed` },
-                    { label: 'War Room Updates', url: `${baseUrl}/war-room` }
-                ].filter(link => link.url && link.label);
-
-                const { id, error } = await sendSubscriberEmail(
-                    email,
-                    `Novai Daily Brief — ${today}`,
-                    DailyBriefEmail({
-                        date: today,
-                        analystNotes: notes,
-                        warRoomAlert: alert,
-                        marketImpact: dailyBrief.marketImpact,
-                        extraLinks: deeperLinks.slice(0, 5)
-                    }) as React.ReactElement
-                );
-                return { email, status: error ? 'failed' : 'sent', id, error };
-            } catch (e: any) {
-                return { email, status: 'failed', error: e.message };
-            }
+        // Construct Content (Shared for all users)
+        const notes = dailyBrief.keySignals.map((s: any) => ({
+            title: s.title,
+            summary: s.summary,
+            url: s.link
         }));
 
-        const sent = emailResults.filter(r => r.status === 'sent').length;
+        const alert = dailyBrief.warRoomNote ? {
+            title: 'Geopolitical Update',
+            summary: dailyBrief.warRoomNote,
+            link: `${process.env.NEXT_PUBLIC_URL}/war-room`,
+            severity: 'critical' as const
+        } : undefined;
+
+
+        const deeperLinks = [
+            ...dailyBrief.keySignals.slice(0, 3).map((s: any) => ({
+                label: s.title?.slice(0, 50) + (s.title?.length > 50 ? '...' : ''),
+                url: s.link
+            })),
+            { label: 'Browse the Global Feed', url: `${baseUrl}/global-feed` },
+            { label: 'War Room Updates', url: `${baseUrl}/war-room` }
+        ].filter(link => link.url && link.label);
+
+        const emailElement = DailyBriefEmail({
+            date: today,
+            analystNotes: notes,
+            warRoomAlert: alert,
+            marketImpact: dailyBrief.marketImpact,
+            extraLinks: deeperLinks.slice(0, 5)
+        }) as React.ReactElement;
+
+        // Prepare Recipients
+        const recipients = subscribersList.map(email => ({ email }));
+
+        // Send Batch
+        const { successCount, failCount, errors } = await sendSubscriberEmailBatch(
+            recipients,
+            `Novai Daily Brief — ${today}`,
+            emailElement
+        );
+
+        console.log(`[DailyBrief] Batch Result: ${successCount} sent, ${failCount} failed.`);
+        if (errors.length > 0) console.error('[DailyBrief] Sample errors:', errors.slice(0, 3));
+
+        // Mocking the result format for legacy compatibility if needed, but returning summary is better
+        const sent = successCount;
 
         return NextResponse.json({
             success: true,

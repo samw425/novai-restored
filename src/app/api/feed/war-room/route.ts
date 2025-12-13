@@ -1,7 +1,9 @@
+
 // @ts-nocheck
 import { NextResponse } from 'next/server';
 import { getWarRoomData } from '@/lib/osint';
 // @ts-ignore
+// Using the minified version of rss-parser for edge runtime compatibility
 import Parser from 'rss-parser/dist/rss-parser.min.js';
 import { RSS_FEEDS } from '@/config/rss-feeds';
 export const runtime = 'edge';
@@ -44,7 +46,7 @@ export async function GET(request: Request) {
                         score: 10 // High priority for war room
                     }));
                 } catch (e) {
-                    console.error(`Failed to fetch feed ${feedSource.name}:`, e);
+                    console.error(`Failed to fetch feed ${feedSource.name}: `, e);
                     return [];
                 }
             });

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Logo } from '@/components/ui/Logo';
 import { ProWaitlistModal } from '@/components/modals/ProWaitlistModal';
-import { Calendar, Activity, Radio, FlaskConical, TrendingUp, Shield, Info, Hexagon, Bot, Scale, Wrench, Brain, Youtube, Terminal, Globe, Lock, Sparkles, ShieldAlert, Building2 } from 'lucide-react';
+import { Calendar, Activity, Radio, FlaskConical, TrendingUp, Shield, Info, Hexagon, Bot, Scale, Wrench, Brain, Youtube, Terminal, Globe, Lock, Sparkles, ShieldAlert, Building2, DollarSign } from 'lucide-react';
 import {
     Tooltip,
     TooltipContent,
@@ -37,6 +37,13 @@ const platformLinks = [
         icon: Calendar,
         href: '/daily-snapshot',
         tooltip: "Today's curated AI brief."
+    },
+    {
+        id: 'earnings',
+        label: 'Earnings Hub',
+        icon: DollarSign,
+        href: '/earnings',
+        tooltip: "Real-time earnings calendar and AI analysis."
     },
     {
         id: 'future-of-code',

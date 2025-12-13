@@ -169,6 +169,9 @@ export async function sendAdminEmail(
 /**
  * Sends an email to SUBSCRIBERS via Mailersend.
  */
+/**
+ * Sends an email to SUBSCRIBERS via Mailersend.
+ */
 export async function sendSubscriberEmail(
     to: string,
     subject: string,
@@ -199,5 +202,73 @@ export async function sendSubscriberEmail(
     } catch (e: any) {
         console.error('[EmailUtils] Subscriber email error:', e);
         return { id: null, error: e.message || 'Unknown error' };
+    }
+}
+
+/**
+ * Sends a BATCH of emails to subscribers via Resend Batch API.
+ * Automatically chunks requests to respect Cloudflare limits (50 subrequests).
+ */
+export async function sendSubscriberEmailBatch(
+    recipients: { email: string; name?: string }[],
+    subject: string,
+    reactElement: React.ReactElement
+): Promise<{ successCount: number; failCount: number; errors: string[] }> {
+    try {
+        // Render React email to HTML once
+        const htmlContent = await render(reactElement);
+
+        // Chunking Logic (Limit: 50 per batch to be safe with provider limits)
+        const BATCH_SIZE = 50;
+        const chunks = [];
+        for (let i = 0; i < recipients.length; i += BATCH_SIZE) {
+            chunks.push(recipients.slice(i, i + BATCH_SIZE));
+        }
+
+        console.log(`[EmailUtils] Processing ${recipients.length} emails in ${chunks.length} batches...`);
+
+        let successCount = 0;
+        let failCount = 0;
+        const errors: string[] = [];
+
+        // Process chunks sequentially
+        for (const [index, chunk] of chunks.entries()) {
+            try {
+                if (resend) {
+                    const batchPayload = chunk.map(r => ({
+                        from: getResendSenderAddress(),
+                        to: [r.email],
+                        subject: subject,
+                        html: htmlContent
+                    }));
+
+                    const { data, error } = await resend.batch.send(batchPayload);
+
+                    if (error) {
+                        console.error(`[EmailUtils] Batch ${index} failed:`, error);
+                        failCount += chunk.length;
+                        errors.push(`Batch ${index}: ${error.message}`);
+                    } else {
+                        console.log(`[EmailUtils] Batch ${index} sent successfully (${data?.data?.length || 0})`);
+                        successCount += (data?.data?.length || 0);
+                    }
+                } else {
+                    console.warn('[EmailUtils] Resend missing. Using Loop fallback (Risk of Edge limit).');
+                    // Fallback to loop if Resend is missing (Should catch in dev)
+                    await Promise.all(chunk.map(r => sendSubscriberEmail(r.email, subject, reactElement)));
+                    successCount += chunk.length;
+                }
+            } catch (e: any) {
+                console.error(`[EmailUtils] Batch ${index} critical error:`, e);
+                failCount += chunk.length;
+                errors.push(e.message);
+            }
+        }
+
+        return { successCount, failCount, errors };
+
+    } catch (e: any) {
+        console.error('[EmailUtils] Batch Setup Error:', e);
+        return { successCount: 0, failCount: recipients.length, errors: [e.message] };
     }
 }

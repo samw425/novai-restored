@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Activity, Brain, Zap, Globe, ArrowRight, Lock, Radio, Database, Cpu, Loader2, AlertTriangle, TrendingUp, Filter } from 'lucide-react';
-import { PremiumGlobe } from '@/components/ui/PremiumGlobe';
+import { PremiumGlobeClient as PremiumGlobe } from '@/components/ui/PremiumGlobeClient';
 import { Article } from '@/types';
 
 import { ProWaitlistModal } from '@/components/modals/ProWaitlistModal';

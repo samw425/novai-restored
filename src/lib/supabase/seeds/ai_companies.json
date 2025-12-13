@@ -1,0 +1,142 @@
+[
+    {
+        "ticker": "NVDA",
+        "name": "NVIDIA Corporation",
+        "is_ai": true,
+        "featured_rank": 1,
+        "sector": "Technology"
+    },
+    {
+        "ticker": "MSFT",
+        "name": "Microsoft Corporation",
+        "is_ai": true,
+        "featured_rank": 2,
+        "sector": "Technology"
+    },
+    {
+        "ticker": "GOOGL",
+        "name": "Alphabet Inc.",
+        "is_ai": true,
+        "featured_rank": 3,
+        "sector": "Technology"
+    },
+    {
+        "ticker": "AMD",
+        "name": "Advanced Micro Devices, Inc.",
+        "is_ai": true,
+        "featured_rank": 4,
+        "sector": "Technology"
+    },
+    {
+        "ticker": "TSM",
+        "name": "Taiwan Semiconductor Manufacturing",
+        "is_ai": true,
+        "featured_rank": 5,
+        "sector": "Technology"
+    },
+    {
+        "ticker": "AVGO",
+        "name": "Broadcom Inc.",
+        "is_ai": true,
+        "featured_rank": 6,
+        "sector": "Technology"
+    },
+    {
+        "ticker": "META",
+        "name": "Meta Platforms, Inc.",
+        "is_ai": true,
+        "featured_rank": 7,
+        "sector": "Technology"
+    },
+    {
+        "ticker": "AMZN",
+        "name": "Amazon.com, Inc.",
+        "is_ai": true,
+        "featured_rank": 8,
+        "sector": "Consumer Cyclical"
+    },
+    {
+        "ticker": "ORCL",
+        "name": "Oracle Corporation",
+        "is_ai": true,
+        "featured_rank": 9,
+        "sector": "Technology"
+    },
+    {
+        "ticker": "PLTR",
+        "name": "Palantir Technologies Inc.",
+        "is_ai": true,
+        "featured_rank": 10,
+        "sector": "Technology"
+    },
+    {
+        "ticker": "CRM",
+        "name": "Salesforce, Inc.",
+        "is_ai": true,
+        "featured_rank": 11,
+        "sector": "Technology"
+    },
+    {
+        "ticker": "ADBE",
+        "name": "Adobe Inc.",
+        "is_ai": true,
+        "featured_rank": 12,
+        "sector": "Technology"
+    },
+    {
+        "ticker": "INTC",
+        "name": "Intel Corporation",
+        "is_ai": true,
+        "featured_rank": 13,
+        "sector": "Technology"
+    },
+    {
+        "ticker": "QCOM",
+        "name": "Qualcomm Incorporated",
+        "is_ai": true,
+        "featured_rank": 14,
+        "sector": "Technology"
+    },
+    {
+        "ticker": "IBM",
+        "name": "International Business Machines",
+        "is_ai": true,
+        "featured_rank": 15,
+        "sector": "Technology"
+    },
+    {
+        "ticker": "MU",
+        "name": "Micron Technology, Inc.",
+        "is_ai": true,
+        "featured_rank": 16,
+        "sector": "Technology"
+    },
+    {
+        "ticker": "ARM",
+        "name": "Arm Holdings plc",
+        "is_ai": true,
+        "featured_rank": 17,
+        "sector": "Technology"
+    },
+    {
+        "ticker": "SMCI",
+        "name": "Super Micro Computer, Inc.",
+        "is_ai": true,
+        "featured_rank": 18,
+        "sector": "Technology"
+    },
+    {
+        "ticker": "AAPL",
+        "name": "Apple Inc.",
+        "is_ai": true,
+        "featured_rank": 19,
+        "sector": "Technology"
+    },
+    {
+        "ticker": "TSLA",
+        "name": "Tesla, Inc.",
+        "is_ai": true,
+        "featured_rank": 20,
+        "sector": "automotive"
+    }
+]

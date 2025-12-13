@@ -1,6 +1,6 @@
 name = "novai-intelligence"
 compatibility_date = "2024-04-01"
-compatibility_flags = ["nodejs_compat"]
+compatibility_flags = ["nodejs_compat_v2"]
 pages_build_output_dir = ".vercel/output/static"
 
 # We will use this to run the cron trigger locally for testing

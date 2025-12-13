@@ -13,13 +13,14 @@ import { usePathname } from 'next/navigation';
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
     const pathname = usePathname();
-    const isFullWidthPage = ['/war-room', '/us-intel'].includes(pathname);
+    const isEarningsPage = pathname === '/earnings';
+    const isFullWidthPage = ['/war-room', '/us-intel', '/earnings'].includes(pathname);
 
     return (
         <div className="min-h-screen bg-[#F5F6F8] flex flex-col pt-10">
             <NewsTicker />
             <MobileNav />
-            <div className="max-w-[1600px] mx-auto px-4 lg:px-6 py-4 lg:py-8 flex-grow w-full">
+            <div className={`max-w-[1600px] mx-auto flex-grow w-full ${isEarningsPage ? 'p-0' : 'px-4 lg:px-6 py-4 lg:py-8'}`}>
                 <div className="grid grid-cols-12 gap-8">
 
                     {/* Left Sidebar */}

@@ -1,0 +1,142 @@
+[
+    {
+        "ticker": "JPM",
+        "name": "JPMorgan Chase & Co.",
+        "is_ai": false,
+        "is_sp500": true,
+        "sector": "Financial Taxes"
+    },
+    {
+        "ticker": "V",
+        "name": "Visa Inc.",
+        "is_ai": false,
+        "is_sp500": true,
+        "sector": "Financial Services"
+    },
+    {
+        "ticker": "JNJ",
+        "name": "Johnson & Johnson",
+        "is_ai": false,
+        "is_sp500": true,
+        "sector": "Healthcare"
+    },
+    {
+        "ticker": "WMT",
+        "name": "Walmart Inc.",
+        "is_ai": false,
+        "is_sp500": true,
+        "sector": "Consumer Defensive"
+    },
+    {
+        "ticker": "PG",
+        "name": "Procter & Gamble Company",
+        "is_ai": false,
+        "is_sp500": true,
+        "sector": "Consumer Defensive"
+    },
+    {
+        "ticker": "MA",
+        "name": "Mastercard Incorporated",
+        "is_ai": false,
+        "is_sp500": true,
+        "sector": "Financial Services"
+    },
+    {
+        "ticker": "HD",
+        "name": "The Home Depot, Inc.",
+        "is_ai": false,
+        "is_sp500": true,
+        "sector": "Consumer Cyclical"
+    },
+    {
+        "ticker": "CVX",
+        "name": "Chevron Corporation",
+        "is_ai": false,
+        "is_sp500": true,
+        "sector": "Energy"
+    },
+    {
+        "ticker": "MRK",
+        "name": "Merck & Co., Inc.",
+        "is_ai": false,
+        "is_sp500": true,
+        "sector": "Healthcare"
+    },
+    {
+        "ticker": "KO",
+        "name": "The Coca-Cola Company",
+        "is_ai": false,
+        "is_sp500": true,
+        "sector": "Consumer Defensive"
+    },
+    {
+        "ticker": "PEP",
+        "name": "PepsiCo, Inc.",
+        "is_ai": false,
+        "is_sp500": true,
+        "sector": "Consumer Defensive"
+    },
+    {
+        "ticker": "BAC",
+        "name": "Bank of America Corporation",
+        "is_ai": false,
+        "is_sp500": true,
+        "sector": "Financial Services"
+    },
+    {
+        "ticker": "COST",
+        "name": "Costco Wholesale Corporation",
+        "is_ai": false,
+        "is_sp500": true,
+        "sector": "Consumer Defensive"
+    },
+    {
+        "ticker": "MCD",
+        "name": "McDonald's Corporation",
+        "is_ai": false,
+        "is_sp500": true,
+        "sector": "Consumer Cyclical"
+    },
+    {
+        "ticker": "CSCO",
+        "name": "Cisco Systems, Inc.",
+        "is_ai": false,
+        "is_sp500": true,
+        "sector": "Technology"
+    },
+    {
+        "ticker": "ACN",
+        "name": "Accenture plc",
+        "is_ai": false,
+        "is_sp500": true,
+        "sector": "Technology"
+    },
+    {
+        "ticker": "LIN",
+        "name": "Linde plc",
+        "is_ai": false,
+        "is_sp500": true,
+        "sector": "Basic Materials"
+    },
+    {
+        "ticker": "ABT",
+        "name": "Abbott Laboratories",
+        "is_ai": false,
+        "is_sp500": true,
+        "sector": "Healthcare"
+    },
+    {
+        "ticker": "TMUS",
+        "name": "T-Mobile US, Inc.",
+        "is_ai": false,
+        "is_sp500": true,
+        "sector": "Communication Services"
+    },
+    {
+        "ticker": "DIS",
+        "name": "The Walt Disney Company",
+        "is_ai": false,
+        "is_sp500": true,
+        "sector": "Communication Services"
+    }
+]
