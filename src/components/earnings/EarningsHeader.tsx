@@ -68,12 +68,12 @@ export function EarningsHeader({ activeTab, onTabChange }: EarningsHeaderProps) 
                                 }`}
                         >
                             {tab.label}
-                            {activeTab === tab.id && (
+                            {activeTab === tab.id &&
                                 <motion.div
                                     layoutId="activeTab"
                                     className="absolute bottom-0 left-0 right-0 h-0.5 bg-emerald-600"
                                 />
-                            )}
+                            }
                         </button>
                     ))}
                 </div>

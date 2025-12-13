@@ -10,13 +10,15 @@ interface TickerCardProps {
     name: string;
     nextEarnings?: string;
     status?: "UPCOMING" | "RELEASED" | "LIVE";
+    onClick?: () => void;
 }
 
-function TickerCard({ ticker, name, nextEarnings, status = "UPCOMING" }: TickerCardProps) {
+function TickerCard({ ticker, name, nextEarnings, status = "UPCOMING", onClick }: TickerCardProps) {
     return (
         <motion.div
             whileHover={{ y: -2, backgroundColor: "#ffffff" }}
-            className="group relative p-4 rounded-xl bg-white border border-gray-200 shadow-sm hover:shadow-md overflow-hidden transition-all"
+            onClick={onClick}
+            className="group relative p-4 rounded-xl bg-white border border-gray-200 shadow-sm hover:shadow-md overflow-hidden transition-all cursor-pointer"
         >
             <div className="flex justify-between items-start mb-2">
                 <div>
@@ -49,7 +51,11 @@ function TickerCard({ ticker, name, nextEarnings, status = "UPCOMING" }: TickerC
     );
 }
 
-export default function FeaturedTickerGrid() {
+interface FeaturedTickerGridProps {
+    onSelect?: (company: any) => void;
+}
+
+export default function FeaturedTickerGrid({ onSelect }: FeaturedTickerGridProps) {
     const [companies, setCompanies] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -93,7 +99,11 @@ export default function FeaturedTickerGrid() {
     return (
         <>
             {companies.map((stock) => (
-                <TickerCard key={stock.ticker} {...stock} />
+                <TickerCard
+                    key={stock.ticker}
+                    {...stock}
+                    onClick={() => onSelect?.(stock)}
+                />
             ))}
         </>
     );

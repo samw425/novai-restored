@@ -41,7 +41,37 @@ export class SECEarningsWatcher {
     }
 
     private async processItems(items: any[]) {
-        // Upsert to DB
-        console.log(`Found ${items.length} new filings.`);
+        console.log(`Processing ${items.length} new SEC filings...`);
+
+        for (const item of items) {
+            // 1. Extract Ticker (Naive regex for now, e.g. "NVIDIA CORP (NVDA)")
+            const title = item.title || "";
+            const tickerMatch = title.match(/\(([A-Z]+)\)/);
+            const ticker = tickerMatch ? tickerMatch[1] : null;
+
+            if (!ticker) continue;
+
+            // 2. Find Company ID
+            const { data: company } = await this.supabase
+                .from('companies')
+                .select('id')
+                .eq('ticker', ticker)
+                .single();
+
+            if (!company) continue;
+
+            // 3. Insert Event (8-K or 10-Q)
+            const { error } = await this.supabase
+                .from('earnings_events')
+                .insert({
+                    company_id: company.id,
+                    event_type: 'SEC_FILING',
+                    earnings_at: new Date(item.pubDate), // Use pubDate from RSS
+                    source_urls: [{ url: item.link, title: item.title }]
+                });
+
+            if (error) console.error(`Error saving event for ${ticker}:`, error);
+            else console.log(`Saved event for ${ticker}`);
+        }
     }
 }

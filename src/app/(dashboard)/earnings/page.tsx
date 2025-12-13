@@ -2,10 +2,12 @@
 
 import { EarningsHeader } from "@/components/earnings/EarningsHeader";
 import FeaturedTickerGrid from "@/components/earnings/FeaturedTickerGrid";
+import { EarningsDetailsPanel } from "@/components/earnings/EarningsDetailsPanel";
 import { useState } from "react";
 
 export default function EarningsPage() {
     const [activeTab, setActiveTab] = useState("featured");
+    const [selectedEvent, setSelectedEvent] = useState<any | null>(null);
 
     return (
         <div className="min-h-screen bg-[#F5F6F8] text-gray-900">
@@ -24,7 +26,7 @@ export default function EarningsPage() {
                                 <span className="text-xs font-mono text-gray-400">Live Updates (1m)</span>
                             </div>
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                                <FeaturedTickerGrid />
+                                <FeaturedTickerGrid onSelect={setSelectedEvent} />
                             </div>
                         </section>
 
@@ -53,6 +55,12 @@ export default function EarningsPage() {
                     </div>
                 )}
             </main>
+
+            <EarningsDetailsPanel
+                isOpen={!!selectedEvent}
+                onClose={() => setSelectedEvent(null)}
+                event={selectedEvent}
+            />
         </div>
     );
 }
