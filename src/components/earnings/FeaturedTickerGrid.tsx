@@ -53,9 +53,10 @@ function TickerCard({ ticker, name, nextEarnings, status = "UPCOMING", onClick }
 
 interface FeaturedTickerGridProps {
     onSelect?: (company: any) => void;
+    searchQuery?: string;
 }
 
-export default function FeaturedTickerGrid({ onSelect }: FeaturedTickerGridProps) {
+export default function FeaturedTickerGrid({ onSelect, searchQuery }: FeaturedTickerGridProps) {
     const [companies, setCompanies] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -96,15 +97,27 @@ export default function FeaturedTickerGrid({ onSelect }: FeaturedTickerGridProps
         );
     }
 
+    const filteredCompanies = companies.filter(c => {
+        if (!searchQuery) return true;
+        const q = searchQuery.toLowerCase();
+        return c.ticker.toLowerCase().includes(q) || c.name.toLowerCase().includes(q);
+    });
+
     return (
         <>
-            {companies.map((stock) => (
-                <TickerCard
-                    key={stock.ticker}
-                    {...stock}
-                    onClick={() => onSelect?.(stock)}
-                />
-            ))}
+            {filteredCompanies.length > 0 ? (
+                filteredCompanies.map((stock) => (
+                    <TickerCard
+                        key={stock.ticker}
+                        {...stock}
+                        onClick={() => onSelect?.(stock)}
+                    />
+                ))
+            ) : (
+                <div className="col-span-full p-8 text-center bg-gray-50 rounded-xl border border-dashed border-gray-200 text-gray-400">
+                    No results found for "{searchQuery}"
+                </div>
+            )}
         </>
     );
 }

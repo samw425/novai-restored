@@ -7,10 +7,17 @@ import { motion } from "framer-motion";
 interface EarningsHeaderProps {
     activeTab: string;
     onTabChange: (tab: string) => void;
+    onSearch: (query: string) => void;
 }
 
-export function EarningsHeader({ activeTab, onTabChange }: EarningsHeaderProps) {
+export function EarningsHeader({ activeTab, onTabChange, onSearch }: EarningsHeaderProps) {
     const [searchQuery, setSearchQuery] = useState("");
+
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const query = e.target.value;
+        setSearchQuery(query);
+        onSearch(query);
+    }
 
     const tabs = [
         { id: "featured", label: "Featured" },
@@ -41,7 +48,7 @@ export function EarningsHeader({ activeTab, onTabChange }: EarningsHeaderProps) 
                             type="text"
                             placeholder="Search (e.g. NVDA)..."
                             value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
+                            onChange={handleSearch}
                             className="w-full bg-gray-100 border border-transparent rounded-xl pl-10 pr-4 py-2 text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:bg-white focus:border-emerald-500 transition-all font-mono"
                         />
                         <div className="absolute inset-y-0 right-2 flex items-center">

@@ -8,10 +8,11 @@ import { useState } from "react";
 export default function EarningsPage() {
     const [activeTab, setActiveTab] = useState("featured");
     const [selectedEvent, setSelectedEvent] = useState<any | null>(null);
+    const [searchQuery, setSearchQuery] = useState("");
 
     return (
         <div className="min-h-screen bg-[#F5F6F8] text-gray-900">
-            <EarningsHeader activeTab={activeTab} onTabChange={setActiveTab} />
+            <EarningsHeader activeTab={activeTab} onTabChange={setActiveTab} onSearch={setSearchQuery} />
 
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 transition-all">
                 {activeTab === "featured" && (
@@ -26,7 +27,7 @@ export default function EarningsPage() {
                                 <span className="text-xs font-mono text-gray-400">Live Updates (1m)</span>
                             </div>
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                                <FeaturedTickerGrid onSelect={setSelectedEvent} />
+                                <FeaturedTickerGrid onSelect={setSelectedEvent} searchQuery={searchQuery} />
                             </div>
                         </section>
 
@@ -44,8 +45,13 @@ export default function EarningsPage() {
 
                 {/* Placeholders for other tabs */}
                 {activeTab === "upcoming" && (
-                    <div className="text-center py-20 bg-white rounded-xl border border-dashed border-gray-300">
-                        <p className="text-gray-400">Calendar View Loading...</p>
+                    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        <section>
+                            <h2 className="text-lg font-semibold text-gray-900 mb-4">Upcoming Earnings Calendar</h2>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                                <FeaturedTickerGrid onSelect={setSelectedEvent} searchQuery={searchQuery} />
+                            </div>
+                        </section>
                     </div>
                 )}
 
