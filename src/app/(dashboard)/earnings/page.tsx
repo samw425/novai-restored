@@ -104,6 +104,8 @@ function LiveWire() {
     const [activeTab, setActiveTab] = useState<"SCANNER" | "SIGNALS" | "FILINGS">("SCANNER");
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
+    const [lastSync, setLastSync] = useState<string | null>(null);
+    const [source, setSource] = useState<string>('seed');
     const scrollRef = useRef<HTMLDivElement>(null);
 
     const fetchFeed = useCallback(async (pageNum: number = 1, append: boolean = false) => {
@@ -112,7 +114,7 @@ function LiveWire() {
             else setLoadingMore(true);
 
             const filter = activeTab === "SIGNALS" ? "high" : activeTab === "FILINGS" ? "filings" : "all";
-            const res = await fetch(`/api/earnings/feed?limit=50&filter=${filter}&page=${pageNum}`);
+            const res = await fetch(`/api/earnings/feed?limit=20&filter=${filter}&page=${pageNum}`);
             const data = await res.json();
 
             if (data.success && data.feed) {
@@ -121,7 +123,9 @@ function LiveWire() {
                 } else {
                     setFeed(data.feed);
                 }
-                setHasMore(data.feed.length >= 20);
+                setHasMore(data.hasMore || false);
+                setLastSync(data.lastSync || null);
+                setSource(data.source || 'seed');
                 setError(null);
             } else if (data.error) {
                 setError(data.error);
@@ -159,13 +163,23 @@ function LiveWire() {
                 <div className="flex items-center gap-2">
                     <Zap className="w-3.5 h-3.5 text-gray-400 fill-gray-400" />
                     <span className="text-xs font-bold tracking-wider text-gray-700 uppercase">Live Wire</span>
+                    {source === 'sec-edgar' && (
+                        <span className="text-[8px] font-bold text-blue-600 bg-blue-50 px-1 rounded border border-blue-100">SEC</span>
+                    )}
                 </div>
-                <div className="flex items-center gap-1.5 bg-green-50 px-1.5 py-0.5 rounded border border-green-100">
-                    <span className="relative flex h-1.5 w-1.5">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
-                    </span>
-                    <span className="text-[9px] font-bold text-green-700 uppercase">Connected</span>
+                <div className="flex items-center gap-2">
+                    {lastSync && (
+                        <span className="text-[9px] text-gray-400">
+                            Synced {new Date(lastSync).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+                        </span>
+                    )}
+                    <div className="flex items-center gap-1.5 bg-green-50 px-1.5 py-0.5 rounded border border-green-100">
+                        <span className="relative flex h-1.5 w-1.5">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
+                        </span>
+                        <span className="text-[9px] font-bold text-green-700 uppercase">Live</span>
+                    </div>
                 </div>
             </div>
 
@@ -186,7 +200,11 @@ function LiveWire() {
                 ))}
             </div>
 
-            <div className="flex-1 overflow-y-auto bg-white scrollbar-thin scrollbar-thumb-gray-200">
+            <div
+                ref={scrollRef}
+                onScroll={handleScroll}
+                className="flex-1 overflow-y-auto bg-white scrollbar-thin scrollbar-thumb-gray-200"
+            >
                 {loading ? (
                     <div className="flex items-center justify-center h-32">
                         <RefreshCw className="w-5 h-5 text-gray-300 animate-spin" />
@@ -238,6 +256,17 @@ function LiveWire() {
                                 </div>
                             </div>
                         ))}
+                        {/* Infinite scroll loading indicator */}
+                        {loadingMore && (
+                            <div className="flex items-center justify-center py-4">
+                                <RefreshCw className="w-4 h-4 text-gray-300 animate-spin" />
+                            </div>
+                        )}
+                        {!hasMore && feed.length > 0 && (
+                            <div className="text-center py-4 text-[10px] text-gray-400">
+                                End of feed
+                            </div>
+                        )}
                     </div>
                 )}
             </div>

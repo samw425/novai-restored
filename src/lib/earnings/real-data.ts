@@ -3,8 +3,6 @@
 // Sources: SEC EDGAR (free), Company IR (free), Public Calendars (free)
 // ============================================================================
 
-"use server";
-
 import { SP500_ADDITIONAL } from "./sp500-data";
 
 // All S&P 500 + Major NASDAQ tickers with VERIFIED IR links
