@@ -38,10 +38,10 @@ function MarketMovingCard({ company, onClick }: MarketMovingCardProps) {
                     <Clock className="w-3 h-3" />
                     <span>{company.formatted_date || "TBA"}</span>
                 </div>
-                {company.confidence && company.confidence !== "UNKNOWN" && (
+                {company.confidence && (
                     <span className={`px-1.5 py-0.5 rounded text-[10px] font-medium ${company.confidence === "CONFIRMED"
-                            ? "bg-emerald-50 text-emerald-600"
-                            : "bg-amber-50 text-amber-600"
+                        ? "bg-emerald-50 text-emerald-600"
+                        : "bg-amber-50 text-amber-600"
                         }`}>
                         {company.confidence.toLowerCase()}
                     </span>

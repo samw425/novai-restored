@@ -3,7 +3,23 @@
 import { X, Calendar, Clock, Globe, FileText, Bell, BellOff, Star, ExternalLink, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import { getCompanyDetails, type CompanyData, type EarningsSummary } from "@/app/actions/earnings";
+import { getCompanyDetails, type CompanyData } from "@/app/actions/earnings";
+
+// Extended summary type for this panel
+interface EarningsSummaryExtended {
+    id: string;
+    ticker: string;
+    headline: string;
+    time: string;
+    ago: string;
+    impact: "HIGH" | "MED" | "LOW";
+    sentiment: "POSITIVE" | "NEGATIVE" | "NEUTRAL";
+    links: { label: string; url: string }[];
+    quarter_label?: string;
+    summary_text?: string;
+    highlights?: string[];
+    time_ago?: string;
+}
 
 // ============================================================================
 // QUICK LINKS (Trusted Sources)
@@ -50,8 +66,8 @@ interface EarningsDetailsPanelProps {
 export function EarningsDetailsPanel({ isOpen, onClose, event }: EarningsDetailsPanelProps) {
     const [loading, setLoading] = useState(false);
     const [company, setCompany] = useState<CompanyData | null>(null);
-    const [latestSummary, setLatestSummary] = useState<EarningsSummary | null>(null);
-    const [pastSummaries, setPastSummaries] = useState<EarningsSummary[]>([]);
+    const [latestSummary, setLatestSummary] = useState<EarningsSummaryExtended | null>(null);
+    const [pastSummaries, setPastSummaries] = useState<EarningsSummaryExtended[]>([]);
     const [alertEnabled, setAlertEnabled] = useState(false);
     const [watchlisted, setWatchlisted] = useState(false);
 
@@ -67,7 +83,7 @@ export function EarningsDetailsPanel({ isOpen, onClose, event }: EarningsDetails
         async function fetchDetails() {
             setLoading(true);
             try {
-                const details = await getCompanyDetails(event.ticker);
+                const details = await getCompanyDetails(event!.ticker);
                 setCompany(details.company);
                 setLatestSummary(details.latestSummary);
                 setPastSummaries(details.pastSummaries);
@@ -146,8 +162,8 @@ export function EarningsDetailsPanel({ isOpen, onClose, event }: EarningsDetails
                                 <button
                                     onClick={() => setWatchlisted(!watchlisted)}
                                     className={`p-2 rounded-lg transition-colors ${watchlisted
-                                            ? "bg-amber-100 text-amber-600"
-                                            : "bg-gray-100 text-gray-400 hover:text-gray-600"
+                                        ? "bg-amber-100 text-amber-600"
+                                        : "bg-gray-100 text-gray-400 hover:text-gray-600"
                                         }`}
                                 >
                                     <Star className={`w-5 h-5 ${watchlisted ? "fill-current" : ""}`} />
@@ -237,7 +253,7 @@ export function EarningsDetailsPanel({ isOpen, onClose, event }: EarningsDetails
                                                 )}
                                                 {latestSummary.highlights && latestSummary.highlights.length > 0 && (
                                                     <ul className="space-y-1.5">
-                                                        {latestSummary.highlights.map((h, i) => (
+                                                        {latestSummary.highlights.map((h: string, i: number) => (
                                                             <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
                                                                 <span className="text-purple-500 mt-0.5">•</span>
                                                                 {h}

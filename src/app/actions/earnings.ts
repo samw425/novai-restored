@@ -39,6 +39,15 @@ export interface EarningsSummary {
     impact: "HIGH" | "MED" | "LOW";
     sentiment: "POSITIVE" | "NEGATIVE" | "NEUTRAL";
     links: { label: string; url: string }[];
+    // Extended properties
+    status?: "PROCESSING" | "COMPLETE";
+    quarter_label?: string;
+    company_name?: string;
+    time_ago?: string;
+    summary_text?: string;
+    highlights?: string[];
+    eps_text?: string;
+    revenue_text?: string;
 }
 
 // ----------------------------------------------------------------------------
@@ -202,6 +211,38 @@ export async function getMarketCalendarData(
     };
 }
 
+export async function getFeaturedCompanies(limit: number = 12): Promise<CompanyData[]> {
+    // Return AI/Tech companies with upcoming earnings, sorted by days until
+    return GLOBAL_MARKET_DATA
+        .filter(c => c.is_ai || c.sector === "Technology")
+        .filter(c => c.days_until != null && c.days_until >= 0)
+        .sort((a, b) => (a.days_until ?? 999) - (b.days_until ?? 999))
+        .slice(0, limit);
+}
+
+export async function getLatestSummaries(limit: number = 10): Promise<EarningsSummary[]> {
+    const feed = await getLiveWireFeed();
+    return feed.slice(0, limit);
+}
+
+export async function getMarketMovingEarnings(limit: number = 6): Promise<CompanyData[]> {
+    // Return largest market cap companies with upcoming earnings
+    return GLOBAL_MARKET_DATA
+        .filter(c => c.days_until != null && c.days_until >= 0 && c.days_until <= 14)
+        .sort((a, b) => {
+            // Parse market cap (e.g., "2.1T", "100B")
+            const parseCap = (cap?: string) => {
+                if (!cap) return 0;
+                const val = parseFloat(cap);
+                if (cap.includes('T')) return val * 1000;
+                return val;
+            };
+            return parseCap(b.market_cap) - parseCap(a.market_cap);
+        })
+        .slice(0, limit);
+}
+
+
 export async function getLiveWireFeed(): Promise<EarningsSummary[]> {
     const feed = [
         {
@@ -304,3 +345,61 @@ export async function getCompanyDeepDive(ticker: string) {
         ]
     };
 }
+
+// Extended interface for EarningsDetailsPanel
+interface EarningsSummaryExtended extends EarningsSummary {
+    quarter_label?: string;
+    summary_text?: string;
+    highlights?: string[];
+    time_ago?: string;
+}
+
+export async function getCompanyDetails(ticker: string): Promise<{
+    company: CompanyData;
+    latestSummary: EarningsSummaryExtended | null;
+    pastSummaries: EarningsSummaryExtended[];
+}> {
+    const deepDive = await getCompanyDeepDive(ticker);
+
+    // Generate latest summary if the company has reported
+    const latestSummary: EarningsSummaryExtended | null = deepDive.status === "REPORTED" ? {
+        id: "latest",
+        ticker,
+        headline: `${deepDive.name} reported Q3 2024 earnings`,
+        time: "4:00 PM",
+        ago: "2h",
+        impact: "HIGH",
+        sentiment: "POSITIVE",
+        links: [{ label: "8-K Filing", url: deepDive.sec_url }],
+        quarter_label: "Q3 2024",
+        summary_text: `${deepDive.name} reported quarterly earnings with results largely in line with expectations.`,
+        highlights: [
+            "Revenue grew YoY driven by strong demand",
+            "Management raised forward guidance",
+            "Operating margins improved sequentially"
+        ],
+        time_ago: "2 hours ago"
+    } : null;
+
+    // Past summaries
+    const pastSummaries: EarningsSummaryExtended[] = deepDive.past_quarters?.slice(1).map((q, i) => ({
+        id: `past-${i}`,
+        ticker,
+        headline: `${deepDive.name} ${q.q} Results`,
+        time: "4:00 PM",
+        ago: q.date,
+        impact: "MED" as const,
+        sentiment: q.beat ? "POSITIVE" as const : "NEGATIVE" as const,
+        links: [{ label: "8-K", url: deepDive.sec_url }],
+        quarter_label: q.q,
+        highlights: [q.beat ? `Beat EPS estimate: $${q.eps_act} vs $${q.eps_est}` : `Missed EPS: $${q.eps_act} vs $${q.eps_est}`],
+        time_ago: q.date
+    })) || [];
+
+    return {
+        company: deepDive as CompanyData,
+        latestSummary,
+        pastSummaries
+    };
+}
+
