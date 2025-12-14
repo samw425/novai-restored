@@ -122,11 +122,17 @@ export async function GET(request: NextRequest) {
 
         // Apply filters
         if (filter === 'high') {
+            // SIGNALS: Only HIGH impact market movers
             feed = feed.filter(f => f.impact === 'HIGH');
         } else if (filter === 'filings') {
-            // All items are earnings releases (SEC filings)
-            feed = feed.filter(f => f.eventType === 'EARNINGS_RELEASE');
+            // FILINGS: Focus on SEC filings - show all but prioritize those with 8-K links
+            feed = feed.sort((a, b) => {
+                const aHas8K = a.links.some(l => l.label === '8-K') ? 1 : 0;
+                const bHas8K = b.links.some(l => l.label === '8-K') ? 1 : 0;
+                return bHas8K - aHas8K;
+            });
         }
+        // SCANNER (filter === 'all'): Shows everything in real-time order
 
         // Pagination
         const startIdx = (page - 1) * limit;
