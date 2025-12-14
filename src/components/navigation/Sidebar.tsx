@@ -366,7 +366,33 @@ export function Sidebar() {
                             );
                         })}
 
-                        {/* 5. Video Feed */}
+                        {/* 5. Earnings Hub */}
+                        {platformLinks.filter(link => link.id === 'earnings').map((link) => {
+                            const isActive = pathname === link.href;
+                            return (
+                                <Tooltip key={link.id}>
+                                    <TooltipTrigger asChild>
+                                        <Link
+                                            href={link.href}
+                                            className={`flex items-center justify-between px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${isActive
+                                                ? 'bg-green-50 text-green-700 font-bold'
+                                                : 'text-gray-500 hover:bg-green-50 hover:text-green-700'
+                                                }`}
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                <link.icon className={`h-4 w-4 ${isActive ? 'text-green-700' : 'text-gray-400 group-hover:text-green-700'}`} />
+                                                {link.label}
+                                            </div>
+                                        </Link>
+                                    </TooltipTrigger>
+                                    <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
+                                        {link.tooltip}
+                                    </TooltipContent>
+                                </Tooltip>
+                            );
+                        })}
+
+                        {/* 6. Video Feed */}
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <Link
