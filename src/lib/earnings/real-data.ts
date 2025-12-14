@@ -5,6 +5,8 @@
 
 "use server";
 
+import { SP500_ADDITIONAL } from "./sp500-data";
+
 // All S&P 500 + Major NASDAQ tickers with VERIFIED IR links
 // This is REAL data - authoritative investor relations pages
 
@@ -197,7 +199,14 @@ export function getCompanyInfo(ticker: string): {
     found: boolean;
 } {
     const upper = ticker.toUpperCase();
-    const company = REAL_COMPANIES[upper];
+
+    // Check core companies first
+    let company = REAL_COMPANIES[upper];
+
+    // Then check S&P 500 additional companies
+    if (!company) {
+        company = SP500_ADDITIONAL[upper];
+    }
 
     if (company) {
         return {
@@ -237,17 +246,39 @@ export async function searchTickers(query: string, limit: number = 10): Promise<
 
     const q = query.toUpperCase();
     const results: { ticker: string; name: string; sector: string; verified: boolean }[] = [];
+    const seen = new Set<string>();
 
-    // Search through REAL_COMPANIES
+    // Search through REAL_COMPANIES first
     for (const [ticker, data] of Object.entries(REAL_COMPANIES)) {
         if (ticker.includes(q) || data.name.toUpperCase().includes(q)) {
-            results.push({
-                ticker,
-                name: data.name,
-                sector: data.sector,
-                verified: true
-            });
+            if (!seen.has(ticker)) {
+                results.push({
+                    ticker,
+                    name: data.name,
+                    sector: data.sector,
+                    verified: true
+                });
+                seen.add(ticker);
+            }
             if (results.length >= limit) break;
+        }
+    }
+
+    // Continue searching through SP500_ADDITIONAL if we need more results
+    if (results.length < limit) {
+        for (const [ticker, data] of Object.entries(SP500_ADDITIONAL)) {
+            if (ticker.includes(q) || data.name.toUpperCase().includes(q)) {
+                if (!seen.has(ticker)) {
+                    results.push({
+                        ticker,
+                        name: data.name,
+                        sector: data.sector,
+                        verified: true
+                    });
+                    seen.add(ticker);
+                }
+                if (results.length >= limit) break;
+            }
         }
     }
 
@@ -269,5 +300,5 @@ export async function searchTickers(query: string, limit: number = 10): Promise<
 // ============================================================================
 
 export function getTotalVerifiedTickers(): number {
-    return Object.keys(REAL_COMPANIES).length;
+    return Object.keys(REAL_COMPANIES).length + Object.keys(SP500_ADDITIONAL).length;
 }
