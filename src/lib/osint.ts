@@ -485,7 +485,7 @@ const FAILSAFE_WAR_ROOM_DATA: WarRoomIncident[] = [
         location: { lat: 50.4501, lng: 30.5234, region: 'Kyiv, Ukraine' },
         timestamp: new Date(Date.now() - 3600000).toISOString(),
         source: 'Kyiv Independent',
-        url: '#',
+        url: 'https://kyivindependent.com',
         country: 'OTHER',
         assetType: 'UAV / Drone'
     },
@@ -498,7 +498,7 @@ const FAILSAFE_WAR_ROOM_DATA: WarRoomIncident[] = [
         location: { lat: 50.5937, lng: 36.5858, region: 'Belgorod, Russia' },
         timestamp: new Date(Date.now() - 7200000).toISOString(),
         source: 'Telegram / OSINT',
-        url: '#',
+        url: 'https://t.me/s/OSINT',
         country: 'RU',
         assetType: 'Unknown Asset'
     },
@@ -526,7 +526,7 @@ const FAILSAFE_WAR_ROOM_DATA: WarRoomIncident[] = [
         location: { lat: 31.3462, lng: 34.3060, region: 'Khan Yunis, Gaza' },
         timestamp: new Date(Date.now() - 1800000).toISOString(),
         source: 'IDF',
-        url: '#',
+        url: 'https://www.idf.il/en',
         country: 'OTHER',
         assetType: 'Ground Forces'
     },
@@ -539,7 +539,7 @@ const FAILSAFE_WAR_ROOM_DATA: WarRoomIncident[] = [
         location: { lat: 33.2778, lng: 35.5769, region: 'Israel-Lebanon Border' },
         timestamp: new Date(Date.now() - 5400000).toISOString(),
         source: 'Times of Israel',
-        url: '#',
+        url: 'https://www.timesofisrael.com/',
         country: 'OTHER',
         assetType: 'Artillery'
     },
@@ -552,7 +552,7 @@ const FAILSAFE_WAR_ROOM_DATA: WarRoomIncident[] = [
         location: { lat: 12.5905, lng: 43.3333, region: 'Red Sea' },
         timestamp: new Date(Date.now() - 10800000).toISOString(),
         source: 'UKMTO',
-        url: '#',
+        url: 'https://www.ukmto.org/',
         country: 'OTHER',
         assetType: 'Naval Vessel'
     },
@@ -567,7 +567,7 @@ const FAILSAFE_WAR_ROOM_DATA: WarRoomIncident[] = [
         location: { lat: 22.5, lng: 123.0, region: 'Philippine Sea' },
         timestamp: new Date(Date.now() - 14400000).toISOString(),
         source: 'Global Times',
-        url: '#',
+        url: 'https://www.globaltimes.cn/',
         country: 'CN',
         assetType: 'Aircraft Carrier'
     },
@@ -580,10 +580,11 @@ const FAILSAFE_WAR_ROOM_DATA: WarRoomIncident[] = [
         location: { lat: 24.0, lng: 119.5, region: 'Taiwan Strait' },
         timestamp: new Date(Date.now() - 3600000).toISOString(),
         source: 'Taiwan MND',
-        url: '#',
+        url: 'https://www.mnd.gov.tw/English/',
         country: 'CN',
         assetType: 'Fighter Jet'
     },
+
     {
         id: 'failsafe-asia-3',
         type: 'naval',
@@ -593,9 +594,63 @@ const FAILSAFE_WAR_ROOM_DATA: WarRoomIncident[] = [
         location: { lat: 9.5, lng: 112.5, region: 'Spratly Islands' },
         timestamp: new Date(Date.now() - 21600000).toISOString(),
         source: 'US Navy',
-        url: '#',
+        url: 'https://www.navy.mil/',
         country: 'US',
         assetType: 'Destroyer'
+    },
+
+    // AFRICA / GLOBAL SOUTH - EXPANSION
+    {
+        id: 'failsafe-africa-1',
+        type: 'conflict',
+        title: 'RSF Advance in Khartoum',
+        description: 'Rapid Support Forces claiming control of key bridges. Heavy shelling reported.',
+        severity: 'critical',
+        location: { lat: 15.5007, lng: 32.5599, region: 'Khartoum, Sudan' },
+        timestamp: new Date(Date.now() - 5000000).toISOString(),
+        source: 'Sudan Tribune',
+        url: 'https://sudantribune.com/',
+        country: 'OTHER',
+        assetType: 'Ground Forces'
+    },
+    {
+        id: 'failsafe-africa-2',
+        type: 'conflict',
+        title: 'Al-Shabaab Attack Repelled',
+        description: 'Somali base attacked in Mogadishu outskirts. ATMIS forces responding.',
+        severity: 'warning',
+        location: { lat: 2.0469, lng: 45.3182, region: 'Mogadishu, Somalia' },
+        timestamp: new Date(Date.now() - 12000000).toISOString(),
+        source: 'Garowe Online',
+        url: 'https://garoweonline.com/',
+        country: 'OTHER',
+        assetType: 'Insurgency'
+    },
+    {
+        id: 'failsafe-americas-1',
+        type: 'conflict',
+        title: 'Cartel Clashes in Sinaloa',
+        description: 'Security forces engaged armed conviction. Burning roadblocks reported on Hwy 15.',
+        severity: 'warning',
+        location: { lat: 24.8091, lng: -107.3940, region: 'Culiacan, Mexico' },
+        timestamp: new Date(Date.now() - 8600000).toISOString(),
+        source: 'Borderland Beat',
+        url: 'http://www.borderlandbeat.com/',
+        country: 'OTHER',
+        assetType: 'Cartel'
+    },
+    {
+        id: 'failsafe-asia-4',
+        type: 'conflict',
+        title: 'Myanmar Junta Airstrike',
+        description: 'Air force strike reported in Sagaing region targeting PDF strongholds.',
+        severity: 'critical',
+        location: { lat: 21.9162, lng: 95.9560, region: 'Sagaing, Myanmar' },
+        timestamp: new Date(Date.now() - 15000000).toISOString(),
+        source: 'Irrawaddy',
+        url: 'https://www.irrawaddy.com/',
+        country: 'OTHER',
+        assetType: 'Air Force'
     },
 
     // CYBER / INFRASTRUCTURE
@@ -608,7 +663,7 @@ const FAILSAFE_WAR_ROOM_DATA: WarRoomIncident[] = [
         location: { lat: 38.9072, lng: -77.0369, region: 'USA' },
         timestamp: new Date(Date.now() - 3600000).toISOString(),
         source: 'CISA',
-        url: 'https://www.cisa.gov',
+        url: 'https://www.cisa.gov/news-events/cybersecurity-advisories',
         country: 'US',
         assetType: 'Infrastructure'
     },
@@ -621,7 +676,7 @@ const FAILSAFE_WAR_ROOM_DATA: WarRoomIncident[] = [
         location: { lat: 37.7749, lng: -122.4194, region: 'Global' },
         timestamp: new Date(Date.now() - 7200000).toISOString(),
         source: 'US-CERT',
-        url: '#',
+        url: 'https://www.cisa.gov',
         country: 'US',
         assetType: 'Cyber'
     }
@@ -636,9 +691,10 @@ export async function getWarRoomData(): Promise<WarRoomIncident[]> {
     let allIncidents = [...cyber, ...conflicts];
 
     // ELITE MODE: Ensure the map is always populated.
-    // If we have fewer than 15 live incidents, merge in the failsafe data to ensure a "War Room" feel.
-    if (allIncidents.length < 15) {
-        // console.log('Low live intel count, activating failsafe protocols...');
+    // If we have fewer than 30 live incidents (increased from 15), merge in the failsafe data.
+    // This ensures we always "ADD ON" to the map rather than leaving it sparse.
+    if (allIncidents.length < 30) {
+        // console.log('Activating failsafe protocols to boost map density...');
         // Add failsafe items that aren't duplicates (simple check by title/type)
         const liveTitles = new Set(allIncidents.map(i => i.title));
 

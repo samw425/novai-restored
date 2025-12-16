@@ -17,7 +17,7 @@ export const dynamic = 'force-dynamic';
 // In-memory cache (will be replaced with Supabase later)
 let articlesCache: any[] = [];
 let lastFetchTime = 0;
-const CACHE_DURATION = 1 * 60 * 1000; // 1 minute - High frequency for "Live" feel
+const CACHE_DURATION = 30 * 1000; // 30 seconds - Near real-time
 
 // Helper to clean HTML
 function cleanText(html: string): string {
