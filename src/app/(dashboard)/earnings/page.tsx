@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import {
     Zap, Calendar, Search,
     ExternalLink, FileText, PlayCircle, BarChart3, Clock,
-    CheckCircle, Activity, ChevronRight, RefreshCw, AlertCircle
+    CheckCircle, Activity, ChevronRight, RefreshCw, AlertCircle, TrendingUp, TrendingDown
 } from "lucide-react";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
@@ -158,7 +158,7 @@ function LiveWire() {
     }, [fetchFeed]);
 
     return (
-        <div className="flex flex-col h-full bg-white border-r border-gray-200 w-[380px] flex-shrink-0 z-30 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
+        <div className="flex flex-col h-full bg-white border-r border-gray-200 w-[380px] flex-shrink-0 z-10 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
             <div className="h-10 border-b border-gray-200 flex items-center justify-between px-3 bg-gray-50/50">
                 <div className="flex items-center gap-2">
                     <Zap className="w-3.5 h-3.5 text-gray-400 fill-gray-400" />
@@ -456,7 +456,7 @@ function MarketTerminal({ onSelect }: { onSelect: (ticker: string) => void }) {
 
 export default function EarningsPage() {
     const [selectedTicker, setSelectedTicker] = useState<string | null>(null);
-    const [openSheet, setOpenSheet] = useState(false);
+    const [activeTab, setActiveTab] = useState<"Overview" | "Upcoming" | "Just Released" | "Company" | "Archive">("Overview");
     const [details, setDetails] = useState<CompanyDetails | null>(null);
     const [detailsLoading, setDetailsLoading] = useState(false);
 
@@ -471,7 +471,7 @@ export default function EarningsPage() {
         if (!selectedTicker) return;
 
         setDetailsLoading(true);
-        setOpenSheet(true); // Open immediately to show loading state
+        setActiveTab("Company"); // Switch to company tab
 
         fetch(`/api/earnings/company/${encodeURIComponent(selectedTicker)}`)
             .then(res => res.json())
@@ -534,7 +534,8 @@ export default function EarningsPage() {
     return (
         <div className="h-screen flex flex-col bg-[#FAFAFA] overflow-hidden font-sans text-[13px]">
             {/* Top Bar */}
-            <header className="h-12 border-b border-gray-200 bg-white flex items-center justify-between px-4 z-20 shadow-sm relative">
+            {/* Top Bar */}
+            <header className="h-12 border-b border-gray-200 bg-white flex items-center justify-between px-4 z-50 shadow-sm relative">
                 <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2">
                         <div className="h-6 w-6 relative flex items-center justify-center">
@@ -550,11 +551,17 @@ export default function EarningsPage() {
                     </div>
 
                     <div className="h-4 w-px bg-gray-200 mx-2" />
-                    <h1 className="text-gray-900 font-bold tracking-tight text-xs bg-gray-100 px-2 py-0.5 rounded-full uppercase">Earnings Terminal</h1>
+                    <div className="flex flex-col">
+                        <div className="flex items-center gap-2">
+                            <h1 className="text-gray-900 font-black tracking-tight text-xs uppercase">Earnings Terminal</h1>
+                            <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-blue-50 text-blue-600 border border-blue-100">BETA</span>
+                        </div>
+                        <span className="text-[9px] text-gray-400 font-medium tracking-wide">Covering S&P 500 & Nasdaq 100</span>
+                    </div>
                 </div>
 
                 {/* Omnibox */}
-                <div className="relative w-[500px] group transition-all focus-within:w-[600px]">
+                <div className="relative w-[400px] xl:w-[500px] group transition-all focus-within:w-[600px]">
                     <Search className="absolute left-3 top-2 w-3.5 h-3.5 text-gray-400 group-focus-within:text-blue-600 transition-colors" />
                     <input
                         className="w-full bg-gray-50 border border-gray-200 rounded-md pl-9 pr-4 py-1.5 text-xs text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:bg-white focus:border-blue-300 transition-all font-medium shadow-sm input-shadow"
@@ -610,179 +617,241 @@ export default function EarningsPage() {
                 </div>
             </header>
 
-            {/* Main Workspace */}
-            <div className="flex-1 flex overflow-hidden">
-                <LiveWire />
-                <MarketTerminal onSelect={(ticker) => setSelectedTicker(ticker)} />
+            {/* Tab Navigation */}
+            <div className="bg-white border-b border-gray-200 px-4">
+                <div className="flex gap-6">
+                    {(["Overview", "Upcoming", "Just Released", "Company", "Archive"] as const).map((tab) => (
+                        <button
+                            key={tab}
+                            onClick={() => setActiveTab(tab)}
+                            className={cn(
+                                "py-3 text-[11px] font-bold uppercase tracking-wider border-b-2 transition-colors",
+                                activeTab === tab
+                                    ? "border-blue-600 text-blue-600"
+                                    : "border-transparent text-gray-500 hover:text-gray-900"
+                            )}
+                        >
+                            {tab}
+                        </button>
+                    ))}
+                </div>
             </div>
 
-            {/* SLIDE OVER (Company Details) */}
-            <Sheet open={openSheet} onOpenChange={setOpenSheet}>
-                <SheetContent side="right" className="w-[600px] border-l border-gray-200 bg-[#FAFAFA] p-0 text-gray-900 sm:max-w-[600px] shadow-2xl">
-                    {detailsLoading ? (
-                        <div className="flex items-center justify-center h-full">
-                            <RefreshCw className="w-8 h-8 text-gray-300 animate-spin" />
-                        </div>
-                    ) : details ? (
-                        <div className="flex flex-col h-full">
-                            {/* Header */}
-                            <div className="p-6 border-b border-gray-200 bg-white">
-                                <div className="flex items-center gap-2 mb-2">
-                                    <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{details.sector || details.industry || 'Company'}</div>
-                                    {details.exchange && (
-                                        <>
-                                            <span className="text-gray-300">•</span>
-                                            <div className="text-[10px] font-bold text-blue-600 uppercase tracking-widest bg-blue-50 px-2 py-0.5 rounded">{details.exchange}</div>
-                                        </>
-                                    )}
+            {/* Main Workspace */}
+            <div className="flex-1 flex overflow-hidden bg-[#F8F9FC]">
+                {activeTab === "Overview" && (
+                    <>
+                        <LiveWire />
+                        <MarketTerminal onSelect={(ticker) => setSelectedTicker(ticker)} />
+                    </>
+                )}
+
+                {activeTab === "Just Released" && (
+                    <div className="w-full h-full max-w-4xl mx-auto border-x border-gray-200 bg-white">
+                        <LiveWire />
+                    </div>
+                )}
+
+                {activeTab === "Upcoming" && (
+                    <MarketTerminal onSelect={(ticker) => setSelectedTicker(ticker)} />
+                )}
+
+                {activeTab === "Company" && (
+                    <div className="flex-1 overflow-y-auto">
+                        <div className="max-w-5xl mx-auto p-6">
+                            {!selectedTicker ? (
+                                <div className="flex flex-col items-center justify-center h-[60vh] text-gray-400">
+                                    <Search className="w-12 h-12 mb-4 opacity-20" />
+                                    <h3 className="text-lg font-bold text-gray-900 mb-2">Company Intelligence</h3>
+                                    <p className="text-sm">Search for a ticker (e.g. NVDA) to view deep dive earnings data.</p>
                                 </div>
-                                <div className="flex justify-between items-start mb-6">
-                                    <div>
-                                        <h2 className="text-4xl font-black tracking-tighter text-gray-900 mb-1">{details.ticker}</h2>
-                                        <p className="text-sm text-gray-500 font-medium">{details.name}</p>
+                            ) : detailsLoading ? (
+                                <div className="flex items-center justify-center h-[60vh]">
+                                    <div className="flex flex-col items-center gap-3">
+                                        <RefreshCw className="w-8 h-8 text-blue-600 animate-spin" />
+                                        <span className="text-xs font-bold text-gray-400 uppercase tracking-widest animate-pulse">Loading Intelligence...</span>
                                     </div>
-                                    <div className="text-right">
-                                        {details.nextEarnings && (
-                                            <div className={cn(
-                                                "text-xs font-bold px-2 py-1 rounded-full inline-block",
-                                                details.nextEarnings.confidence === 'CONFIRMED' ? "bg-green-100 text-green-700" :
-                                                    details.nextEarnings.confidence === 'ESTIMATED' ? "bg-yellow-100 text-yellow-700" :
-                                                        "bg-gray-100 text-gray-500"
-                                            )}>
-                                                {details.nextEarnings.confidence}
+                                </div>
+                            ) : details ? (
+                                <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                                    {/* Company Header */}
+                                    <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                                        <div className="flex items-center justify-between mb-6">
+                                            <div className="flex items-center gap-4">
+                                                <div className="w-16 h-16 rounded-xl bg-gray-900 text-white flex items-center justify-center text-2xl font-black">{details.ticker.substring(0, 1)}</div>
+                                                <div>
+                                                    <h2 className="text-3xl font-black text-gray-900 tracking-tight">{details.ticker}</h2>
+                                                    <div className="text-sm text-gray-500 font-medium">{details.name}</div>
+                                                </div>
                                             </div>
-                                        )}
-                                    </div>
-                                </div>
-
-                                <div className="grid grid-cols-3 gap-3">
-                                    <a href={details.links.ir} target="_blank" rel="noopener" className="flex-1 py-3 rounded-lg bg-white border border-gray-200 hover:border-purple-200 hover:bg-purple-50 text-xs font-bold text-gray-600 hover:text-purple-700 text-center transition-all flex flex-col items-center justify-center gap-1 group shadow-sm hover:shadow-md">
-                                        <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-purple-500" />
-                                        <span>Investor Relations</span>
-                                    </a>
-                                    <a href={details.links.sec} target="_blank" rel="noopener" className="flex-1 py-3 rounded-lg bg-white border border-gray-200 hover:border-blue-200 hover:bg-blue-50 text-xs font-bold text-gray-600 hover:text-blue-700 text-center transition-all flex flex-col items-center justify-center gap-1 group shadow-sm hover:shadow-md">
-                                        <FileText className="w-4 h-4 text-gray-400 group-hover:text-blue-500" />
-                                        <span>SEC Filings</span>
-                                    </a>
-                                    <a href={details.links.webcast} target="_blank" rel="noopener" className="flex-1 py-3 rounded-lg bg-white border border-gray-200 hover:border-red-200 hover:bg-red-50 text-xs font-bold text-gray-600 hover:text-red-700 text-center transition-all flex flex-col items-center justify-center gap-1 group shadow-sm hover:shadow-md">
-                                        <PlayCircle className="w-4 h-4 text-gray-400 group-hover:text-red-500" />
-                                        <span>Latest Webcast</span>
-                                    </a>
-                                </div>
-                            </div>
-
-                            {/* Content */}
-                            <div className="flex-1 overflow-y-auto p-6 space-y-6">
-                                {/* Upcoming */}
-                                <section>
-                                    <h3 className="text-[10px] font-bold text-gray-900 uppercase tracking-widest mb-3 flex items-center gap-2">
-                                        <Clock className="w-3.5 h-3.5 text-purple-600" /> Next Earnings
-                                    </h3>
-                                    <div className="bg-white rounded-xl p-5 border border-gray-200 flex justify-between items-center shadow-sm relative overflow-hidden group">
-                                        <div className="absolute top-0 left-0 w-1 h-full bg-purple-500" />
-                                        <div>
-                                            <div className="text-2xl font-bold text-gray-900 mb-1">{details.nextEarnings ? formatDate(details.nextEarnings.date) : 'TBA'}</div>
-                                            <div className="flex items-center gap-2">
-                                                {details.nextEarnings && (
-                                                    <>
-                                                        <span className={cn(
-                                                            "px-2 py-0.5 rounded text-[10px] font-bold uppercase",
-                                                            details.nextEarnings.time === 'AMC' ? "bg-amber-100 text-amber-700" : "bg-blue-100 text-blue-700"
-                                                        )}>
-                                                            {details.nextEarnings.time === 'AMC' ? 'After Close' : details.nextEarnings.time === 'BMO' ? 'Before Open' : details.nextEarnings.time || 'TBA'}
-                                                        </span>
-                                                        <span className={cn(
-                                                            "text-[10px] font-bold px-2 py-0.5 rounded",
-                                                            details.nextEarnings.confidence === 'CONFIRMED' ? "bg-green-50 text-green-600" :
-                                                                details.nextEarnings.confidence === 'ESTIMATED' ? "bg-yellow-50 text-yellow-600" :
-                                                                    "text-gray-400"
-                                                        )}>{details.nextEarnings.confidence}</span>
-                                                    </>
+                                            <div className="flex gap-2">
+                                                {details.exchange && (
+                                                    <span className="px-3 py-1 rounded-lg bg-gray-100 text-gray-600 font-bold text-xs uppercase tracking-wide">
+                                                        {details.exchange}
+                                                    </span>
                                                 )}
                                             </div>
                                         </div>
-                                        <div className="text-right">
-                                            <div className="text-3xl font-mono font-bold text-gray-900">
-                                                {details.nextEarnings ? `${daysUntil(details.nextEarnings.date) ?? 0}d` : '—'}
+
+                                        <div className="grid grid-cols-3 gap-4">
+                                            <div className="p-4 rounded-lg bg-gray-50 border border-gray-100">
+                                                <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-1">Sector</div>
+                                                <div className="font-semibold text-gray-900">{details.sector || '—'}</div>
                                             </div>
-                                            <div className="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Countdown</div>
+                                            <div className="p-4 rounded-lg bg-gray-50 border border-gray-100">
+                                                <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-1">Industry</div>
+                                                <div className="font-semibold text-gray-900">{details.industry || '—'}</div>
+                                            </div>
+                                            <div className="p-4 rounded-lg bg-gray-50 border border-gray-100">
+                                                <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-1">Market Cap</div>
+                                                <div className="font-semibold text-gray-900">{details.marketCap ? `$${(details.marketCap / 1e9).toFixed(1)}B` : '—'}</div>
+                                            </div>
                                         </div>
                                     </div>
-                                </section>
 
-                                {/* Estimates */}
-                                {details.nextEarnings && (details.nextEarnings.epsEstimate || details.nextEarnings.revenueEstimate) && (
-                                    <section>
-                                        <h3 className="text-[10px] font-bold text-gray-900 uppercase tracking-widest mb-3 flex items-center gap-2">
-                                            <BarChart3 className="w-3.5 h-3.5 text-blue-600" /> Consensus Estimates
-                                        </h3>
-                                        <div className="grid grid-cols-2 gap-3">
-                                            {details.nextEarnings.epsEstimate && (
-                                                <div className="bg-white rounded-lg p-4 border border-gray-200">
-                                                    <div className="text-[10px] text-gray-400 uppercase font-bold mb-1">EPS Estimate</div>
-                                                    <div className="text-xl font-mono font-bold text-gray-900">${details.nextEarnings.epsEstimate.toFixed(2)}</div>
+                                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                                        {/* Left Column: Quick Links & Next Earnings */}
+                                        <div className="space-y-6">
+                                            {/* Quick Links */}
+                                            <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+                                                <h3 className="text-xs font-bold text-gray-900 uppercase tracking-widest mb-4">Official Sources</h3>
+                                                <div className="space-y-2">
+                                                    <a href={details.links.ir} target="_blank" rel="noopener" className="flex items-center gap-3 p-3 rounded-lg hover:bg-purple-50 hover:text-purple-700 hover:border-purple-200 border border-transparent transition-all group">
+                                                        <div className="w-8 h-8 rounded bg-gray-100 group-hover:bg-purple-100 flex items-center justify-center text-gray-500 group-hover:text-purple-600">
+                                                            <ExternalLink className="w-4 h-4" />
+                                                        </div>
+                                                        <div className="text-xs font-bold">Investor Relations</div>
+                                                    </a>
+                                                    <a href={details.links.sec} target="_blank" rel="noopener" className="flex items-center gap-3 p-3 rounded-lg hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 border border-transparent transition-all group">
+                                                        <div className="w-8 h-8 rounded bg-gray-100 group-hover:bg-blue-100 flex items-center justify-center text-gray-500 group-hover:text-blue-600">
+                                                            <FileText className="w-4 h-4" />
+                                                        </div>
+                                                        <div className="text-xs font-bold">SEC Filings</div>
+                                                    </a>
+                                                    <a href={details.links.webcast} target="_blank" rel="noopener" className="flex items-center gap-3 p-3 rounded-lg hover:bg-red-50 hover:text-red-700 hover:border-red-200 border border-transparent transition-all group">
+                                                        <div className="w-8 h-8 rounded bg-gray-100 group-hover:bg-red-100 flex items-center justify-center text-gray-500 group-hover:text-red-600">
+                                                            <PlayCircle className="w-4 h-4" />
+                                                        </div>
+                                                        <div className="text-xs font-bold">Earnings Call Webcast</div>
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                            {/* Consensus */}
+                                            {details.nextEarnings && (
+                                                <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+                                                    <h3 className="text-xs font-bold text-gray-900 uppercase tracking-widest mb-4">Street Consensus</h3>
+                                                    <div className="space-y-4">
+                                                        <div className="flex justify-between items-center pb-4 border-b border-gray-50">
+                                                            <span className="text-xs text-gray-500 font-medium">EPS Est.</span>
+                                                            <span className="text-lg font-mono font-bold text-gray-900">${details.nextEarnings.epsEstimate?.toFixed(2) || '—'}</span>
+                                                        </div>
+                                                        <div className="flex justify-between items-center">
+                                                            <span className="text-xs text-gray-500 font-medium">Rev Est.</span>
+                                                            <span className="text-lg font-mono font-bold text-gray-900">{details.nextEarnings.revenueEstimate ? `$${(details.nextEarnings.revenueEstimate / 1e9).toFixed(1)}B` : '—'}</span>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             )}
-                                            {details.nextEarnings.revenueEstimate && (
-                                                <div className="bg-white rounded-lg p-4 border border-gray-200">
-                                                    <div className="text-[10px] text-gray-400 uppercase font-bold mb-1">Revenue Estimate</div>
-                                                    <div className="text-xl font-mono font-bold text-gray-900">${(details.nextEarnings.revenueEstimate / 1e9).toFixed(1)}B</div>
+                                        </div>
+
+                                        {/* Center/Right: Next Event & History */}
+                                        <div className="lg:col-span-2 space-y-6">
+                                            {/* Next Event Hero */}
+                                            {details.nextEarnings && (
+                                                <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 text-white shadow-lg relative overflow-hidden">
+                                                    <div className="absolute top-0 right-0 p-32 bg-blue-500/10 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
+                                                    <div className="relative z-10">
+                                                        <div className="flex items-center gap-2 mb-6">
+                                                            <span className="px-3 py-1 rounded-full bg-white/10 text-xs font-bold uppercase tracking-wider border border-white/10 backdrop-blur-sm">Next Event</span>
+                                                            {details.nextEarnings.confidence === 'CONFIRMED' && (
+                                                                <span className="flex items-center gap-1.5 text-green-400 text-xs font-bold uppercase tracking-wider">
+                                                                    <CheckCircle className="w-3.5 h-3.5" /> Confirmed
+                                                                </span>
+                                                            )}
+                                                        </div>
+
+                                                        <div className="flex items-end justify-between">
+                                                            <div>
+                                                                <div className="text-4xl font-black tracking-tight mb-2">{formatDate(details.nextEarnings.date)}</div>
+                                                                <div className="flex items-center gap-3 text-gray-300 font-medium">
+                                                                    <Clock className="w-4 h-4" />
+                                                                    <span>
+                                                                        {details.nextEarnings.time === 'AMC' ? 'After Market Close' :
+                                                                            details.nextEarnings.time === 'BMO' ? 'Before Market Open' :
+                                                                                details.nextEarnings.time || 'Time TBA'}
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <div className="text-right">
+                                                                <div className="text-5xl font-mono font-bold tracking-tighter">{daysUntil(details.nextEarnings.date)}d</div>
+                                                                <div className="text-xs font-bold text-gray-400 uppercase tracking-widest mt-1">Countdown</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {/* History Table */}
+                                            {details.pastQuarters && details.pastQuarters.length > 0 && (
+                                                <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                                                    <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+                                                        <h3 className="text-xs font-bold text-gray-900 uppercase tracking-widest">Historical Performance</h3>
+                                                    </div>
+                                                    <table className="w-full text-sm text-left">
+                                                        <thead className="bg-gray-50 text-gray-500 font-bold uppercase text-[10px] tracking-wider">
+                                                            <tr>
+                                                                <th className="px-6 py-3">Quarter</th>
+                                                                <th className="px-6 py-3 text-right">Est EPS</th>
+                                                                <th className="px-6 py-3 text-right">Act EPS</th>
+                                                                <th className="px-6 py-3 text-right">Surprise</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody className="divide-y divide-gray-100">
+                                                            {details.pastQuarters.map((q, i) => (
+                                                                <tr key={i} className="hover:bg-blue-50/30 transition-colors">
+                                                                    <td className="px-6 py-3 font-bold text-gray-900">
+                                                                        {q.quarter}
+                                                                        <span className="block text-[10px] font-mono text-gray-400 font-normal mt-0.5">{formatDate(q.date)}</span>
+                                                                    </td>
+                                                                    <td className="px-6 py-3 text-right font-mono text-gray-500">${q.epsEstimate.toFixed(2)}</td>
+                                                                    <td className="px-6 py-3 text-right font-mono text-gray-900 font-bold">${q.epsActual.toFixed(2)}</td>
+                                                                    <td className="px-6 py-3 text-right">
+                                                                        {q.beat ? (
+                                                                            <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-green-50 text-green-700 text-[10px] font-bold border border-green-100">
+                                                                                <TrendingUp className="w-3 h-3" /> BEAT
+                                                                            </span>
+                                                                        ) : (
+                                                                            <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-red-50 text-red-700 text-[10px] font-bold border border-red-100">
+                                                                                <TrendingDown className="w-3 h-3" /> MISS
+                                                                            </span>
+                                                                        )}
+                                                                    </td>
+                                                                </tr>
+                                                            ))}
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             )}
                                         </div>
-                                    </section>
-                                )}
+                                    </div>
+                                </div>
+                            ) : null}
+                        </div>
+                    </div>
+                )}
 
-                                {/* Historical */}
-                                {details.pastQuarters && details.pastQuarters.length > 0 && (
-                                    <section>
-                                        <div className="flex items-center justify-between mb-3">
-                                            <h3 className="text-[10px] font-bold text-gray-900 uppercase tracking-widest flex items-center gap-2">
-                                                <BarChart3 className="w-3.5 h-3.5 text-blue-600" /> Historical Performance
-                                            </h3>
-                                        </div>
-                                        <div className="border border-gray-200 rounded-xl overflow-hidden shadow-sm bg-white">
-                                            <table className="w-full text-xs text-left">
-                                                <thead className="bg-gray-50 text-gray-500 font-bold uppercase border-b border-gray-100 text-[10px]">
-                                                    <tr>
-                                                        <th className="px-5 py-3">Quarter</th>
-                                                        <th className="px-5 py-3 text-right">Est</th>
-                                                        <th className="px-5 py-3 text-right">Act</th>
-                                                        <th className="px-5 py-3 text-right">Surprise</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody className="divide-y divide-gray-50">
-                                                    {details.pastQuarters.map((q, i) => (
-                                                        <tr key={i} className="hover:bg-gray-50 transition-colors">
-                                                            <td className="px-5 py-3 font-bold text-gray-900">
-                                                                <div>{q.quarter}</div>
-                                                                <div className="font-mono text-[10px] text-gray-400 font-medium">{formatDate(q.date)}</div>
-                                                            </td>
-                                                            <td className="px-5 py-3 text-right font-mono text-gray-500">${q.epsEstimate.toFixed(2)}</td>
-                                                            <td className="px-5 py-3 text-right font-mono text-gray-900 font-bold">${q.epsActual.toFixed(2)}</td>
-                                                            <td className="px-5 py-3 text-right">
-                                                                {q.beat ? (
-                                                                    <span className="text-green-700 font-bold text-[9px] bg-green-100 px-1.5 py-0.5 rounded">BEAT</span>
-                                                                ) : (
-                                                                    <span className="text-red-700 font-bold text-[9px] bg-red-100 px-1.5 py-0.5 rounded">MISS</span>
-                                                                )}
-                                                            </td>
-                                                        </tr>
-                                                    ))}
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </section>
-                                )}
-                            </div>
+                {activeTab === "Archive" && (
+                    <div className="flex-1 flex flex-col items-center justify-center text-gray-400">
+                        <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
+                            <Clock className="w-8 h-8 text-gray-300" />
                         </div>
-                    ) : (
-                        <div className="flex items-center justify-center h-full">
-                            <Activity className="w-8 h-8 text-gray-300 animate-spin" />
-                        </div>
-                    )}
-                </SheetContent>
-            </Sheet>
+                        <h3 className="text-lg font-bold text-gray-900">Earnings Archive</h3>
+                        <p className="text-sm max-w-sm text-center mt-2">Historical earnings data and transcripts will be available here.</p>
+                    </div>
+                )}
+            </div>
         </div>
     );
 }
+

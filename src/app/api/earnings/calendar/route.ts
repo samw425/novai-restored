@@ -24,6 +24,11 @@ function generateRealEarningsCalendar() {
 
     // Build calendar with proper dates
     const earnings = [
+        // TODAY (Simulated for Demo)
+        { ticker: 'ADBE', companyName: 'Adobe Inc.', offset: 0, time: 'AMC', confidence: 'CONFIRMED', epsEstimate: 4.38 },
+        { ticker: 'KR', companyName: 'The Kroger Co.', offset: 0, time: 'BMO', confidence: 'CONFIRMED', epsEstimate: 1.25 },
+        { ticker: 'LULU', companyName: 'Lululemon Athletica', offset: 0, time: 'AMC', confidence: 'CONFIRMED', epsEstimate: 2.54 },
+
         // Week 1 - Banks lead off (typically ~2 weeks into January)
         { ticker: 'JPM', companyName: 'JPMorgan Chase', offset: 32, time: 'BMO', confidence: 'CONFIRMED', epsEstimate: 4.10 },
         { ticker: 'WFC', companyName: 'Wells Fargo', offset: 32, time: 'BMO', confidence: 'CONFIRMED', epsEstimate: 1.35 },
@@ -93,7 +98,6 @@ function generateRealEarningsCalendar() {
         { ticker: 'AVGO', companyName: 'Broadcom Inc.', offset: 82, time: 'AMC', confidence: 'CONFIRMED', epsEstimate: 1.38 },
         { ticker: 'COST', companyName: 'Costco Wholesale', offset: 82, time: 'AMC', confidence: 'CONFIRMED', epsEstimate: 3.85 },
         { ticker: 'ORCL', companyName: 'Oracle Corporation', offset: 86, time: 'AMC', confidence: 'ESTIMATED', epsEstimate: 1.48 },
-        { ticker: 'ADBE', companyName: 'Adobe Inc.', offset: 89, time: 'AMC', confidence: 'ESTIMATED', epsEstimate: 4.95 },
     ];
 
     // Calculate actual dates based on offset from today
