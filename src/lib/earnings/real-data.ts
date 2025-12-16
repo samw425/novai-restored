@@ -18,10 +18,10 @@ export const REAL_COMPANIES: Record<string, {
     "NVDA": { name: "NVIDIA Corporation", sector: "Technology", ir: "https://investor.nvidia.com/", cik: "1045810" },
     "MSFT": { name: "Microsoft Corporation", sector: "Technology", ir: "https://www.microsoft.com/en-us/investor", cik: "789019" },
     "AAPL": { name: "Apple Inc.", sector: "Technology", ir: "https://investor.apple.com/", cik: "320193" },
-    "GOOGL": { name: "Alphabet Inc.", sector: "Technology", ir: "https://abc.xyz/investor/", cik: "1652044" },
-    "GOOG": { name: "Alphabet Inc.", sector: "Technology", ir: "https://abc.xyz/investor/", cik: "1652044" },
-    "AMZN": { name: "Amazon.com Inc.", sector: "Consumer", ir: "https://ir.aboutamazon.com/", cik: "1018724" },
-    "META": { name: "Meta Platforms Inc.", sector: "Technology", ir: "https://investor.fb.com/", cik: "1326801" },
+    "GOOGL": { name: "Alphabet Inc.", sector: "Communication Services", ir: "https://abc.xyz/investor/", cik: "1652044" },
+    "GOOG": { name: "Alphabet Inc.", sector: "Communication Services", ir: "https://abc.xyz/investor/", cik: "1652044" },
+    "AMZN": { name: "Amazon.com Inc.", sector: "Consumer Cyclical", ir: "https://ir.aboutamazon.com/", cik: "1018724" },
+    "META": { name: "Meta Platforms Inc.", sector: "Communication Services", ir: "https://investor.fb.com/", cik: "1326801" },
     "TSLA": { name: "Tesla Inc.", sector: "Automotive", ir: "https://ir.tesla.com/", cik: "1318605" },
 
     // ========== AI/SEMICONDUCTORS ==========
@@ -223,7 +223,7 @@ export function getCompanyInfo(ticker: string): {
         ticker: upper,
         name: `${upper}`,
         sector: "Unknown",
-        ir: `https://www.google.com/search?q=${upper}+investor+relations`,
+        ir: getYahooFinanceUrl(upper), // Fallback to Yahoo Finance Quote page
         sec: getSecEdgarUrl(upper),
         yahoo: getYahooFinanceUrl(upper),
         found: false
