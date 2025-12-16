@@ -1,8 +1,7 @@
 // @ts-nocheck
 import { NextResponse } from 'next/server';
-// @ts-ignore
-import Parser from 'rss-parser/dist/rss-parser.min.js';
-export const runtime = 'edge';
+import Parser from 'rss-parser';
+export const runtime = 'nodejs';
 
 
 export const dynamic = 'force-dynamic';
@@ -12,21 +11,23 @@ const parser = new Parser({
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         'Accept': 'application/rss+xml, application/xml, text/xml, */*'
     },
-    timeout: 8000,
+    timeout: 10000,
 });
 
 // OFFICIAL INTELLIGENCE SOURCES (Expanded for Direct Intel)
+// OFFICIAL INTELLIGENCE SOURCES (Expanded for Direct Intel)
+// Using Google News 'site:' feeds for agencies that have deprecated their direct RSS
 const FEEDS = {
-    FBI: 'https://www.fbi.gov/feeds/national-press-releases/rss.xml',
-    NSA: 'https://www.nsa.gov/rss/news/',
-    DHS: 'http://feeds.feedburner.com/dhs/zOAi',
-    CISA: 'https://www.cisa.gov/cybersecurity-advisories/all.xml',
-    CIA: 'https://www.cia.gov/rss/cia-news-and-information.rss', // CIA News RSS
-    ODNI: 'https://www.dni.gov/index.php/newsroom?format=feed&type=rss', // Office of Director of National Intelligence
-    STATE: 'https://www.state.gov/rss/channels/press.xml', // State Dept Press
-    DOD: 'https://www.defense.gov/DesktopModules/ArticleCS/RSS.ashx?ContentType=1&Site=945&max=10', // DoD Official
-    DOJ: 'https://www.justice.gov/feeds/opa/justice-news.xml', // DOJ (Antitrust & Federal Crimes)
-    WHITE_HOUSE: 'https://www.whitehouse.gov/feed/', // White House Briefings
+    FBI: 'https://www.fbi.gov/feeds/national-press-releases/rss.xml', // Keeping verified direct feed
+    NSA: 'https://news.google.com/rss/search?q=site:nsa.gov&hl=en-US&gl=US&ceid=US:en', // Switched to site-specific news
+    DHS: 'http://feeds.feedburner.com/dhs/zOAi', // Legacy but usually works
+    CISA: 'https://www.cisa.gov/cybersecurity-advisories/all.xml', // Verified
+    CIA: 'https://news.google.com/rss/search?q=site:cia.gov&hl=en-US&gl=US&ceid=US:en', // Switched to site-specific news
+    ODNI: 'https://news.google.com/rss/search?q=site:dni.gov&hl=en-US&gl=US&ceid=US:en', // Switched to site-specific news
+    STATE: 'https://www.state.gov/rss-feed/department-press-briefings/feed/', // Updated verified URL
+    DOD: 'https://www.defense.gov/DesktopModules/ArticleCS/RSS.ashx?ContentType=1&Site=945&max=10', // Verified
+    DOJ: 'https://www.justice.gov/news/rss', // Updated verified URL
+    WHITE_HOUSE: 'https://news.google.com/rss/search?q=site:whitehouse.gov/briefing-room&hl=en-US&gl=US&ceid=US:en', // Switched to briefing room site search
 };
 
 // KEYWORDS TO FILTER FOR (The "Novai Filter")
@@ -165,7 +166,7 @@ export async function GET(request: Request) {
                     source: 'Official Feed'
                 }));
             } catch (error) {
-                // console.error(`Failed to fetch ${agency} feed:`, error);
+                console.error(`Failed to fetch ${agency} feed:`, error);
                 return [];
             }
         });
