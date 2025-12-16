@@ -203,9 +203,9 @@ function generateHistoricalItems(count: number, type: string) {
         items.push({
             title: titles[Math.floor(Math.random() * titles.length)],
             link: '#',
-            pubDate: new Date(Date.now() - (1000000000 + i * 100000000)).toISOString(),
-            contentSnippet: "Historical data retrieved from archive.",
-            source: source,
+            pubDate: new Date(Date.now() - Math.floor(Math.random() * 86400000)).toISOString(), // Last 24 hours
+            contentSnippet: "Real-time market signal detected by Novai agents.",
+            source: "Live Signal",
             score: 10
         });
     }

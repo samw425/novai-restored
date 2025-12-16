@@ -1,9 +1,8 @@
 // @ts-nocheck
 import { NextResponse } from 'next/server';
-// @ts-ignore
-import Parser from 'rss-parser/dist/rss-parser.min.js';
+import Parser from 'rss-parser';
 import { RSS_FEEDS, getCategoryFeeds } from '@/config/rss-feeds';
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 
 
 const parser = new Parser({
@@ -18,7 +17,7 @@ export const dynamic = 'force-dynamic';
 // In-memory cache (will be replaced with Supabase later)
 let articlesCache: any[] = [];
 let lastFetchTime = 0;
-const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes - reduced fetch frequency for better performance
+const CACHE_DURATION = 1 * 60 * 1000; // 1 minute - High frequency for "Live" feel
 
 // Helper to clean HTML
 function cleanText(html: string): string {
@@ -39,8 +38,71 @@ export async function GET(request: Request) {
         const now = Date.now();
         const shouldRefresh = now - lastFetchTime > CACHE_DURATION || articlesCache.length === 0;
 
+        // 1. TRY SUPABASE (Preferred Source)
+        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+        const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+        if (supabaseUrl && supabaseKey) {
+            try {
+                const { createClient } = await import('@supabase/supabase-js');
+                const supabase = createClient(supabaseUrl, supabaseKey);
+
+                let query = supabase
+                    .from('articles')
+                    .select('*')
+                    .order('published_at', { ascending: false })
+                    .limit(50); // Fetch ample articles
+
+                if (category !== 'All') {
+                    // Approximate category matching if needed, or rely on exact match
+                    query = query.eq('category', category.toLowerCase());
+                }
+
+                const { data, error } = await query;
+
+                if (!error && data && data.length > 0) {
+                    // Transform DB shape to App shape
+                    const dbArticles = data.map((item: any) => ({
+                        id: item.id || Math.random().toString(),
+                        title: item.title,
+                        summary: item.summary,
+                        description: item.summary,
+                        publishedAt: item.published_at,
+                        category: item.category,
+                        source: item.source,
+                        url: item.url,
+                        topicSlug: 'news',
+                        importanceScore: item.relevance_score || 0,
+                        relatedLinks: []
+                    }));
+
+                    console.log(`[Feed/Live] Served ${dbArticles.length} articles from Supabase`);
+
+                    // Filter locally for search if needed
+                    let finalArticles = dbArticles;
+                    const searchQuery = searchParams.get('search')?.toLowerCase();
+                    if (searchQuery) {
+                        finalArticles = finalArticles.filter((a: any) => a.title.toLowerCase().includes(searchQuery));
+                    }
+
+                    const page = parseInt(searchParams.get('page') || '1');
+                    const offset = (page - 1) * limit;
+
+                    return NextResponse.json({
+                        articles: finalArticles.slice(offset, offset + limit),
+                        count: finalArticles.length,
+                        source: 'supabase',
+                        lastUpdate: new Date().toISOString()
+                    });
+                }
+            } catch (dbErr) {
+                console.warn('[Feed/Live] Supabase fetch failed, falling back to RSS:', dbErr);
+            }
+        }
+
+        // 2. FALLBACK TO DIRECT RSS FETCH (Original Logic)
         if (shouldRefresh) {
-            console.log('Refreshing RSS cache from all sources...');
+            console.log('Refreshing RSS cache from all sources (Fallback)...');
 
             // FETCH ALL SOURCES (No slicing) to ensure every category is populated
             const feedsToFetch = RSS_FEEDS;
@@ -99,11 +161,10 @@ export async function GET(request: Request) {
             };
 
 
-            // CRITICAL: AI/Robotics Relevance Filter (STRICTEST VERSION)
             const isRelevantToAI = (article: any) => {
                 const text = (article.title + ' ' + article.summary).toLowerCase();
 
-                // IMMEDIATE DISQUALIFIERS - If any of these are present, reject immediately
+                // 1. HARD BLOCK (Keeping this to avoid spam/irrelevant)
                 const hardBlockKeywords = [
                     'kansai airport', 'airport food', 'japanese food', 'restaurant', 'cuisine',
                     'anime', 'manga', 'k-pop', 'singer', 'concert', 'music festival',
@@ -113,84 +174,29 @@ export async function GET(request: Request) {
                 ];
 
                 if (hardBlockKeywords.some(keyword => text.includes(keyword))) {
-                    console.log(`⛔ HARD BLOCKED: "${article.title}"`);
                     return false;
                 }
 
-                // STRONG AI/ML/Robotics/Tech keywords - MUST match at least TWO
+                // 2. IMMEDIATE ACCEPT (Strong Signals) - Just ONE is enough now
                 const strongSignals = [
                     'artificial intelligence', 'machine learning', 'deep learning', 'neural network',
                     'llm', 'large language model', 'gpt', 'chatgpt', 'claude', 'gemini', 'bard',
                     'generative ai', 'transformer', 'diffusion model',
-                    'openai', 'anthropic', 'deepmind', 'nvidia ai', 'ai chip', 'gpu computing',
-                    'robot', 'robotic', 'robotics', 'autonomous', 'humanoid robot', 'drone technology',
-                    'computer vision', 'nlp', 'natural language processing', 'speech recognition',
-                    'reinforcement learning', 'supervised learning', 'ai model', 'ai training',
-                    'pytorch', 'tensorflow', 'hugging face', 'langchain',
-                    'chatbot', 'ai assistant', 'copilot', 'ai safety', 'ai regulation',
-                    'prompt engineering', 'fine-tuning', 'embedding', 'vector database',
-                    'sentiment analysis', 'recommendation system', 'ai research',
-                    'boston dynamics', 'tesla bot', 'warehouse automation', 'self-driving',
-                    'ai ethics', 'ai alignment', 'agi'
+                    'openai', 'anthropic', 'deepmind', 'nvidia', 'gpu',
+                    'robot', 'robotic', 'robotics', 'autonomous', 'humanoid', 'drone',
+                    'computer vision', 'nlp', 'language model', 'ai model', 'ai tool', 'ai startup',
+                    'tech', 'technology', 'software', 'platform', 'app', 'data', 'cloud', 'server', // Relaxed: Broad Tech
+                    'startup', 'venture', 'funding', 'market', 'stock', 'ipo' // Relaxed: broad market
                 ];
 
-                // WEAK signals (general tech that needs strong signal support)
-                const weakSignals = ['ai', 'algorithm', 'data science', 'automation'];
+                if (strongSignals.some(s => text.includes(s))) return true;
 
-                // ROBOTICS EXCEPTION: Be more lenient for robotics category
-                if (article.category === 'robotics') {
-                    const roboticsKeywords = ['robot', 'bot', 'drone', 'autonomous', 'automation', 'machine', 'boston dynamics', 'figure', 'optimus'];
-                    return roboticsKeywords.some(k => text.includes(k));
+                // 3. CATEGORY AUTOMATIC ACCEPT
+                if (['robotics', 'research', 'code', 'market', 'policy', 'tech'].includes(article.category)) {
+                    return true;
                 }
 
-                // MARKET EXCEPTION: Be more lenient for market/finance category
-                if (article.category === 'market') {
-                    const marketKeywords = ['stock', 'shares', 'ipo', 'funding', 'venture capital', 'acquisition', 'merger', 'revenue', 'earnings', 'nasdaq', 'nyse', 'market cap', 'investor', 'valuation'];
-                    // Must have at least one market keyword AND at least one tech/AI keyword (weak or strong)
-                    const hasMarket = marketKeywords.some(k => text.includes(k));
-                    const hasTech = ['tech', 'technology', 'software', 'hardware', 'chip', 'semiconductor', 'data', 'digital', 'cyber', ...strongSignals, ...weakSignals].some(k => text.includes(k));
-                    if (hasMarket && hasTech) return true;
-                }
-
-                // CODE/DEV EXCEPTION: Be more lenient for code/tools category
-                if (article.category === 'code' || article.category === 'tools') {
-                    const devKeywords = ['github', 'open source', 'repository', 'framework', 'library', 'api', 'sdk', 'python', 'javascript', 'typescript', 'rust', 'react', 'next.js', 'docker', 'kubernetes', 'linux', 'developer'];
-                    if (devKeywords.some(k => text.includes(k))) return true;
-                }
-
-                // RESEARCH EXCEPTION: High trust for research labs (OpenAI, DeepMind, etc.)
-                if (article.category === 'research') {
-                    // These sources are highly specific, so we can be very lenient.
-                    // Just check for basic relevance to avoid completely unrelated posts (e.g. "hiring")
-                    const researchKeywords = ['model', 'paper', 'research', 'learning', 'reasoning', 'agent', 'training', 'inference', 'benchmark', 'release', 'announce', 'introducing', 'update', ...strongSignals, ...weakSignals];
-                    if (researchKeywords.some(k => text.includes(k))) return true;
-                }
-
-                // POLICY EXCEPTION: Ensure regulatory news isn't filtered out
-                if (article.category === 'policy') {
-                    const policyKeywords = ['regulation', 'law', 'act', 'bill', 'congress', 'senate', 'parliament', 'eu', 'commission', 'ftc', 'doj', 'compliance', 'safety', 'governance', 'ethics', 'ban', 'restriction', 'tariffs', 'trade', 'export control', 'white house', 'biden', 'trump', 'executive order'];
-                    if (policyKeywords.some(k => text.includes(k))) return true;
-                }
-
-                const strongMatches = strongSignals.filter(signal => text.includes(signal)).length;
-                const weakMatches = weakSignals.filter(signal => text.includes(signal)).length;
-
-                // DECISION LOGIC:
-                // - Need at least 2 strong signals OR
-                // - 1 strong signal + company name OR
-                // - Specific AI companies even with weak signals
-                // - OR if it's explicitly categorized as 'robotics', 'market', or 'code' (handled above)
-
-                const aiCompanies = ['nvidia', 'openai', 'anthropic', 'deepmind', 'microsoft ai', 'google ai', 'meta ai'];
-                const hasAICompany = aiCompanies.some(company => text.includes(company));
-
-                const isRelevant = (strongMatches >= 2) || (strongMatches >= 1 && hasAICompany) || (weakMatches > 0 && hasAICompany);
-
-                if (!isRelevant) {
-                    // console.log(`🚫 FILTERED OUT (weak signal): "${article.title}"`);
-                }
-
-                return isRelevant;
+                return false; // Only reject if it has NO tech keywords AND wrong category
             };
 
             articlesCache = allArticles.filter(article => {
