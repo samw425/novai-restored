@@ -200,9 +200,10 @@ function generateHistoricalItems(count: number, type: string) {
     }
 
     for (let i = 0; i < count; i++) {
+        const randomTitle = titles[Math.floor(Math.random() * titles.length)];
         items.push({
-            title: titles[Math.floor(Math.random() * titles.length)],
-            link: '#',
+            title: randomTitle,
+            link: `https://www.google.com/search?q=${encodeURIComponent(randomTitle)}`,
             pubDate: new Date(Date.now() - Math.floor(Math.random() * 86400000)).toISOString(), // Last 24 hours
             contentSnippet: "Real-time market signal detected by Novai agents.",
             source: "Live Signal",
