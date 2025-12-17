@@ -81,17 +81,40 @@ export async function GET(request: NextRequest) {
             for (let i = 0; i < 200; i++) {
                 const template = seedTemplates[i % seedTemplates.length];
                 const info = getCompanyInfo(template.ticker);
-                // Stagger times: 0-15 items are "recent" (0-4 hours), others go back days
-                const minutesAgo = i < 15
-                    ? i * 15 + Math.floor(Math.random() * 10) // First 15: 0-4 hours ago
-                    : 240 + (i * 45); // Others: increasing 45 mins each step
+
+                // INTELLIGENT TIME OFFSET logic:
+                // If the template is from "Yesterday" block (indices 3-4 in SEED_FEED), make it >24h ago
+                // If from "Last Week" (indices 5+), make it >48h ago
+                // Otherwise (indices 0-2), use "recent" logic
+
+                let minutesAgo = 0;
+                // Detect "Yesterday" or older based on the original SEED_FEED structure we know
+                // SEED_FEED[0-2] are Today
+                // SEED_FEED[3-4] are Yesterday
+                // SEED_FEED[5+] are older
+
+                const seedIndex = i % seedTemplates.length;
+
+                if (seedIndex <= 2) {
+                    // Today (0-4 hours)
+                    minutesAgo = i * 15 + Math.floor(Math.random() * 10);
+                } else if (seedIndex <= 4) {
+                    // Yesterday (24-30 hours)
+                    minutesAgo = 1440 + (i * 30);
+                } else {
+                    // Older (2-7 days)
+                    minutesAgo = 2880 + (i * 60);
+                }
 
                 generatedFeed.push({
                     id: `seed-${template.ticker}-${i}`,
                     ticker: template.ticker,
                     companyName: info.name,
                     headline: template.headline,
-                    time: new Date(now.getTime() - minutesAgo * 60000).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }),
+                    // If > 24 hours, show date instead of time
+                    time: minutesAgo > 1440
+                        ? new Date(now.getTime() - minutesAgo * 60000).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                        : new Date(now.getTime() - minutesAgo * 60000).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }),
                     ago: formatAgo(minutesAgo * 60000),
                     impact: template.impact,
                     sentiment: template.sentiment,
