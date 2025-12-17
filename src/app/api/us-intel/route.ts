@@ -145,14 +145,17 @@ export async function GET(request: Request) {
         const limit = parseInt(searchParams.get('limit') || '20');
         const agencyFilter = searchParams.get('agency') || 'ALL';
 
-        const feedPromises = Object.entries(FEEDS).map(async ([agency, url]) => {
+        const feedResults = [];
+
+        // Fetch sequentially to avoid rate-limiting from Google/Agencies
+        for (const [agency, url] of Object.entries(FEEDS)) {
             // If filtering by agency, skip others
-            if (agencyFilter !== 'ALL' && agency !== agencyFilter) return [];
+            if (agencyFilter !== 'ALL' && agency !== agencyFilter) continue;
 
             try {
                 // Timeout promise to prevent hanging
                 const timeout = new Promise((_, reject) =>
-                    setTimeout(() => reject(new Error('Timeout')), 4000)
+                    setTimeout(() => reject(new Error('Timeout')), 5000)
                 );
 
                 const feed: any = await Promise.race([
@@ -160,19 +163,19 @@ export async function GET(request: Request) {
                     timeout
                 ]);
 
-                return feed.items.map((item: any) => ({
+                const items = feed.items.map((item: any) => ({
                     ...item,
                     agency,
                     source: 'Official Feed'
                 }));
+                feedResults.push(...items);
             } catch (error) {
                 console.error(`Failed to fetch ${agency} feed:`, error);
-                return [];
+                // Continue to next feed even if one fails
             }
-        });
+        }
 
-        const results = await Promise.all(feedPromises);
-        let allFeedItems = results.flat();
+        let allFeedItems = feedResults;
 
         // Append FAILSAFE data if needed (or always to ensure richness)
         // Filter failsafe data by agency if needed
@@ -199,12 +202,21 @@ export async function GET(request: Request) {
                     else if (score > 0) item.novai_analysis = "RELEVANT: Intersects with national technology interests.";
                     else item.novai_analysis = null;
                 }
+                const debugDate = new Date(item.pubDate);
+                // Console log for debugging
+                // console.log(`[Item] ${item.agency}: ${item.title.substring(0, 30)}... | Score: ${score} | Date: ${debugDate} | ValidDate: ${!isNaN(debugDate.getTime())}`);
                 return { ...item, score };
             })
             .filter((item: any) => {
                 const date = new Date(item.pubDate);
-                // Filter out invalid dates and ensure some relevance (score > 0) OR it's from a key agency
-                return !isNaN(date.getTime()) && (item.score > 0 || ['CISA', 'FBI', 'NSA', 'ODNI', 'CIA'].includes(item.agency));
+                const isValidDate = !isNaN(date.getTime());
+                const isAgencyWhitelisted = ['CISA', 'FBI', 'NSA', 'ODNI', 'CIA', 'DHS', 'DOD', 'DOJ', 'STATE', 'WHITE_HOUSE'].includes(item.agency);
+                const isRelevant = item.score > 0 || isAgencyWhitelisted;
+
+                if (!isValidDate) console.log(`[Filtered] Invalid Date: ${item.pubDate}`);
+                if (!isRelevant) console.log(`[Filtered] Low Score & Non-Whitelist Agency: ${item.agency} (Score: ${item.score})`);
+
+                return isValidDate && isRelevant;
             })
             .sort((a: any, b: any) => {
                 const dateA = new Date(a.pubDate).getTime();

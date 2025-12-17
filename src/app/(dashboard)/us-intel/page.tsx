@@ -615,11 +615,11 @@ export default function USIntelPage() {
         }
     }, [page]);
 
-    // Real-time Polling (every 30 seconds)
+    // Real-time Polling (every 15 seconds)
     useEffect(() => {
         const interval = setInterval(() => {
             fetchFeed(1, true);
-        }, 30000);
+        }, 15000);
         return () => clearInterval(interval);
     }, [fetchFeed]);
 

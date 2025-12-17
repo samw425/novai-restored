@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { fetchRoboticsFeed } from '@/lib/robotics';
-export const runtime = 'edge';
+
 
 
 export const dynamic = 'force-dynamic';

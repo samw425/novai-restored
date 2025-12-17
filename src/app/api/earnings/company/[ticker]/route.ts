@@ -9,42 +9,7 @@ export const dynamic = 'force-dynamic';
 
 const FMP_BASE = 'https://financialmodelingprep.com/api/v3';
 
-// Known IR URLs for major companies
-const IR_URLS: Record<string, string> = {
-    'NVDA': 'https://investor.nvidia.com/',
-    'MSFT': 'https://www.microsoft.com/en-us/investor',
-    'GOOGL': 'https://abc.xyz/investor/',
-    'GOOG': 'https://abc.xyz/investor/',
-    'META': 'https://investor.fb.com/',
-    'AMZN': 'https://ir.aboutamazon.com/',
-    'AAPL': 'https://investor.apple.com/',
-    'TSLA': 'https://ir.tesla.com/',
-    'AMD': 'https://ir.amd.com/',
-    'PLTR': 'https://investors.palantir.com/',
-    'CRM': 'https://investor.salesforce.com/',
-    'INTC': 'https://www.intc.com/',
-    'SNOW': 'https://investors.snowflake.com/',
-    'NFLX': 'https://ir.netflix.net/',
-    'DIS': 'https://thewaltdisneycompany.com/investor-relations/',
-    'JPM': 'https://www.jpmorganchase.com/ir',
-    'BAC': 'https://investor.bankofamerica.com/',
-    'WMT': 'https://stock.walmart.com/',
-    'V': 'https://investor.visa.com/',
-    'MA': 'https://investor.mastercard.com/',
-    'PYPL': 'https://investor.pypl.com/',
-    'ADBE': 'https://www.adobe.com/investor-relations.html',
-    'ORCL': 'https://investor.oracle.com/',
-    'IBM': 'https://www.ibm.com/investor',
-    'CSCO': 'https://investor.cisco.com/',
-    'UBER': 'https://investor.uber.com/',
-    'ABNB': 'https://investors.airbnb.com/',
-    'SQ': 'https://investors.block.xyz/',
-    'SHOP': 'https://investors.shopify.com/',
-    'ZM': 'https://investors.zoom.us/',
-    'COIN': 'https://investor.coinbase.com/',
-    'RIVN': 'https://rivian.com/investors',
-    'LCID': 'https://ir.lucidmotors.com/',
-};
+import { getCompanyInfo } from '@/lib/earnings/real-data';
 
 // Generate SEC search URL for any ticker
 function getSecUrl(ticker: string, cik?: string): string {
@@ -54,21 +19,10 @@ function getSecUrl(ticker: string, cik?: string): string {
     return `https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=${ticker}&type=8-K&dateb=&owner=include&count=40`;
 }
 
-// Generate IR URL (known or guessed)
-function getIrUrl(ticker: string, website?: string): string {
-    if (IR_URLS[ticker.toUpperCase()]) {
-        return IR_URLS[ticker.toUpperCase()];
-    }
-    if (website) {
-        const domain = website.replace(/^https?:\/\//, '').replace(/\/$/, '');
-        return `https://investor.${domain}/`;
-    }
-    return `https://www.google.com/search?q=${ticker}+investor+relations`;
-}
-
 // Helper: Generate realistic mock data for ANY ticker if API fails
 function generateMockProfile(ticker: string) {
     const t = ticker.toUpperCase();
+    const info = getCompanyInfo(t);
 
     // Basic seeds for top tech names to make them look real
     const SEEDS: Record<string, any> = {
@@ -104,7 +58,7 @@ function generateMockProfile(ticker: string) {
             beat: act >= est,
             links: {
                 secFiling: `https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=${t}&type=8-K`,
-                ir: getIrUrl(t),
+                ir: info.ir,
             }
         });
     }
@@ -129,9 +83,9 @@ function generateMockProfile(ticker: string) {
         pastQuarters,
 
         links: {
-            ir: getIrUrl(t),
+            ir: info.ir,
             sec: getSecUrl(t),
-            webcast: getIrUrl(t),
+            webcast: info.ir,
             yahooFinance: `https://finance.yahoo.com/quote/${t}`,
             googleFinance: `https://www.google.com/finance/quote/${t}`
         },
@@ -197,7 +151,8 @@ export async function GET(
         const upcoming = upcomingAll?.find((e: any) => e.symbol?.toUpperCase() === upperTicker);
 
         // 4. Build links
-        const irUrl = getIrUrl(upperTicker, company.website);
+        const info = getCompanyInfo(upperTicker);
+        const irUrl = info.ir;
         const secUrl = getSecUrl(upperTicker, company.cik);
 
         // 5. Format past quarters with links
@@ -260,7 +215,7 @@ export async function GET(
             links: {
                 ir: irUrl,
                 sec: secUrl,
-                webcast: irUrl, // Usually on IR page
+                webcast: irUrl, // usually on IR page
                 yahooFinance: `https://finance.yahoo.com/quote/${upperTicker}`,
                 googleFinance: `https://www.google.com/finance/quote/${upperTicker}:${company.exchangeShortName || 'NASDAQ'}`,
             },

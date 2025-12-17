@@ -641,6 +641,16 @@ export function Sidebar() {
                             <Info className="h-4 w-4 text-gray-400" />
                             Feedback
                         </Link>
+                        <Link
+                            href="/support"
+                            className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all ${pathname === '/support'
+                                ? 'bg-purple-50 text-purple-700 font-bold'
+                                : 'text-gray-500 hover:bg-purple-50 hover:text-purple-700'
+                                }`}
+                        >
+                            <span className="flex items-center justify-center h-4 w-4 text-[10px] font-bold border border-current rounded-full">❤</span>
+                            Support Novai
+                        </Link>
                     </nav>
                 </div>
 

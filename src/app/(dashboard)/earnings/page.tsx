@@ -96,7 +96,11 @@ interface CompanyDetails {
 // 1. LIVE WIRE COMPONENT - Real-time SEC/IR feed with infinite scroll
 // ============================================================================
 
-function LiveWire() {
+interface LiveWireProps {
+    forcedFilter?: string;
+}
+
+function LiveWire({ forcedFilter }: LiveWireProps) {
     const [feed, setFeed] = useState<FeedItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [loadingMore, setLoadingMore] = useState(false);
@@ -113,7 +117,9 @@ function LiveWire() {
             if (pageNum === 1) setLoading(true);
             else setLoadingMore(true);
 
-            const filter = activeTab === "SIGNALS" ? "high" : activeTab === "FILINGS" ? "filings" : "all";
+            let filter = activeTab === "SIGNALS" ? "high" : activeTab === "FILINGS" ? "filings" : "all";
+            if (forcedFilter) filter = forcedFilter;
+
             const res = await fetch(`/api/earnings/feed?limit=20&filter=${filter}&page=${pageNum}`);
             const data = await res.json();
 
@@ -648,7 +654,7 @@ export default function EarningsPage() {
 
                 {activeTab === "Just Released" && (
                     <div className="w-full h-full max-w-4xl mx-auto border-x border-gray-200 bg-white">
-                        <LiveWire />
+                        <LiveWire forcedFilter="just_released" />
                     </div>
                 )}
 

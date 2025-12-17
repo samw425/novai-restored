@@ -105,6 +105,7 @@ export function MobileNav() {
                             <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-6 font-mono">System</h3>
                             <div className="space-y-0.5">
                                 <NavLink href="/feedback" icon={Info} label="Feedback" />
+                                <NavLink href="/support" icon={Activity} label="Support Novai" />
                             </div>
                         </div>
 

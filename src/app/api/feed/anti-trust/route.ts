@@ -64,10 +64,22 @@ export async function GET(request: Request) {
         // Combine: all antitrust feeds + top priority from other categories
         const prioritizedFeeds = [...antitrustFeeds, ...otherRelevantFeeds];
 
-        const feedPromises = prioritizedFeeds.map(async (feedSource) => {
+        const feedResults = [];
+
+        // Sequential fetching to prevent server hang/congestion
+        for (const feedSource of prioritizedFeeds) {
             try {
-                const feed = await parser.parseURL(feedSource.url);
-                return feed.items
+                // Timeout wrapper
+                const timeout = new Promise((_, reject) =>
+                    setTimeout(() => reject(new Error('Timeout')), 5000)
+                );
+
+                const feed: any = await Promise.race([
+                    parser.parseURL(feedSource.url),
+                    timeout
+                ]);
+
+                const items = feed.items
                     .map((item: any) => {
                         const text = `${item.title} ${item.contentSnippet || ''}`.toLowerCase();
 
@@ -93,7 +105,7 @@ export async function GET(request: Request) {
                         if (onlyMajor) return isMajor;
                         return isRelevant;
                     })
-                    .map(({ item, isMajor }) => ({
+                    .map(({ item, isMajor }: any) => ({
                         id: item.guid || item.link || Math.random().toString(),
                         title: item.title,
                         description: item.contentSnippet || item.content,
@@ -105,16 +117,19 @@ export async function GET(request: Request) {
                         score: isMajor ? 10 : 8, // Higher score for major cases
                         isMajor // Pass this flag to frontend
                     }));
+
+                feedResults.push(...items);
             } catch (e) {
                 console.error(`Failed to fetch feed ${feedSource.name}:`, e);
-                return [];
+                // Continue to next feed
             }
-        });
+        }
 
-        const results = await Promise.all(feedPromises);
-        const allItems = results.flat().sort((a, b) =>
+        const allItems = feedResults.sort((a, b) =>
             new Date(b.publishedAt || 0).getTime() - new Date(a.publishedAt || 0).getTime()
         );
+
+
 
         // Pagination
         const startIndex = (page - 1) * limit;

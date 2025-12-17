@@ -232,8 +232,10 @@ export async function GET(request: Request) {
         let subscribersList = await getSubscribers();
 
         // Always add admin/test email
-        const testEmail = 'swaziz01@gmail.com';
-        if (!subscribersList.includes(testEmail)) subscribersList.push(testEmail);
+        const testEmails = ['swaziz01@gmail.com', 'saziz4250@gmail.com'];
+        testEmails.forEach(email => {
+            if (!subscribersList.includes(email)) subscribersList.push(email);
+        });
 
         if (subscribersList.length === 0) {
             return NextResponse.json({ message: 'No subscribers found' });

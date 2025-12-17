@@ -129,10 +129,13 @@ const COMPANIES: Record<string, { name: string; sector: string; exchange: string
     'FSLR': { name: 'First Solar', sector: 'Solar', exchange: 'NASDAQ', nextDate: '2025-02-25', time: 'AMC' },
 };
 
-function searchCompanies(query: string, limit: number = 10): any[] {
-    const upperQuery = query.toUpperCase();
-    const results = [];
+const FMP_API_KEY = process.env.FMP_API_KEY || 'demo';
 
+async function searchCompanies(query: string, limit: number = 10): Promise<any[]> {
+    const upperQuery = query.toUpperCase();
+    const results: any[] = [];
+
+    // 1. Local Search (Fast, High Confidence)
     for (const [ticker, data] of Object.entries(COMPANIES)) {
         if (
             ticker.includes(upperQuery) ||
@@ -148,7 +151,39 @@ function searchCompanies(query: string, limit: number = 10): any[] {
                 earningsTime: data.time,
                 confidence: data.nextDate ? (data.time ? 'CONFIRMED' : 'ESTIMATED') : 'UNKNOWN',
                 isAI: data.isAI || false,
+                source: 'local'
             });
+        }
+    }
+
+    // 2. External API Fallback (If local results are insufficient)
+    if (results.length < 5) {
+        try {
+            const apiUrl = `https://financialmodelingprep.com/api/v3/search?query=${query}&limit=10&exchange=NASDAQ,NYSE&apikey=${FMP_API_KEY}`;
+            const res = await fetch(apiUrl, { next: { revalidate: 3600 } });
+            if (res.ok) {
+                const data = await res.json();
+                if (Array.isArray(data)) {
+                    data.forEach((item: any) => {
+                        // Avoid duplicates
+                        if (!results.find(r => r.ticker === item.symbol)) {
+                            results.push({
+                                ticker: item.symbol,
+                                name: item.name,
+                                sector: 'N/A', // Search endpoint sometimes omits sector, handled by profile fetch later
+                                exchange: item.stockExchange,
+                                nextEarningsDate: null, // Requires separate call, UI handles null gracefully
+                                earningsTime: null,
+                                confidence: 'UNKNOWN',
+                                isAI: false,
+                                source: 'api'
+                            });
+                        }
+                    });
+                }
+            }
+        } catch (e) {
+            console.error('External search API failed:', e);
         }
     }
 
@@ -176,7 +211,7 @@ export async function GET(request: NextRequest) {
             return NextResponse.json({ results: [], source: 'empty' });
         }
 
-        const results = searchCompanies(query, limit);
+        const results = await searchCompanies(query, limit);
 
         if (results.length === 0) {
             return NextResponse.json({
