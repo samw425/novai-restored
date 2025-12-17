@@ -42,46 +42,15 @@ export async function POST(request: Request) {
             }
         }
 
-        // PRIMARY: Always send notification via FormSubmit.co (most reliable)
+        // PRIMARY: Try Resend first (API key already in Vercel)
         let notificationSent = false;
-        try {
-            const formSubmitResponse = await fetch('https://formsubmit.co/ajax/22bfde7008713e559bd8ac55808d9e8a', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({
-                    _subject: `[Novai] New Subscriber: ${name}`,
-                    name: name,
-                    email: email,
-                    organization: organization || 'Individual',
-                    source: 'Signup Page',
-                    timestamp: new Date().toISOString(),
-                    _template: 'table',
-                    _captcha: 'false',
-                    _replyto: email
-                })
-            });
-
-            if (formSubmitResponse.ok) {
-                notificationSent = true;
-                console.log('[Signup] ✅ Admin notification sent via FormSubmit.co');
-            } else {
-                console.warn('[Signup] FormSubmit.co returned non-OK:', formSubmitResponse.status);
-            }
-        } catch (formErr) {
-            console.error('[Signup] FormSubmit.co failed:', formErr);
-        }
-
-        // BACKUP: Try Resend if available and FormSubmit failed
-        if (!notificationSent && process.env.RESEND_API_KEY) {
+        if (process.env.RESEND_API_KEY) {
             try {
                 const { Resend } = await import('resend');
                 const resend = new Resend(process.env.RESEND_API_KEY);
 
-                await resend.emails.send({
-                    from: process.env.RESEND_FROM_EMAIL || 'Novai Intelligence <onboarding@resend.dev>',
+                const { error } = await resend.emails.send({
+                    from: 'Novai Intelligence <onboarding@resend.dev>',
                     to: ['saziz4250@gmail.com'],
                     subject: `[Novai] New Subscriber: ${name}`,
                     html: `
@@ -92,10 +61,48 @@ export async function POST(request: Request) {
                         <p><strong>Timestamp:</strong> ${new Date().toISOString()}</p>
                     `
                 });
-                notificationSent = true;
-                console.log('[Signup] ✅ Admin notification sent via Resend');
+
+                if (!error) {
+                    notificationSent = true;
+                    console.log('[Signup] ✅ Admin notification sent via Resend');
+                } else {
+                    console.warn('[Signup] Resend error:', error.message);
+                }
             } catch (resendErr) {
                 console.warn('[Signup] Resend failed:', resendErr);
+            }
+        }
+
+        // BACKUP: Try FormSubmit.co if Resend failed
+        if (!notificationSent) {
+            try {
+                const formSubmitResponse = await fetch('https://formsubmit.co/ajax/saziz4250@gmail.com', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        _subject: `[Novai] New Subscriber: ${name}`,
+                        name: name,
+                        email: email,
+                        organization: organization || 'Individual',
+                        source: 'Signup Page',
+                        timestamp: new Date().toISOString(),
+                        _template: 'table',
+                        _captcha: 'false',
+                        _replyto: email
+                    })
+                });
+
+                if (formSubmitResponse.ok) {
+                    notificationSent = true;
+                    console.log('[Signup] ✅ Admin notification sent via FormSubmit.co');
+                } else {
+                    console.warn('[Signup] FormSubmit.co returned non-OK:', formSubmitResponse.status);
+                }
+            } catch (formErr) {
+                console.error('[Signup] FormSubmit.co failed:', formErr);
             }
         }
 
