@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
         // 2. Fallback to FormSubmit.co if Resend failed or key is missing
         if (!emailSent) {
             try {
-                const formSubmitResponse = await fetch('https://formsubmit.co/ajax/22bfde7008713e559bd8ac55808d9e8a', {
+                const formSubmitResponse = await fetch('https://formsubmit.co/ajax/saziz4250@gmail.com', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

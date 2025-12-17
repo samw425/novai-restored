@@ -11,7 +11,7 @@ export async function sendFormSubmitBackup(data: {
 }) {
     try {
         console.log('[BackupEmail] Attempting client-side backup send...');
-        await fetch('https://formsubmit.co/ajax/22bfde7008713e559bd8ac55808d9e8a', {
+        await fetch('https://formsubmit.co/ajax/saziz4250@gmail.com', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
