@@ -486,7 +486,7 @@ import { useSearchParams } from "next/navigation";
 function EarningsContent() {
     const searchParams = useSearchParams();
     const [selectedTicker, setSelectedTicker] = useState<string | null>(null);
-    const [activeTab, setActiveTab] = useState<"Overview" | "Upcoming" | "Just Released" | "Company" | "Archive">("Overview");
+    const [activeTab, setActiveTab] = useState<"Overview" | "Upcoming" | "Company" | "Archive">("Overview");
     const [details, setDetails] = useState<CompanyDetails | null>(null);
     const [detailsLoading, setDetailsLoading] = useState(false);
 
@@ -658,7 +658,7 @@ function EarningsContent() {
             {/* Tab Navigation */}
             <div className="bg-white border-b border-gray-200 px-4">
                 <div className="flex gap-6">
-                    {(["Overview", "Upcoming", "Just Released", "Company", "Archive"] as const).map((tab) => (
+                    {(["Overview", "Upcoming", "Company", "Archive"] as const).map((tab) => (
                         <button
                             key={tab}
                             onClick={() => setActiveTab(tab)}
@@ -684,11 +684,7 @@ function EarningsContent() {
                     </>
                 )}
 
-                {activeTab === "Just Released" && (
-                    <div className="w-full h-full max-w-4xl mx-auto border-x border-gray-200 bg-white">
-                        <LiveWire forcedFilter="just_released" onSelect={setSelectedTicker} />
-                    </div>
-                )}
+
 
                 {activeTab === "Upcoming" && (
                     <MarketTerminal onSelect={(ticker) => setSelectedTicker(ticker)} />

@@ -1,6 +1,6 @@
 "use client";
 
-import { Shield, Zap, ArrowRight, Heart } from "lucide-react";
+import { Shield, ArrowRight } from "lucide-react";
 import { SUPPORT_PAYMENT_LINK } from "@/config/supportLinks";
 
 export default function SupportPage() {
@@ -15,8 +15,31 @@ export default function SupportPage() {
             <div className="w-full max-w-lg bg-white/80 backdrop-blur-sm border border-white/50 rounded-2xl shadow-[0_8px_32px_rgba(0,0,0,0.04)] p-8 md:p-12 relative z-10 transition-all hover:shadow-[0_12px_48px_rgba(0,0,0,0.06)]">
 
                 <div className="flex flex-col items-center text-center mb-10">
-                    <div className="w-12 h-12 bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl flex items-center justify-center mb-6 shadow-lg transform rotate-3">
-                        <Zap className="w-6 h-6 text-yellow-400 fill-yellow-400" />
+                    {/* Novai Shield Logo */}
+                    <div className="relative mb-6">
+                        <svg
+                            width="56"
+                            height="56"
+                            viewBox="0 0 40 40"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="drop-shadow-lg"
+                        >
+                            <path
+                                d="M20 4L6 9.5V18C6 26.5 12 34 20 37.5C28 34 34 26.5 34 18V9.5L20 4Z"
+                                fill="#1E40AF"
+                            />
+                            <path
+                                d="M20 4L6 9.5V18C6 18.5 6.1 19 6.2 19.5L20 5.5L33.8 19.5C33.9 19 34 18.5 34 18V9.5L20 4Z"
+                                fill="white"
+                                fillOpacity="0.15"
+                            />
+                        </svg>
+                        {/* Live Pulse Dot - same position as main logo */}
+                        <div className="absolute top-2 right-2 flex h-3 w-3">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500 border-2 border-white"></span>
+                        </div>
                     </div>
 
                     <h1 className="text-2xl font-black text-gray-900 tracking-tight mb-3">Power the Signal</h1>
