@@ -332,4 +332,14 @@ export const SP500_ADDITIONAL: Record<string, {
     "AVY": { name: "Avery Dennison", sector: "Materials", ir: "https://www.averydennison.com/en/home/investors.html", cik: "8818" },
     "BALL": { name: "Ball Corp", sector: "Materials", ir: "https://ir.ball.com/", cik: "9389" },
     "AMCR": { name: "Amcor plc", sector: "Materials", ir: "https://www.amcor.com/investors", cik: "1748790" },
+    // ========== POPULAR / RETAIL ==========
+    "GME": { name: "GameStop Corp", sector: "Consumer", ir: "https://gamestop.gcs-web.com/", cik: "1326380" },
+    "AMC": { name: "AMC Entertainment", sector: "Communication Services", ir: "https://investor.amctheatres.com/", cik: "1411579" },
+    "HOOD": { name: "Robinhood Markets", sector: "Financial", ir: "https://investors.robinhood.com/", cik: "1783879" },
+    "RDDT": { name: "Reddit Inc.", sector: "Communication Services", ir: "https://investor.redditinc.com/", cik: "1713445" },
+    "PLUG": { name: "Plug Power", sector: "Energy", ir: "https://www.ir.plugpower.com/", cik: "1093691" },
+    "DKNG": { name: "DraftKings Inc.", sector: "Consumer", ir: "https://draftkings.gcs-web.com/", cik: "1772757" },
+    "ROKU": { name: "Roku Inc.", sector: "Communication Services", ir: "https://investor.roku.com/", cik: "1128455" },
+    "PATH": { name: "UiPath Inc.", sector: "Technology", ir: "https://ir.uipath.com/", cik: "1734714" },
+    "AI": { name: "C3.ai Inc.", sector: "Technology", ir: "https://ir.c3.ai/", cik: "1577526" },
 };

@@ -324,12 +324,21 @@ function MarketTerminal({ onSelect }: { onSelect: (ticker: string) => void }) {
 
     // Calculate days until earnings
     const daysUntil = (dateStr: string) => {
-        const date = new Date(dateStr);
+        // Parse "YYYY-MM-DD" strictly as local date at midnight to avoid UTC shifts
+        if (!dateStr) return '';
+        const [y, m, d] = dateStr.split('-').map(Number);
+        const date = new Date(y, m - 1, d); // Local midnight
+
         const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        const diff = Math.ceil((date.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+        today.setHours(0, 0, 0, 0); // Local midnight
+
+        // Difference in days (ignoring time)
+        const diffTime = date.getTime() - today.getTime();
+        const diff = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
         if (diff === 0) return "Today";
         if (diff === 1) return "Tomorrow";
+        if (diff < 0) return `${Math.abs(diff)}d ago`;
         return `${diff}d`;
     };
 
