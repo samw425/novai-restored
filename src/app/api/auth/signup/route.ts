@@ -49,9 +49,10 @@ export async function POST(request: Request) {
                 const { Resend } = await import('resend');
                 const resend = new Resend(process.env.RESEND_API_KEY);
 
-                const { error } = await resend.emails.send({
+                const { data, error } = await resend.emails.send({
                     from: 'Novai Intelligence <onboarding@resend.dev>',
                     to: ['saziz4250@gmail.com'],
+                    replyTo: 'saziz4250@gmail.com',
                     subject: `[Novai] New Subscriber: ${name}`,
                     html: `
                         <h1>New Subscriber</h1>
@@ -62,11 +63,11 @@ export async function POST(request: Request) {
                     `
                 });
 
-                if (!error) {
+                if (!error && data) {
                     notificationSent = true;
-                    console.log('[Signup] ✅ Admin notification sent via Resend');
+                    console.log(`[Signup] ✅ Admin notification sent via Resend. ID: ${data.id}`);
                 } else {
-                    console.warn('[Signup] Resend error:', error.message);
+                    console.warn('[Signup] Resend error:', error?.message);
                 }
             } catch (resendErr) {
                 console.warn('[Signup] Resend failed:', resendErr);

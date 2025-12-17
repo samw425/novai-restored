@@ -14,7 +14,8 @@ const mailersend = process.env.MAILERSEND_API_KEY ? new MailerSend({
  * Get the sender address for Resend (admin notifications).
  */
 export function getResendSenderAddress(): string {
-    return process.env.RESEND_FROM_EMAIL || 'Novai Daily Intelligence <onboarding@resend.dev>';
+    // FORCE default sender for now to avoid domain issues
+    return 'Novai Intelligence <onboarding@resend.dev>';
 }
 
 /**
@@ -125,14 +126,16 @@ export async function sendAdminEmail(
             const { data, error } = await resend.emails.send({
                 from: getResendSenderAddress(),
                 to: toArray,
+                replyTo: 'saziz4250@gmail.com',
                 subject: subject,
                 html: htmlContent,
             });
 
-            if (!error) {
-                return { id: data?.id || null, error: null };
+            if (!error && data) {
+                console.log(`[EmailUtils] Resend success. ID: ${data.id}`);
+                return { id: data.id, error: null };
             }
-            resendError = error.message;
+            resendError = error?.message || 'Unknown error';
             console.warn(`[EmailUtils] Resend failed (${resendError}), trying Mailersend fallback...`);
         } catch (e: any) {
             resendError = e.message;

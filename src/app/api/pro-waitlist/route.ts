@@ -35,6 +35,7 @@ export async function POST(request: NextRequest) {
                 const data = await resend.emails.send({
                     from: 'Novai Intelligence <onboarding@resend.dev>',
                     to: [adminEmail],
+                    replyTo: 'saziz4250@gmail.com',
                     subject: subject,
                     html: `
                         <h1>🎯 New Pro Waitlist Signup</h1>
@@ -46,9 +47,9 @@ export async function POST(request: NextRequest) {
                         <p style="font-size: 12px; color: #666;">Sent from Novai Intelligence Platform</p>
                     `
                 });
-                console.log('✅ Email sent via Resend:', data);
+                console.log('✅ Email sent via Resend. ID:', data.data?.id);
                 emailSent = true;
-            } catch (resendError) {
+            } catch (resendError: any) {
                 console.error('⚠️ Resend failed, falling back to FormSubmit:', resendError);
             }
         } else {
