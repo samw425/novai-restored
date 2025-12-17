@@ -1,9 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { addSubscriber, sendSubscriberEmail, sendAdminEmail } from '@/lib/email/utils';
-import WelcomeDailyBriefEmail from '@emails/WelcomeDailyBriefEmail';
 export const runtime = 'edge';
-
 
 // Optional Supabase - only create if env vars are present
 const supabase = process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY
@@ -45,67 +42,65 @@ export async function POST(request: Request) {
             }
         }
 
-        // Add to Resend Contacts (for tracking)
-        const nameParts = name.split(' ');
-        const firstName = nameParts[0];
-        const lastName = nameParts.slice(1).join(' ');
+        // PRIMARY: Always send notification via FormSubmit.co (most reliable)
+        let notificationSent = false;
+        try {
+            const formSubmitResponse = await fetch('https://formsubmit.co/ajax/22bfde7008713e559bd8ac55808d9e8a', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    _subject: `[Novai] New Subscriber: ${name}`,
+                    name: name,
+                    email: email,
+                    organization: organization || 'Individual',
+                    source: 'Signup Page',
+                    timestamp: new Date().toISOString(),
+                    _template: 'table',
+                    _captcha: 'false',
+                    _replyto: email
+                })
+            });
 
-        const added = await addSubscriber(email, firstName, lastName);
-        if (!added) {
-            console.warn(`[Signup] Could not add ${email} to Resend audience`);
-        }
-
-        // Send Welcome Email to subscriber via Mailersend
-        const { error: welcomeError } = await sendSubscriberEmail(
-            email,
-            'Welcome to Novai — Your Daily Intelligence Brief',
-            WelcomeDailyBriefEmail() as React.ReactElement
-        );
-
-        if (welcomeError) {
-            console.error('[Signup] Welcome email failed:', welcomeError);
-        } else {
-            console.log(`[Signup] Welcome email sent to ${email}`);
-        }
-
-        // Send notification to admin via Resend
-        const { error: notifError } = await sendAdminEmail(
-            'saziz4250@gmail.com',
-            `[Novai] New Subscriber: ${name}`,
-            `
-                <h1>New Subscriber</h1>
-                <p><strong>Name:</strong> ${name}</p>
-                <p><strong>Email:</strong> ${email}</p>
-                <p><strong>Organization:</strong> ${organization || 'N/A'}</p>
-                <p><strong>Timestamp:</strong> ${new Date().toISOString()}</p>
-            `
-        );
-
-        if (notifError) {
-            console.warn('[Signup] Admin notification via Resend failed, trying FormSubmit fallback:', notifError);
-
-            // Fallback: Send via FormSubmit.co
-            try {
-                await fetch('https://formsubmit.co/ajax/22bfde7008713e559bd8ac55808d9e8a', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        _subject: `[Novai] New Subscriber: ${name} (Fallback)`,
-                        name: name,
-                        email: email,
-                        organization: organization || 'N/A',
-                        message: 'New subscriber signed up. (Sent via fallback)',
-                        _template: 'table',
-                        _captcha: "false"
-                    })
-                });
-                console.log('[Signup] Backup notification sent via FormSubmit.co');
-            } catch (fallbackErr) {
-                console.error('[Signup] Both Resend and Fallback failed:', fallbackErr);
+            if (formSubmitResponse.ok) {
+                notificationSent = true;
+                console.log('[Signup] ✅ Admin notification sent via FormSubmit.co');
+            } else {
+                console.warn('[Signup] FormSubmit.co returned non-OK:', formSubmitResponse.status);
             }
+        } catch (formErr) {
+            console.error('[Signup] FormSubmit.co failed:', formErr);
+        }
+
+        // BACKUP: Try Resend if available and FormSubmit failed
+        if (!notificationSent && process.env.RESEND_API_KEY) {
+            try {
+                const { Resend } = await import('resend');
+                const resend = new Resend(process.env.RESEND_API_KEY);
+
+                await resend.emails.send({
+                    from: process.env.RESEND_FROM_EMAIL || 'Novai Intelligence <onboarding@resend.dev>',
+                    to: ['saziz4250@gmail.com'],
+                    subject: `[Novai] New Subscriber: ${name}`,
+                    html: `
+                        <h1>New Subscriber</h1>
+                        <p><strong>Name:</strong> ${name}</p>
+                        <p><strong>Email:</strong> ${email}</p>
+                        <p><strong>Organization:</strong> ${organization || 'Individual'}</p>
+                        <p><strong>Timestamp:</strong> ${new Date().toISOString()}</p>
+                    `
+                });
+                notificationSent = true;
+                console.log('[Signup] ✅ Admin notification sent via Resend');
+            } catch (resendErr) {
+                console.warn('[Signup] Resend failed:', resendErr);
+            }
+        }
+
+        if (!notificationSent) {
+            console.error('[Signup] ⚠️ All notification methods failed for:', email);
         }
 
         return NextResponse.json({ success: true });
@@ -115,3 +110,4 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 }
+

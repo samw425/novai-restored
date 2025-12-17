@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 // @ts-ignore
 import Parser from 'rss-parser/dist/rss-parser.min.js';
 import { RSS_FEEDS } from '@/config/rss-feeds';
-export const runtime = 'edge';
+// export const runtime = 'edge';
 
 
 const parser = new Parser({

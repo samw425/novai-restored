@@ -6,7 +6,7 @@ import { getWarRoomData } from '@/lib/osint';
 // Using the minified version of rss-parser for edge runtime compatibility
 import Parser from 'rss-parser/dist/rss-parser.min.js';
 import { RSS_FEEDS } from '@/config/rss-feeds';
-export const runtime = 'edge';
+// export const runtime = 'edge';
 
 
 export const dynamic = 'force-dynamic';

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-export const runtime = 'edge';
+// export const runtime = 'edge';
 // export const runtime = 'edge'; // Disabled to reduce worker bundle size
 import { useParams } from 'next/navigation';
 import { createClient } from '@supabase/supabase-js';

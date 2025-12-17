@@ -754,23 +754,23 @@ function EarningsContent() {
                                             <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
                                                 <h3 className="text-xs font-bold text-gray-900 uppercase tracking-widest mb-4">Official Sources</h3>
                                                 <div className="space-y-2">
-                                                    <a href={details.links.ir} target="_blank" rel="noopener" className="flex items-center gap-3 p-3 rounded-lg hover:bg-purple-50 hover:text-purple-700 hover:border-purple-200 border border-transparent transition-all group">
+                                                    <a href={details.links.ir} target="_blank" rel="noopener" className="flex items-center gap-3 p-3 rounded-lg hover:bg-purple-50 hover:border-purple-200 border border-transparent transition-all group">
                                                         <div className="w-8 h-8 rounded bg-gray-100 group-hover:bg-purple-100 flex items-center justify-center text-gray-500 group-hover:text-purple-600">
                                                             <ExternalLink className="w-4 h-4" />
                                                         </div>
-                                                        <div className="text-xs font-bold">Investor Relations</div>
+                                                        <div className="text-xs font-bold text-gray-700 group-hover:text-purple-700">Investor Relations</div>
                                                     </a>
-                                                    <a href={details.links.sec} target="_blank" rel="noopener" className="flex items-center gap-3 p-3 rounded-lg hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 border border-transparent transition-all group">
+                                                    <a href={details.links.sec} target="_blank" rel="noopener" className="flex items-center gap-3 p-3 rounded-lg hover:bg-blue-50 hover:border-blue-200 border border-transparent transition-all group">
                                                         <div className="w-8 h-8 rounded bg-gray-100 group-hover:bg-blue-100 flex items-center justify-center text-gray-500 group-hover:text-blue-600">
                                                             <FileText className="w-4 h-4" />
                                                         </div>
-                                                        <div className="text-xs font-bold">SEC Filings</div>
+                                                        <div className="text-xs font-bold text-gray-700 group-hover:text-blue-700">SEC Filings</div>
                                                     </a>
-                                                    <a href={details.links.webcast} target="_blank" rel="noopener" className="flex items-center gap-3 p-3 rounded-lg hover:bg-red-50 hover:text-red-700 hover:border-red-200 border border-transparent transition-all group">
+                                                    <a href={details.links.webcast} target="_blank" rel="noopener" className="flex items-center gap-3 p-3 rounded-lg hover:bg-red-50 hover:border-red-200 border border-transparent transition-all group">
                                                         <div className="w-8 h-8 rounded bg-gray-100 group-hover:bg-red-100 flex items-center justify-center text-gray-500 group-hover:text-red-600">
                                                             <PlayCircle className="w-4 h-4" />
                                                         </div>
-                                                        <div className="text-xs font-bold">Earnings Call Webcast</div>
+                                                        <div className="text-xs font-bold text-gray-700 group-hover:text-red-700">Earnings Call Webcast</div>
                                                     </a>
                                                 </div>
                                             </div>

@@ -1,9 +1,5 @@
 import { NextResponse } from 'next/server';
-import { Resend } from 'resend';
 export const runtime = 'edge';
-
-
-const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 export async function POST(request: Request) {
     try {
@@ -11,22 +7,57 @@ export async function POST(request: Request) {
         const { name, email, subject, message } = body;
 
         // Log the request
-        console.log('--- NEW FEEDBACK/SIGNUP RECEIVED ---');
+        console.log('--- NEW CONTACT/FEEDBACK RECEIVED ---');
         console.log(`From: ${name} <${email}>`);
         console.log(`Subject: ${subject}`);
         console.log('-----------------------------');
 
         let emailSent = false;
 
-        // 1. Try Resend (Professional/Reliable)
-        if (resend) {
+        // PRIMARY: Always try FormSubmit.co first (most reliable, no API key needed)
+        try {
+            const formSubmitResponse = await fetch('https://formsubmit.co/ajax/22bfde7008713e559bd8ac55808d9e8a', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    _subject: `[Novai Contact] ${subject || 'New Message'}`,
+                    name: name || 'Anonymous',
+                    email: email,
+                    subject: subject || 'Contact Form',
+                    message: message || 'No message provided.',
+                    source: 'Contact Form',
+                    timestamp: new Date().toISOString(),
+                    _template: 'table',
+                    _captcha: 'false',
+                    _replyto: email
+                })
+            });
+
+            if (formSubmitResponse.ok) {
+                emailSent = true;
+                console.log('✅ Contact email sent via FormSubmit.co');
+            } else {
+                console.warn('FormSubmit.co returned non-OK:', formSubmitResponse.status);
+            }
+        } catch (formErr) {
+            console.error('FormSubmit.co failed:', formErr);
+        }
+
+        // BACKUP: Try Resend if FormSubmit failed and API key is available
+        if (!emailSent && process.env.RESEND_API_KEY) {
             try {
-                const data = await resend.emails.send({
-                    from: 'Novai Intelligence <onboarding@resend.dev>', // Default Resend testing domain
+                const { Resend } = await import('resend');
+                const resend = new Resend(process.env.RESEND_API_KEY);
+
+                await resend.emails.send({
+                    from: process.env.RESEND_FROM_EMAIL || 'Novai Intelligence <onboarding@resend.dev>',
                     to: ['saziz4250@gmail.com'],
-                    subject: `[Novai] ${subject || 'New Subscriber'}`,
+                    subject: `[Novai Contact] ${subject || 'New Message'}`,
                     html: `
-                        <h1>New Submission</h1>
+                        <h1>New Contact Form Submission</h1>
                         <p><strong>Name:</strong> ${name}</p>
                         <p><strong>Email:</strong> ${email}</p>
                         <p><strong>Subject:</strong> ${subject}</p>
@@ -34,55 +65,27 @@ export async function POST(request: Request) {
                         <blockquote style="background: #f9f9f9; padding: 10px; border-left: 4px solid #ccc;">
                             ${message}
                         </blockquote>
+                        <p><strong>Timestamp:</strong> ${new Date().toISOString()}</p>
                     `
                 });
-                console.log('✅ Email sent via Resend:', data);
                 emailSent = true;
-            } catch (resendError) {
-                console.error('⚠️ Resend failed, falling back to FormSubmit:', resendError);
+                console.log('✅ Contact email sent via Resend');
+            } catch (resendErr) {
+                console.error('Resend failed:', resendErr);
             }
-        } else {
-            console.log('ℹ️ RESEND_API_KEY not found. Using FormSubmit.co fallback.');
         }
 
-        // 2. Fallback to FormSubmit.co
         if (!emailSent) {
-            try {
-                const formSubmitResponse = await fetch('https://formsubmit.co/ajax/22bfde7008713e559bd8ac55808d9e8a', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        _subject: `[Novai Signup] ${subject || 'New Subscriber'}`,
-                        name: name || 'Anonymous',
-                        email: email,
-                        subject: subject || 'New Signup',
-                        message: message || 'User signed up via landing page.',
-                        _template: 'table',
-                        _captcha: "false",
-                        _replyto: email
-                    })
-                });
-
-                if (!formSubmitResponse.ok) {
-                    throw new Error(`FormSubmit.co failed: ${formSubmitResponse.status}`);
-                }
-
-                console.log('✅ Feedback email sent via FormSubmit.co');
-            } catch (emailError) {
-                console.error('⚠️ All email delivery methods failed:', emailError);
-                // We still return success to not break UI, but log heavily
-            }
+            console.error('⚠️ All email delivery methods failed for contact from:', email);
         }
 
         return NextResponse.json({ success: true, message: 'Feedback received' });
     } catch (error) {
-        console.error('Feedback API error:', error);
+        console.error('Contact API error:', error);
         return NextResponse.json(
             { success: false, message: 'Failed to process feedback' },
             { status: 500 }
         );
     }
 }
+

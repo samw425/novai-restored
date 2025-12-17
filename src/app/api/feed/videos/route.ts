@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { fetchYouTubeRSS } from '@/lib/youtube-rss';
 import { LIVE_VIDEOS } from '@/lib/data/video-feed';
-export const runtime = 'edge';
+// export const runtime = 'edge';
 
 
 export async function GET() {

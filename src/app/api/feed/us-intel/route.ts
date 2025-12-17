@@ -2,7 +2,7 @@
 import { NextResponse } from 'next/server';
 import Parser from 'rss-parser';
 
-export const runtime = 'nodejs';
+// export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 const parser = new Parser({

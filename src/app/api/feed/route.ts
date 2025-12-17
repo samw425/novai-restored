@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { fetchArticles } from '@/lib/api';
-export const runtime = 'edge';
+// export const runtime = 'edge';
 
 
 export async function GET(request: Request) {
