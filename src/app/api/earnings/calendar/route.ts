@@ -18,7 +18,6 @@ function formatDate(date: Date) {
 // Fallback data (Verified for Dec 17, 2025 context)
 function generateFallbackCalendar() {
     // AUTHORITATIVE DATA for Week of Dec 15-19, 2025
-    // As verified by financial calendars
     const verifiedEarnings = [
         // Tuesday, Dec 16 (Yesterday)
         { ticker: 'LEN', companyName: 'Lennar Corp', date: '2025-12-16', time: 'AMC', confidence: 'CONFIRMED', epsEstimate: 1.93 },
@@ -49,19 +48,29 @@ function generateFallbackCalendar() {
         { ticker: 'AAPL', companyName: 'Apple', date: '2026-01-29', time: 'AMC', confidence: 'ESTIMATED', epsEstimate: 2.45 },
     ];
 
+    // STRICT DATE COMPARISON
+    // Convert current time to "YYYY-MM-DD" string in user's assumed locale (or UTC to match data)
+    // Since data is YYYY-MM-DD (Dec 16), and today is Dec 17, simple string comparison or epoch diff of normalized dates works.
+
+    // We force "Today" to be strictly determined by the server's local date string.
     const now = new Date();
-    // Normalize "now" to midnight local/server time for accurate day difference
-    now.setHours(0, 0, 0, 0);
+    // Get YYYY-MM-DD of "now"
+    const todayStr = now.toLocaleDateString('en-CA'); // en-CA gives YYYY-MM-DD
+    const todayEpoch = new Date(todayStr).getTime();
 
     return verifiedEarnings.map(e => {
-        const earningsDate = new Date(e.date);
-        // Ensure earnings date is also treated as midnight
-        earningsDate.setHours(0, 0, 0, 0);
+        // e.date is "YYYY-MM-DD"
+        // Parse it as local midnight
+        const earningsEpoch = new Date(e.date).getTime();
 
-        const diffTime = earningsDate.getTime() - now.getTime();
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        // Difference in milliseconds
+        const diffTime = earningsEpoch - todayEpoch;
+
+        // Convert to days
+        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+
         return { ...e, daysUntil: diffDays };
-    }).filter(e => e.daysUntil >= -2); // Show yesterday's too
+    }).filter(e => e.daysUntil >= -2);
 }
 
 export async function GET(request: NextRequest) {
@@ -88,13 +97,14 @@ export async function GET(request: NextRequest) {
                 const data = await res.json();
                 if (Array.isArray(data) && data.length > 0) {
                     calendarData = data.map((item: any) => {
-                        const earningsDate = new Date(item.date);
-                        earningsDate.setHours(0, 0, 0, 0);
-                        const today = new Date();
-                        today.setHours(0, 0, 0, 0);
+                        const earningsEpoch = new Date(item.date).getTime();
 
-                        const diffTime = earningsDate.getTime() - today.getTime();
-                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        // Strict "Today"
+                        const todayStr = new Date().toLocaleDateString('en-CA');
+                        const todayEpoch = new Date(todayStr).getTime();
+
+                        const diffTime = earningsEpoch - todayEpoch;
+                        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
                         return {
                             ticker: item.symbol,
                             companyName: item.symbol,

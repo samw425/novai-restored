@@ -16,6 +16,8 @@ import { MonthlyIntelBrief } from '@/components/dashboard/MonthlyIntelBrief';
 import { SignUpModal } from '@/components/auth/SignUpModal';
 import { AIBrief } from '@/components/feed/AIBrief';
 
+import { useSearchParams } from 'next/navigation';
+
 interface FeedContainerProps {
     initialCategory?: string;
     forcedCategory?: string; // If set, hides category selector
@@ -23,6 +25,9 @@ interface FeedContainerProps {
 }
 
 export function FeedContainer({ initialCategory = 'all', forcedCategory, showTicker = true }: FeedContainerProps) {
+    const searchParams = useSearchParams();
+    const searchQuery = searchParams.get('search') || searchParams.get('query') || undefined;
+
     const [articles, setArticles] = useState<Article[]>([]);
     const [category, setCategory] = useState(forcedCategory || initialCategory);
     const [cursor, setCursor] = useState<string | undefined>(undefined);
@@ -47,7 +52,7 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
             const targetPage = reset ? 1 : page + 1;
 
             if (viewMode === 'live') {
-                newArticles = await fetchArticles(10, category, undefined, targetPage);
+                newArticles = await fetchArticles(10, category, searchQuery, targetPage);
             } else {
                 // Fetch 30-day top stories
                 const response = await fetch(`/api/feed/top-30d?category=${category}`);
@@ -81,7 +86,7 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
         } finally {
             setLoading(false);
         }
-    }, [category, loading, viewMode, page]);
+    }, [category, loading, viewMode, page, searchQuery]);
 
     // Initial load & Category/ViewMode change
     useEffect(() => {
@@ -96,7 +101,7 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
                 // Use forcedCategory if present, otherwise current state category
                 const targetCategory = forcedCategory || category;
                 // ... rest of init logic remains logically similar but using fetchArticles
-                const articles = await fetchArticles(10, targetCategory, undefined, 1); // Page 1
+                const articles = await fetchArticles(10, targetCategory, searchQuery, 1); // Page 1
                 setArticles(articles || []);
 
                 if (viewMode === 'live') {
@@ -114,7 +119,7 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
         };
         init();
 
-    }, [category, forcedCategory, viewMode]);
+    }, [category, forcedCategory, viewMode, searchQuery]);
 
     // Infinite scroll trigger
     useEffect(() => {

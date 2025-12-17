@@ -56,6 +56,7 @@ export async function GET(request: NextRequest) {
                     ? `8-K Filed: ${filing.title}`
                     : filing.title,
                 time: filing.pubDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }),
+                timestamp: filing.pubDate.toISOString(), // Add raw timestamp for filtering
                 ago: formatAgo(filing.agoMs),
                 impact: filing.impact,
                 sentiment: filing.isEarnings ? 'POSITIVE' : 'NEUTRAL' as const,
@@ -83,16 +84,7 @@ export async function GET(request: NextRequest) {
                 const info = getCompanyInfo(template.ticker);
 
                 // INTELLIGENT TIME OFFSET logic:
-                // If the template is from "Yesterday" block (indices 3-4 in SEED_FEED), make it >24h ago
-                // If from "Last Week" (indices 5+), make it >48h ago
-                // Otherwise (indices 0-2), use "recent" logic
-
                 let minutesAgo = 0;
-                // Detect "Yesterday" or older based on the original SEED_FEED structure we know
-                // SEED_FEED[0-2] are Today
-                // SEED_FEED[3-4] are Yesterday
-                // SEED_FEED[5+] are older
-
                 const seedIndex = i % seedTemplates.length;
 
                 if (seedIndex <= 2) {
@@ -106,6 +98,8 @@ export async function GET(request: NextRequest) {
                     minutesAgo = 2880 + (i * 60);
                 }
 
+                const itemDate = new Date(now.getTime() - minutesAgo * 60000);
+
                 generatedFeed.push({
                     id: `seed-${template.ticker}-${i}`,
                     ticker: template.ticker,
@@ -113,8 +107,9 @@ export async function GET(request: NextRequest) {
                     headline: template.headline,
                     // If > 24 hours, show date instead of time
                     time: minutesAgo > 1440
-                        ? new Date(now.getTime() - minutesAgo * 60000).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-                        : new Date(now.getTime() - minutesAgo * 60000).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }),
+                        ? itemDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                        : itemDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }),
+                    timestamp: itemDate.toISOString(), // Add raw timestamp for filtering
                     ago: formatAgo(minutesAgo * 60000),
                     impact: template.impact,
                     sentiment: template.sentiment,
@@ -146,16 +141,21 @@ export async function GET(request: NextRequest) {
             sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
             feed = feed.filter(f => {
-                const itemDate = new Date(f.id.split('-').pop() || Date.now()); // Extract date from ID if possible or use current
-                // Check if it's recent AND looks like earnings
-                const isRecent = true; // Seed data is generated as recent, real data has real dates
+                const itemDate = new Date(f.timestamp); // Use the accurate timestamp
+                if (isNaN(itemDate.getTime())) return false;
+
+                // Check if it's recent (last 7 days)
+                const isRecent = itemDate >= sevenDaysAgo;
+
+                // AND looks like earnings
                 const isEarnings = f.eventType === 'EARNINGS_RELEASE' ||
                     f.headline.includes('EPS') ||
                     f.headline.includes('Revenue') ||
                     f.headline.includes('Sales') ||
                     f.headline.includes('Quarter') ||
                     f.headline.includes('Q1') || f.headline.includes('Q2') || f.headline.includes('Q3') || f.headline.includes('Q4');
-                return isEarnings;
+
+                return isRecent && isEarnings;
             });
         }
         // SCANNER (filter === 'all'): Shows everything in real-time order

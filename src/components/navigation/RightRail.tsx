@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Activity, Zap, Cpu, ArrowUpRight, Info, ShieldCheck, TrendingUp, ArrowRight } from 'lucide-react';
 
 import { ProAd } from '@/components/ads/ProAd';
+import { SupportPromo } from '@/components/ads/SupportPromo';
 
 export function RightRail() {
     return (
@@ -12,7 +13,7 @@ export function RightRail() {
             <HowItWorksWidget />
             <ProAd />
             <ToolOfTheDayWidget />
-            <TrendingTopicsWidget />
+            <SupportPromo />
         </div>
     );
 }
@@ -141,62 +142,49 @@ function SystemStatusWidget() {
 
 
 function ToolOfTheDayWidget() {
+    // Basic rotation or random selection
+    // Ideally this would fetch from API, but for speed we hardcode safe valid tools
+    const tools = [
+        { id: 'cursor', name: 'Cursor', desc: 'The AI Code Editor', url: 'https://cursor.sh' },
+        { id: 'v0', name: 'v0.dev', desc: 'Generative UI System', url: 'https://v0.dev' },
+        { id: 'perplexity', name: 'Perplexity', desc: 'AI Search Engine', url: 'https://perplexity.ai' },
+        { id: 'midjourney', name: 'Midjourney', desc: 'AI Art Generator', url: 'https://midjourney.com' }
+    ];
+
+    // Pick based on day of year to be stable per day
+    const dayOfYear = Math.floor((new Date().getTime() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 1000 / 60 / 60 / 24);
+    const tool = tools[dayOfYear % tools.length];
+
     return (
-        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-3 opacity-5">
+        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm relative overflow-hidden group hover:border-blue-200 transition-all">
+            <div className="absolute top-0 right-0 p-3 opacity-5 group-hover:opacity-10 transition-opacity">
                 <Cpu className="h-16 w-16 rotate-12" />
             </div>
 
             <div className="relative z-10">
                 <div className="flex items-center gap-2 mb-3">
-                    <span className="text-xs font-black uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-100">
                         Tool of the Day
                     </span>
                 </div>
 
-                <h4 className="text-xl font-black mb-2 text-gray-900">AI Tools</h4>
-                <p className="text-sm text-gray-600 mb-5">Discover the latest AI development tools.</p>
+                <h4 className="text-lg font-black mb-1 text-gray-900">{tool.name}</h4>
+                <p className="text-sm text-gray-600 mb-5 font-medium">{tool.desc}</p>
 
-                <Link
-                    href="/tool/cursor"
-                    className="block w-full text-center bg-gray-900 hover:bg-gray-800 text-white text-sm font-bold py-3 rounded-xl transition-all shadow-sm hover:shadow-md"
+                <a
+                    href={tool.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center w-full bg-gray-900 hover:bg-gray-800 text-white text-sm font-bold py-3 rounded-xl transition-all shadow-sm hover:shadow-md gap-2"
                 >
-                    Inspect Tool
-                </Link>
+                    Try Tool <ArrowUpRight className="w-3.5 h-3.5" />
+                </a>
             </div>
         </div>
     );
 }
 
-function TrendingTopicsWidget() {
-    const topics = [
-        "OpenAI o1",
-        "Agentic Coding",
-        "AI Safety Summit",
-        "NVIDIA Earnings",
-        "Robotics Transformers"
-    ];
 
-    return (
-        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-            <h3 className="text-base font-black text-gray-900 mb-4 flex items-center gap-2">
-                <Activity className="h-4 w-4 text-blue-600" />
-                Trending Topics
-            </h3>
-            <div className="flex flex-wrap gap-2">
-                {topics.map((topic) => (
-                    <Link
-                        key={topic}
-                        href={`/global-feed?topic=${encodeURIComponent(topic)}`}
-                        className="px-4 py-2 bg-gray-50 hover:bg-blue-50 text-gray-700 hover:text-blue-700 text-sm font-medium rounded-full transition-colors border border-gray-200 hover:border-blue-200"
-                    >
-                        {topic}
-                    </Link>
-                ))}
-            </div>
-        </div>
-    );
-}
 
 function AboutNovaiWidget() {
     return (

@@ -98,9 +98,10 @@ interface CompanyDetails {
 
 interface LiveWireProps {
     forcedFilter?: string;
+    onSelect?: (ticker: string) => void;
 }
 
-function LiveWire({ forcedFilter }: LiveWireProps) {
+function LiveWire({ forcedFilter, onSelect }: LiveWireProps) {
     const [feed, setFeed] = useState<FeedItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [loadingMore, setLoadingMore] = useState(false);
@@ -165,6 +166,7 @@ function LiveWire({ forcedFilter }: LiveWireProps) {
 
     return (
         <div className="flex flex-col h-full bg-white border-r border-gray-200 w-[380px] flex-shrink-0 z-10 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
+            {/* ... header ... */}
             <div className="h-10 border-b border-gray-200 flex items-center justify-between px-3 bg-gray-50/50">
                 <div className="flex items-center gap-2">
                     <Zap className="w-3.5 h-3.5 text-gray-400 fill-gray-400" />
@@ -241,7 +243,12 @@ function LiveWire({ forcedFilter }: LiveWireProps) {
                                 </div>
                                 <div className="flex-1 min-w-0">
                                     <div className="flex items-center gap-2 mb-0.5">
-                                        <span className="font-extrabold text-xs text-blue-700 hover:underline cursor-pointer">{item.ticker}</span>
+                                        <span
+                                            onClick={() => onSelect?.(item.ticker)}
+                                            className="font-extrabold text-xs text-blue-700 hover:underline cursor-pointer"
+                                        >
+                                            {item.ticker}
+                                        </span>
                                         {item.impact === "HIGH" && (
                                             <span className="text-[9px] font-bold bg-gray-900 text-white px-1 rounded-[2px] leading-tight flex items-center gap-1"><Zap className="w-2 h-2 fill-white" /> HOT</span>
                                         )}
@@ -276,7 +283,7 @@ function LiveWire({ forcedFilter }: LiveWireProps) {
                     </div>
                 )}
             </div>
-        </div>
+        </div >
     );
 }
 
@@ -318,29 +325,32 @@ function MarketTerminal({ onSelect }: { onSelect: (ticker: string) => void }) {
 
     // Format date for display
     const formatDate = (dateStr: string) => {
-        const date = new Date(dateStr);
+        if (!dateStr) return 'TBA';
+        // Parse as noon local time to avoid timezone shifts
+        const date = new Date(dateStr + 'T12:00:00');
         return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     };
 
     // Calculate days until earnings
     const daysUntil = (dateStr: string) => {
-        // Parse "YYYY-MM-DD" strictly as local date at midnight to avoid UTC shifts
         if (!dateStr) return '';
-        const [y, m, d] = dateStr.split('-').map(Number);
-        const date = new Date(y, m - 1, d); // Local midnight
+        // Strict string comparison forces local date interpretation
+        const todayStr = new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD in local time
 
-        const today = new Date();
-        today.setHours(0, 0, 0, 0); // Local midnight
+        // Convert both to noon UTC to avoid any DST/midnight offsets
+        const target = new Date(dateStr + 'T12:00:00Z');
+        const today = new Date(todayStr + 'T12:00:00Z');
 
-        // Difference in days (ignoring time)
-        const diffTime = date.getTime() - today.getTime();
-        const diff = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        const diffTime = target.getTime() - today.getTime();
+        const diff = Math.round(diffTime / (1000 * 60 * 60 * 24));
 
         if (diff === 0) return "Today";
         if (diff === 1) return "Tomorrow";
+        if (diff === -1) return "Yesterday";
         if (diff < 0) return `${Math.abs(diff)}d ago`;
         return `${diff}d`;
     };
+
 
     return (
         <div className="flex-1 flex flex-col h-full bg-[#F8F9FC] text-gray-900 relative">
@@ -469,7 +479,12 @@ function MarketTerminal({ onSelect }: { onSelect: (ticker: string) => void }) {
 // 3. MAIN PAGE
 // ============================================================================
 
+import { useSearchParams } from "next/navigation";
+
+
+
 export default function EarningsPage() {
+    const searchParams = useSearchParams();
     const [selectedTicker, setSelectedTicker] = useState<string | null>(null);
     const [activeTab, setActiveTab] = useState<"Overview" | "Upcoming" | "Just Released" | "Company" | "Archive">("Overview");
     const [details, setDetails] = useState<CompanyDetails | null>(null);
@@ -480,6 +495,14 @@ export default function EarningsPage() {
     const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
     const [searchLoading, setSearchLoading] = useState(false);
     const searchTimeout = useRef<NodeJS.Timeout | null>(null);
+
+    // Deep linking: Check for 'ticker' query param on mount
+    useEffect(() => {
+        const urlTicker = searchParams.get('ticker');
+        if (urlTicker) {
+            setSelectedTicker(urlTicker);
+        }
+    }, [searchParams]);
 
     // Fetch company details when ticker selected - uses new company API
     useEffect(() => {
@@ -533,7 +556,7 @@ export default function EarningsPage() {
     // Format date for display
     const formatDate = (dateStr?: string) => {
         if (!dateStr) return 'TBA';
-        const date = new Date(dateStr);
+        const date = new Date(dateStr + 'T12:00:00');
         return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     };
 
@@ -549,8 +572,8 @@ export default function EarningsPage() {
     return (
         <div className="h-screen flex flex-col bg-[#FAFAFA] overflow-hidden font-sans text-[13px]">
             {/* Top Bar */}
-            {/* Top Bar */}
             <header className="h-12 border-b border-gray-200 bg-white flex items-center justify-between px-4 z-50 shadow-sm relative">
+                {/* ... existing header code ... */}
                 <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2">
                         <div className="h-6 w-6 relative flex items-center justify-center">
@@ -656,14 +679,14 @@ export default function EarningsPage() {
             <div className="flex-1 flex overflow-hidden bg-[#F8F9FC]">
                 {activeTab === "Overview" && (
                     <>
-                        <LiveWire />
+                        <LiveWire onSelect={setSelectedTicker} />
                         <MarketTerminal onSelect={(ticker) => setSelectedTicker(ticker)} />
                     </>
                 )}
 
                 {activeTab === "Just Released" && (
                     <div className="w-full h-full max-w-4xl mx-auto border-x border-gray-200 bg-white">
-                        <LiveWire forcedFilter="just_released" />
+                        <LiveWire forcedFilter="just_released" onSelect={setSelectedTicker} />
                     </div>
                 )}
 

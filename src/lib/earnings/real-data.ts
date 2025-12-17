@@ -194,6 +194,7 @@ export function getCompanyInfo(ticker: string): {
     ir: string;
     sec: string;
     yahoo: string;
+    cik?: string;
     found: boolean;
 } {
     const upper = ticker.toUpperCase();
@@ -214,6 +215,7 @@ export function getCompanyInfo(ticker: string): {
             ir: company.ir,
             sec: getSecEdgarUrl(upper, company.cik),
             yahoo: getYahooFinanceUrl(upper),
+            cik: company.cik,
             found: true
         };
     }
