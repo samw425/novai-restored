@@ -50,13 +50,14 @@ function generateFallbackCalendar() {
     ];
 
     const now = new Date();
-    // Simulate "Today" as Dec 17, 2025 if looking at static data, but user time is truly now.
-    // However, the `now` variable comes from the server time.
-    // If we want to force aligned dates relative to "Today" (real server time), we should just trust the dates.
-    // Since verifyEarnings has hardcoded 2025 dates, and likely the user IS in 2025, it works.
+    // Normalize "now" to midnight local/server time for accurate day difference
+    now.setHours(0, 0, 0, 0);
 
     return verifiedEarnings.map(e => {
         const earningsDate = new Date(e.date);
+        // Ensure earnings date is also treated as midnight
+        earningsDate.setHours(0, 0, 0, 0);
+
         const diffTime = earningsDate.getTime() - now.getTime();
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         return { ...e, daysUntil: diffDays };
@@ -88,7 +89,11 @@ export async function GET(request: NextRequest) {
                 if (Array.isArray(data) && data.length > 0) {
                     calendarData = data.map((item: any) => {
                         const earningsDate = new Date(item.date);
-                        const diffTime = earningsDate.getTime() - new Date().getTime();
+                        earningsDate.setHours(0, 0, 0, 0);
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0);
+
+                        const diffTime = earningsDate.getTime() - today.getTime();
                         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                         return {
                             ticker: item.symbol,
