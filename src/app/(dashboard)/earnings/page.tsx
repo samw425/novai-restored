@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, Suspense } from "react";
 import {
     Zap, Calendar, Search,
     ExternalLink, FileText, PlayCircle, BarChart3, Clock,
@@ -483,7 +483,7 @@ import { useSearchParams } from "next/navigation";
 
 
 
-export default function EarningsPage() {
+function EarningsContent() {
     const searchParams = useSearchParams();
     const [selectedTicker, setSelectedTicker] = useState<string | null>(null);
     const [activeTab, setActiveTab] = useState<"Overview" | "Upcoming" | "Just Released" | "Company" | "Archive">("Overview");
@@ -890,6 +890,21 @@ export default function EarningsPage() {
                 )}
             </div>
         </div>
+    );
+}
+
+export default function EarningsPage() {
+    return (
+        <Suspense fallback={
+            <div className="flex items-center justify-center h-screen bg-[#FAFAFA]">
+                <div className="flex flex-col items-center gap-3">
+                    <RefreshCw className="w-8 h-8 text-blue-600 animate-spin" />
+                    <span className="text-xs font-bold text-gray-400 uppercase tracking-widest animate-pulse">Loading Terminal...</span>
+                </div>
+            </div>
+        }>
+            <EarningsContent />
+        </Suspense>
     );
 }
 

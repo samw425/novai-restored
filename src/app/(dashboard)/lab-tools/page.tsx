@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { Wrench, Terminal, Cpu, ArrowUpRight, GitFork, Star, Loader2, Box, Sparkles } from 'lucide-react';
 import { Tool } from '@/types';
 import { FeedContainer } from '@/components/feed/FeedContainer';
@@ -115,7 +115,9 @@ export default function LabToolsPage() {
                             Live Tool Intelligence
                         </h2>
                         <div className="-mx-4 sm:-mx-6 lg:-mx-8">
-                            <FeedContainer forcedCategory="tools" showTicker={false} />
+                            <Suspense fallback={<div>Loading tool feed...</div>}>
+                                <FeedContainer forcedCategory="tools" showTicker={false} />
+                            </Suspense>
                         </div>
                     </section>
                 </div>

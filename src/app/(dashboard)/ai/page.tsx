@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { FeedContainer } from '@/components/feed/FeedContainer';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { Sparkles } from 'lucide-react';
@@ -11,7 +12,9 @@ export default function AIPage() {
                 insight="AI is moving faster than any technology in history. We curate the noise so you don't miss the signal."
                 icon={<Sparkles className="w-8 h-8 text-[#2563EB]" />}
             />
-            <FeedContainer forcedCategory="ai" showTicker={false} />
+            <Suspense fallback={<div>Loading AI news...</div>}>
+                <FeedContainer forcedCategory="ai" showTicker={false} />
+            </Suspense>
         </div>
     );
 }

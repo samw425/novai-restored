@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { Radio, TrendingUp, AlertTriangle, Brain, Target, ArrowRight, Activity, Sparkles, CheckCircle2, AlertCircle, Globe } from 'lucide-react';
 import { Article } from '@/types';
 import { ResourceLoader } from '@/components/ui/ResourceLoader';
@@ -296,7 +296,9 @@ export default function DeepSignalsPage() {
                             Live Research & Intelligence
                         </h2>
                         <div className="-mx-4 sm:-mx-6 lg:-mx-8">
-                            <FeedContainer forcedCategory="research" showTicker={false} />
+                            <Suspense fallback={<div>Loading research feed...</div>}>
+                                <FeedContainer forcedCategory="research" showTicker={false} />
+                            </Suspense>
                         </div>
                     </div>
                 </div>

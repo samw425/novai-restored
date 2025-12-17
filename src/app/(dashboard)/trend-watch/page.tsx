@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { TrendingUp, ArrowUpRight, Minus, ArrowDownRight, Flame, Clock, Hash, ArrowUp } from 'lucide-react';
 import { Article } from '@/types';
 import { ResourceLoader } from '@/components/ui/ResourceLoader';
@@ -179,7 +179,9 @@ export default function TrendWatchPage() {
                             Live Trend Feed
                         </h2>
                         <div className="-mx-4 sm:-mx-6 lg:-mx-8">
-                            <FeedContainer forcedCategory="all" showTicker={false} />
+                            <Suspense fallback={<div>Loading trend feed...</div>}>
+                                <FeedContainer forcedCategory="all" showTicker={false} />
+                            </Suspense>
                         </div>
                     </div>
                 </div>

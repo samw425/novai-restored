@@ -1,5 +1,7 @@
 'use client';
 
+import { Suspense } from 'react';
+
 import { TrendingUp, Activity } from 'lucide-react';
 import { MarketGraph } from '@/components/market/MarketGraph';
 import { StockTable } from '@/components/market/StockTable';
@@ -88,7 +90,9 @@ export default function MarketPage() {
                     Live Market Intelligence
                 </h2>
                 <div className="-mx-4 sm:-mx-6 lg:-mx-8">
-                    <FeedContainer forcedCategory="market" showTicker={false} />
+                    <Suspense fallback={<div className="p-8 text-center text-gray-500">Loading market feed...</div>}>
+                        <FeedContainer forcedCategory="market" showTicker={false} />
+                    </Suspense>
                 </div>
             </div>
         </div>

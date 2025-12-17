@@ -1,3 +1,5 @@
+
+import { Suspense } from 'react';
 import { FeedContainerClient as FeedContainer } from '@/components/feed/FeedContainerClient';
 import { Globe, Activity } from 'lucide-react';
 import { PremiumGlobeClient as PremiumGlobe } from '@/components/ui/PremiumGlobeClient';
@@ -91,7 +93,10 @@ export default function GlobalFeedPage() {
             </div>
 
             {/* Feed */}
-            <FeedContainer />
+            <Suspense fallback={<div>Loading global feed...</div>}>
+                <FeedContainer />
+            </Suspense>
         </div>
     );
 }
+
