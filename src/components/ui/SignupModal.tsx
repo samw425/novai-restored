@@ -40,11 +40,13 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
         }
 
         try {
+            console.log('Starting signup submission...', formData);
             const res = await fetch('/api/auth/signup', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
             });
+            console.log('Signup API response status:', res.status);
 
             if (res.ok) {
                 setIsSuccess(true);

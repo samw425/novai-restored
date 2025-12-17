@@ -34,6 +34,7 @@ export function WaitlistModal({ isOpen, onClose, source = 'General' }: WaitlistM
 
         try {
             // Use internal API which handles Resend + FormSubmit fallback + Database
+            console.log('Starting waitlist submission...', { email, source });
             const response = await fetch('/api/pro-waitlist', {
                 method: 'POST',
                 headers: {
@@ -46,6 +47,7 @@ export function WaitlistModal({ isOpen, onClose, source = 'General' }: WaitlistM
                     feature: source || 'General Waitlist'
                 }),
             });
+            console.log('Waitlist API response status:', response.status);
 
             if (response.ok) {
                 setStatus('success');

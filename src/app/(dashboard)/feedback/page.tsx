@@ -20,11 +20,13 @@ export default function FeedbackPage() {
         };
 
         try {
+            console.log('Starting feedback submission...', data);
             const res = await fetch('/api/contact', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data),
             });
+            console.log('Feedback API response status:', res.status);
 
             if (res.ok) {
                 setStatus('success');
