@@ -77,6 +77,7 @@ export async function GET(request: NextRequest) {
     try {
         const { searchParams } = new URL(request.url);
         const limit = parseInt(searchParams.get('limit') || '50', 10);
+        const filter = searchParams.get('filter') || 'all';
 
         // Date range
         const today = new Date();
@@ -113,14 +114,21 @@ export async function GET(request: NextRequest) {
                             confidence: 'CONFIRMED',
                             epsEstimate: item.epsEstimated || null,
                             revenueEstimate: item.revenueEstimated || null,
-                            daysUntil: diffDays
+                            daysUntil: diffDays,
+                            sector: null // Will be populated below
                         };
                     });
 
-                    // Enrich names
+                    // Enrich names and sectors
                     calendarData = calendarData.map((item: any) => {
                         const localInfo = REAL_COMPANIES[item.ticker] || SP500_ADDITIONAL[item.ticker];
-                        if (localInfo) return { ...item, companyName: localInfo.name };
+                        if (localInfo) {
+                            return {
+                                ...item,
+                                companyName: localInfo.name,
+                                sector: localInfo.sector
+                            };
+                        }
                         return item;
                     });
                 }
@@ -133,10 +141,32 @@ export async function GET(request: NextRequest) {
         if (calendarData.length === 0) {
             console.log("Using verified fallback calendar for Dec 2025");
             calendarData = generateFallbackCalendar();
+            // Enrich fallback data with sectors if missing
+            calendarData = calendarData.map((item: any) => {
+                const localInfo = REAL_COMPANIES[item.ticker] || SP500_ADDITIONAL[item.ticker];
+                return {
+                    ...item,
+                    sector: item.sector || (localInfo ? localInfo.sector : 'Unknown')
+                };
+            });
         }
 
-        // Filter and Sort
+        // Filter and Sort BEFORE slicing
         calendarData = calendarData.filter((c: any) => c.daysUntil >= -1); // Keep yesterday
+
+        // Apply Custom Filters
+        if (filter === 'featured') {
+            // AI/Tech Focus
+            calendarData = calendarData.filter((c: any) => {
+                const isTech = c.sector === 'Technology' || c.sector === 'Communication Services';
+                // Also explicitly allow key AI players if sector data missing
+                const aiTickers = ['NVDA', 'MSFT', 'GOOGL', 'META', 'AMD', 'TSLA', 'AVGO', 'PLTR', 'SMCI', 'ARM'];
+                return isTech || aiTickers.includes(c.ticker);
+            });
+        } else if (filter === 'today') {
+            calendarData = calendarData.filter((c: any) => c.daysUntil === 0);
+        }
+
         calendarData.sort((a: any, b: any) => a.daysUntil - b.daysUntil);
 
         if (limit > 0) calendarData = calendarData.slice(0, limit);

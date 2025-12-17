@@ -51,7 +51,7 @@ const FAILSAFE_INTEL = [
         pubDate: new Date().toISOString(),
         contentSnippet: "The Department of Justice Antitrust Division has filed a civil antitrust lawsuit to block the proposed acquisition, citing irreparable harm to competition in the generative AI market.",
         agency: "DOJ",
-        source: "Official Feed",
+        source: "Department of Justice",
         novai_analysis: "ANTITRUST ACTION: Aggressive enforcement against AI market consolidation."
     },
     {
@@ -60,7 +60,7 @@ const FAILSAFE_INTEL = [
         pubDate: new Date().toISOString(),
         contentSnippet: "The National Security Agency is consolidating its AI expertise to protect US national security systems from adversarial AI targeting.",
         agency: "NSA",
-        source: "Official Feed",
+        source: "National Security Agency",
         novai_analysis: "CRITICAL: Formalization of AI defense doctrine. Expect increased regulation on open-source models."
     },
     {
@@ -69,7 +69,7 @@ const FAILSAFE_INTEL = [
         pubDate: new Date(Date.now() - 3600000).toISOString(),
         contentSnippet: "Director Wray highlights the dual-use nature of AI and the aggressive efforts by foreign adversaries to steal US model weights.",
         agency: "FBI",
-        source: "Official Feed",
+        source: "Federal Bureau of Investigation",
         novai_analysis: "HIGH PRIORITY: IP theft of LLMs is now a top-tier national security concern."
     },
     {
@@ -78,7 +78,7 @@ const FAILSAFE_INTEL = [
         pubDate: new Date(Date.now() - 5400000).toISOString(),
         contentSnippet: "New task force will investigate the use of algorithms by corporations to collude on pricing, violating the Sherman Act.",
         agency: "DOJ",
-        source: "Official Feed",
+        source: "Department of Justice",
         novai_analysis: "LEGAL PRECEDENT: Algorithmic collusion is now a primary enforcement target."
     },
     {
@@ -87,7 +87,7 @@ const FAILSAFE_INTEL = [
         pubDate: new Date(Date.now() - 86400000).toISOString(),
         contentSnippet: "Operation successfully neutralizes a global network of infected devices used by state-sponsored actors.",
         agency: "FBI",
-        source: "Official Feed",
+        source: "Federal Bureau of Investigation",
         novai_analysis: "OPERATIONAL SUCCESS: Disruption of key cyber infrastructure."
     },
     {
@@ -96,7 +96,7 @@ const FAILSAFE_INTEL = [
         pubDate: new Date(Date.now() - 7200000).toISOString(),
         contentSnippet: "CISA outlines its plan to promote the secure design, development, and deployment of AI technologies in critical infrastructure.",
         agency: "DHS",
-        source: "Official Feed",
+        source: "Dept. of Homeland Security",
         novai_analysis: "REGULATORY SIGNAL: Compliance frameworks for AI in critical infra are imminent."
     },
     {
@@ -105,16 +105,16 @@ const FAILSAFE_INTEL = [
         pubDate: new Date(Date.now() - 172800000).toISOString(),
         contentSnippet: "Department of Homeland Security establishes a dedicated task force to assess AI risks to border security and critical infrastructure.",
         agency: "DHS",
-        source: "Official Feed",
+        source: "Dept. of Homeland Security",
         novai_analysis: "POLICY SHIFT: AI safety now a core component of homeland defense strategy."
     },
     {
         title: "CIA CTO: 'We Are rebuilding our entire stack for the AI Era'",
         link: "https://www.cia.gov/stories/story/cia-director-on-ai/",
-        pubDate: new Date(Date.now() - 10800000).toISOString(),
+        pubDate: new Date(Date.now() - 108000000).toISOString(),
         contentSnippet: "The Central Intelligence Agency is aggressively recruiting data scientists and ML engineers to process signal intelligence.",
         agency: "CIA",
-        source: "Official Feed",
+        source: "Central Intelligence Agency",
         novai_analysis: "RECRUITMENT SIGNAL: Massive shift in human capital allocation towards technical roles."
     },
     {
@@ -123,7 +123,7 @@ const FAILSAFE_INTEL = [
         pubDate: new Date(Date.now() - 259200000).toISOString(),
         contentSnippet: "Newly released documents reveal cold-war era stealth drone capabilities, hinting at modern autonomous successors.",
         agency: "CIA",
-        source: "Official Feed",
+        source: "Central Intelligence Agency",
         novai_analysis: "HISTORICAL CONTEXT: Precedent for current autonomous systems development."
     },
     {
@@ -132,7 +132,7 @@ const FAILSAFE_INTEL = [
         pubDate: new Date(Date.now() - 43200000).toISOString(),
         contentSnippet: "The Intelligence Community assesses that China will continue to use AI to influence US elections and polarize society.",
         agency: "ODNI",
-        source: "Official Feed",
+        source: "Office of Director of Nat. Intel",
         novai_analysis: "STRATEGIC ASSESSMENT: AI-driven influence operations remain a primary concern."
     }
 ];
@@ -168,10 +168,24 @@ export async function GET(request: Request) {
                     timeout
                 ]);
 
+                const AGENCY_NAMES: Record<string, string> = {
+                    FBI: 'Federal Bureau of Investigation',
+                    NSA: 'National Security Agency',
+                    DHS: 'Dept. of Homeland Security',
+                    CISA: 'CISA',
+                    CIA: 'Central Intelligence Agency',
+                    ODNI: 'Office of Director of Nat. Intel',
+                    STATE: 'Department of State',
+                    DOD: 'Department of Defense',
+                    DOJ: 'Department of Justice',
+                    WHITE_HOUSE: 'The White House',
+                    USDT: 'Department of the Treasury'
+                };
+
                 const items = feed.items.map((item: any) => ({
                     ...item,
                     agency: (agency === 'WHITE_HOUSE') ? 'White House' : (agency === 'STATE' ? 'State Dept' : (agency === 'USDT' ? 'Treasury' : agency)),
-                    source: 'Official Feed'
+                    source: AGENCY_NAMES[agency] || 'Official Feed'
                 }));
                 feedResults.push(...items);
             } catch (error) {
