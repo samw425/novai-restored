@@ -77,8 +77,8 @@ export default function WarRoomPage() {
                 setWarFeedsLoading(true);
                 try {
                     const [igRes, ruRes] = await Promise.all([
-                        fetch('/api/feed/war-room?category=israel-gaza&limit=15'),
-                        fetch('/api/feed/war-room?category=russia-ukraine&limit=15')
+                        fetch('/api/feed/war-room?category=israel-gaza&limit=15', { cache: 'no-store' }),
+                        fetch('/api/feed/war-room?category=russia-ukraine&limit=15', { cache: 'no-store' })
                     ]);
                     const igData = await igRes.json();
                     const ruData = await ruRes.json();
@@ -101,7 +101,7 @@ export default function WarRoomPage() {
         setLoadingIg(true);
         try {
             const nextPage = igPage + 1;
-            const res = await fetch(`/api/feed/war-room?category=israel-gaza&limit=15&page=${nextPage}`);
+            const res = await fetch(`/api/feed/war-room?category=israel-gaza&limit=15&page=${nextPage}`, { cache: 'no-store' });
             const data = await res.json();
 
             if (data.items && data.items.length > 0) {
@@ -123,7 +123,7 @@ export default function WarRoomPage() {
         setLoadingRu(true);
         try {
             const nextPage = ruPage + 1;
-            const res = await fetch(`/api/feed/war-room?category=russia-ukraine&limit=15&page=${nextPage}`);
+            const res = await fetch(`/api/feed/war-room?category=russia-ukraine&limit=15&page=${nextPage}`, { cache: 'no-store' });
             const data = await res.json();
 
             if (data.items && data.items.length > 0) {
