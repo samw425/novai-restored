@@ -235,7 +235,7 @@ export default function WarRoomPage() {
                     {/* ... ticker content ... */}
                     <div className="overflow-hidden whitespace-nowrap w-full relative">
                         {/* Slowed down ticker for readability */}
-                        <div className="inline-block animate-marquee pl-4 text-sm font-mono text-green-400 py-2" style={{ animationDuration: '480s' }}>
+                        <div className="inline-block animate-marquee pl-4 text-sm font-mono text-green-400 py-2" style={{ animationDuration: '1200s' }}>
                             {incidents.length > 0 ? incidents.map(i => (
                                 <span key={i.id} className="mr-16 inline-flex items-center gap-2">
                                     <span className={i.severity === 'critical' ? 'text-red-500 font-bold' : 'text-green-500'}>
@@ -307,13 +307,13 @@ export default function WarRoomPage() {
                     </div>
 
                     {/* Quick Select / Recent Alerts Panel */}
-                    <div className="bg-black border border-gray-800 rounded-xl p-4 overflow-y-auto max-h-[500px] hidden lg:block shadow-2xl">
-                        <h3 className="text-xs font-bold text-red-500 uppercase tracking-widest mb-4 font-mono flex items-center gap-2 border-b border-gray-800 pb-2">
-                            <Activity className="w-3 h-3 animate-pulse" />
-                            Active Vectors
+                    <div className="bg-black border border-gray-800 rounded-xl p-4 overflow-y-auto max-h-[700px] hidden lg:block shadow-2xl">
+                        <h3 className="text-sm font-bold text-red-500 uppercase tracking-widest mb-4 font-mono flex items-center gap-2 border-b border-gray-800 pb-3">
+                            <Activity className="w-4 h-4 animate-pulse" />
+                            Active Vectors ({filteredIncidents.length})
                         </h3>
-                        <div className="space-y-2">
-                            {filteredIncidents.slice(0, 8).map((inc) => (
+                        <div className="space-y-3">
+                            {filteredIncidents.slice(0, 12).map((inc) => (
                                 <div key={inc.id} className="w-full flex items-center gap-2 group">
                                     <button
                                         onClick={() => handleManualFocus(inc.location ? { lat: inc.location.lat, lng: inc.location.lng } : null)}

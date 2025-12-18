@@ -50,10 +50,30 @@ const CONFLICT_FEEDS = [
     'https://news.google.com/rss/search?q=Haiti+Gang+Violence&hl=en-US&gl=US&ceid=US:en', // Haiti
     'https://news.google.com/rss/search?q=Mexico+Cartel+Violence&hl=en-US&gl=US&ceid=US:en', // Mexico
 
-    // NAVAL & AIR ASSETS (Fleet Tracking)
-    'https://news.google.com/rss/search?q=US+Carrier+Strike+Group+Location&hl=en-US&gl=US&ceid=US:en', // US Carrier Locations
-    'https://news.google.com/rss/search?q=Naval+Deployment+Update&hl=en-US&gl=US&ceid=US:en', // Global Naval Deployments
-    'https://news.google.com/rss/search?q=Air+Force+Deployment&hl=en-US&gl=US&ceid=US:en', // Air Force Movements
+    // COMPREHENSIVE NAVAL & MARITIME ASSETS (WORLDWIDE)
+    'https://news.google.com/rss/search?q=US+Carrier+Strike+Group&hl=en-US&gl=US&ceid=US:en', // US Carrier Groups
+    'https://news.google.com/rss/search?q=USS+Aircraft+Carrier+deployment&hl=en-US&gl=US&ceid=US:en', // US Carriers
+    'https://news.google.com/rss/search?q=US+Navy+destroyer+OR+frigate&hl=en-US&gl=US&ceid=US:en', // US Surface Fleet
+    'https://news.google.com/rss/search?q=US+submarine+patrol+OR+deployment&hl=en-US&gl=US&ceid=US:en', // US Submarines
+    'https://news.google.com/rss/search?q=Royal+Navy+HMS+deployment&hl=en-US&gl=US&ceid=US:en', // UK Royal Navy
+    'https://news.google.com/rss/search?q=Russian+Navy+fleet+OR+warship&hl=en-US&gl=US&ceid=US:en', // Russian Navy
+    'https://news.google.com/rss/search?q=Chinese+Navy+PLAN+warship+OR+carrier&hl=en-US&gl=US&ceid=US:en', // Chinese Navy
+    'https://news.google.com/rss/search?q=Indian+Navy+INS+deployment&hl=en-US&gl=US&ceid=US:en', // Indian Navy
+    'https://news.google.com/rss/search?q=Japan+Maritime+Self+Defense+Force&hl=en-US&gl=US&ceid=US:en', // Japanese Navy
+    'https://news.google.com/rss/search?q=French+Navy+Marine+Nationale&hl=en-US&gl=US&ceid=US:en', // French Navy
+    'https://news.google.com/rss/search?q=Mediterranean+naval+exercise&hl=en-US&gl=US&ceid=US:en', // Med Ops
+    'https://news.google.com/rss/search?q=Pacific+Fleet+operations&hl=en-US&gl=US&ceid=US:en', // Pacific Fleet
+    'https://news.google.com/rss/search?q=Atlantic+Fleet+operations&hl=en-US&gl=US&ceid=US:en', // Atlantic Fleet
+    'https://news.google.com/rss/search?q=Persian+Gulf+naval+presence&hl=en-US&gl=US&ceid=US:en', // Persian Gulf
+    'https://news.google.com/rss/search?q=Strait+of+Hormuz+shipping&hl=en-US&gl=US&ceid=US:en', // Hormuz
+    'https://news.google.com/rss/search?q=Bab+el+Mandeb+maritime&hl=en-US&gl=US&ceid=US:en', // Bab el-Mandeb
+    'https://news.google.com/rss/search?q=Baltic+Sea+NATO+naval&hl=en-US&gl=US&ceid=US:en', // Baltic
+    'https://news.google.com/rss/search?q=Black+Sea+naval+operations&hl=en-US&gl=US&ceid=US:en', // Black Sea
+    'https://news.google.com/rss/search?q=Arctic+naval+patrol&hl=en-US&gl=US&ceid=US:en', // Arctic
+
+    // AIR ASSETS 
+    'https://news.google.com/rss/search?q=Air+Force+bomber+deployment&hl=en-US&gl=US&ceid=US:en', // Bombers
+    'https://news.google.com/rss/search?q=F-35+OR+F-22+deployment&hl=en-US&gl=US&ceid=US:en', // US Fighters
 
     // OFFICIAL GOVERNMENT DIRECT FEEDS (The "Realest" Intel)
     'https://www.defense.gov/DesktopModules/ArticleCS/RSS.ashx?ContentType=1&Site=945&max=10', // US Dept of Defense (Official)
@@ -446,7 +466,7 @@ export async function fetchConflictIncidents(): Promise<WarRoomIncident[]> {
 
         // Select top N from each bucket to ensure representation
         let balancedIncidents: WarRoomIncident[] = [];
-        const QUOTA_PER_REGION = 15;
+        const QUOTA_PER_REGION = 30;
 
         Object.values(buckets).forEach(bucket => {
             // Sort each bucket by date first
