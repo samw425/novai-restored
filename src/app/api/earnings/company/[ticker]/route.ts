@@ -5,7 +5,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 
-export const dynamic = 'force-dynamic';
+// Cache for 5 minutes - company data doesn't change frequently
+export const revalidate = 300;
 
 const FMP_BASE = 'https://financialmodelingprep.com/api/v3';
 

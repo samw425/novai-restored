@@ -5,7 +5,8 @@ export const runtime = 'edge';
 // ----------------------------------------------------------------------------
 // CONFIGURATION
 // ----------------------------------------------------------------------------
-export const dynamic = 'force-dynamic'; // We handle caching manually via headers
+// Cache for 24 hours - brief is generated once per day
+export const revalidate = 86400;
 export const maxDuration = 60; // Allow up to 60s for generation
 
 // ----------------------------------------------------------------------------
