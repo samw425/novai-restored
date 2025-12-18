@@ -2,7 +2,11 @@
 // @ts-ignore
 import Parser from 'rss-parser/dist/rss-parser.min.js';
 
-const parser = new Parser();
+const parser = new Parser({
+    headers: {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    }
+});
 
 export interface WarRoomIncident {
     id: string;
@@ -182,7 +186,7 @@ export async function fetchConflictIncidents(): Promise<WarRoomIncident[]> {
             try {
                 // Create a timeout promise
                 const timeout = new Promise((_, reject) =>
-                    setTimeout(() => reject(new Error('Timeout')), 2000) // Reduced to 2s for faster UX
+                    setTimeout(() => reject(new Error('Timeout')), 8000) // Increased to 8s for reliability
                 );
 
                 // Race parser against timeout

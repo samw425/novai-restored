@@ -11,7 +11,11 @@ import { RSS_FEEDS } from '@/config/rss-feeds';
 
 export const dynamic = 'force-dynamic';
 
-const parser = new Parser();
+const parser = new Parser({
+    headers: {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    }
+});
 
 export async function GET(request: Request) {
     try {
