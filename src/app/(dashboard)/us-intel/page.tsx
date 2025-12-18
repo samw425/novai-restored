@@ -632,10 +632,36 @@ export default function USIntelPage() {
                 agencies={AGENCY_PROFILES}
             />
 
-            {/* Header */}
-            <div className="bg-slate-900 text-white py-12 relative overflow-hidden">
-                <div className="absolute top-2 right-2 text-[10px] text-slate-600 font-mono">v2025.12.04-LIVE</div>
-                <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10"></div>
+            {/* Header with Custom Image */}
+            <div className="relative overflow-hidden h-[320px]">
+                {/* Background Image */}
+                <div className="absolute inset-0">
+                    <img
+                        src="/us-intel-header.png"
+                        alt="US Intel"
+                        className="w-full h-full object-cover object-center"
+                    />
+                    {/* Gradient overlay for text readability */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/70 to-transparent"></div>
+                </div>
+
+                {/* Content overlay - positioned left */}
+                <div className="relative z-10 h-full flex items-center px-8">
+                    <div className="max-w-[600px]">
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
+                            <span className="text-xs font-mono text-emerald-400 uppercase tracking-widest">LIVE FEED</span>
+                        </div>
+                        <h1 className="text-4xl md:text-5xl font-black text-white mb-3 tracking-tight">
+                            US INTELLIGENCE
+                        </h1>
+                        <p className="text-slate-400 text-base max-w-md">
+                            Real-time intelligence from CIA, FBI, NSA, DOD, and the full US Intelligence Community.
+                        </p>
+                    </div>
+                </div>
+
+                <div className="absolute top-3 right-4 text-[10px] text-white/50 font-mono z-20">v2025.12.17-LIVE</div>
             </div>
 
             <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
