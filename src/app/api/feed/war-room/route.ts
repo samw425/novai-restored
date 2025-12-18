@@ -7,7 +7,7 @@ import { getWarRoomData } from '@/lib/osint';
 import Parser from 'rss-parser';
 import { RSS_FEEDS } from '@/config/rss-feeds';
 // export const runtime = 'edge';
-
+export const runtime = 'nodejs';
 
 export const dynamic = 'force-dynamic';
 

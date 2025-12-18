@@ -95,20 +95,20 @@ export const RSS_FEEDS: FeedSource[] = [
 
     // ========== CURRENT WARS (Priority 10) ==========
     // Israel / Gaza
-    { id: 'jpost-war', name: 'Jerusalem Post', url: 'https://www.jpost.com/rss/rssfeedsheadlines.aspx', category: 'current-wars', priority: 10, region: 'Global' },
-    { id: 'times-israel', name: 'Times of Israel', url: 'https://www.timesofisrael.com/feed/', category: 'current-wars', priority: 10, region: 'Global' },
-    { id: 'aljazeera-war', name: 'Al Jazeera', url: 'https://www.aljazeera.com/xml/rss/all.xml', category: 'current-wars', priority: 10, region: 'Global' },
+    { id: 'jpost-war', name: 'Jerusalem Post', url: 'https://news.google.com/rss/search?q=site:jpost.com+(Israel+OR+Gaza+OR+Hamas+OR+War)&hl=en-US&gl=US&ceid=US:en', category: 'current-wars', priority: 10, region: 'Global' },
+    { id: 'times-israel', name: 'Times of Israel', url: 'https://news.google.com/rss/search?q=site:timesofisrael.com+(Israel+OR+Gaza+OR+Hamas+OR+War)&hl=en-US&gl=US&ceid=US:en', category: 'current-wars', priority: 10, region: 'Global' },
+    { id: 'aljazeera-war', name: 'Al Jazeera', url: 'https://news.google.com/rss/search?q=site:aljazeera.com+(Israel+OR+Gaza+OR+Hamas+OR+War)&hl=en-US&gl=US&ceid=US:en', category: 'current-wars', priority: 10, region: 'Global' },
 
     // Russia / Ukraine
     // Russia / Ukraine
-    // { id: 'kyiv-independent', name: 'Kyiv Independent', url: 'https://kyivindependent.com/feed/', category: 'current-wars', priority: 10, region: 'Europe' },
-    { id: 'bbc-europe', name: 'BBC Europe', url: 'https://feeds.bbci.co.uk/news/world/europe/rss.xml', category: 'current-wars', priority: 10, region: 'Europe' },
-    { id: 'mosecow-times', name: 'The Moscow Times', url: 'https://www.themoscowtimes.com/rss/news', category: 'current-wars', priority: 9, region: 'Europe' },
-    { id: 'meduza-en', name: 'Meduza', url: 'https://meduza.io/rss/en/all', category: 'current-wars', priority: 9, region: 'Europe' },
+    { id: 'kyiv-independent', name: 'Kyiv Independent', url: 'https://news.google.com/rss/search?q=site:kyivindependent.com+(Ukraine+OR+Russia+OR+War)&hl=en-US&gl=US&ceid=US:en', category: 'current-wars', priority: 10, region: 'Europe' },
+    { id: 'bbc-europe', name: 'BBC Europe', url: 'https://news.google.com/rss/search?q=site:bbc.com+(Ukraine+OR+Russia+OR+War)&hl=en-US&gl=US&ceid=US:en', category: 'current-wars', priority: 10, region: 'Europe' },
+    { id: 'mosecow-times', name: 'The Moscow Times', url: 'https://news.google.com/rss/search?q=site:themoscowtimes.com+(Russia+OR+Ukraine+OR+War)&hl=en-US&gl=US&ceid=US:en', category: 'current-wars', priority: 9, region: 'Europe' },
+    { id: 'meduza-en', name: 'Meduza', url: 'https://news.google.com/rss/search?q=site:meduza.io+(Russia+OR+Ukraine+OR+War)&hl=en-US&gl=US&ceid=US:en', category: 'current-wars', priority: 9, region: 'Europe' },
 
     // Middle East / Conflict
-    { id: 'middle-east-eye', name: 'Middle East Eye', url: 'https://www.middleeasteye.net/rss', category: 'current-wars', priority: 9, region: 'Global' },
-    { id: 'al-monitor', name: 'Al-Monitor', url: 'https://www.al-monitor.com/rss', category: 'current-wars', priority: 9, region: 'Global' },
+    { id: 'middle-east-eye', name: 'Middle East Eye', url: 'https://news.google.com/rss/search?q=site:middleeasteye.net+(War+OR+Conflict+OR+Gaza)&hl=en-US&gl=US&ceid=US:en', category: 'current-wars', priority: 9, region: 'Global' },
+    { id: 'al-monitor', name: 'Al-Monitor', url: 'https://news.google.com/rss/search?q=site:al-monitor.com+(War+OR+Conflict+OR+Gaza)&hl=en-US&gl=US&ceid=US:en', category: 'current-wars', priority: 9, region: 'Global' },
 
     // ========== DEFENSE & STRATEGIC STUDIES (Priority 10) ==========
     { id: 'defense-news', name: 'Defense News', url: 'https://www.defensenews.com/arc/outboundfeeds/rss/', category: 'us-intel', priority: 10, region: 'US' },

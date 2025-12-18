@@ -186,7 +186,7 @@ export async function fetchConflictIncidents(): Promise<WarRoomIncident[]> {
             try {
                 // Create a timeout promise
                 const timeout = new Promise((_, reject) =>
-                    setTimeout(() => reject(new Error('Timeout')), 8000) // Increased to 8s for reliability
+                    setTimeout(() => reject(new Error('Timeout')), 15000) // Increased to 15s for reliability
                 );
 
                 // Race parser against timeout
@@ -195,11 +195,10 @@ export async function fetchConflictIncidents(): Promise<WarRoomIncident[]> {
                     timeout
                 ]);
 
-                // Filter for recent (last 14 days) - Relaxed from 7
-                // BUT for specific "Agency" feeds, we allow a longer lookback (30 days) to ensure we get "Intel" hits
+                // Filter for recent (last 30 days) - Relaxed to ensure we get data
                 const isAgencyFeed = url.includes('Mossad') || url.includes('CIA') || url.includes('FSB') || url.includes('IDF') || url.includes('Shin+Bet') || url.includes('MI6');
 
-                const lookbackDays = isAgencyFeed ? 30 : 14;
+                const lookbackDays = 30; // Standardized lookback for map density
                 const cutoffDate = new Date();
                 cutoffDate.setDate(cutoffDate.getDate() - lookbackDays);
 
@@ -279,6 +278,7 @@ export async function fetchConflictIncidents(): Promise<WarRoomIncident[]> {
                         }
 
                         if (!found) {
+                            // ... (kept existing fallback logic implied, but using previous logic for clarity)
                             // Agency-specific default locations (Fallback if no city found)
                             if (url.includes('Mossad') || url.includes('Shin+Bet') || url.includes('IDF')) {
                                 assignedLoc = { lat: 32.0853, lng: 34.7818, region: 'Tel Aviv (Mossad HQ)' };
@@ -320,6 +320,7 @@ export async function fetchConflictIncidents(): Promise<WarRoomIncident[]> {
                         // Determine source name for "Insider" styling
                         let sourceName = 'Defense News';
                         if (url.includes('defense.gov')) sourceName = 'US DEPT OF DEFENSE';
+                        // ... (Rest of source mapping is implied to be same as it relies on url includes)
                         else if (url.includes('state.gov')) sourceName = 'US STATE DEPT';
                         else if (url.includes('gov.uk')) sourceName = 'UK MINISTRY OF DEFENCE';
                         else if (url.includes('nato.int')) sourceName = 'NATO COMMAND';
@@ -392,8 +393,20 @@ export async function fetchConflictIncidents(): Promise<WarRoomIncident[]> {
                             url.includes('.mil') ||
                             url.includes('.int');
 
+                        // Safe ID generation
+                        let safeId = `conflict-${Date.now()}-${Math.random()}`;
+                        if (item.guid) {
+                            if (typeof item.guid === 'object') {
+                                safeId = item.guid._ || item.guid.toString();
+                            } else {
+                                safeId = item.guid;
+                            }
+                        } else if (item.link) {
+                            safeId = item.link;
+                        }
+
                         incidents.push({
-                            id: item.guid || item.link || `conflict-${Date.now()}-${Math.random()}`,
+                            id: safeId,
                             type: type as WarRoomIncident['type'],
                             title: item.title,
                             description: item.contentSnippet?.substring(0, 150) + '...' || 'Defense and security update',
@@ -446,7 +459,7 @@ export async function fetchConflictIncidents(): Promise<WarRoomIncident[]> {
 
         // Select top N from each bucket to ensure representation
         let balancedIncidents: WarRoomIncident[] = [];
-        const QUOTA_PER_REGION = 15;
+        const QUOTA_PER_REGION = 50; // Increased from 15 to 50 for DENSE MAP
 
         Object.values(buckets).forEach(bucket => {
             // Sort each bucket by date first
