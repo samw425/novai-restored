@@ -1,86 +1,86 @@
 import { Article } from '@/types';
 
-// Curated list of top stories from the last 30 days (Nov-Dec 2025)
+// Curated list of top stories from the last 30 days (Nov-Dec 2024)
 export const TOP_STORIES_30D: Article[] = [
     // GLOBAL / ALL
     {
         id: 'top-1',
-        title: 'OpenAI Releases GPT-5: The Age of Agents Begins',
-        summary: 'The long-awaited model demonstrates full autonomous planning capabilities, scoring 92% on the SWE-bench. Experts call it the "first true agentic model."',
-        source: 'The Verge',
-        url: 'https://theverge.com',
-        publishedAt: '2025-11-15T10:00:00Z',
+        title: 'OpenAI Launches o1 Full Model with Deep Reasoning',
+        summary: 'The o1 model uses chain-of-thought reasoning to tackle complex problems, scoring significantly higher on math and coding benchmarks than GPT-4.',
+        source: 'OpenAI',
+        url: 'https://openai.com/o1',
+        publishedAt: '2024-12-05T10:00:00Z',
         category: 'ai',
         importanceScore: 100,
-        topicSlug: 'gpt-5-release'
+        topicSlug: 'o1-release'
     },
     {
         id: 'top-2',
-        title: 'Nvidia H200 Chips Sold Out Until 2027',
-        summary: 'Jensen Huang confirms unprecedented demand for the new Blackwell architecture, driven largely by sovereign AI initiatives in the Middle East and Europe.',
-        source: 'Bloomberg',
-        url: 'https://bloomberg.com',
-        publishedAt: '2025-11-20T14:30:00Z',
-        category: 'market',
-        importanceScore: 95,
-        topicSlug: 'nvidia-h200-shortage'
+        title: 'Google Gemini 2.0 Released with Agentic Capabilities',
+        summary: 'Google DeepMind unveils Gemini 2.0 with native multimodal input/output and Project Astra for real-time AI assistance.',
+        source: 'Google DeepMind',
+        url: 'https://deepmind.google/technologies/gemini/',
+        publishedAt: '2024-12-11T14:30:00Z',
+        category: 'ai',
+        importanceScore: 98,
+        topicSlug: 'gemini-2-release'
     },
     {
         id: 'top-3',
-        title: 'EU AI Act Enters Full Force: Foundation Models Face Audit',
-        summary: 'Brussels begins the first wave of compliance checks. Meta and Google warn of potential service withdrawals if requirements are deemed "technically impossible."',
+        title: 'EU AI Act Implementation Begins: High-Risk Systems in Focus',
+        summary: 'Brussels starts enforcement of the world\'s first comprehensive AI law. Companies racing to comply with transparency requirements.',
         source: 'Reuters',
-        url: 'https://reuters.com',
-        publishedAt: '2025-12-01T09:15:00Z',
+        url: 'https://reuters.com/technology/artificial-intelligence/',
+        publishedAt: '2024-12-01T09:15:00Z',
         category: 'policy',
         importanceScore: 90,
-        topicSlug: 'eu-ai-act-audit'
+        topicSlug: 'eu-ai-act-implementation'
     },
     {
         id: 'top-4',
-        title: 'Tesla Optimus Gen 3 Deployed in Giga Texas',
-        summary: 'Video evidence shows 50+ humanoid robots performing complex assembly tasks without teleoperation. Stock jumps 12% on the news.',
-        source: 'TechCrunch',
-        url: 'https://techcrunch.com',
-        publishedAt: '2025-11-28T16:45:00Z',
-        category: 'robotics',
-        importanceScore: 92,
-        topicSlug: 'optimus-gen-3'
+        title: 'NVIDIA Blackwell B200 GPUs Begin Shipping to Hyperscalers',
+        summary: 'Jensen Huang confirms mass production of next-gen AI chips. Microsoft, Google, and Meta among first customers.',
+        source: 'NVIDIA',
+        url: 'https://nvidianews.nvidia.com/',
+        publishedAt: '2024-11-28T16:45:00Z',
+        category: 'market',
+        importanceScore: 95,
+        topicSlug: 'blackwell-shipping'
     },
     {
         id: 'top-5',
-        title: 'Anthropic Claude 3.5 Opus "Self-Corrects" Code in Real-Time',
-        summary: 'New feature allows the model to run its own code, detect errors, and fix them before showing the user. A massive leap for developer productivity.',
-        source: 'Ars Technica',
-        url: 'https://arstechnica.com',
-        publishedAt: '2025-11-10T11:20:00Z',
+        title: 'Anthropic Claude 3.5 Sonnet Leads Coding Benchmarks',
+        summary: 'Claude 3.5 Sonnet outperforms GPT-4 and Gemini on SWE-bench and HumanEval, becoming the go-to model for developers.',
+        source: 'Anthropic',
+        url: 'https://anthropic.com/claude',
+        publishedAt: '2024-11-10T11:20:00Z',
         category: 'code',
         importanceScore: 88,
-        topicSlug: 'claude-self-correct'
+        topicSlug: 'claude-sonnet-benchmarks'
     },
     // ROBOTICS SPECIFIC
     {
         id: 'top-rob-1',
-        title: 'Figure AI Raises $2B for "General Purpose" Home Robot',
-        summary: 'Backed by Bezos and Nvidia, the startup aims to have a robot in 10M homes by 2030. Demo shows robot folding laundry and making coffee.',
-        source: 'VentureBeat',
-        url: 'https://venturebeat.com',
-        publishedAt: '2025-11-25T13:00:00Z',
+        title: 'Figure AI Raises $675M at $2.6B Valuation',
+        summary: 'Backed by Bezos, Nvidia, and OpenAI, the humanoid robotics startup accelerates development of general-purpose robots.',
+        source: 'TechCrunch',
+        url: 'https://techcrunch.com',
+        publishedAt: '2024-11-25T13:00:00Z',
         category: 'robotics',
         importanceScore: 85,
-        topicSlug: 'figure-ai-raise'
+        topicSlug: 'figure-ai-funding'
     },
     // MARKET SPECIFIC
     {
         id: 'top-mkt-1',
-        title: 'Microsoft-OpenAI "Stargate" Supercomputer Approved',
-        summary: 'The $100B project in Wisconsin breaks ground. Will house 5M GPUs and consume 5GW of power.',
-        source: 'WSJ',
-        url: 'https://wsj.com',
-        publishedAt: '2025-11-18T08:00:00Z',
-        category: 'market',
-        importanceScore: 98,
-        topicSlug: 'stargate-supercomputer'
+        title: 'Meta Llama 3.3 70B Matches 405B Performance',
+        summary: 'Meta releases efficient open-weight model that delivers frontier performance at a fraction of the compute cost.',
+        source: 'Meta AI',
+        url: 'https://ai.meta.com/llama/',
+        publishedAt: '2024-12-06T08:00:00Z',
+        category: 'ai',
+        importanceScore: 92,
+        topicSlug: 'llama-3-3-release'
     }
 ];
 

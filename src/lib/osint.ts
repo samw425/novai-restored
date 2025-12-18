@@ -1,6 +1,6 @@
 // @ts-nocheck
 // @ts-ignore
-import Parser from 'rss-parser/dist/rss-parser.min.js';
+import Parser from 'rss-parser';
 
 const parser = new Parser({
     headers: {

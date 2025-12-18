@@ -1,11 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Shield, Activity, Globe, Lock, Loader2, ArrowUp, AlertOctagon, Radio, ExternalLink } from 'lucide-react';
+import { Shield, Activity, Globe, Lock, Loader2, ArrowUp, AlertOctagon, Radio, ExternalLink, Map as MapIcon, ShieldAlert, Target, Zap } from 'lucide-react';
+import { useInView } from 'react-intersection-observer';
+import { AnimatePresence, motion } from 'framer-motion';
 import { PageHeader } from '@/components/ui/PageHeader';
 import { FeedCard } from '@/components/feed/FeedCard';
 import { ResourceLoader } from '@/components/ui/ResourceLoader';
-// MonthlyIntelBrief import removed
 import { InteractiveMap } from '@/components/ui/InteractiveMap';
 import { Article } from '@/types';
 
@@ -31,6 +32,11 @@ export default function WarRoomPage() {
     const [hasMoreRu, setHasMoreRu] = useState(true);
     const [loadingIg, setLoadingIg] = useState(false);
     const [loadingRu, setLoadingRu] = useState(false);
+
+    // Intersection Observers for Infinite Scroll
+    const { ref: globalRef, inView: globalInView } = useInView();
+    const { ref: igRef, inView: igInView } = useInView();
+    const { ref: ruRef, inView: ruInView } = useInView();
 
     // Initial Load
     useEffect(() => {
@@ -67,7 +73,6 @@ export default function WarRoomPage() {
         };
 
         fetchData();
-        fetchData();
     }, []);
 
     // Fetch Current Wars Data when tab is active
@@ -93,7 +98,7 @@ export default function WarRoomPage() {
             };
             fetchWarFeeds();
         }
-    }, [activeTab]);
+    }, [activeTab, israelGazaArticles.length]);
 
     // Load More Handlers for War Feeds
     const loadMoreIg = async () => {
@@ -183,21 +188,15 @@ export default function WarRoomPage() {
     // Calculate DEFCON level based on critical incidents
     const criticalCount = incidents.filter(i => i.severity === 'critical').length;
     const defconLevel = criticalCount > 5 ? 2 : criticalCount > 2 ? 3 : 4;
-    const defconColor = defconLevel === 2 ? 'text-red-600 bg-red-50 border-red-200' :
-        defconLevel === 3 ? 'text-orange-600 bg-orange-50 border-orange-200' :
-            'text-yellow-600 bg-yellow-50 border-yellow-200';
 
     // Filter incidents based on selection - USE incidents (raw data) not articles (mapped)
     const filteredIncidents = incidents.filter(inc => {
         if (selectedFilter === 'ALL') return true;
-        if (selectedFilter === 'CONFLICT') return inc.type === 'conflict' || inc.type === 'air' || inc.type === 'earthquake'; // Using 'type' from raw data
+        if (selectedFilter === 'CONFLICT') return inc.type === 'conflict' || inc.type === 'air' || inc.type === 'earthquake';
         if (selectedFilter === 'CYBER') return inc.type === 'cyber';
         if (selectedFilter === 'NAVAL') return inc.type === 'naval';
         return true;
     });
-
-    // Auto-Patrol Logic Removed
-
 
     // Manual Interaction Handler
     const handleManualFocus = (loc: { lat: number; lng: number } | null) => {
@@ -205,23 +204,24 @@ export default function WarRoomPage() {
         setFocusedLocation(loc);
     };
 
-    // Determine Globe Color based on filter
-    const getGlobeColor = (): [number, number, number] => {
-        switch (selectedFilter) {
-            case 'CYBER': return [0.1, 0.8, 0.8]; // Cyan
-            case 'NAVAL': return [0.1, 0.3, 1]; // Blue
-            case 'CONFLICT': return [1, 0.2, 0.2]; // Red
-            default: return [1, 0.5, 0]; // Orange/Gold for All
+    // Auto-Scroll Triggers
+    useEffect(() => {
+        if (globalInView && hasMore && !loadingMore && activeTab === 'GLOBAL_INTEL') {
+            loadMore();
         }
-    };
+    }, [globalInView, hasMore, loadingMore, activeTab]);
 
-    // Find the currently focused incident details
-    const focusedIncident = incidents.find(inc =>
-        focusedLocation &&
-        inc.location &&
-        Math.abs(inc.location.lat - focusedLocation.lat) < 0.001 &&
-        Math.abs(inc.location.lng - focusedLocation.lng) < 0.001
-    );
+    useEffect(() => {
+        if (igInView && hasMoreIg && !loadingIg && activeTab === 'CURRENT_WARS') {
+            loadMoreIg();
+        }
+    }, [igInView, hasMoreIg, loadingIg, activeTab]);
+
+    useEffect(() => {
+        if (ruInView && hasMoreRu && !loadingRu && activeTab === 'CURRENT_WARS') {
+            loadMoreRu();
+        }
+    }, [ruInView, hasMoreRu, loadingRu, activeTab]);
 
     return (
         <div className="space-y-6">
@@ -258,8 +258,8 @@ export default function WarRoomPage() {
                 <button
                     onClick={() => setActiveTab('GLOBAL_INTEL')}
                     className={`px-6 py-3 font-mono text-sm font-bold border-b-2 transition-colors ${activeTab === 'GLOBAL_INTEL'
-                        ? 'border-black text-black'
-                        : 'border-transparent text-gray-400 hover:text-gray-600'
+                            ? 'border-black text-black'
+                            : 'border-transparent text-gray-400 hover:text-gray-600'
                         }`}
                 >
                     GLOBAL INTEL
@@ -267,8 +267,8 @@ export default function WarRoomPage() {
                 <button
                     onClick={() => setActiveTab('CURRENT_WARS')}
                     className={`px-6 py-3 font-mono text-sm font-bold border-b-2 transition-colors ${activeTab === 'CURRENT_WARS'
-                        ? 'border-red-600 text-red-600'
-                        : 'border-transparent text-gray-400 hover:text-gray-600'
+                            ? 'border-red-600 text-red-600'
+                            : 'border-transparent text-gray-400 hover:text-gray-600'
                         }`}
                 >
                     CURRENT WARS
@@ -278,10 +278,9 @@ export default function WarRoomPage() {
             {/* Interactive Global Threat Map (Only in Global Intel Tab) */}
             {activeTab === 'GLOBAL_INTEL' && (
                 <div className="mb-8 grid grid-cols-1 lg:grid-cols-4 gap-6">
-                    {/* Main Globe Display */}
                     {/* Main Map Display */}
                     <div className="lg:col-span-3">
-                        {/* Interactive Legend / Filter Bar - Moved outside for Flat Map clarity */}
+                        {/* Interactive Legend / Filter Bar */}
                         <div className="flex flex-wrap gap-2 mb-4">
                             {[
                                 { id: 'ALL', label: 'ALL SECTORS', color: 'bg-orange-500' },
@@ -293,8 +292,8 @@ export default function WarRoomPage() {
                                     key={filter.id}
                                     onClick={() => setSelectedFilter(filter.id as any)}
                                     className={`px-3 py-1.5 rounded text-[10px] font-bold font-mono uppercase tracking-wider border transition-all ${selectedFilter === filter.id
-                                        ? `${filter.color} text-white border-transparent shadow-lg scale-105`
-                                        : 'bg-white border-gray-200 text-gray-400 hover:border-gray-400 hover:text-gray-600'
+                                            ? `${filter.color} text-white border-transparent shadow-lg scale-105`
+                                            : 'bg-white border-gray-200 text-gray-400 hover:border-gray-400 hover:text-gray-600'
                                         }`}
                                 >
                                     <span className={`inline-block w-2 h-2 rounded-full mr-2 ${filter.color}`}></span>
@@ -319,8 +318,8 @@ export default function WarRoomPage() {
                                     <button
                                         onClick={() => handleManualFocus(inc.location ? { lat: inc.location.lat, lng: inc.location.lng } : null)}
                                         className={`flex-1 text-left p-3 rounded border transition-all duration-200 ${focusedLocation?.lat === inc.location?.lat
-                                            ? 'bg-gray-800 border-red-500 ring-1 ring-red-500/50'
-                                            : 'bg-gray-900/50 hover:bg-gray-900 border-gray-800 hover:border-blue-500'
+                                                ? 'bg-gray-800 border-red-500 ring-1 ring-red-500/50'
+                                                : 'bg-gray-900/50 hover:bg-gray-900 border-gray-800 hover:border-blue-500'
                                             }`}
                                     >
                                         <div className="flex justify-between items-start mb-1">
@@ -373,17 +372,9 @@ export default function WarRoomPage() {
                                         <FeedCard key={`${article.id}-${Math.random()}`} article={article} />
                                     ))}
 
-                                    <div className="pt-6 flex justify-center">
-                                        {hasMoreIg ? (
-                                            <button
-                                                onClick={loadMoreIg}
-                                                disabled={loadingIg}
-                                                className="px-4 py-2 bg-slate-100 text-slate-600 text-xs font-bold rounded-full hover:bg-slate-200 transition-colors flex items-center gap-2"
-                                            >
-                                                {loadingIg ? <Loader2 size={12} className="animate-spin" /> : <ArrowUp size={12} className="rotate-180" />}
-                                                LOAD MORE INTEL
-                                            </button>
-                                        ) : (
+                                    <div ref={igRef} className="pt-6 flex justify-center w-full min-h-[50px]">
+                                        {loadingIg && <Loader2 size={20} className="animate-spin text-slate-400" />}
+                                        {!hasMoreIg && israelGazaArticles.length > 0 && (
                                             <span className="text-xs text-slate-300 font-mono">END OF STREAM</span>
                                         )}
                                     </div>
@@ -410,17 +401,9 @@ export default function WarRoomPage() {
                                         <FeedCard key={`${article.id}-${Math.random()}`} article={article} />
                                     ))}
 
-                                    <div className="pt-6 flex justify-center">
-                                        {hasMoreRu ? (
-                                            <button
-                                                onClick={loadMoreRu}
-                                                disabled={loadingRu}
-                                                className="px-4 py-2 bg-slate-100 text-slate-600 text-xs font-bold rounded-full hover:bg-slate-200 transition-colors flex items-center gap-2"
-                                            >
-                                                {loadingRu ? <Loader2 size={12} className="animate-spin" /> : <ArrowUp size={12} className="rotate-180" />}
-                                                LOAD MORE INTEL
-                                            </button>
-                                        ) : (
+                                    <div ref={ruRef} className="pt-6 flex justify-center w-full min-h-[50px]">
+                                        {loadingRu && <Loader2 size={20} className="animate-spin text-slate-400" />}
+                                        {!hasMoreRu && russiaUkraineArticles.length > 0 && (
                                             <span className="text-xs text-slate-300 font-mono">END OF STREAM</span>
                                         )}
                                     </div>
@@ -459,19 +442,11 @@ export default function WarRoomPage() {
                                         <FeedCard key={article.id} article={article} />
                                     ))}
 
-                                    {/* Load More Trigger */}
-                                    <div className="p-6 flex justify-center bg-gray-50/30">
-                                        {hasMore ? (
-                                            <button
-                                                onClick={loadMore}
-                                                disabled={loadingMore}
-                                                className="px-6 py-2 bg-white border border-gray-200 text-gray-600 font-mono text-xs hover:bg-gray-50 hover:text-blue-600 transition-colors rounded-full flex items-center gap-2 shadow-sm"
-                                            >
-                                                {loadingMore ? <Loader2 className="h-3 w-3 animate-spin" /> : <ArrowUp className="h-3 w-3 rotate-180" />}
-                                                {loadingMore ? 'DECRYPTING MORE...' : 'LOAD OLDER INTEL'}
-                                            </button>
-                                        ) : (
-                                            <span className="text-gray-400 font-mono text-xs">END OF STREAM</span>
+                                    {/* Load More Trigger Sentinel */}
+                                    <div ref={globalRef} className="p-6 flex justify-center bg-gray-50/30 min-h-[50px]">
+                                        {loadingMore && <Loader2 size={20} className="animate-spin text-slate-400" />}
+                                        {!hasMore && incidents.length > 0 && (
+                                            <span className="text-xs text-slate-400 font-semibold tracking-wider">ALL INCIDENTS LOADED</span>
                                         )}
                                     </div>
                                 </div>
@@ -550,7 +525,6 @@ export default function WarRoomPage() {
                     </div>
                 </div>
             )}
-            {/* 30-Day Brief Removed per Hotfix Exception */}
         </div>
     );
 }

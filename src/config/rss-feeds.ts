@@ -101,7 +101,7 @@ export const RSS_FEEDS: FeedSource[] = [
 
     // Russia / Ukraine
     // Russia / Ukraine
-    { id: 'kyiv-independent', name: 'Kyiv Independent', url: 'https://kyivindependent.com/feed/', category: 'current-wars', priority: 10, region: 'Europe' },
+    // { id: 'kyiv-independent', name: 'Kyiv Independent', url: 'https://kyivindependent.com/feed/', category: 'current-wars', priority: 10, region: 'Europe' },
     { id: 'bbc-europe', name: 'BBC Europe', url: 'https://feeds.bbci.co.uk/news/world/europe/rss.xml', category: 'current-wars', priority: 10, region: 'Europe' },
     { id: 'mosecow-times', name: 'The Moscow Times', url: 'https://www.themoscowtimes.com/rss/news', category: 'current-wars', priority: 9, region: 'Europe' },
     { id: 'meduza-en', name: 'Meduza', url: 'https://meduza.io/rss/en/all', category: 'current-wars', priority: 9, region: 'Europe' },

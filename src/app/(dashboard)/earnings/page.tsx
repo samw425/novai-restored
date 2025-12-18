@@ -588,13 +588,13 @@ function EarningsContent() {
                         </div>
                     </div>
 
-                    <div className="h-4 w-px bg-gray-200 mx-2" />
-                    <div className="flex flex-col">
+                    <div className="h-4 w-px bg-gray-200 mx-2 hidden sm:block" />
+                    <div className="flex flex-col min-w-0">
                         <div className="flex items-center gap-2">
-                            <h1 className="text-gray-900 font-black tracking-tight text-xs uppercase">Earnings Terminal</h1>
-                            <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-blue-50 text-blue-600 border border-blue-100">BETA</span>
+                            <h1 className="text-gray-900 font-black tracking-tight text-xs uppercase truncate">Earnings Terminal</h1>
+                            <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-blue-50 text-blue-600 border border-blue-100 flex-shrink-0">BETA</span>
                         </div>
-                        <span className="text-[9px] text-gray-400 font-medium tracking-wide">Covering S&P 500 & Nasdaq 100</span>
+                        <span className="text-[9px] text-gray-400 font-medium tracking-wide hidden sm:block">Covering S&P 500 & Nasdaq 100</span>
                     </div>
                 </div>
 

@@ -3,8 +3,8 @@
 import { NextResponse } from 'next/server';
 import { getWarRoomData } from '@/lib/osint';
 // @ts-ignore
-// Using the minified version of rss-parser for edge runtime compatibility
-import Parser from 'rss-parser/dist/rss-parser.min.js';
+// Using the standard version suitable for Node.js
+import Parser from 'rss-parser';
 import { RSS_FEEDS } from '@/config/rss-feeds';
 // export const runtime = 'edge';
 
