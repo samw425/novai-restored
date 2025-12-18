@@ -42,8 +42,8 @@ export default function WarRoomPage() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Fetch ONLY strict War Room OSINT data
-                const mapRes = await fetch('/api/feed/war-room?page=1&limit=20', { cache: 'no-store' });
+                // Fetch ALL War Room OSINT data for the map (high limit)
+                const mapRes = await fetch('/api/feed/war-room?page=1&limit=500', { cache: 'no-store' });
                 const mapData = await mapRes.json();
 
                 if (mapData.incidents) {
@@ -258,8 +258,8 @@ export default function WarRoomPage() {
                 <button
                     onClick={() => setActiveTab('GLOBAL_INTEL')}
                     className={`px-6 py-3 font-mono text-sm font-bold border-b-2 transition-colors ${activeTab === 'GLOBAL_INTEL'
-                            ? 'border-black text-black'
-                            : 'border-transparent text-gray-400 hover:text-gray-600'
+                        ? 'border-black text-black'
+                        : 'border-transparent text-gray-400 hover:text-gray-600'
                         }`}
                 >
                     GLOBAL INTEL
@@ -267,8 +267,8 @@ export default function WarRoomPage() {
                 <button
                     onClick={() => setActiveTab('CURRENT_WARS')}
                     className={`px-6 py-3 font-mono text-sm font-bold border-b-2 transition-colors ${activeTab === 'CURRENT_WARS'
-                            ? 'border-red-600 text-red-600'
-                            : 'border-transparent text-gray-400 hover:text-gray-600'
+                        ? 'border-red-600 text-red-600'
+                        : 'border-transparent text-gray-400 hover:text-gray-600'
                         }`}
                 >
                     CURRENT WARS
@@ -292,8 +292,8 @@ export default function WarRoomPage() {
                                     key={filter.id}
                                     onClick={() => setSelectedFilter(filter.id as any)}
                                     className={`px-3 py-1.5 rounded text-[10px] font-bold font-mono uppercase tracking-wider border transition-all ${selectedFilter === filter.id
-                                            ? `${filter.color} text-white border-transparent shadow-lg scale-105`
-                                            : 'bg-white border-gray-200 text-gray-400 hover:border-gray-400 hover:text-gray-600'
+                                        ? `${filter.color} text-white border-transparent shadow-lg scale-105`
+                                        : 'bg-white border-gray-200 text-gray-400 hover:border-gray-400 hover:text-gray-600'
                                         }`}
                                 >
                                     <span className={`inline-block w-2 h-2 rounded-full mr-2 ${filter.color}`}></span>
@@ -318,8 +318,8 @@ export default function WarRoomPage() {
                                     <button
                                         onClick={() => handleManualFocus(inc.location ? { lat: inc.location.lat, lng: inc.location.lng } : null)}
                                         className={`flex-1 text-left p-3 rounded border transition-all duration-200 ${focusedLocation?.lat === inc.location?.lat
-                                                ? 'bg-gray-800 border-red-500 ring-1 ring-red-500/50'
-                                                : 'bg-gray-900/50 hover:bg-gray-900 border-gray-800 hover:border-blue-500'
+                                            ? 'bg-gray-800 border-red-500 ring-1 ring-red-500/50'
+                                            : 'bg-gray-900/50 hover:bg-gray-900 border-gray-800 hover:border-blue-500'
                                             }`}
                                     >
                                         <div className="flex justify-between items-start mb-1">

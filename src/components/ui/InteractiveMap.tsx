@@ -90,23 +90,27 @@ export function InteractiveMap({ incidents }: InteractiveMapProps) {
                     const isCritical = incident.severity === 'critical';
 
                     return (
-                        <div
+                        <a
                             key={incident.id}
-                            className="absolute transform -translate-x-1/2 -translate-y-1/2 z-10 group/marker"
+                            href={(incident as any).url || '#'}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="absolute transform -translate-x-1/2 -translate-y-1/2 z-10 group/marker cursor-pointer"
                             style={{ left: pos.left, top: pos.top }}
+                            title={`Click to open: ${incident.title}`}
                         >
                             {/* Ping Animation */}
                             <div className={`absolute inset-0 rounded-full animate-ping opacity-75 ${incident.type === 'conflict' ? 'bg-orange-500' :
-                                    incident.type === 'naval' ? 'bg-blue-500' :
-                                        incident.type === 'cyber' ? 'bg-cyan-500' : 'bg-red-500'
+                                incident.type === 'naval' ? 'bg-blue-500' :
+                                    incident.type === 'cyber' ? 'bg-cyan-500' : 'bg-red-500'
                                 }`} style={{ width: '200%', height: '200%', left: '-50%', top: '-50%' }}></div>
 
                             {/* Marker Icon */}
-                            <div className={`relative w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border-2 shadow-[0_0_15px_rgba(0,0,0,0.8)] transition-transform hover:scale-125 ${incident.type === 'conflict' ? 'bg-orange-600 border-orange-400 text-white' :
-                                    incident.type === 'naval' ? 'bg-blue-600 border-blue-400 text-white' :
-                                        incident.type === 'air' ? 'bg-sky-600 border-sky-400 text-white' :
-                                            incident.type === 'cyber' ? 'bg-cyan-900 border-cyan-500 text-cyan-400' :
-                                                'bg-red-600 border-red-400 text-white'
+                            <div className={`relative w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border-2 shadow-[0_0_15px_rgba(0,0,0,0.8)] transition-transform hover:scale-150 hover:ring-2 hover:ring-white/50 ${incident.type === 'conflict' ? 'bg-orange-600 border-orange-400 text-white' :
+                                incident.type === 'naval' ? 'bg-blue-600 border-blue-400 text-white' :
+                                    incident.type === 'air' ? 'bg-sky-600 border-sky-400 text-white' :
+                                        incident.type === 'cyber' ? 'bg-cyan-900 border-cyan-500 text-cyan-400' :
+                                            'bg-red-600 border-red-400 text-white'
                                 }`}>
                                 {incident.type === 'naval' ? <Ship size={12} /> :
                                     incident.type === 'air' ? <Plane size={12} /> :
@@ -118,8 +122,8 @@ export function InteractiveMap({ incidents }: InteractiveMapProps) {
                             <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-64 bg-slate-900/95 backdrop-blur-xl border border-slate-700 rounded-lg p-3 shadow-2xl opacity-0 group-hover/marker:opacity-100 transition-opacity pointer-events-none z-50">
                                 <div className="flex items-center justify-between mb-2 border-b border-slate-800 pb-2">
                                     <span className={`text-[10px] font-black uppercase tracking-widest ${incident.type === 'conflict' ? 'text-orange-500' :
-                                            incident.type === 'naval' ? 'text-blue-500' :
-                                                'text-red-500'
+                                        incident.type === 'naval' ? 'text-blue-500' :
+                                            'text-red-500'
                                         }`}>
                                         {incident.type} // {incident.country}
                                     </span>
@@ -129,8 +133,9 @@ export function InteractiveMap({ incidents }: InteractiveMapProps) {
                                 </div>
                                 <h4 className="text-xs font-bold text-white mb-1 leading-tight">{incident.title}</h4>
                                 <p className="text-[10px] text-slate-400 leading-relaxed">{incident.description}</p>
+                                <div className="mt-2 text-[9px] text-blue-400 font-mono uppercase">Click to view source →</div>
                             </div>
-                        </div>
+                        </a>
                     );
                 })}
             </motion.div>
