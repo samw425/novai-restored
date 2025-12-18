@@ -633,30 +633,35 @@ export default function USIntelPage() {
             />
 
             {/* Header with Custom Image */}
-            <div className="relative overflow-hidden">
+            <div className="relative overflow-hidden h-[280px]">
+                {/* Background Image - positioned to show eagle on right */}
                 <div className="absolute inset-0">
                     <img
                         src="/us-intel-header.png"
                         alt="US Intelligence"
-                        className="w-full h-full object-cover opacity-90"
+                        className="w-full h-full object-cover object-center"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-r from-slate-900/95 via-slate-900/80 to-slate-900/60"></div>
+                    {/* Gradient only on left side for text readability */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/70 to-transparent"></div>
                 </div>
-                <div className="relative z-10 py-16 px-8">
-                    <div className="max-w-[1600px] mx-auto">
+
+                {/* Content - positioned left to not cover eagle */}
+                <div className="relative z-10 h-full flex items-center px-8">
+                    <div className="max-w-[600px]">
                         <div className="flex items-center gap-3 mb-4">
-                            <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></div>
-                            <span className="text-xs font-mono text-emerald-400 uppercase tracking-widest">LIVE INTELLIGENCE FEED</span>
+                            <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
+                            <span className="text-xs font-mono text-emerald-400 uppercase tracking-widest">LIVE FEED</span>
                         </div>
                         <h1 className="text-4xl md:text-5xl font-black text-white mb-3 tracking-tight">
-                            US INTELLIGENCE COMMAND
+                            US INTELLIGENCE
                         </h1>
-                        <p className="text-slate-300 text-lg max-w-2xl">
+                        <p className="text-slate-400 text-base max-w-md">
                             Real-time intelligence from CIA, FBI, NSA, DOD, and the full US Intelligence Community.
                         </p>
                     </div>
                 </div>
-                <div className="absolute top-2 right-4 text-[10px] text-slate-500 font-mono z-20">v2025.12.04-LIVE</div>
+
+                <div className="absolute top-3 right-4 text-[10px] text-slate-400 font-mono z-20">v2025.12.17-LIVE</div>
             </div>
 
             <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
