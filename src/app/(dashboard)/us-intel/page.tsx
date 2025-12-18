@@ -635,7 +635,7 @@ export default function USIntelPage() {
             {/* Header with Custom Image - Image on top, text below */}
             <div className="bg-slate-900">
                 {/* Image Banner - shows eagle and US INTEL centered */}
-                <div className="relative overflow-hidden h-[180px]">
+                <div className="relative overflow-hidden h-[300px]">
                     <img
                         src="/us-intel-header.png"
                         alt="US Intel"
