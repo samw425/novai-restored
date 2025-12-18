@@ -645,11 +645,11 @@ export default function USIntelPage() {
                 <div className="relative z-10 py-16 px-8">
                     <div className="max-w-[1600px] mx-auto">
                         <div className="flex items-center gap-3 mb-4">
-                            <div className="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
-                            <span className="text-xs font-mono text-red-400 uppercase tracking-widest">CLASSIFIED // TOP SECRET // NOFORN</span>
+                            <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></div>
+                            <span className="text-xs font-mono text-emerald-400 uppercase tracking-widest">LIVE INTELLIGENCE FEED</span>
                         </div>
                         <h1 className="text-4xl md:text-5xl font-black text-white mb-3 tracking-tight">
-                            US INTELLIGENCE COMMAND
+                            US INTEL
                         </h1>
                         <p className="text-slate-300 text-lg max-w-2xl">
                             Real-time intelligence from CIA, FBI, NSA, DOD, and the full US Intelligence Community.
