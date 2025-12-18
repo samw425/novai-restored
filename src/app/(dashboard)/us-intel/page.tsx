@@ -633,13 +633,13 @@ export default function USIntelPage() {
             />
 
             {/* Header with Custom Image */}
-            <div className="relative overflow-hidden h-[320px]">
+            <div className="relative overflow-hidden h-[280px]">
                 {/* Background Image */}
                 <div className="absolute inset-0">
                     <img
                         src="/us-intel-header.png"
                         alt="US Intel"
-                        className="w-full h-full object-cover object-center"
+                        className="w-full h-full object-cover object-top"
                     />
                     {/* Gradient overlay for text readability */}
                     <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/70 to-transparent"></div>
