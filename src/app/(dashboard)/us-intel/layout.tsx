@@ -10,7 +10,7 @@ export const metadata: Metadata = {
         siteName: 'Novai Intelligence',
         images: [
             {
-                url: '/us-intel-header.png',
+                url: 'https://www.usenovai.live/us-intel-header.png',
                 width: 1200,
                 height: 630,
                 alt: 'US Intelligence Command - Novai Intelligence',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: 'US INTELLIGENCE COMMAND',
         description: 'Real-time intelligence from CIA, FBI, NSA, DOD, and the full US Intelligence Community.',
-        images: ['/us-intel-header.png'],
+        images: ['https://www.usenovai.live/us-intel-header.png'],
         creator: '@novai_intel',
     },
 };
@@ -35,3 +35,4 @@ export default function USIntelLayout({
 }) {
     return <>{children}</>;
 }
+
