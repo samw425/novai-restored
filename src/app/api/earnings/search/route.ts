@@ -3,7 +3,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { searchTickers, getTotalVerifiedTickers } from '@/lib/earnings/real-data';
 
-export const dynamic = 'force-dynamic';
+// Cache for 5 minutes to reduce function calls
+export const revalidate = 300;
 
 export async function GET(request: NextRequest) {
     try {

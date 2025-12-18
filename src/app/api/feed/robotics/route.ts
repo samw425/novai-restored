@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server';
 import { fetchRoboticsFeed } from '@/lib/robotics';
 
-
-
-export const dynamic = 'force-dynamic';
+// Cache for 5 minutes to reduce function calls
+export const revalidate = 300;
 
 export async function GET() {
     try {

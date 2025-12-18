@@ -9,7 +9,8 @@ import { RSS_FEEDS } from '@/config/rss-feeds';
 // export const runtime = 'edge';
 export const runtime = 'nodejs';
 
-export const dynamic = 'force-dynamic';
+// Cache for 5 minutes to reduce function calls
+export const revalidate = 300;
 
 const parser = new Parser({
     headers: {

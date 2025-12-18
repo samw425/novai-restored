@@ -6,7 +6,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSECFilings, getLastFetchTime, formatAgo, type SECFiling } from '@/lib/earnings/sec-realtime';
 import { getCompanyInfo, getSecEdgarUrl } from '@/lib/earnings/real-data';
 
-export const dynamic = 'force-dynamic';
+// Cache for 5 minutes to reduce function calls
+export const revalidate = 300;
 export const maxDuration = 30;
 
 // Fallback seed data when SEC feed is empty (weekends, after-hours)

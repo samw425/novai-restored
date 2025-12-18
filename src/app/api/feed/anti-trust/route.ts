@@ -4,9 +4,8 @@ import Parser from 'rss-parser';
 import { RSS_FEEDS } from '@/config/rss-feeds';
 export const runtime = 'nodejs';
 
-
-export const dynamic = 'force-dynamic';
-export const revalidate = 3600; // Revalidate every hour for fresh court docket updates
+// Cache for 1 hour - antitrust news doesn't change frequently
+export const revalidate = 3600;
 
 const parser = new Parser();
 

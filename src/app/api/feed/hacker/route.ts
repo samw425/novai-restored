@@ -3,7 +3,8 @@ import { NextResponse } from 'next/server';
 import Parser from 'rss-parser';
 import { RSS_FEEDS, FeedSource } from '@/config/rss-feeds';
 
-
+// Cache for 5 minutes to reduce function calls
+export const revalidate = 300;
 
 const parser = new Parser();
 

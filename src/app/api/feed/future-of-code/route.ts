@@ -3,7 +3,8 @@ import { NextResponse } from 'next/server';
 // @ts-ignore
 import Parser from 'rss-parser/dist/rss-parser.min.js';
 
-export const dynamic = 'force-dynamic';
+// Cache for 5 minutes to reduce function calls
+export const revalidate = 300;
 
 const parser = new Parser({
     headers: {

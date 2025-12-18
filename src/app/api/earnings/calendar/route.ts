@@ -6,7 +6,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { REAL_COMPANIES } from '@/lib/earnings/real-data';
 import { SP500_ADDITIONAL } from '@/lib/earnings/sp500-data';
 
-export const dynamic = 'force-dynamic';
+// Cache for 10 minutes - earnings data doesn't change frequently
+export const revalidate = 600;
 
 const FMP_API_KEY = process.env.FMP_API_KEY || 'demo'; // Use env var
 

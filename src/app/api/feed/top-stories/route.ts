@@ -5,15 +5,15 @@ import Parser from 'rss-parser/dist/rss-parser.min.js';
 import { RSS_FEEDS } from '@/config/rss-feeds';
 // export const runtime = 'edge';
 
+// Cache for 5 minutes to reduce function calls
+export const revalidate = 300;
 
 const parser = new Parser({
-    timeout: 15000, // Longer timeout for deep fetch
+    timeout: 15000,
     customFields: {
         item: ['pubDate', 'content:encoded', 'description']
     }
 });
-
-export const dynamic = 'force-dynamic';
 
 // Helper to clean HTML
 function cleanText(html: string): string {

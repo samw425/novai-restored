@@ -4,6 +4,8 @@ import Parser from 'rss-parser';
 import { RSS_FEEDS, getCategoryFeeds } from '@/config/rss-feeds';
 export const runtime = 'nodejs';
 
+// Cache for 5 minutes to reduce function calls
+export const revalidate = 300;
 
 const parser = new Parser({
     timeout: 10000,
@@ -11,8 +13,6 @@ const parser = new Parser({
         item: ['pubDate', 'content:encoded', 'description']
     }
 });
-
-export const dynamic = 'force-dynamic';
 
 // In-memory cache (will be replaced with Supabase later)
 let articlesCache: any[] = [];

@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server';
 import { getTopStories } from '@/lib/data/top-stories-30d';
 export const runtime = 'edge';
 
-
-export const dynamic = 'force-dynamic';
+// Cache for 5 minutes to reduce function calls
+export const revalidate = 300;
 
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);

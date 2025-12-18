@@ -2,8 +2,8 @@
 import { NextResponse } from 'next/server';
 import Parser from 'rss-parser';
 
-// export const runtime = 'nodejs';
-export const dynamic = 'force-dynamic';
+// Cache for 5 minutes to reduce function calls
+export const revalidate = 300;
 
 const parser = new Parser({
     headers: {
