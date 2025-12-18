@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'US Intelligence Command | Novai Intelligence',
+    title: 'US Intel | Novai Intelligence',
     description: 'Real-time intelligence from CIA, FBI, NSA, DOD, DHS, and the full US Intelligence Community. Live feeds, agency dossiers, and strategic analysis.',
     openGraph: {
-        title: 'US INTELLIGENCE COMMAND',
+        title: 'US INTEL | Novai Intelligence',
         description: 'Real-time intelligence from CIA, FBI, NSA, DOD, and the full US Intelligence Community.',
         url: 'https://www.usenovai.live/us-intel',
         siteName: 'Novai Intelligence',
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
                 url: 'https://www.usenovai.live/us-intel-header.png',
                 width: 1200,
                 height: 630,
-                alt: 'US Intelligence Command - Novai Intelligence',
+                alt: 'US Intel - Novai Intelligence',
             },
         ],
         locale: 'en_US',
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'US INTELLIGENCE COMMAND',
+        title: 'US INTEL | Novai Intelligence',
         description: 'Real-time intelligence from CIA, FBI, NSA, DOD, and the full US Intelligence Community.',
         images: ['https://www.usenovai.live/us-intel-header.png'],
         creator: '@novai_intel',
