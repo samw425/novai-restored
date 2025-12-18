@@ -24,6 +24,14 @@ export default function WarRoomPage() {
     const [russiaUkraineArticles, setRussiaUkraineArticles] = useState<Article[]>([]);
     const [warFeedsLoading, setWarFeedsLoading] = useState(false);
 
+    // Pagination for War Feeds
+    const [igPage, setIgPage] = useState(1);
+    const [ruPage, setRuPage] = useState(1);
+    const [hasMoreIg, setHasMoreIg] = useState(true);
+    const [hasMoreRu, setHasMoreRu] = useState(true);
+    const [loadingIg, setLoadingIg] = useState(false);
+    const [loadingRu, setLoadingRu] = useState(false);
+
     // Initial Load
     useEffect(() => {
         const fetchData = async () => {
@@ -86,6 +94,51 @@ export default function WarRoomPage() {
             fetchWarFeeds();
         }
     }, [activeTab]);
+
+    // Load More Handlers for War Feeds
+    const loadMoreIg = async () => {
+        if (loadingIg || !hasMoreIg) return;
+        setLoadingIg(true);
+        try {
+            const nextPage = igPage + 1;
+            const res = await fetch(`/api/feed/war-room?category=israel-gaza&limit=15&page=${nextPage}`);
+            const data = await res.json();
+
+            if (data.items && data.items.length > 0) {
+                setIsraelGazaArticles(prev => [...prev, ...data.items]);
+                setIgPage(nextPage);
+                setHasMoreIg(data.items.length >= 15);
+            } else {
+                setHasMoreIg(false);
+            }
+        } catch (e) {
+            console.error('Failed to load more IG:', e);
+        } finally {
+            setLoadingIg(false);
+        }
+    };
+
+    const loadMoreRu = async () => {
+        if (loadingRu || !hasMoreRu) return;
+        setLoadingRu(true);
+        try {
+            const nextPage = ruPage + 1;
+            const res = await fetch(`/api/feed/war-room?category=russia-ukraine&limit=15&page=${nextPage}`);
+            const data = await res.json();
+
+            if (data.items && data.items.length > 0) {
+                setRussiaUkraineArticles(prev => [...prev, ...data.items]);
+                setRuPage(nextPage);
+                setHasMoreRu(data.items.length >= 15);
+            } else {
+                setHasMoreRu(false);
+            }
+        } catch (e) {
+            console.error('Failed to load more RU:', e);
+        } finally {
+            setLoadingRu(false);
+        }
+    };
 
     // Infinite Scroll Load
     const loadMore = async () => {
@@ -317,8 +370,23 @@ export default function WarRoomPage() {
                             ) : (
                                 <div>
                                     {israelGazaArticles.map(article => (
-                                        <FeedCard key={article.id} article={article} />
+                                        <FeedCard key={`${article.id}-${Math.random()}`} article={article} />
                                     ))}
+
+                                    <div className="pt-6 flex justify-center">
+                                        {hasMoreIg ? (
+                                            <button
+                                                onClick={loadMoreIg}
+                                                disabled={loadingIg}
+                                                className="px-4 py-2 bg-slate-100 text-slate-600 text-xs font-bold rounded-full hover:bg-slate-200 transition-colors flex items-center gap-2"
+                                            >
+                                                {loadingIg ? <Loader2 size={12} className="animate-spin" /> : <ArrowUp size={12} className="rotate-180" />}
+                                                LOAD MORE INTEL
+                                            </button>
+                                        ) : (
+                                            <span className="text-xs text-slate-300 font-mono">END OF STREAM</span>
+                                        )}
+                                    </div>
                                 </div>
                             )}
                         </div>
@@ -339,8 +407,23 @@ export default function WarRoomPage() {
                             ) : (
                                 <div>
                                     {russiaUkraineArticles.map(article => (
-                                        <FeedCard key={article.id} article={article} />
+                                        <FeedCard key={`${article.id}-${Math.random()}`} article={article} />
                                     ))}
+
+                                    <div className="pt-6 flex justify-center">
+                                        {hasMoreRu ? (
+                                            <button
+                                                onClick={loadMoreRu}
+                                                disabled={loadingRu}
+                                                className="px-4 py-2 bg-slate-100 text-slate-600 text-xs font-bold rounded-full hover:bg-slate-200 transition-colors flex items-center gap-2"
+                                            >
+                                                {loadingRu ? <Loader2 size={12} className="animate-spin" /> : <ArrowUp size={12} className="rotate-180" />}
+                                                LOAD MORE INTEL
+                                            </button>
+                                        ) : (
+                                            <span className="text-xs text-slate-300 font-mono">END OF STREAM</span>
+                                        )}
+                                    </div>
                                 </div>
                             )}
                         </div>
