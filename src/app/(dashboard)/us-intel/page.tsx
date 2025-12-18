@@ -649,7 +649,7 @@ export default function USIntelPage() {
                             <span className="text-xs font-mono text-emerald-400 uppercase tracking-widest">LIVE INTELLIGENCE FEED</span>
                         </div>
                         <h1 className="text-4xl md:text-5xl font-black text-white mb-3 tracking-tight">
-                            US INTEL
+                            US INTELLIGENCE COMMAND
                         </h1>
                         <p className="text-slate-300 text-lg max-w-2xl">
                             Real-time intelligence from CIA, FBI, NSA, DOD, and the full US Intelligence Community.
