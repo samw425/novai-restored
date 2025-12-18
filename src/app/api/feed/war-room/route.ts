@@ -30,9 +30,9 @@ export async function GET(request: Request) {
 
             // Sub-filtering for specific conflicts
             if (category === 'israel-gaza') {
-                targetFeeds = targetFeeds.filter(f => f.id === 'jpost-war' || f.id === 'times-israel' || f.id === 'aljazeera-war');
+                targetFeeds = targetFeeds.filter(f => f.id === 'gaza-war-1' || f.id === 'gaza-war-2' || f.id === 'gaza-war-3');
             } else if (category === 'russia-ukraine') {
-                targetFeeds = targetFeeds.filter(f => f.id === 'kyiv-independent' || f.id === 'bbc-europe');
+                targetFeeds = targetFeeds.filter(f => f.id === 'ukraine-war-1' || f.id === 'ukraine-war-2' || f.id === 'ukraine-war-3');
             }
 
             const feedPromises = targetFeeds.map(async (feedSource) => {

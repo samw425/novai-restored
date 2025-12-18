@@ -94,21 +94,18 @@ export const RSS_FEEDS: FeedSource[] = [
     { id: 'doj-news', name: 'DOJ News', url: 'https://www.justice.gov/news/rss', category: 'us-intel', priority: 10, region: 'US' },
 
     // ========== CURRENT WARS (Priority 10) ==========
-    // Israel / Gaza
-    { id: 'jpost-war', name: 'Jerusalem Post', url: 'https://www.jpost.com/rss/rssfeedsheadlines.aspx', category: 'current-wars', priority: 10, region: 'Global' },
-    { id: 'times-israel', name: 'Times of Israel', url: 'https://www.timesofisrael.com/feed/', category: 'current-wars', priority: 10, region: 'Global' },
-    { id: 'aljazeera-war', name: 'Al Jazeera', url: 'https://www.aljazeera.com/xml/rss/all.xml', category: 'current-wars', priority: 10, region: 'Global' },
+    // Israel / Gaza - WAR-SPECIFIC FEEDS (Google News filtered for war keywords)
+    { id: 'gaza-war-1', name: 'Gaza War News', url: 'https://news.google.com/rss/search?q=Gaza+War+IDF+Hamas&hl=en-US&gl=US&ceid=US:en', category: 'current-wars', priority: 10, region: 'Global' },
+    { id: 'gaza-war-2', name: 'Israel Hamas War', url: 'https://news.google.com/rss/search?q=Israel+Hamas+War+military&hl=en-US&gl=US&ceid=US:en', category: 'current-wars', priority: 10, region: 'Global' },
+    { id: 'gaza-war-3', name: 'Gaza Strikes', url: 'https://news.google.com/rss/search?q=Gaza+airstrike+OR+bombing+OR+offensive&hl=en-US&gl=US&ceid=US:en', category: 'current-wars', priority: 10, region: 'Global' },
 
-    // Russia / Ukraine
-    // Russia / Ukraine
-    { id: 'kyiv-independent', name: 'Kyiv Independent', url: 'https://kyivindependent.com/feed/', category: 'current-wars', priority: 10, region: 'Europe' },
-    { id: 'bbc-europe', name: 'BBC Europe', url: 'https://feeds.bbci.co.uk/news/world/europe/rss.xml', category: 'current-wars', priority: 10, region: 'Europe' },
-    { id: 'mosecow-times', name: 'The Moscow Times', url: 'https://www.themoscowtimes.com/rss/news', category: 'current-wars', priority: 9, region: 'Europe' },
-    { id: 'meduza-en', name: 'Meduza', url: 'https://meduza.io/rss/en/all', category: 'current-wars', priority: 9, region: 'Europe' },
+    // Russia / Ukraine - WAR-SPECIFIC FEEDS
+    { id: 'ukraine-war-1', name: 'Ukraine War News', url: 'https://news.google.com/rss/search?q=Ukraine+War+Russia+military&hl=en-US&gl=US&ceid=US:en', category: 'current-wars', priority: 10, region: 'Europe' },
+    { id: 'ukraine-war-2', name: 'Ukraine Front Lines', url: 'https://news.google.com/rss/search?q=Ukraine+frontline+Kyiv+offensive&hl=en-US&gl=US&ceid=US:en', category: 'current-wars', priority: 10, region: 'Europe' },
+    { id: 'ukraine-war-3', name: 'Russia Ukraine Strikes', url: 'https://news.google.com/rss/search?q=Russia+Ukraine+drone+strike+OR+missile&hl=en-US&gl=US&ceid=US:en', category: 'current-wars', priority: 10, region: 'Europe' },
 
-    // Middle East / Conflict
-    { id: 'middle-east-eye', name: 'Middle East Eye', url: 'https://www.middleeasteye.net/rss', category: 'current-wars', priority: 9, region: 'Global' },
-    { id: 'al-monitor', name: 'Al-Monitor', url: 'https://www.al-monitor.com/rss', category: 'current-wars', priority: 9, region: 'Global' },
+    // Backup sources (still war-focused)
+    { id: 'middle-east-war', name: 'Middle East Conflict', url: 'https://news.google.com/rss/search?q=Middle+East+War+conflict+military&hl=en-US&gl=US&ceid=US:en', category: 'current-wars', priority: 9, region: 'Global' },
 
     // ========== DEFENSE & STRATEGIC STUDIES (Priority 10) ==========
     { id: 'defense-news', name: 'Defense News', url: 'https://www.defensenews.com/arc/outboundfeeds/rss/', category: 'us-intel', priority: 10, region: 'US' },
