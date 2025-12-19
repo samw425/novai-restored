@@ -366,7 +366,7 @@ export function Sidebar() {
                             );
                         })}
 
-                        {/* 5. Earnings Hub - DISABLED
+                        {/* 5. Earnings Hub */}
                         {platformLinks.filter(link => link.id === 'earnings').map((link) => {
                             const isActive = pathname === link.href;
                             return (
@@ -391,7 +391,6 @@ export function Sidebar() {
                                 </Tooltip>
                             );
                         })}
-                        */}
 
                         {/* 6. Video Feed */}
                         <Tooltip>
