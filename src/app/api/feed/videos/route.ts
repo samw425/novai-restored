@@ -32,10 +32,18 @@ export async function GET() {
             return false;
         });
 
-        return NextResponse.json({ videos: balancedVideos });
+        return NextResponse.json({ videos: balancedVideos }, {
+            headers: {
+                'Cache-Control': 's-maxage=300, stale-while-revalidate=900',
+            },
+        });
     } catch (error) {
         console.error('Video Feed API Error:', error);
         // Fallback to static data if RSS fails
-        return NextResponse.json({ videos: LIVE_VIDEOS });
+        return NextResponse.json({ videos: LIVE_VIDEOS }, {
+            headers: {
+                'Cache-Control': 's-maxage=300, stale-while-revalidate=900',
+            },
+        });
     }
 }

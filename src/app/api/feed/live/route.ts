@@ -93,6 +93,10 @@ export async function GET(request: Request) {
                         count: finalArticles.length,
                         source: 'supabase',
                         lastUpdate: new Date().toISOString()
+                    }, {
+                        headers: {
+                            'Cache-Control': 's-maxage=60, stale-while-revalidate=300',
+                        },
                     });
                 }
             } catch (dbErr) {
@@ -260,6 +264,10 @@ export async function GET(request: Request) {
             count: articles.length,
             cached: !shouldRefresh,
             lastUpdate: new Date(lastFetchTime).toISOString()
+        }, {
+            headers: {
+                'Cache-Control': 's-maxage=60, stale-while-revalidate=300',
+            },
         });
     } catch (error: any) {
         console.error('Feed API Error:', error);

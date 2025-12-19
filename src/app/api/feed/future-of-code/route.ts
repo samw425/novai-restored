@@ -151,6 +151,10 @@ export async function GET(request: Request) {
         return NextResponse.json({
             items: paginatedItems,
             hasMore: true
+        }, {
+            headers: {
+                'Cache-Control': 's-maxage=120, stale-while-revalidate=600',
+            },
         });
 
     } catch (error) {

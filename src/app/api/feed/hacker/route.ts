@@ -31,6 +31,10 @@ export async function GET() {
                 articles: cachedArticles,
                 cached: true,
                 timestamp: new Date().toISOString()
+            }, {
+                headers: {
+                    'Cache-Control': 's-maxage=120, stale-while-revalidate=600',
+                },
             });
         }
 
@@ -110,6 +114,10 @@ export async function GET() {
             articles: allArticles,
             cached: false,
             timestamp: new Date().toISOString()
+        }, {
+            headers: {
+                'Cache-Control': 's-maxage=120, stale-while-revalidate=600',
+            },
         });
 
     } catch (error) {

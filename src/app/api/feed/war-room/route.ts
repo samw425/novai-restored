@@ -67,10 +67,14 @@ export async function GET(request: Request) {
             const paginatedItems = allItems.slice(startIndex, endIndex);
 
             return NextResponse.json({
-                items: paginatedItems, // Return as 'items' for standard feed consumption
+                items: paginatedItems,
                 total: allItems.length,
                 page,
                 totalPages: Math.ceil(allItems.length / limit)
+            }, {
+                headers: {
+                    'Cache-Control': 's-maxage=120, stale-while-revalidate=600',
+                },
             });
         }
 
@@ -87,6 +91,10 @@ export async function GET(request: Request) {
             total: incidents.length,
             page,
             totalPages: Math.ceil(incidents.length / limit)
+        }, {
+            headers: {
+                'Cache-Control': 's-maxage=120, stale-while-revalidate=600',
+            },
         });
     } catch (error) {
         console.error('War Room API Error:', error);
