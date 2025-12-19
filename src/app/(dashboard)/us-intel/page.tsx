@@ -615,12 +615,36 @@ export default function USIntelPage() {
         }
     }, [page]);
 
-    // Real-time Polling (every 15 seconds)
+    // Real-time Polling - ONLY when tab is visible, every 60 seconds
     useEffect(() => {
-        const interval = setInterval(() => {
-            fetchFeed(1, true);
-        }, 15000);
-        return () => clearInterval(interval);
+        let interval: NodeJS.Timeout | null = null;
+
+        const startPolling = () => {
+            if (interval) clearInterval(interval);
+            interval = setInterval(() => {
+                if (document.visibilityState === 'visible') {
+                    fetchFeed(1, true);
+                }
+            }, 60000); // Reduced from 15s to 60s
+        };
+
+        const handleVisibility = () => {
+            if (document.visibilityState === 'visible') {
+                fetchFeed(1, true); // Refresh when tab becomes visible
+                startPolling();
+            } else if (interval) {
+                clearInterval(interval);
+                interval = null;
+            }
+        };
+
+        document.addEventListener('visibilitychange', handleVisibility);
+        startPolling();
+
+        return () => {
+            document.removeEventListener('visibilitychange', handleVisibility);
+            if (interval) clearInterval(interval);
+        };
     }, [fetchFeed]);
 
     return (

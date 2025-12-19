@@ -40,8 +40,12 @@ export default function GlobalDemographicsPage() {
         };
 
         fetchData();
-        // Poll every 5 seconds for "live" updates
-        const interval = setInterval(fetchData, 5000);
+        // Poll only when tab is visible, every 2 minutes (reduced from 5 seconds!)
+        const interval = setInterval(() => {
+            if (document.visibilityState === 'visible') {
+                fetchData();
+            }
+        }, 120000);
         return () => clearInterval(interval);
     }, []);
 

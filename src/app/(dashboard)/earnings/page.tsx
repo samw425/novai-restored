@@ -159,8 +159,12 @@ function LiveWire({ forcedFilter, onSelect }: LiveWireProps) {
     useEffect(() => {
         setPage(1);
         fetchFeed(1, false);
-        // Poll every 15 seconds for new events
-        const interval = setInterval(() => fetchFeed(1, false), 15000);
+        // Poll only when tab is visible, every 2 minutes (reduced from 15s)
+        const interval = setInterval(() => {
+            if (document.visibilityState === 'visible') {
+                fetchFeed(1, false);
+            }
+        }, 120000);
         return () => clearInterval(interval);
     }, [fetchFeed]);
 
