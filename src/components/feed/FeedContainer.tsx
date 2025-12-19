@@ -139,7 +139,7 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
                 const count = await checkNewArticles(articles[0].id);
                 if (count > 0) setNewCount(prev => prev + count);
             }
-        }, 120000); // Changed from 15000 (15s) to 120000 (2 min)
+        }, 300000); // Changed from 120s (2 min) to 300s (5 min) to reduce CPU
         return () => clearInterval(interval);
     }, [articles, viewMode]);
 

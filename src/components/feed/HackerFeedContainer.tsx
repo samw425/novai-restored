@@ -64,7 +64,7 @@ export function HackerFeedContainer() {
                     }
                 } catch (e) { }
             }
-        }, 120000); // Changed from 30s to 120s
+        }, 300000); // Changed from 120s to 300s (5 min) to reduce CPU
         return () => clearInterval(interval);
     }, [articles]);
 

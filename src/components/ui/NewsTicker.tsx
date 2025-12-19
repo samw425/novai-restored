@@ -22,7 +22,7 @@ export function NewsTicker() {
         };
         loadHeadlines();
         // Refresh every minute
-        const interval = setInterval(loadHeadlines, 60000);
+        const interval = setInterval(loadHeadlines, 300000); // Poll every 5 min (was 60s)
         return () => clearInterval(interval);
     }, []);
 

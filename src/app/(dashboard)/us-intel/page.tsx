@@ -625,7 +625,7 @@ export default function USIntelPage() {
                 if (document.visibilityState === 'visible') {
                     fetchFeed(1, true);
                 }
-            }, 60000); // Reduced from 15s to 60s
+            }, 180000); // Reduced from 60s to 180s (3 min) to lower CPU
         };
 
         const handleVisibility = () => {

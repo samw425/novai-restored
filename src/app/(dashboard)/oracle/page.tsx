@@ -44,8 +44,9 @@ export default function OraclePage() {
         };
 
         fetchData();
-        const interval = setInterval(fetchData, 30000); // Poll every 30s
-        return () => clearInterval(interval);
+        // DISABLED: Polling removed to reduce CPU usage - Pro feature doesn't need real-time
+        // const interval = setInterval(fetchData, 30000);
+        // return () => clearInterval(interval);
     }, []);
 
     // Simulation Effect: "Processing" the feed

@@ -39,7 +39,7 @@ export default function DeepSignalsPage() {
         };
 
         fetchData();
-        const interval = setInterval(fetchData, 60000); // Poll every 60s
+        const interval = setInterval(fetchData, 300000); // Poll every 5 min (was 60s)
         return () => clearInterval(interval);
     }, []);
 
