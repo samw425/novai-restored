@@ -51,22 +51,20 @@ export function HackerFeedContainer() {
         loadArticles(true);
     }, []);
 
-    // Polling for new items
+    // Polling for new items (ONLY when tab is visible, every 2 min)
     useEffect(() => {
         const interval = setInterval(async () => {
-            if (articles.length > 0) {
-                // We can reuse the checkNewArticles logic if we want, or just re-fetch
-                // For now, let's just re-fetch silently to check count
+            if (document.visibilityState === 'visible' && articles.length > 0) {
                 try {
                     const response = await fetch('/api/feed/hacker');
                     const data = await response.json();
                     const latestId = data.articles?.[0]?.id;
                     if (latestId && latestId !== articles[0].id) {
-                        setNewCount(prev => prev + 1); // Simplified count
+                        setNewCount(prev => prev + 1);
                     }
                 } catch (e) { }
             }
-        }, 30000); // 30s check
+        }, 120000); // Changed from 30s to 120s
         return () => clearInterval(interval);
     }, [articles]);
 

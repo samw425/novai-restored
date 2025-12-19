@@ -113,8 +113,12 @@ export default function LatestReleases({ onSelect }: LatestReleasesProps) {
         }
         fetchData();
 
-        // Poll for updates every 30 seconds
-        const interval = setInterval(fetchData, 30000);
+        // Poll for updates only when visible, every 2 min (reduced from 30s)
+        const interval = setInterval(() => {
+            if (document.visibilityState === 'visible') {
+                fetchData();
+            }
+        }, 120000);
         return () => clearInterval(interval);
     }, []);
 

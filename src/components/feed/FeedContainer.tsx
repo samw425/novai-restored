@@ -128,16 +128,18 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
         }
     }, [inView, hasMore, loading, loadArticles, viewMode]);
 
-    // Poll for new articles every 15s (Only in Live Mode)
+    // Poll for new articles every 2 minutes (ONLY when tab is visible)
+    // CRITICAL: Reduced from 15s to prevent CPU overuse
     useEffect(() => {
         if (viewMode !== 'live') return;
 
         const interval = setInterval(async () => {
-            if (articles.length > 0) {
+            // Only poll if tab is visible
+            if (document.visibilityState === 'visible' && articles.length > 0) {
                 const count = await checkNewArticles(articles[0].id);
                 if (count > 0) setNewCount(prev => prev + count);
             }
-        }, 15000);
+        }, 120000); // Changed from 15000 (15s) to 120000 (2 min)
         return () => clearInterval(interval);
     }, [articles, viewMode]);
 
