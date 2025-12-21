@@ -33,9 +33,13 @@ export const RSS_FEEDS: FeedSource[] = [
     { id: 'cnbc-tech', name: 'CNBC Technology', url: 'https://www.cnbc.com/id/19854910/device/rss/rss.html', category: 'market', priority: 8, region: 'US' },
     { id: 'seeking-alpha-tech', name: 'Seeking Alpha Tech', url: 'https://seekingalpha.com/feed.xml', category: 'market', priority: 8, region: 'US' },
     { id: 'investors-business-daily', name: 'Investors Business Daily', url: 'https://www.investors.com/feed/', category: 'market', priority: 8, region: 'US' },
-    { id: 'wsj-tech', name: 'WSJ Technology', url: 'https://feeds.a.dj.com/rss/RSSWSJD.xml', category: 'market', priority: 9, region: 'US' },
-    { id: 'ft-tech', name: 'Financial Times Tech', url: 'https://www.ft.com/technology?format=rss', category: 'market', priority: 9, region: 'Europe' },
-    { id: 'economist-science', name: 'The Economist Sci/Tech', url: 'https://www.economist.com/science-and-technology/rss.xml', category: 'market', priority: 8, region: 'Global' },
+    // REMOVED: WSJ, FT, Economist - paywalled
+    // FREE ALTERNATIVES:
+    { id: 'reuters-tech', name: 'Reuters Tech', url: 'https://www.reutersagency.com/feed/?best-topics=tech\u0026post_type=best', category: 'market', priority: 9, region: 'Global' },
+    { id: 'ap-tech', name: 'AP Technology', url: 'https://rsshub.app/apnews/topics/technology', category: 'market', priority: 9, region: 'US' },
+    { id: 'bbc-tech', name: 'BBC Technology', url: 'https://feeds.bbci.co.uk/news/technology/rss.xml', category: 'market', priority: 9, region: 'Europe' },
+    { id: 'engadget', name: 'Engadget', url: 'https://www.engadget.com/rss.xml', category: 'market', priority: 8, region: 'US' },
+    { id: 'zdnet', name: 'ZDNet', url: 'https://www.zdnet.com/news/rss.xml', category: 'market', priority: 8, region: 'US' },
     { id: 'business-insider-tech', name: 'Business Insider Tech', url: 'https://feeds.businessinsider.com/type/news/category/tech', category: 'market', priority: 7, region: 'US' },
     { id: 'forbes-tech', name: 'Forbes Tech', url: 'https://www.forbes.com/technology/feed/', category: 'market', priority: 8, region: 'US' },
 
@@ -79,7 +83,7 @@ export const RSS_FEEDS: FeedSource[] = [
     { id: 'mit-tech-review', name: 'MIT Tech Review', url: 'https://www.technologyreview.com/topic/artificial-intelligence/feed', category: 'ai', priority: 9, region: 'US' },
     { id: 'last-week-in-ai', name: 'Last Week in AI', url: 'https://lastweekin.ai/feed', category: 'ai', priority: 8, region: 'Global' },
     { id: 'ben-evans', name: 'Ben Evans', url: 'https://www.ben-evans.com/benedictevans?format=rss', category: 'ai', priority: 8, region: 'Europe' },
-    { id: 'stratechery', name: 'Stratechery', url: 'https://stratechery.com/feed/', category: 'market', priority: 9, region: 'US' },
+    // REMOVED: Stratechery - subscription only
 
     // ========== US INTELLIGENCE AGENCIES (Priority 10) ==========
     { id: 'cia-news', name: 'CIA News', url: 'https://news.google.com/rss/search?q=site:cia.gov&hl=en-US&gl=US&ceid=US:en', category: 'us-intel', priority: 10, region: 'US' },
@@ -121,10 +125,12 @@ export const RSS_FEEDS: FeedSource[] = [
 
     // ========== GLOBAL INTELLIGENCE & GEOPOLITICS (Priority 10) ==========
     { id: 'foreign-policy', name: 'Foreign Policy', url: 'https://foreignpolicy.com/feed/', category: 'us-intel', priority: 10, region: 'Global' },
-    { id: 'foreign-affairs', name: 'Foreign Affairs', url: 'https://www.foreignaffairs.com/rss.xml', category: 'us-intel', priority: 10, region: 'Global' },
+    // REMOVED: Foreign Affairs - paywall
     { id: 'the-diplomat', name: 'The Diplomat', url: 'https://thediplomat.com/feed/', category: 'us-intel', priority: 9, region: 'Asia' },
     { id: 'scmp-tech', name: 'South China Morning Post', url: 'https://www.scmp.com/rss/318421/feed', category: 'market', priority: 9, region: 'Asia' },
-    { id: 'nikkei-asia', name: 'Nikkei Asia', url: 'https://asia.nikkei.com/rss/feed/nar', category: 'market', priority: 9, region: 'Asia' },
+    // FREE ASIA ALTERNATIVES (replacing Nikkei Asia):
+    { id: 'japan-times', name: 'Japan Times', url: 'https://www.japantimes.co.jp/feed/', category: 'market', priority: 8, region: 'Asia' },
+    { id: 'channel-news-asia', name: 'Channel News Asia', url: 'https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml\u0026category=6511', category: 'market', priority: 8, region: 'Asia' },
     { id: 'al-jazeera-english', name: 'Al Jazeera English', url: 'https://www.aljazeera.com/xml/rss/all.xml', category: 'market', priority: 9, region: 'Global' },
     { id: 'dw-news', name: 'Deutsche Welle', url: 'https://rss.dw.com/xml/rss-en-all', category: 'market', priority: 8, region: 'Europe' },
     { id: 'france24', name: 'France 24', url: 'https://www.france24.com/en/rss', category: 'market', priority: 8, region: 'Europe' },
@@ -140,7 +146,7 @@ export const RSS_FEEDS: FeedSource[] = [
 
     // ========== NEW SOURCES (Broadening Scope) ==========
     { id: 'semafor-tech', name: 'Semafor Tech', url: 'https://www.semafor.com/feed/technology', category: 'market', priority: 9, region: 'US' },
-    { id: 'information-tech', name: 'The Information', url: 'https://www.theinformation.com/feed', category: 'market', priority: 10, region: 'US' },
+    // REMOVED: The Information - hard paywall
     { id: 'axios-tech', name: 'Axios Tech', url: 'https://api.axios.com/feed/technology', category: 'market', priority: 8, region: 'US' },
     { id: 'qz-tech', name: 'Quartz Tech', url: 'https://qz.com/emails/quartz-obsession/feed', category: 'market', priority: 8, region: 'Global' },
     { id: 'ieee-spectrum', name: 'IEEE Spectrum', url: 'https://spectrum.ieee.org/feeds/feed.rss', category: 'tools', priority: 9, region: 'Global' },
@@ -149,7 +155,7 @@ export const RSS_FEEDS: FeedSource[] = [
     { id: 'tomshardware', name: 'Toms Hardware', url: 'https://www.tomshardware.com/feeds/all', category: 'tools', priority: 7, region: 'US' },
     { id: '9to5mac', name: '9to5Mac', url: 'https://9to5mac.com/feed/', category: 'market', priority: 7, region: 'US' },
     { id: 'macrumors', name: 'MacRumors', url: 'https://www.macrumors.com/macrumors.xml', category: 'market', priority: 7, region: 'US' },
-    { id: 'stratechery-daily', name: 'Stratechery Daily', url: 'https://stratechery.com/feed/', category: 'market', priority: 9, region: 'US' },
+    // REMOVED: Stratechery Daily - subscription only
     { id: 'platformer', name: 'Platformer', url: 'https://www.platformer.news/feed', category: 'market', priority: 9, region: 'US' },
     { id: '404-media', name: '404 Media', url: 'https://www.404media.co/rss/', category: 'market', priority: 9, region: 'US' },
 
@@ -191,6 +197,68 @@ export const RSS_FEEDS: FeedSource[] = [
     // Legal Analysis
     { id: 'competition-policy-intl', name: 'Competition Policy Intl', url: 'https://www.competitionpolicyinternational.com/feed/', category: 'antitrust', priority: 8, region: 'Global' },
     { id: 'mlexwatch', name: 'MLex Antitrust', url: 'https://mlexwatch.com/feed/', category: 'antitrust', priority: 8, region: 'Global' },
+
+    // ========== ADDITIONAL FREE SOURCES (High Quality) ==========
+    // Major Tech News (All Free)
+    { id: 'cnet', name: 'CNET', url: 'https://www.cnet.com/rss/news/', category: 'market', priority: 8, region: 'US' },
+    { id: 'pcmag', name: 'PCMag', url: 'https://www.pcmag.com/rss', category: 'tools', priority: 7, region: 'US' },
+    { id: 'mashable', name: 'Mashable', url: 'https://mashable.com/feeds/rss/all', category: 'market', priority: 7, region: 'US' },
+    { id: 'gizmodo', name: 'Gizmodo', url: 'https://gizmodo.com/rss', category: 'market', priority: 7, region: 'US' },
+    { id: 'lifehacker', name: 'Lifehacker', url: 'https://lifehacker.com/rss', category: 'tools', priority: 6, region: 'US' },
+
+    // AI-Specific (All Free)
+    { id: 'marktechpost', name: 'MarkTechPost AI', url: 'https://www.marktechpost.com/feed/', category: 'ai', priority: 8, region: 'Global' },
+    { id: 'synced-ai', name: 'Synced AI', url: 'https://syncedreview.com/feed/', category: 'ai', priority: 8, region: 'Global' },
+    { id: 'ai-business', name: 'AI Business', url: 'https://aibusiness.com/rss.xml', category: 'ai', priority: 8, region: 'Global' },
+    { id: 'towards-ai', name: 'Towards AI', url: 'https://pub.towardsai.net/feed', category: 'ai', priority: 7, region: 'Global' },
+
+    // Security Additional (All Free)
+    { id: 'sans-isc', name: 'SANS ISC', url: 'https://isc.sans.edu/rssfeed.xml', category: 'security', priority: 9, region: 'Global' },
+    { id: 'talos-intel', name: 'Cisco Talos', url: 'https://blog.talosintelligence.com/feeds/posts/default', category: 'security', priority: 9, region: 'US' },
+    { id: 'sophos-naked', name: 'Sophos Naked Security', url: 'https://nakedsecurity.sophos.com/feed/', category: 'security', priority: 8, region: 'Global' },
+
+    // Global/International News (All Free)
+    { id: 'npr-tech', name: 'NPR Technology', url: 'https://feeds.npr.org/1019/rss.xml', category: 'market', priority: 8, region: 'US' },
+    { id: 'abc-tech', name: 'ABC News Tech', url: 'https://abcnews.go.com/abcnews/technologyheadlines', category: 'market', priority: 7, region: 'US' },
+    { id: 'cbc-tech', name: 'CBC Technology', url: 'https://www.cbc.ca/cmlink/rss-technology', category: 'market', priority: 7, region: 'Global' },
+    { id: 'sky-tech', name: 'Sky News Tech', url: 'https://feeds.skynews.com/feeds/rss/technology.xml', category: 'market', priority: 7, region: 'Europe' },
+
+    // Startup/VC News (All Free)
+    { id: 'crunchbase', name: 'Crunchbase News', url: 'https://news.crunchbase.com/feed/', category: 'market', priority: 8, region: 'US' },
+    { id: 'eu-startups', name: 'EU Startups', url: 'https://www.eu-startups.com/feed/', category: 'market', priority: 7, region: 'Europe' },
+
+    // Research & Academic (All Free)
+    { id: 'acm-news', name: 'ACM TechNews', url: 'https://technews.acm.org/feed/', category: 'research', priority: 8, region: 'Global' },
+    { id: 'science-daily-ai', name: 'ScienceDaily AI', url: 'https://www.sciencedaily.com/rss/computers_math/artificial_intelligence.xml', category: 'research', priority: 8, region: 'Global' },
+    { id: 'phys-org-tech', name: 'Phys.org Tech', url: 'https://phys.org/rss-feed/technology-news/', category: 'research', priority: 7, region: 'Global' },
+
+    // ========== MORE INTERNATIONAL SOURCES (Diversity) ==========
+    // Asia-Pacific (All Free)
+    { id: 'abc-au-tech', name: 'ABC Australia Tech', url: 'https://www.abc.net.au/news/feed/51120/rss.xml', category: 'market', priority: 7, region: 'Asia' },
+    { id: 'korea-herald-tech', name: 'Korea Herald Tech', url: 'http://www.koreaherald.com/common/rss_xml.php?ct=102', category: 'market', priority: 7, region: 'Asia' },
+    { id: 'india-times-tech', name: 'Times of India Tech', url: 'https://timesofindia.indiatimes.com/rssfeeds/66949542.cms', category: 'market', priority: 7, region: 'Asia' },
+    { id: 'nzherald-tech', name: 'NZ Herald Tech', url: 'https://www.nzherald.co.nz/arc/outboundfeeds/rss/section/technology/', category: 'market', priority: 6, region: 'Asia' },
+
+    // More Europe (All Free)
+    { id: 'euronews-tech', name: 'Euronews Tech', url: 'https://www.euronews.com/rss?level=vertical&name=next', category: 'market', priority: 8, region: 'Europe' },
+    { id: 'politico-eu-tech', name: 'Politico EU Tech', url: 'https://www.politico.eu/feed/', category: 'policy', priority: 8, region: 'Europe' },
+    { id: 'techeu', name: 'Tech.eu', url: 'https://tech.eu/feed/', category: 'market', priority: 8, region: 'Europe' },
+    { id: 'the-next-web', name: 'The Next Web', url: 'https://thenextweb.com/feed/', category: 'market', priority: 8, region: 'Europe' },
+
+    // More AI Sources (All Free)
+    { id: 'the-decoder', name: 'The Decoder AI', url: 'https://the-decoder.com/feed/', category: 'ai', priority: 8, region: 'Global' },
+    { id: 'import-ai', name: 'Import AI Newsletter', url: 'https://importai.substack.com/feed', category: 'ai', priority: 8, region: 'US' },
+    { id: 'deeplearning-ai', name: 'DeepLearning.AI', url: 'https://www.deeplearning.ai/blog/feed/', category: 'ai', priority: 8, region: 'US' },
+    { id: 'aiweekly', name: 'AI Weekly', url: 'https://aiweekly.co/feed/', category: 'ai', priority: 7, region: 'Global' },
+
+    // More Robotics (All Free)
+    { id: 'robohub', name: 'Robohub', url: 'https://robohub.org/feed/', category: 'robotics', priority: 8, region: 'Global' },
+    { id: 'robotics247', name: 'Robotics 24/7', url: 'https://www.robotics247.com/rss/rss.xml', category: 'robotics', priority: 7, region: 'US' },
+    { id: 'automate-org', name: 'Automate.org', url: 'https://www.automate.org/rss/news', category: 'robotics', priority: 7, region: 'US' },
+
+    // Middle East & Africa (All Free)
+    { id: 'arabnews-tech', name: 'Arab News Tech', url: 'https://www.arabnews.com/taxonomy/term/469/feed', category: 'market', priority: 6, region: 'Global' },
+    { id: 'itnewsafrica', name: 'IT News Africa', url: 'https://www.itnewsafrica.com/feed/', category: 'market', priority: 6, region: 'Global' },
 ];
 
 
