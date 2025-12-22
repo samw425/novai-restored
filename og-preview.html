@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1200, height=630, initial-scale=1.0">
+    <title>Novai Premium OG</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1200px;
+            height: 630px;
+            background-color: #0B0E14; /* Deep Tech Black */
+            color: white;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            display: flex;
+            position: relative;
+        }
+
+        /* --------------------------------------------------
+           BACKGROUND GRID ("Blueprint" Look)
+           -------------------------------------------------- */
+        .grid {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            z-index: 0;
+        }
+
+        /* --------------------------------------------------
+           LEFT SIDE: BRANDING
+           -------------------------------------------------- */
+        .left-panel {
+            flex: 1;
+            padding: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 140px;
+            font-weight: 800;
+            letter-spacing: -6px;
+            line-height: 1;
+            margin-bottom: 24px;
+            /* Subtle Metallic Gradient Text */
+            background: linear-gradient(180deg, #FFFFFF 0%, #94A3B8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 40px rgba(56, 189, 248, 0.15); /* Slight blue glow */
+        }
+
+        .tagline {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 20px;
+            color: #64748B;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .tagline::before {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background: #3B82F6; /* Electric Blue Accent */
+        }
+
+        /* --------------------------------------------------
+           RIGHT SIDE: INTELLIGENCE MODULES
+           -------------------------------------------------- */
+        .right-panel {
+            width: 450px;
+            background: rgba(15, 23, 42, 0.4); /* Glass pane */
+            backdrop-filter: blur(10px);
+            border-left: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px;
+            z-index: 10;
+        }
+
+        .module-list {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .module-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .module-name {
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 24px;
+            color: #E2E8F0;
+        }
+
+        .module-status {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            color: #22D3EE; /* Cyan */
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(34, 211, 238, 0.1);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .blink {
+            width: 6px;
+            height: 6px;
+            background-color: #22D3EE;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #22D3EE;
+        }
+
+        /* --------------------------------------------------
+           FOOTER METADATA
+           -------------------------------------------------- */
+        .footer {
+            position: absolute;
+            bottom: 40px;
+            left: 80px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            color: #475569;
+            z-index: 10;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="grid"></div>
+
+    <div class="left-panel">
+        <div class="logo">NOVAI</div>
+        <div class="tagline">The Global Intelligence Terminal</div>
+    </div>
+
+    <div class="right-panel">
+        <div class="module-list">
+            <div class="module-item">
+                <span class="module-name">Live Markets</span>
+                <div class="module-status"><div class="blink"></div>ACTIVE</div>
+            </div>
+            <div class="module-item">
+                <span class="module-name">US Intelligence</span>
+                <div class="module-status"><div class="blink"></div>ACTIVE</div>
+            </div>
+            <div class="module-item">
+                <span class="module-name">Global Security</span>
+                <div class="module-status"><div class="blink"></div>ACTIVE</div>
+            </div>
+            <div class="module-item">
+                <span class="module-name">Future Tech</span>
+                <div class="module-status"><div class="blink"></div>ACTIVE</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        SYSTEM_ID: NVI-9000 // STATUS: ONLINE // 176 SOURCES CONNECTED
+    </div>
+
+</body>
+</html>

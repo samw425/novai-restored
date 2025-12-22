@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1200, height=630, initial-scale=1.0">
+    <title>Novai Prism OG</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1200px;
+            height: 630px;
+            background-color: #020617;
+            /* Deepest Slate */
+            color: white;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* --------------------------------------------------
+           BACKGROUND: ACTIVE DATA MESH
+           -------------------------------------------------- */
+        .bg-mesh {
+            position: absolute;
+            inset: 0;
+            background-image:
+                radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.15), transparent 70%),
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 100% 100%, 80px 80px, 80px 80px;
+            z-index: 0;
+        }
+
+        .light-beam {
+            position: absolute;
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 800px;
+            background: conic-gradient(from 180deg at 50% 0%, rgba(37, 99, 235, 0.1) -20deg, transparent 0deg, transparent 360deg, rgba(37, 99, 235, 0.1) 20deg);
+            filter: blur(40px);
+            z-index: 1;
+        }
+
+        /* --------------------------------------------------
+           THE PRISM SHIELD
+           -------------------------------------------------- */
+        .shield-wrapper {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            margin-bottom: 40px;
+            z-index: 10;
+            filter: drop-shadow(0 0 50px rgba(37, 99, 235, 0.5));
+            /* Glow behind shield */
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        /* The Glass Effect */
+        .shield-glass {
+            fill: rgba(30, 41, 59, 0.6);
+            /* Semi-transparent Slate */
+            stroke: rgba(147, 197, 253, 0.5);
+            /* Light Blue Bevel */
+            stroke-width: 1.5;
+        }
+
+        .shield-inner-highlight {
+            fill: url(#crystal_gradient);
+            mix-blend-mode: overlay;
+        }
+
+        /* --------------------------------------------------
+           THE RED DOT (Correctly Configured)
+           -------------------------------------------------- */
+        .dot-group {
+            transform: translate(28px, 6px);
+            /* Coordinates for top right inside shield */
+        }
+
+        .pulse-ring {
+            fill: #ef4444;
+            opacity: 0.5;
+            animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+
+        .dot-core {
+            fill: #dc2626;
+            stroke: white;
+            stroke-width: 1.5;
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.8;
+            }
+
+            80%,
+            100% {
+                transform: scale(2.5);
+                opacity: 0;
+            }
+        }
+
+        /* --------------------------------------------------
+           TYPOGRAPHY (High Impact)
+           -------------------------------------------------- */
+        .text-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .title {
+            font-size: 130px;
+            font-weight: 900;
+            letter-spacing: -6px;
+            line-height: 0.9;
+            margin: 0;
+
+            /* Enhanced Chrome Gradient */
+            background: linear-gradient(180deg, #FFFFFF 20%, #CBD5E1 55%, #64748B 90%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+
+            /* Text Shadow for "Pop" */
+            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.8));
+        }
+
+        .tagline {
+            font-size: 26px;
+            font-weight: 600;
+            color: #93C5FD;
+            /* Bright Blue Text */
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-top: 24px;
+
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .tagline::before,
+        .tagline::after {
+            content: '';
+            height: 1px;
+            width: 40px;
+            background: #3B82F6;
+        }
+
+        /* --------------------------------------------------
+           CLICKABILITY CUES (UI Elements)
+           -------------------------------------------------- */
+        .cta-badge {
+            margin-top: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 14px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(4px);
+        }
+
+        .arrow {
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-mesh"></div>
+    <div class="light-beam"></div>
+
+    <div class="content">
+        <!-- Shield Container -->
+        <div class="shield-wrapper">
+            <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="crystal_gradient" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.6" />
+                        <stop offset="50%" stop-color="#3b82f6" stop-opacity="0.2" />
+                        <stop offset="100%" stop-color="#1e3a8a" stop-opacity="0.8" />
+                    </linearGradient>
+                </defs>
+
+                <!-- Base Shield shape -->
+                <path d="M20 4L6 9.5V18C6 26.5 12 34 20 37.5C28 34 34 26.5 34 18V9.5L20 4Z" class="shield-glass" />
+
+                <!-- Inner Highlight for dimensional look -->
+                <path d="M20 6L9 10.5V18C9 24 13 30 20 33C27 30 31 24 31 18V10.5L20 6Z"
+                    class="shield-inner-highlight" />
+
+                <!-- The Red Pulse Dot (Inside Shield) -->
+                <g class="dot-group">
+                    <!-- Center coordinate of dot relative to group -->
+                    <circle cx="0" cy="0" r="4" class="pulse-ring" />
+                    <circle cx="0" cy="0" r="2" class="dot-core" />
+                </g>
+            </svg>
+        </div>
+
+        <div class="text-container">
+            <div class="title">NOVAI</div>
+            <div class="tagline">Global Intelligence</div>
+
+            <div class="cta-badge">
+                <span>Access Live Terminal</span>
+                <span class="arrow">→</span>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

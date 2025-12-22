@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1200, height=630, initial-scale=1.0">
+    <title>Novai Invitation (Perks)</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&family=JetBrains+Mono:wght@500&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1200px;
+            height: 630px;
+            background-color: #020617;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-sizing: border-box;
+            border: 4px solid #3b82f6;
+            box-shadow: inset 0 0 60px rgba(59, 130, 246, 0.4);
+        }
+
+        .bg-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 30%, rgba(37, 99, 235, 0.2), rgba(2, 6, 23, 1) 70%);
+            z-index: 0;
+        }
+
+        .grid-floor {
+            position: absolute;
+            bottom: -250px;
+            left: -20%;
+            width: 140%;
+            height: 800px;
+            background-image:
+                linear-gradient(rgba(59, 130, 246, 0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59, 130, 246, 0.15) 1px, transparent 1px);
+            background-size: 80px 80px;
+            transform: perspective(1000px) rotateX(60deg);
+            mask-image: radial-gradient(circle at 50% 0%, black 40%, transparent 80%);
+            z-index: 0;
+        }
+
+        .content {
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-top: -30px;
+        }
+
+        .logo-wrapper {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 24px;
+            filter: drop-shadow(0 0 30px rgba(37, 99, 235, 0.6));
+        }
+
+        .headline {
+            font-size: 100px;
+            font-weight: 900;
+            line-height: 0.95;
+            letter-spacing: -4px;
+            margin-bottom: 16px;
+            background: linear-gradient(180deg, #FFFFFF 20%, #94A3B8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subhead {
+            font-size: 24px;
+            color: #93C5FD;
+            font-weight: 500;
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+        }
+
+        .access-button {
+            background: #2563EB;
+            color: white;
+            padding: 16px 50px;
+            border-radius: 99px;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 0 30px rgba(37, 99, 235, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* PERKS FOOTER */
+        .perks-footer {
+            position: absolute;
+            bottom: 30px;
+            display: flex;
+            gap: 40px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            color: #94a3b8;
+            background: rgba(15, 23, 42, 0.6);
+            padding: 10px 30px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(4px);
+        }
+
+        .perk-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .check-icon {
+            color: #3b82f6;
+            font-weight: bold;
+        }
+
+        .highlight {
+            color: white;
+            font-weight: 600;
+        }
+
+        .dot-group {
+            transform: translate(28px, 12px);
+        }
+
+        .dot-border {
+            fill: white;
+        }
+
+        .dot-core {
+            fill: #dc2626;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-glow"></div>
+    <div class="grid-floor"></div>
+
+    <div class="content">
+        <div class="logo-wrapper">
+            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 4L6 9.5V18C6 26.5 12 34 20 37.5C28 34 34 26.5 34 18V9.5L20 4Z" fill="#2563EB" />
+                <path d="M20 4L6 9.5V18C6 18.5 6.1 19 6.2 19.5L20 5.5L33.8 19.5C33.9 19 34 18.5 34 18V9.5L20 4Z"
+                    fill="white" fill-opacity="0.2" />
+                <g class="dot-group">
+                    <circle cx="0" cy="0" r="5" class="dot-border" />
+                    <circle cx="0" cy="0" r="3.5" class="dot-core" />
+                </g>
+            </svg>
+        </div>
+
+        <div class="headline">JOIN NOVAI</div>
+        <div class="subhead">Global Intelligence Awaits You</div>
+
+        <div class="access-button">
+            Get Early Access
+        </div>
+    </div>
+
+    <div class="perks-footer">
+        <div class="perk-item">
+            <span class="check-icon">✓</span> <span><span class="highlight">Real-Time</span> Intelligence</span>
+        </div>
+        <div class="perk-item">
+            <span class="check-icon">✓</span> <span><span class="highlight">176+</span> Premium Sources</span>
+        </div>
+        <div class="perk-item">
+            <span class="check-icon">✓</span> <span><span class="highlight">Daily</span> Curated Briefs</span>
+        </div>
+    </div>
+
+</body>
+
+</html>

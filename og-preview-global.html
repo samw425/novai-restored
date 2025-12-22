@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1200, height=630, initial-scale=1.0">
+    <title>Novai Global OG</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1200px;
+            height: 630px;
+            background-color: #020617;
+            /* Slate 950 */
+            color: white;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* --------------------------------------------------
+           BACKGROUND: THE LIVING GLOBE
+           -------------------------------------------------- */
+        .globe-container {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        .world-map {
+            width: 1400px;
+            height: 1400px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.2) 0%, rgba(2, 6, 23, 1) 70%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .latitude {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
+        }
+
+        .lat-1 {
+            width: 1200px;
+            height: 400px;
+        }
+
+        .lat-2 {
+            width: 1200px;
+            height: 800px;
+        }
+
+        .lat-3 {
+            width: 1200px;
+            height: 1200px;
+        }
+
+        /* --------------------------------------------------
+           THE CENTERPIECE
+           -------------------------------------------------- */
+        .hero-container {
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            padding: 60px 100px;
+            border-radius: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        /* LOGO & SHIELD */
+        .logo-row {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .shield-icon {
+            width: 100px;
+            /* Increased size to show detail */
+            height: 100px;
+            filter: drop-shadow(0 0 20px rgba(37, 99, 235, 0.6));
+            position: relative;
+        }
+
+        .logo-svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+        }
+
+        /* Typography */
+        .text-novai {
+            font-size: 100px;
+            font-weight: 900;
+            letter-spacing: -3px;
+            line-height: 1;
+            color: white;
+            background: linear-gradient(180deg, #fff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* THE RED DOT - MATCHING USER IMAGE EXACTLY */
+        .dot-group {
+            /* Position relative to 40x40 SVG coordinate space */
+            transform: translate(28px, 12px);
+        }
+
+        /* Large white ring border */
+        .dot-border {
+            fill: white;
+        }
+
+        /* Red core */
+        .dot-core {
+            fill: #dc2626;
+            /* Deep Red */
+        }
+
+        /* --------------------------------------------------
+           TAGLINE & ACTION
+           -------------------------------------------------- */
+        .tagline-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .tagline-main {
+            font-size: 28px;
+            color: #94a3b8;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .tagline-highlight {
+            color: #60a5fa;
+            font-weight: 600;
+        }
+
+        .action-button {
+            margin-top: 32px;
+            background: linear-gradient(90deg, #2563eb, #1d4ed8);
+            padding: 16px 40px;
+            border-radius: 99px;
+            font-size: 20px;
+            font-weight: 600;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .dot-live {
+            width: 10px;
+            height: 10px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #fff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="globe-container">
+        <div class="world-map">
+            <div class="latitude lat-1"></div>
+            <div class="latitude lat-2"></div>
+            <div class="latitude lat-3"></div>
+        </div>
+    </div>
+
+    <div class="hero-container">
+        <div class="logo-row">
+            <div class="shield-icon">
+                <svg viewBox="0 0 40 40" fill="none" class="logo-svg" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Shield Body -->
+                    <path d="M20 4L6 9.5V18C6 26.5 12 34 20 37.5C28 34 34 26.5 34 18V9.5L20 4Z" fill="#1E40AF" />
+
+                    <!-- Inner Reflection -->
+                    <path d="M20 4L6 9.5V18C6 18.5 6.1 19 6.2 19.5L20 5.5L33.8 19.5C33.9 19 34 18.5 34 18V9.5L20 4Z"
+                        fill="white" fill-opacity="0.1" />
+
+                    <!-- THE DOT - High Fidelity -->
+                    <g class="dot-group">
+                        <!-- White Border Ring (Radius 6) -->
+                        <circle cx="0" cy="0" r="5" class="dot-border" />
+                        <!-- Red Core (Radius 3.5) -->
+                        <circle cx="0" cy="0" r="3.5" class="dot-core" />
+                    </g>
+                </svg>
+            </div>
+            <div class="text-novai">NOVAI</div>
+        </div>
+
+        <div class="tagline-box">
+            <div class="tagline-main">Global Intelligence for the <span class="tagline-highlight">AI Era</span></div>
+
+            <div class="action-button">
+                <div class="dot-live"></div>
+                Join 176+ Live Sources
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

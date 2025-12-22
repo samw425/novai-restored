@@ -40,6 +40,7 @@ description: Novai Intelligence - To-Do List for when we resume work
 - [ ] Mobile experience review
 - [ ] Fix any broken links or feeds
 - [ ] Earnings Hub - verify all data is live
+- [ ] **Create better OG image for /signup page** (link preview image when shared)
 
 ---
 

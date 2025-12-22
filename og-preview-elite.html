@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1200, height=630, initial-scale=1.0">
+    <title>Novai Elite OG</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@900&family=JetBrains+Mono:wght@500&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1200px;
+            height: 630px;
+            background-color: #000000;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Ambient Glow Reflection */
+        .ambient-glow {
+            position: absolute;
+            top: -50%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+            z-index: 1;
+        }
+
+        /* Large Chrome Text */
+        .brand-text {
+            font-size: 180px;
+            font-weight: 900;
+            letter-spacing: -8px;
+            z-index: 10;
+            position: relative;
+
+            /* Metallic Gradient Fill */
+            background: linear-gradient(180deg,
+                    #ffffff 0%,
+                    #e2e8f0 45%,
+                    #64748b 50%,
+                    #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+
+            /* Drop shadow for depth */
+            text-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Sharp Horizon Line */
+        .horizon-line {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+            position: absolute;
+            top: 50%;
+            z-index: 5;
+            mix-blend-mode: overlay;
+        }
+
+        /* Subtext */
+        .subtext {
+            margin-top: 40px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 18px;
+            letter-spacing: 8px;
+            color: #64748b;
+            text-transform: uppercase;
+            z-index: 10;
+            position: relative;
+        }
+
+        /* Access Badge */
+        .badge {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: #94a3b8;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="ambient-glow"></div>
+    <div class="horizon-line"></div>
+
+    <div class="brand-text">NOVAI</div>
+
+    <div class="subtext">Global Intelligence v2.0</div>
+
+    <div class="badge">ACCESS: GRANTED</div>
+
+</body>
+
+</html>
