@@ -92,7 +92,6 @@ export default async function Image() {
                             fontWeight: 900,
                             letterSpacing: '-6px',
                             lineHeight: 1,
-                            color: 'white',
                             backgroundImage: 'linear-gradient(180deg, #FFFFFF 10%, #E2E8F0 50%, #94A3B8 100%)',
                             backgroundClip: 'text',
                             WebkitBackgroundClip: 'text',
