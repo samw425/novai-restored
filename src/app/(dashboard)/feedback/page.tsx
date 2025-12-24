@@ -148,7 +148,7 @@ export default function FeedbackPage() {
                                         )}
                                     </button>
                                     <p className="text-center md:text-left mt-4 text-xs text-slate-400">
-                                        This message will be sent directly to saziz4250@gmail.com
+                                        Your message will be sent directly to the Novai team.
                                     </p>
                                 </div>
                             </form>

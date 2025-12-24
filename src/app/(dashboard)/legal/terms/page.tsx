@@ -56,7 +56,7 @@ export default function TermsOfService() {
 
                 <h3>8. Contact Information</h3>
                 <p>
-                    For legal inquiries or questions regarding these Terms, please contact our legal team at saziz4250@gmail.com.
+                    For legal inquiries or questions regarding these Terms, please contact our legal team at contact@usenovai.live.
                 </p>
             </div>
         </div>

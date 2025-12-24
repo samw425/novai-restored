@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1200, height=630, initial-scale=1.0">
+    <title>OG Preview - War Room</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1200px;
+            height: 630px;
+            background-color: #020617;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-sizing: border-box;
+            border: 4px solid #3b82f6;
+            box-shadow: inset 0 0 60px rgba(59, 130, 246, 0.4);
+        }
+
+        .bg-glow {
+            position: absolute;
+            width: 1400px;
+            height: 1400px;
+            background: radial-gradient(circle, rgba(29, 78, 216, 0.15) 0%, rgba(2, 6, 23, 1) 60%);
+            z-index: 0;
+        }
+
+        .globe-grid {
+            position: absolute;
+            width: 1000px;
+            height: 1000px;
+            border-radius: 50%;
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            transform: perspective(1000px) rotateX(10deg);
+            background: linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px);
+            background-size: 100px 100px;
+            z-index: 0;
+            opacity: 0.6;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10;
+            margin-top: -20px;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 24px;
+            filter: drop-shadow(0 0 25px rgba(37, 99, 235, 0.8));
+        }
+
+        .title {
+            font-size: 100px;
+            font-weight: 900;
+            letter-spacing: -4px;
+            line-height: 1;
+            background: linear-gradient(180deg, #FFFFFF 10%, #E2E8F0 50%, #94A3B8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin: 0;
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 8px;
+            color: #60A5FA;
+            text-transform: uppercase;
+            margin-top: 16px;
+            margin-bottom: 40px;
+            text-shadow: 0 0 10px rgba(96, 165, 250, 0.5);
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            background: rgba(2, 6, 23, 0.8);
+            padding: 8px 24px;
+            border-radius: 6px;
+            border: 1px solid rgba(59, 130, 246, 0.1);
+        }
+
+        .live {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #ef4444;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: #ef4444;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: blink 1s infinite;
+        }
+
+        .latency {
+            color: #3b82f6;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            padding-left: 24px;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .dot-group {
+            transform: translate(28px, 12px);
+        }
+
+        .dot-border {
+            fill: white;
+        }
+
+        .dot-core {
+            fill: #dc2626;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-glow"></div>
+    <div class="globe-grid"></div>
+    <div class="content">
+        <div class="logo">
+            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 4L6 9.5V18C6 26.5 12 34 20 37.5C28 34 34 26.5 34 18V9.5L20 4Z" fill="#2563EB" />
+                <path d="M20 4L6 9.5V18C6 18.5 6.1 19 6.2 19.5L20 5.5L33.8 19.5C33.9 19 34 18.5 34 18V9.5L20 4Z"
+                    fill="white" fill-opacity="0.2" />
+                <g class="dot-group">
+                    <circle cx="0" cy="0" r="5" class="dot-border" />
+                    <circle cx="0" cy="0" r="3.5" class="dot-core" />
+                </g>
+            </svg>
+        </div>
+        <div class="title">WAR ROOM</div>
+        <div class="subtitle">GLOBAL CONFLICT INTEL</div>
+    </div>
+    <div class="footer">
+        <div class="live">
+            <div class="dot"></div>LIVE DATA STREAM
+        </div>
+        <div class="latency">⚡ LOW LATENCY</div>
+    </div>
+</body>
+
+</html>

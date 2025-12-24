@@ -3,84 +3,77 @@ description: Novai Intelligence - To-Do List for when we resume work
 ---
 
 # Novai Intelligence - To-Do List
-**Status:** On Ice (as of Dec 20, 2024)
-**Reason:** CPU usage issues, exploring new project ideas
+**Last Updated:** Dec 23, 2024 @ 7:21 PM
+**Status:** Site live, holding off on deploys (over Fluid CPU limit)
 
 ---
 
-## 🔴 CRITICAL - Before Resuming
+## 🔴 DO NOT DEPLOY UNTIL CPU RESETS
 
-### 1. Fix CPU/Hosting Issues
-- [ ] Set up Cloudflare (free tier) to block bots and cache at edge
-- [ ] Monitor Vercel Fluid CPU usage after billing cycle resets
-- [ ] Consider if Vercel is the right host or if we should move to Netlify/Railway
-
-### 2. Check Site Status
-- [ ] Is the site still live on usenovai.live?
-- [ ] Are all feeds working?
-- [ ] Any error logs in Vercel dashboard?
+- GitHub auto-deploy is **DISCONNECTED**
+- Only deploy with `vercel --prod`
+- Wait for billing cycle to reset before next deploy
 
 ---
 
-## 🟡 HIGH PRIORITY - When Ready
+## 🟡 PENDING WORK (Ready to Deploy When Safe)
 
-### 3. Build Email List
-- [ ] Add prominent newsletter signup
-- [ ] Create lead magnet (e.g., "Weekly AI Intelligence Brief")
-- [ ] Set up email service (ConvertKit free tier, Buttondown, etc.)
+### 1. OG Images for All Pages
+**Goal:** Every page needs its own OG image so link previews look professional.
 
-### 4. SEO & Discoverability
-- [ ] Optimize meta tags on all pages
-- [ ] Submit sitemap to Google Search Console
-- [ ] Add structured data (JSON-LD) for articles
-- [ ] Create cornerstone content pages
+**Two-tier approach:**
+- **Major pages** (custom distinct designs): War Room, US Intel, Earnings, Robotics, Market, AI, Antitrust
+- **Minor pages** (template-based): Support, Feedback, Terms, Privacy, etc.
 
-### 5. Polish Existing Features
-- [ ] Full site audit - check all pages work
-- [ ] Mobile experience review
-- [ ] Fix any broken links or feeds
-- [ ] Earnings Hub - verify all data is live
-- [ ] **Create better OG image for /signup page** (link preview image when shared)
+**Already done:**
+- ✅ `/` (Home) - Globe + Shield design
+- ✅ `/signup` - "Join Novai" + perks footer (code exists, may need cache refresh)
+- ✅ `/us-intel` - PNG static image
+- ✅ `/war-room` - PNG static image
 
----
+**Need to create (33 pages total):**
+- `/earnings` - Stock/earnings theme
+- `/robotics` - Robotics theme
+- `/market` - Market data theme
+- `/global-feed` - AI news theme
+- `/ai` - AI deep dive theme
+- `/anti-trust` - Legal theme
+- `/support` - Support theme
+- All other pages - Use template design
 
-## 🟢 NICE TO HAVE - Future
+**Template file created:** `src/lib/og-template.tsx`
+**HTML previews saved:** `og-previews/` folder
 
-### 6. Monetization Options
-- [ ] Pro tier subscription ($10-20/month)
-  - Already have waitlist infrastructure
-  - Need to define what Pro features include
-- [ ] Affiliate partnerships with AI tools
-- [ ] Sponsored content/brief sections
-- [ ] API access for developers
-
-### 7. Content & Growth
-- [ ] Daily Intelligence Brief automation
-- [ ] Social media presence (Twitter/X, LinkedIn)
-- [ ] Guest posts on tech blogs
-- [ ] Product Hunt launch
-
-### 8. Technical Improvements
-- [ ] Add Supabase for article caching (reduce API calls)
-- [ ] Implement proper 30-day article archive
-- [ ] Add user accounts for personalization
-- [ ] Analytics dashboard (what pages are popular)
+### 2. Signup OG Image Not Showing
+- File exists: `src/app/signup/opengraph-image.tsx`
+- May be caching issue on social platforms
+- Try: Twitter Card Validator, Facebook Debugger after next deploy
 
 ---
 
-## 📊 Current Site Stats (Dec 2024)
-- Live at: usenovai.live
-- Vercel Fluid CPU: ~150% of limit (6h/4h)
-- Known Issues: CPU usage from bot traffic
-- Fixes Deployed: Cache headers, reduced polling, robots.txt updates
+## ✅ COMPLETED (Dec 21-23)
+
+1. Email visibility fixed (removed from feedback, privacy, terms pages)
+2. 176+ RSS feeds added (paywalls removed)
+3. Main OG image updated (Remastered Classic)
+4. GitHub disconnected from Vercel auto-deploy
+5. Last deploy: Dec 23 @ 1:33 AM
 
 ---
 
-## 💡 Notes
-- Support page promises "ad-free" - don't add Google AdSense
-- Pro waitlist exists but not heavily promoted
-- Site has good design/UX, needs traffic
+## 📁 KEY FILES
+
+- **Main OG:** `src/app/opengraph-image.tsx`
+- **Signup OG:** `src/app/signup/opengraph-image.tsx`
+- **OG Template:** `src/lib/og-template.tsx`
+- **HTML Previews:** `og-previews/` folder
+- **RSS Feeds:** `src/config/rss-feeds.ts`
 
 ---
 
-When ready to resume, run `/cpu-optimization-plan` for the full Cloudflare setup guide.
+## ⚠️ CRITICAL REMINDERS
+
+1. **NEVER use `git push`** - triggers automatic Vercel builds
+2. **ONLY use `vercel --prod`** - single manual deploy
+3. **Check CPU usage** before any deploy
+4. **Bundle all changes** into one deploy to minimize usage
