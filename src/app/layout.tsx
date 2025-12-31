@@ -33,12 +33,21 @@ export const metadata: Metadata = {
     url: 'https://usenovai.live',
     siteName: "Novai Intelligence",
     locale: "en_US",
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Novai Intelligence - Global Intelligence For the AI Era',
+      }
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Novai Intelligence",
     description: "Real-time intelligence from 109+ sources. AI news, US Intel, War Room, Antitrust tracking.",
     creator: "@NovaiIntel",
+    images: ['/og-image.png'],
   },
   robots: {
     index: true,
