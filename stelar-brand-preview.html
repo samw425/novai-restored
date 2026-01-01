@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STELAR Brand Preview</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-deep: #0A0A0A;
+            --bg-surface: #141414;
+            --bg-elevated: #1A1A1A;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A1A1AA;
+            --accent-blue: #3B82F6;
+            --accent-gold: #FFD700;
+            --accent-emerald: #10B981;
+            --accent-rose: #F43F5E;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ===== SECTION 1: LOGO VARIATIONS ===== */
+        .section {
+            padding: 80px 40px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .section-title {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent-blue);
+            margin-bottom: 40px;
+        }
+
+        .logo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .logo-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 60px 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .logo-card:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-4px);
+        }
+
+        .logo-card.light {
+            background: #FFFFFF;
+        }
+
+        .logo-primary {
+            font-size: 48px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .logo-star {
+            color: var(--accent-blue);
+            font-size: 32px;
+        }
+
+        .logo-star.gold {
+            color: var(--accent-gold);
+        }
+
+        .logo-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 20px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .logo-card.light .logo-label {
+            color: #666;
+        }
+
+        .logo-card.light .logo-primary {
+            color: #0A0A0A;
+        }
+
+        /* ===== SECTION 2: COLOR PALETTE ===== */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+
+        .color-swatch {
+            border-radius: 12px;
+            padding: 40px 20px 20px;
+            text-align: center;
+        }
+
+        .color-swatch .hex {
+            font-size: 13px;
+            font-weight: 600;
+            font-family: monospace;
+            margin-top: 10px;
+        }
+
+        .color-swatch .name {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ===== SECTION 3: TYPOGRAPHY ===== */
+        .type-specimen {
+            margin-bottom: 40px;
+        }
+
+        .type-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .type-display {
+            font-size: 72px;
+            font-weight: 800;
+            letter-spacing: -2px;
+            background: linear-gradient(135deg, #FFF 0%, #A1A1AA 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .type-headline {
+            font-size: 36px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .type-body {
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 600px;
+        }
+
+        /* ===== SECTION 4: TAGLINE OPTIONS ===== */
+        .tagline-list {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .tagline-item {
+            background: var(--bg-surface);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 32px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .tagline-item:hover {
+            border-color: var(--accent-blue);
+            background: var(--bg-elevated);
+        }
+
+        .tagline-item.featured {
+            border-color: var(--accent-gold);
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05) 0%, transparent 100%);
+        }
+
+        .tagline-number {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--accent-blue);
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 8px;
+        }
+
+        .tagline-item.featured .tagline-number {
+            background: rgba(255, 215, 0, 0.2);
+            color: var(--accent-gold);
+        }
+
+        .tagline-text {
+            font-size: 24px;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .tagline-badge {
+            font-size: 10px;
+            font-weight: 700;
+            background: var(--accent-gold);
+            color: #000;
+            padding: 4px 10px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ===== SECTION 5: HERO MOCKUP ===== */
+        .hero-mockup {
+            background: linear-gradient(180deg, var(--bg-deep) 0%, #0F0F1A 100%);
+            border-radius: 24px;
+            padding: 80px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-mockup::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-logo {
+            font-size: 64px;
+            font-weight: 800;
+            letter-spacing: -2px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-tagline {
+            font-size: 20px;
+            color: var(--text-secondary);
+            margin-bottom: 48px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-bottom: 48px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn {
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563EB;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--glass);
+            color: white;
+            border: 1px solid var(--glass-border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-elevated);
+            border-color: var(--accent-blue);
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* ===== SECTION 6: CARD MOCKUPS ===== */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .artist-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .artist-card:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .artist-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .artist-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-emerald));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .artist-info h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .artist-info span {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .artist-rank {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--accent-gold);
+        }
+
+        .artist-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .artist-stat {
+            background: var(--glass);
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .artist-stat-value {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .artist-stat-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .trend-up {
+            color: var(--accent-emerald);
+        }
+
+        .trend-down {
+            color: var(--accent-rose);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            padding: 40px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .footer a {
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- LOGO VARIATIONS -->
+    <section class="section">
+        <div class="section-title">Logo Variations</div>
+        <div class="logo-grid">
+            <div class="logo-card">
+                <div class="logo-primary">
+                    <span class="logo-star">✦</span>
+                    <span>STELAR</span>
+                </div>
+                <div class="logo-label">Primary – Dark</div>
+            </div>
+            <div class="logo-card">
+                <div class="logo-primary">
+                    <span class="logo-star gold">✦</span>
+                    <span>STELAR</span>
+                </div>
+                <div class="logo-label">Gold Accent</div>
+            </div>
+            <div class="logo-card light">
+                <div class="logo-primary">
+                    <span class="logo-star">✦</span>
+                    <span>STELAR</span>
+                </div>
+                <div class="logo-label">Light Mode</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COLOR PALETTE -->
+    <section class="section">
+        <div class="section-title">Color Palette</div>
+        <div class="color-grid">
+            <div class="color-swatch" style="background: #0A0A0A; border: 1px solid #333;">
+                <div class="hex">#0A0A0A</div>
+                <div class="name">Deep Black</div>
+            </div>
+            <div class="color-swatch" style="background: #141414; border: 1px solid #333;">
+                <div class="hex">#141414</div>
+                <div class="name">Surface</div>
+            </div>
+            <div class="color-swatch" style="background: #3B82F6;">
+                <div class="hex">#3B82F6</div>
+                <div class="name">Electric Blue</div>
+            </div>
+            <div class="color-swatch" style="background: #FFD700; color: #000;">
+                <div class="hex" style="color: #000;">#FFD700</div>
+                <div class="name" style="color: #666;">Gold</div>
+            </div>
+            <div class="color-swatch" style="background: #10B981;">
+                <div class="hex">#10B981</div>
+                <div class="name">Emerald</div>
+            </div>
+            <div class="color-swatch" style="background: #F43F5E;">
+                <div class="hex">#F43F5E</div>
+                <div class="name">Rose</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TYPOGRAPHY -->
+    <section class="section">
+        <div class="section-title">Typography – Inter</div>
+        <div class="type-specimen">
+            <div class="type-label">Display</div>
+            <div class="type-display">Track the top.</div>
+        </div>
+        <div class="type-specimen">
+            <div class="type-label">Headline</div>
+            <div class="type-headline">Discover the next generation of artists.</div>
+        </div>
+        <div class="type-specimen">
+            <div class="type-label">Body</div>
+            <div class="type-body">STELAR tracks 2,500+ artists daily, analyzing streaming data, chart positions, and
+                growth trajectories to surface the artists that matter—from global superstars to tomorrow's breakouts.
+            </div>
+        </div>
+    </section>
+
+    <!-- TAGLINE OPTIONS -->
+    <section class="section">
+        <div class="section-title">Tagline Options</div>
+        <div class="tagline-list">
+            <div class="tagline-item featured">
+                <div class="tagline-number">1</div>
+                <div class="tagline-text">Track the top. Discover the next.</div>
+                <div class="tagline-badge">Recommended</div>
+            </div>
+            <div class="tagline-item">
+                <div class="tagline-number">2</div>
+                <div class="tagline-text">Every artist. Ranked. Tracked. Daily.</div>
+            </div>
+            <div class="tagline-item">
+                <div class="tagline-number">3</div>
+                <div class="tagline-text">The pulse of global music.</div>
+            </div>
+            <div class="tagline-item">
+                <div class="tagline-number">4</div>
+                <div class="tagline-text">Know the game.</div>
+            </div>
+            <div class="tagline-item">
+                <div class="tagline-number">5</div>
+                <div class="tagline-text">Music. Measured.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HERO MOCKUP -->
+    <section class="section">
+        <div class="section-title">Landing Page Hero</div>
+        <div class="hero-mockup">
+            <div class="hero-logo">
+                <span class="logo-star">✦</span>
+                <span>STELAR</span>
+            </div>
+            <div class="hero-tagline">Track the top. Discover the next.</div>
+            <div class="hero-buttons">
+                <button class="btn btn-primary">Launch App</button>
+                <button class="btn btn-secondary">See Rankings</button>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-value">2,500+</div>
+                    <div class="stat-label">Artists Tracked</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">Daily</div>
+                    <div class="stat-label">Data Updates</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">Real-time</div>
+                    <div class="stat-label">Rankings</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ARTIST CARDS -->
+    <section class="section">
+        <div class="section-title">Artist Card Design</div>
+        <div class="card-grid">
+            <div class="artist-card">
+                <div class="artist-header">
+                    <div class="artist-avatar">BB</div>
+                    <div class="artist-info">
+                        <h3>Bad Bunny</h3>
+                        <span>Latin • Major</span>
+                    </div>
+                    <div class="artist-rank">#1</div>
+                </div>
+                <div class="artist-stats">
+                    <div class="artist-stat">
+                        <div class="artist-stat-value">92.4M</div>
+                        <div class="artist-stat-label">Monthly Listeners</div>
+                    </div>
+                    <div class="artist-stat">
+                        <div class="artist-stat-value trend-up">+2.3%</div>
+                        <div class="artist-stat-label">7-Day Trend</div>
+                    </div>
+                </div>
+            </div>
+            <div class="artist-card">
+                <div class="artist-header">
+                    <div class="artist-avatar" style="background: linear-gradient(135deg, #FFD700, #F59E0B);">D</div>
+                    <div class="artist-info">
+                        <h3>Drake</h3>
+                        <span>Hip Hop • Major</span>
+                    </div>
+                    <div class="artist-rank">#2</div>
+                </div>
+                <div class="artist-stats">
+                    <div class="artist-stat">
+                        <div class="artist-stat-value">88.1M</div>
+                        <div class="artist-stat-label">Monthly Listeners</div>
+                    </div>
+                    <div class="artist-stat">
+                        <div class="artist-stat-value trend-down">-0.8%</div>
+                        <div class="artist-stat-label">7-Day Trend</div>
+                    </div>
+                </div>
+            </div>
+            <div class="artist-card">
+                <div class="artist-header">
+                    <div class="artist-avatar" style="background: linear-gradient(135deg, #F43F5E, #EC4899);">TS</div>
+                    <div class="artist-info">
+                        <h3>Taylor Swift</h3>
+                        <span>Pop • Major</span>
+                    </div>
+                    <div class="artist-rank">#3</div>
+                </div>
+                <div class="artist-stats">
+                    <div class="artist-stat">
+                        <div class="artist-stat-value">84.7M</div>
+                        <div class="artist-stat-label">Monthly Listeners</div>
+                    </div>
+                    <div class="artist-stat">
+                        <div class="artist-stat-value trend-up">+1.2%</div>
+                        <div class="artist-stat-label">7-Day Trend</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>STELAR Brand Preview • <a href="#">By Novai</a></p>
+    </footer>
+</body>
+
+</html>

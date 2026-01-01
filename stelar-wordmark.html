@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STELAR</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --black: #000000;
+            --white: #FFFFFF;
+            --red: #E50914;
+            --gray: #808080;
+            --dark-gray: #1a1a1a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            min-height: 100vh;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .wordmark {
+            font-size: 180px;
+            font-weight: 900;
+            letter-spacing: -10px;
+            line-height: 1;
+            color: var(--white);
+        }
+
+        .tagline {
+            font-size: 18px;
+            font-weight: 500;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: var(--gray);
+            margin-top: 40px;
+        }
+
+        /* ===== SECTIONS ===== */
+        .section {
+            padding: 100px 60px;
+            border-top: 1px solid var(--dark-gray);
+        }
+
+        .section-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--red);
+            margin-bottom: 48px;
+        }
+
+        /* ===== LOGO VARIATIONS ===== */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .card {
+            padding: 80px 60px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .card.dark {
+            background: var(--dark-gray);
+        }
+
+        .card.light {
+            background: var(--white);
+        }
+
+        .card .wordmark {
+            font-size: 48px;
+            letter-spacing: -2px;
+        }
+
+        .card.light .wordmark {
+            color: var(--black);
+        }
+
+        .card .wordmark.red {
+            color: var(--red);
+        }
+
+        .card-label {
+            font-size: 10px;
+            color: var(--gray);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .card.light .card-label {
+            color: #666;
+        }
+
+        /* ===== COLOR PALETTE ===== */
+        .palette-row {
+            display: flex;
+            gap: 2px;
+            border-radius: 8px;
+            overflow: hidden;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .palette-swatch {
+            flex: 1;
+            height: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .palette-swatch span {
+            opacity: 0.7;
+            margin-top: 6px;
+            font-family: monospace;
+            font-size: 11px;
+            text-transform: none;
+        }
+
+        /* ===== APP BAR ===== */
+        .app-bar {
+            background: var(--dark-gray);
+            padding: 16px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 8px;
+            max-width: 1000px;
+            margin: 48px auto 0;
+        }
+
+        .app-bar .wordmark {
+            font-size: 22px;
+            letter-spacing: -1px;
+        }
+
+        .app-bar nav {
+            display: flex;
+            gap: 28px;
+        }
+
+        .app-bar nav a {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .app-bar nav a:hover,
+        .app-bar nav a.active {
+            color: var(--white);
+        }
+
+        /* ===== ACCENT EXAMPLES ===== */
+        .accent-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            max-width: 1000px;
+            margin: 48px auto 0;
+        }
+
+        .accent-card {
+            background: var(--dark-gray);
+            border-radius: 8px;
+            padding: 32px;
+            text-align: center;
+        }
+
+        .accent-card h3 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .accent-card p {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .accent-card.red-border {
+            border: 2px solid var(--red);
+        }
+
+        .accent-card .btn {
+            display: inline-block;
+            margin-top: 16px;
+            padding: 12px 24px;
+            background: var(--red);
+            color: var(--white);
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .accent-card .trend-up {
+            color: #00C853;
+            font-weight: 700;
+        }
+
+        .accent-card .trend-down {
+            color: var(--red);
+            font-weight: 700;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            padding: 48px;
+            text-align: center;
+            border-top: 1px solid var(--dark-gray);
+        }
+
+        .footer-text {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .footer-text a {
+            color: var(--red);
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="hero">
+        <div class="wordmark">STELAR</div>
+        <div class="tagline">Track the top · Discover the next</div>
+    </section>
+
+    <section class="section">
+        <div class="section-label">Logo Variations</div>
+        <div class="grid">
+            <div class="card dark">
+                <div class="wordmark">STELAR</div>
+                <span class="card-label">White on Black</span>
+            </div>
+            <div class="card light">
+                <div class="wordmark">STELAR</div>
+                <span class="card-label">Black on White</span>
+            </div>
+            <div class="card dark">
+                <div class="wordmark red">STELAR</div>
+                <span class="card-label">Red on Black</span>
+            </div>
+            <div class="card light">
+                <div class="wordmark red">STELAR</div>
+                <span class="card-label">Red on White</span>
+            </div>
+        </div>
+
+        <div class="section-label" style="margin-top: 80px;">Brand Palette</div>
+        <div class="palette-row">
+            <div class="palette-swatch" style="background: #000000; border: 1px solid #333;">BLACK<span>#000000</span>
+            </div>
+            <div class="palette-swatch" style="background: #E50914;">RED<span>#E50914</span></div>
+            <div class="palette-swatch" style="background: #FFFFFF; color: #000;">WHITE<span>#FFFFFF</span></div>
+            <div class="palette-swatch" style="background: #1a1a1a;">DARK<span>#1A1A1A</span></div>
+        </div>
+
+        <div class="section-label" style="margin-top: 80px;">Accent Usage</div>
+        <div class="accent-grid">
+            <div class="accent-card">
+                <h3>Primary Button</h3>
+                <p>Action color</p>
+                <a href="#" class="btn">Launch App</a>
+            </div>
+            <div class="accent-card red-border">
+                <h3>Featured Card</h3>
+                <p>Border highlight</p>
+            </div>
+            <div class="accent-card">
+                <h3>Data Trends</h3>
+                <p>Up: <span class="trend-up">+12.4%</span></p>
+                <p>Down: <span class="trend-down">-3.2%</span></p>
+            </div>
+        </div>
+
+        <div class="section-label" style="margin-top: 80px;">In-App Header</div>
+        <div class="app-bar">
+            <div class="wordmark">STELAR</div>
+            <nav>
+                <a href="#" class="active">Power Index</a>
+                <a href="#">New Releases</a>
+                <a href="#">Old School</a>
+                <a href="#">Watchlist</a>
+            </nav>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-text">A <a href="https://usenovai.live">Novai</a> Product · © 2025</div>
+    </footer>
+</body>
+
+</html>

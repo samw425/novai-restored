@@ -6,13 +6,11 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'War Room | Novai Intelligence',
         description: 'Real-time global conflict monitoring and tactical intelligence streams.',
-        images: ['/war-room/opengraph-image.png'],
     },
     twitter: {
         card: 'summary_large_image',
         title: 'War Room | Novai Intelligence',
         description: 'Real-time global conflict monitoring and tactical intelligence streams.',
-        images: ['/war-room/opengraph-image.png'],
     },
 };
 

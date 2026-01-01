@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STELAR Style Comparison</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #000000;
+            --near-black: #0A0A0F;
+            --stelar-crimson: #C41E3A;
+            --stelar-maroon: #991B2D;
+            --white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #050505;
+            color: white;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .comparison-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            width: 100%;
+            max-width: 1300px;
+        }
+
+        .option-card {
+            background: var(--near-black);
+            border: 1px solid #1A1A1A;
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .og-preview {
+            width: 100%;
+            aspect-ratio: 1200 / 630;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid #1A1A1A;
+            overflow: hidden;
+        }
+
+        .label {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .label h2 {
+            margin: 0;
+            font-size: 20px;
+            color: var(--stelar-crimson);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .label p {
+            margin: 10px 0 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* --- OPTION A: CURRENT STELAR (WAVEFORM) --- */
+        .option-a .og-preview {
+            background: radial-gradient(circle at center, #2A0A12 0%, #0A0508 100%);
+        }
+
+        .waveform {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 30px;
+        }
+
+        .waveform-bar {
+            width: 12px;
+            border-radius: 6px;
+            background: var(--stelar-crimson);
+        }
+
+        .waveform-bar:nth-child(1),
+        .waveform-bar:nth-child(5) {
+            height: 40px;
+            opacity: 0.6;
+        }
+
+        .waveform-bar:nth-child(2),
+        .waveform-bar:nth-child(4) {
+            height: 70px;
+        }
+
+        .waveform-bar:nth-child(3) {
+            height: 100px;
+            background: #E53935;
+            box-shadow: 0 0 30px rgba(196, 30, 58, 0.5);
+        }
+
+        .stelar-wordmark-a {
+            font-size: 90px;
+            font-weight: 900;
+            letter-spacing: -2px;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .stelar-tagline-a {
+            margin-top: 20px;
+            font-size: 18px;
+            letter-spacing: 6px;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        /* --- OPTION B: REMASTERED (TOWER / SOUNDSCOUT STYLE) --- */
+        .option-b .og-preview {
+            background: #000000;
+            flex-direction: row;
+            justify-content: flex-start;
+            padding-left: 80px;
+        }
+
+        .tower-icon-container {
+            width: 120px;
+            height: 120px;
+            background: #111;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-right: 40px;
+            box-shadow: 0 0 40px rgba(196, 30, 58, 0.3);
+        }
+
+        .tower-icon {
+            width: 60px;
+            height: 60px;
+            color: var(--stelar-crimson);
+            filter: drop-shadow(0 0 10px var(--stelar-crimson));
+        }
+
+        .brand-text-b {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .wordmark-b {
+            font-size: 100px;
+            font-weight: 900;
+            display: flex;
+            line-height: 1;
+        }
+
+        .wordmark-b .white-text {
+            color: white;
+        }
+
+        .wordmark-b .crimson-text {
+            color: var(--stelar-crimson);
+        }
+
+        .accent-line {
+            width: 100%;
+            height: 6px;
+            background: var(--stelar-crimson);
+            margin-top: 10px;
+        }
+
+        .stelar-tagline-b {
+            margin-top: 25px;
+            font-size: 16px;
+            letter-spacing: 4px;
+            color: #444;
+            text-transform: uppercase;
+        }
+
+        /* SVG Icons Mockups */
+        svg.tower {
+            fill: currentColor;
+        }
+
+        .floating-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: #111;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            border: 1px solid #333;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1 style="font-size: 48px; margin-bottom: 10px;">Brand Identity Options</h1>
+    <p style="color: #888; margin-bottom: 50px; font-size: 18px;">Comparing current STELAR vibes vs. the SoundScout
+        "Legendary" style.</p>
+
+    <div class="comparison-container">
+        <!-- Option A -->
+        <div class="option-card option-a">
+            <div class="og-preview">
+                <div class="waveform">
+                    <div class="waveform-bar"></div>
+                    <div class="waveform-bar"></div>
+                    <div class="waveform-bar"></div>
+                    <div class="waveform-bar"></div>
+                    <div class="waveform-bar"></div>
+                </div>
+                <h1 class="stelar-wordmark-a">STELAR</h1>
+                <div class="stelar-tagline-a">Track the top · Discover the next</div>
+            </div>
+            <div class="label">
+                <h2>The Waveform</h2>
+                <p>Premium, Modern, Kinetic. Focuses on frequency and discovery.</p>
+            </div>
+        </div>
+
+        <!-- Option B -->
+        <div class="option-card option-b">
+            <div class="og-preview">
+                <div class="tower-icon-container">
+                    <svg class="tower" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M12 2C10.9 2 10 2.9 10 4C10 4.8 10.5 5.5 11.2 5.8L8.6 15H15.4L12.8 5.8C13.5 5.5 14 4.8 14 4C14 2.9 13.1 2 12 2ZM12 4C12.55 4 13 4.45 13 5C13 5.55 12.55 6 12 6C11.45 6 11 5.55 11 5C11 4.45 11.45 4 12 4ZM5.5 22H18.5V20H5.5V22ZM9.1 16H14.9L16 20H8L9.1 16Z" />
+                        <circle cx="12" cy="4" r="1.5" fill="none" stroke="currentColor" stroke-width="0.5" />
+                        <path
+                            d="M7 10C5.34 10 4 11.34 4 13C4 13.83 4.34 14.58 4.88 15.12L6.3 13.7C6.11 13.5 6 13.26 6 13C6 12.45 6.45 12 7 12C7.26 12 7.5 11.89 7.7 11.7L9.12 13.12C8.58 13.66 8.33 14 7.5 14H6.5L6 15H8C8.83 15 9.58 14.66 10.12 14.12L8.7 12.7C8.5 12.89 8.26 13 8 13C7.74 13 7.5 12.89 7.3 12.7L5.88 11.28C6.14 11.02 6.4 11 7 11C7.83 11 8.58 11.34 9.12 11.88L10.54 10.46C9.66 9.58 8.41 9 7 9"
+                            opacity="0.5" />
+                        <path
+                            d="M17 10C15.66 10 14.41 11 14.41 12.34L15.83 13.76C16.37 13.22 17.12 13 18 13C18.88 13 19.63 13.68 19.63 14.56L21.05 15.98C21.93 15.1 22.41 13.85 22.41 12.51C22.41 11.17 21.05 10 17 10"
+                            transform="scale(-1, 1) translate(-24, 0)" opacity="0.5" />
+                    </svg>
+                </div>
+                <div class="brand-text-b">
+                    <div class="wordmark-b">
+                        <span class="white-text">STE</span><span class="crimson-text">LAR</span>
+                    </div>
+                    <div class="accent-line"></div>
+                    <div class="stelar-tagline-b">A&R INTELLIGENCE TERMINAL</div>
+                </div>
+            </div>
+            <div class="label">
+                <h2>The Remastered</h2>
+                <p>Bold, Iconic, Institutional. The classic SoundScout "Radio" vibe.</p>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 80px; text-align: center; max-width: 800px;">
+        <h3 style="font-size: 24px; color: #888;">WHICH PATH?</h3>
+        <p style="margin-top: 20px; line-height: 1.6; color: #666;">
+            <b>Option A</b> feels like a billion-dollar SaaS platform (Clean, Apple-esque).<br>
+            <b>Option B</b> feels like an elite music industry secret (Gritty, Pro, "Old School").
+        </p>
+    </div>
+
+</body>
+
+</html>
