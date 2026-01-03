@@ -186,72 +186,86 @@ export function InteractiveMap({ incidents, hasNavalContext, showsNavalFacilitie
                     );
                 })}
             </motion.div>
-            {/* Country Filter Legend - Interactive */}
-            <div className="absolute bottom-4 left-4 z-20">
-                <div className="bg-slate-950/95 backdrop-blur-sm rounded-xl border border-slate-800 p-3 shadow-2xl">
-                    <div className="flex items-center justify-between mb-3">
-                        <h4 className="text-[9px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                            <Anchor size={10} className="text-blue-400" />
-                            NAVAL POWERS
-                        </h4>
-                        {selectedCountry && (
-                            <button
-                                onClick={() => handleCountryClick(selectedCountry)}
-                                className="text-[8px] text-blue-400 hover:text-blue-300 font-mono uppercase"
-                            >
-                                CLEAR
-                            </button>
-                        )}
-                    </div>
 
-                    <div className="grid grid-cols-2 gap-1.5">
-                        {COUNTRY_LEGEND.map((country) => {
-                            const isActive = selectedCountry === country.code;
-                            const countryIncidents = incidents.filter(inc => (inc.country || '').toUpperCase() === country.code);
-
-                            return (
+            {/* NAVAL TRACKER: Country Filter Legend - Only when hasNavalContext */}
+            {hasNavalContext && (
+                <div className="absolute bottom-4 left-4 z-20">
+                    <div className="bg-slate-950/95 backdrop-blur-sm rounded-xl border border-slate-800 p-3 shadow-2xl">
+                        <div className="flex items-center justify-between mb-3">
+                            <h4 className="text-[9px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                <Anchor size={10} className="text-blue-400" />
+                                NAVAL POWERS
+                            </h4>
+                            {selectedCountry && (
                                 <button
-                                    key={country.code}
-                                    onClick={() => handleCountryClick(country.code)}
-                                    className={`flex items-center gap-2 px-2 py-1.5 rounded-md text-left transition-all ${isActive
+                                    onClick={() => handleCountryClick(selectedCountry)}
+                                    className="text-[8px] text-blue-400 hover:text-blue-300 font-mono uppercase"
+                                >
+                                    CLEAR
+                                </button>
+                            )}
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-1.5">
+                            {COUNTRY_LEGEND.map((country) => {
+                                const isActive = selectedCountry === country.code;
+                                const countryIncidents = incidents.filter(inc => (inc.country || '').toUpperCase() === country.code);
+
+                                return (
+                                    <button
+                                        key={country.code}
+                                        onClick={() => handleCountryClick(country.code)}
+                                        className={`flex items-center gap-2 px-2 py-1.5 rounded-md text-left transition-all ${isActive
                                             ? `${country.color} text-white ring-2 ring-white/30 shadow-lg`
                                             : selectedCountry
                                                 ? 'bg-slate-900/50 text-slate-500 opacity-50'
                                                 : 'bg-slate-900/80 text-slate-300 hover:bg-slate-800'
-                                        }`}
-                                >
-                                    <span className="text-sm">{country.flag}</span>
-                                    <span className="text-[9px] font-bold uppercase tracking-wide flex-1">{country.code}</span>
-                                    <span className={`text-[8px] font-mono ${isActive ? 'text-white' : 'text-slate-500'}`}>
-                                        {countryIncidents.length}
-                                    </span>
-                                </button>
-                            );
-                        })}
+                                            }`}
+                                    >
+                                        <span className="text-sm">{country.flag}</span>
+                                        <span className="text-[9px] font-bold uppercase tracking-wide flex-1">{country.code}</span>
+                                        <span className={`text-[8px] font-mono ${isActive ? 'text-white' : 'text-slate-500'}`}>
+                                            {countryIncidents.length}
+                                        </span>
+                                    </button>
+                                );
+                            })}
+                        </div>
                     </div>
+                </div>
+            )}
 
-                    {/* Vessel Type Legend */}
-                    <div className="mt-3 pt-3 border-t border-slate-800">
-                        <div className="grid grid-cols-3 gap-1 text-[8px]">
-                            <div className="flex items-center gap-1 text-slate-400">
-                                <Ship size={10} className="text-blue-400" />
-                                <span>Naval</span>
+            {/* GLOBAL INTEL: Simple Incident Type Legend - Only when NOT hasNavalContext */}
+            {!hasNavalContext && (
+                <div className="absolute bottom-4 left-4 z-20">
+                    <div className="bg-slate-950/95 backdrop-blur-sm rounded-lg border border-slate-800 p-3 shadow-xl">
+                        <h4 className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">
+                            INCIDENT TYPES
+                        </h4>
+                        <div className="flex flex-col gap-1.5">
+                            <div className="flex items-center gap-2 text-[10px] text-slate-300">
+                                <span className="w-2.5 h-2.5 rounded-full bg-red-500"></span>
+                                <span>KINETIC / CONFLICT</span>
                             </div>
-                            <div className="flex items-center gap-1 text-slate-400">
-                                <AlertTriangle size={10} className="text-red-400" />
-                                <span>Conflict</span>
+                            <div className="flex items-center gap-2 text-[10px] text-slate-300">
+                                <span className="w-2.5 h-2.5 rounded-full bg-cyan-400"></span>
+                                <span>CYBER</span>
                             </div>
-                            <div className="flex items-center gap-1 text-slate-400">
-                                <Crosshair size={10} className="text-cyan-400" />
-                                <span>Cyber</span>
+                            <div className="flex items-center gap-2 text-[10px] text-slate-300">
+                                <span className="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+                                <span>NAVAL</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-[10px] text-slate-300">
+                                <span className="w-2.5 h-2.5 rounded-full bg-orange-500"></span>
+                                <span>ALERT / OTHER</span>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            )}
 
-            {/* Active Filter Indicator */}
-            {selectedCountry && (
+            {/* Active Country Filter Indicator - Only when hasNavalContext and country selected */}
+            {hasNavalContext && selectedCountry && (
                 <div className="absolute top-4 left-4 z-20">
                     <div className="bg-slate-950/95 backdrop-blur-sm rounded-lg border border-slate-700 px-4 py-2 shadow-xl flex items-center gap-3">
                         <span className="text-lg">{COUNTRY_LEGEND.find(c => c.code === selectedCountry)?.flag}</span>
@@ -269,3 +283,4 @@ export function InteractiveMap({ incidents, hasNavalContext, showsNavalFacilitie
         </div>
     );
 }
+
