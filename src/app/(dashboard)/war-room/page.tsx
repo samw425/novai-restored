@@ -272,21 +272,17 @@ export default function WarRoomPage() {
                             Active Vectors ({filteredIncidents.length})
                         </h3>
                         <div className="space-y-3">
-                            {filteredIncidents.slice(0, 12).map((inc) => (
-                                <div key={inc.id} className="w-full flex items-center gap-2 group">
+                            {filteredIncidents.slice(0, 10).map((inc: any) => (
+                                <div key={inc.id} className="flex gap-2 h-14">
                                     <button
-                                        onClick={() => handleManualFocus(inc.location ? { lat: inc.location.lat, lng: inc.location.lng } : null)}
-                                        className={`flex-1 text-left p-3 rounded border transition-all duration-200 ${focusedLocation?.lat === inc.location?.lat
-                                            ? 'bg-gray-800 border-red-500 ring-1 ring-red-500/50'
-                                            : 'bg-gray-900/50 hover:bg-gray-900 border-gray-800 hover:border-blue-500'
-                                            }`}
+                                        onClick={() => handleManualFocus(inc.location)}
+                                        className="flex-1 text-left p-3 flex flex-col justify-center bg-gray-900 border border-gray-800 hover:bg-gray-800 hover:border-gray-700 rounded transition-all duration-200 group relative overflow-hidden shadow-sm"
                                     >
-                                        <div className="flex justify-between items-start mb-1">
-                                            <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded font-mono ${inc.severity === 'critical' ? 'bg-red-950 text-red-400 border border-red-900' : 'bg-blue-950 text-blue-400 border border-blue-900'
-                                                }`}>
-                                                {inc.type?.toUpperCase() || 'UNKNOWN'}
+                                        <div className="flex items-center justify-between pointer-events-none">
+                                            <span className={`text-[9px] font-black uppercase tracking-widest ${inc.type === 'conflict' ? 'text-red-500' : inc.type === 'cyber' ? 'text-cyan-400' : 'text-blue-400'}`}>
+                                                {inc.type} // {inc.country || 'GLOBAL'}
                                             </span>
-                                            <span className="text-[10px] text-gray-500 font-mono">
+                                            <span className="text-[8px] font-mono text-gray-500">
                                                 {new Date(inc.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                             </span>
                                         </div>
@@ -383,7 +379,7 @@ export default function WarRoomPage() {
                     {/* The Map pre-filtered for naval + Static Facilities */}
                     <InteractiveMap
                         incidents={[
-                            ...incidents.filter(i => i.type === 'naval'),
+                            ...incidents.filter((i: any) => i.type === 'naval'),
                             ...NAVAL_FACILITIES.map(f => ({
                                 id: f.id,
                                 type: 'naval' as const,
@@ -391,13 +387,12 @@ export default function WarRoomPage() {
                                 description: f.description,
                                 severity: 'info' as const,
                                 location: f.location,
-                                country: f.country as any,
+                                country: f.country,
                                 timestamp: new Date().toISOString(),
                                 source: 'Known Base',
-                                url: '#',
-                                assetType: 'Naval Base'
+                                url: '#'
                             }))
-                        ].filter(incident => {
+                        ].filter((incident: any) => {
                             if (navalFilter === 'ALL') return true;
                             const c = (incident.country || '').toUpperCase();
                             if (navalFilter === 'western') return ['US', 'UK', 'FR', 'DE', 'JP', 'NATO'].includes(c);
@@ -435,6 +430,35 @@ export default function WarRoomPage() {
                         </div>
                     </div>
 
+                    <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+                        <div className="p-4 border-b border-slate-50 bg-slate-50/50">
+                            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
+                                <Shield className="h-3 w-3" />
+                                STRATEGIC FLEET ADVISORY
+                            </h3>
+                        </div>
+                        <div className="p-4 space-y-4">
+                            {incidents.filter((i: any) => i.type === 'naval').slice(0, 5).map((inc: any) => (
+                                <div key={inc.id} className="group relative">
+                                    <div className="flex justify-between items-start mb-1">
+                                        <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${inc.country === 'US' ? 'bg-blue-100 text-blue-700' : 'bg-red-100 text-red-700'}`}>
+                                            {inc.country}
+                                        </span>
+                                        <span className="text-[10px] font-mono text-slate-400">LIVE</span>
+                                    </div>
+                                    <h4 className="text-xs font-bold text-slate-900 leading-tight group-hover:text-blue-600 transition-colors uppercase">
+                                        {inc.title}
+                                    </h4>
+                                    <p className="text-[10px] text-slate-500 line-clamp-2 mt-1 font-medium">{inc.description}</p>
+                                </div>
+                            ))}
+                            {incidents.filter((i: any) => i.type === 'naval').length === 0 && (
+                                <div className="text-[10px] text-slate-400 font-mono text-center py-4 italic border border-dashed border-slate-200 rounded">
+                                    Awaiting real-time detection...
+                                </div>
+                            )}
+                        </div>
+                    </div>
                     {/* Naval Intelligence Small Feed */}
                     <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-100 flex-grow">
                         <h3 className="text-xs font-bold text-slate-900 uppercase tracking-widest mb-4 font-mono">
@@ -514,7 +538,7 @@ export default function WarRoomPage() {
                         </h3>
                     </div>
                     <div className="p-4 space-y-4">
-                        {israelGazaArticles.map(article => (
+                        {israelGazaArticles.map((article: any) => (
                             <FeedCard key={article.id} article={article} />
                         ))}
                         {israelGazaArticles.length === 0 && <div className="text-center py-10 text-slate-400">Loading Intelligence...</div>}
@@ -535,7 +559,7 @@ export default function WarRoomPage() {
                         </h3>
                     </div>
                     <div className="p-4 space-y-4">
-                        {russiaUkraineArticles.map(article => (
+                        {russiaUkraineArticles.map((article: any) => (
                             <FeedCard key={article.id} article={article} />
                         ))}
                         {russiaUkraineArticles.length === 0 && <div className="text-center py-10 text-slate-400">Loading Intelligence...</div>}

@@ -13,13 +13,13 @@ interface Location {
 interface Incident {
     id: string;
     title: string;
-    type: 'conflict' | 'cyber' | 'naval' | 'air' | 'alert';
-    severity: 'critical' | 'high' | 'medium' | 'low';
+    type: 'conflict' | 'cyber' | 'naval' | 'air' | 'alert' | 'earthquake' | 'outbreak';
+    severity: 'critical' | 'high' | 'medium' | 'low' | 'warning' | 'info';
     location: Location;
     country: string;
     description: string;
     timestamp: string;
-    assetType?: string; // e.g., 'Carrier Strike Group', 'Submarine'
+    assetType?: string;
 }
 
 interface InteractiveMapProps {
@@ -35,12 +35,10 @@ export function InteractiveMap({ incidents, hasNavalContext, showsNavalFacilitie
     // Convert Lat/Lng to % positions (Mercator approximation)
     const getPosition = (lat: number, lng: number) => {
         const x = ((lng + 180) / 360) * 100;
-        // Mercator projection is non-linear, but for this visual approximation:
         const latRad = (lat * Math.PI) / 180;
         const mercN = Math.log(Math.tan((Math.PI / 4) + (latRad / 2)));
         const y = (0.5 - (mercN / (2 * Math.PI))) * 100;
 
-        // Clamp values to keep within map bounds
         return {
             left: `${Math.max(0, Math.min(100, x))}%`,
             top: `${Math.max(0, Math.min(100, y))}%`
@@ -77,24 +75,26 @@ export function InteractiveMap({ incidents, hasNavalContext, showsNavalFacilitie
                 animate={{ scale: scale }}
                 transition={{ type: "spring", stiffness: 200, damping: 30 }}
             >
-                {/* World Map Background (High Res SVG or Image) */}
+                {/* World Map Background */}
                 <div
                     className="absolute inset-0 w-full h-full bg-[url('https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg')] bg-no-repeat bg-center bg-contain opacity-40 invert pointer-events-none"
-                    style={{ backgroundSize: '100% auto' }} // Ensure map fits width
+                    style={{ backgroundSize: '100% auto' }}
                 ></div>
 
-                {/* Grid Overlay for "Tactical" feel */}
+                {/* Grid Overlay */}
                 <div className="absolute inset-0 bg-[linear-gradient(rgba(0,255,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,0,0.03)_1px,transparent_1px)] bg-[size:50px_50px] pointer-events-none"></div>
 
                 {/* Incidents & Assets */}
                 {incidents.map((incident) => {
                     const pos = getPosition(incident.location.lat, incident.location.lng);
-                    const isCritical = incident.severity === 'critical';
 
-                    // Determine Color based on Country/Alliance
-                    const isWestern = ['US', 'UK', 'FR', 'JP', 'DE', 'NATO'].includes(incident.country);
-                    const isHostile = ['CN', 'RU', 'IR', 'KP'].includes(incident.country);
-                    const isNeutral = ['IN', 'BR', 'QS'].includes(incident.country);
+                    // Country grouping
+                    const country = (incident.country || '').toUpperCase();
+                    const isWestern = ['US', 'UK', 'FR', 'JP', 'DE', 'NATO'].includes(country);
+                    const isRed = ['CN'].includes(country);
+                    const isOrange = ['RU'].includes(country);
+                    const isEmerald = ['IR', 'SY'].includes(country);
+                    const isYellow = ['IN', 'BR', 'ZA'].includes(country);
 
                     return (
                         <a
@@ -104,29 +104,33 @@ export function InteractiveMap({ incidents, hasNavalContext, showsNavalFacilitie
                             rel="noopener noreferrer"
                             className="absolute transform -translate-x-1/2 -translate-y-1/2 z-10 group/marker cursor-pointer"
                             style={{ left: pos.left, top: pos.top }}
-                            title={`Click to open: ${incident.title}`}
                         >
-                            {/* Ping Animation - Dynamic Color based on Country for Naval */}
-                            <div className={`absolute inset-0 rounded-full animate-ping opacity-75 ${incident.type === 'naval'
-                                ? (isWestern ? 'bg-blue-500'
-                                    : isHostile ? (incident.country === 'CN' ? 'bg-red-500' : incident.country === 'IR' ? 'bg-emerald-500' : 'bg-orange-500') // Specific hostile colors
-                                        : isNeutral ? 'bg-yellow-500' // India etc
-                                            : 'bg-slate-500') // Unknown
-                                : incident.type === 'conflict' ? 'bg-orange-500'
-                                    : incident.type === 'cyber' ? 'bg-cyan-500'
-                                        : 'bg-red-500'
-                                }`} style={{ width: '200%', height: '200%', left: '-50%', top: '-50%' }}></div>
-
                             {/* Marker Icon - Dynamic Color */}
                             <div className={`relative w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border-2 shadow-[0_0_15px_rgba(0,0,0,0.8)] transition-transform hover:scale-150 hover:ring-2 hover:ring-white/50 ${incident.type === 'naval'
                                 ? (isWestern ? 'bg-blue-600 border-blue-400 text-white'
-                                    : isHostile ? (incident.country === 'CN' ? 'bg-red-600 border-red-400 text-white' : incident.country === 'IR' ? 'bg-emerald-600 border-emerald-400 text-white' : 'bg-orange-600 border-orange-400 text-white')
-                                        : isNeutral ? 'bg-yellow-600 border-yellow-400 text-white'
-                                            : 'bg-slate-600 border-slate-400 text-white')
+                                    : isRed ? 'bg-red-600 border-red-400 text-white'
+                                        : isOrange ? 'bg-orange-600 border-orange-400 text-white'
+                                            : isEmerald ? 'bg-emerald-600 border-emerald-400 text-white'
+                                                : isYellow ? 'bg-yellow-600 border-yellow-400 text-white'
+                                                    : 'bg-slate-600 border-slate-400 text-white')
                                 : incident.type === 'air' ? 'bg-sky-600 border-sky-400 text-white'
                                     : incident.type === 'cyber' ? 'bg-cyan-900 border-cyan-500 text-cyan-400'
-                                        : 'bg-red-600 border-red-400 text-white'
+                                        : incident.type === 'earthquake' ? 'bg-amber-600 border-amber-400 text-white'
+                                            : 'bg-red-600 border-red-400 text-white'
                                 }`}>
+                                {/* Ping Animation - Dynamic Color based on Country for Naval */}
+                                <div className={`absolute inset-0 rounded-full animate-ping opacity-75 ${incident.type === 'naval'
+                                        ? (isWestern ? 'bg-blue-500'
+                                            : isRed ? 'bg-red-600'
+                                                : isOrange ? 'bg-orange-600'
+                                                    : isEmerald ? 'bg-emerald-600'
+                                                        : isYellow ? 'bg-yellow-600'
+                                                            : 'bg-slate-500')
+                                        : incident.type === 'conflict' ? 'bg-orange-500'
+                                            : incident.type === 'cyber' ? 'bg-cyan-500'
+                                                : incident.type === 'earthquake' ? 'bg-amber-500'
+                                                    : 'bg-red-500'
+                                    }`} style={{ width: '200%', height: '200%', left: '-50%', top: '-50%' }}></div>
                                 {incident.type === 'naval' ? <Ship size={12} /> :
                                     incident.type === 'air' ? <Plane size={12} /> :
                                         incident.type === 'cyber' ? <Crosshair size={12} /> :
