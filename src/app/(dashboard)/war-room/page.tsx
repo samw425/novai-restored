@@ -535,9 +535,7 @@ export default function WarRoomPage() {
         </div>
     )
 }
-        </div >
-    );
-}
+
 
 function Clock() {
     const [time, setTime] = useState<string>('');
