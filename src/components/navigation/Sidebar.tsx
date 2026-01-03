@@ -286,7 +286,7 @@ export function Sidebar() {
 
             <TooltipProvider delayDuration={300}>
 
-                {/* INTELLIGENCE GROUP - TOP PRIORITY */}
+                {/* INTELLIGENCE GROUP - STRATEGIC */}
                 <div className="mb-8">
                     <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 px-4 mt-2">
                         INTELLIGENCE
@@ -315,7 +315,7 @@ export function Sidebar() {
                             </Tooltip>
                         ))}
 
-                        {/* 2. War Room (Moved up for priority) */}
+                        {/* 2. War Room */}
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <Link
@@ -337,7 +337,7 @@ export function Sidebar() {
                             </TooltipContent>
                         </Tooltip>
 
-                        {/* 3. US Intelligence (Moved up for priority) */}
+                        {/* 3. US Intelligence */}
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <Link
@@ -355,39 +355,17 @@ export function Sidebar() {
                                 Agency Feeds & Dossiers
                             </TooltipContent>
                         </Tooltip>
-
-                        {/* 4. Oracle (Agentic) */}
-                        {intelligenceLinks.filter(link => link.id === 'oracle').map((link) => (
-                            <Tooltip key={link.id}>
-                                <TooltipTrigger asChild>
-                                    <Link
-                                        href={link.href}
-                                        className={`flex items-center justify-between px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === link.href
-                                            ? 'bg-purple-50 text-purple-700 font-bold'
-                                            : 'text-gray-500 hover:bg-purple-50 hover:text-purple-700'
-                                            }`}
-                                    >
-                                        <div className="flex items-center gap-3">
-                                            <link.icon className={`h-4 w-4 ${pathname === link.href ? 'text-purple-700' : 'text-gray-400 group-hover:text-purple-700'}`} />
-                                            {link.label}
-                                        </div>
-                                    </Link>
-                                </TooltipTrigger>
-                                <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
-                                    {link.tooltip}
-                                </TooltipContent>
-                            </Tooltip>
-                        ))}
                     </nav>
                 </div>
 
-                {/* SECTORS GROUP (Deep Tech & Industry) */}
+                {/* SECTORS GROUP */}
                 <div className="mb-8">
                     <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 px-4">
                         SECTORS
                     </h3>
                     <nav className="space-y-1">
-                        {categoryLinks.filter(l => l.id !== 'us-intelligence' && l.id !== 'market' && l.id !== 'policy' && l.id !== 'tools' && l.id !== 'research').map((link) => {
+                        {/* Standard Categories: AI, LLMs */}
+                        {categoryLinks.filter(l => l.id === 'ai' || l.id === 'llms').map((link) => {
                             const isActive = pathname === link.href;
                             return (
                                 <Tooltip key={link.id}>
@@ -412,118 +390,33 @@ export function Sidebar() {
                                 </Tooltip>
                             );
                         })}
-                        {/* Video Feed moved to sectors/media area or keep in media? User asked for best pages top. Videos is good but maybe secondary to intel. Let's put it here or Media section. */}
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Link
-                                    href="/videos"
-                                    className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === '/videos'
-                                        ? 'bg-gray-50 text-gray-900 font-semibold'
-                                        : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
-                                        }`}
-                                >
-                                    <Youtube className={`h-4 w-4 ${pathname === '/videos' ? 'text-gray-900' : 'text-gray-400 group-hover:text-gray-600'}`} />
-                                    Video Feed
-                                </Link>
-                            </TooltipTrigger>
-                            <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
-                                Curated AI Demos & Talks
-                            </TooltipContent>
-                        </Tooltip>
-                    </nav>
-                </div>
 
-                {/* MARKET & DATA GROUP */}
-                <div className="mb-8">
-                    <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 px-4">
-                        MARKET & DATA
-                    </h3>
-                    <nav className="space-y-1">
-                        {/* Earnings Hub */}
-                        {platformLinks.filter(link => link.id === 'earnings').map((link) => (
-                            <Tooltip key={link.id}>
-                                <TooltipTrigger asChild>
-                                    <Link
-                                        href={link.href}
-                                        className={`flex items-center justify-between px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === link.href
-                                            ? 'bg-green-50 text-green-700 font-bold'
-                                            : 'text-gray-500 hover:bg-green-50 hover:text-green-700'
-                                            }`}
-                                    >
-                                        <div className="flex items-center gap-3">
-                                            <link.icon className={`h-4 w-4 ${pathname === link.href ? 'text-green-700' : 'text-gray-400 group-hover:text-green-700'}`} />
+                        {/* Deep Tech: Chips, Quantum, Space, Biotech, Robotics */}
+                        {categoryLinks.filter(l => l.id === 'semiconductors' || l.id === 'quantum' || l.id === 'space' || l.id === 'biotech' || l.id === 'robotics').map((link) => {
+                            const isActive = pathname === link.href;
+                            return (
+                                <Tooltip key={link.id}>
+                                    <TooltipTrigger asChild>
+                                        <Link
+                                            href={link.href}
+                                            className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${isActive
+                                                ? 'bg-gray-50 text-gray-900 font-semibold'
+                                                : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
+                                                }`}
+                                        >
+                                            {isActive && (
+                                                <div className="absolute left-0 top-1/2 -translate-y-1/2 h-4 w-[2px] bg-gray-900 rounded-r-full" />
+                                            )}
+                                            <link.icon className={`h-4 w-4 ${isActive ? 'text-gray-900' : 'text-gray-400 group-hover:text-gray-600'}`} />
                                             {link.label}
-                                        </div>
-                                    </Link>
-                                </TooltipTrigger>
-                                <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
-                                    {link.tooltip}
-                                </TooltipContent>
-                            </Tooltip>
-                        ))}
-
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Link
-                                    href="/market-pulse"
-                                    className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === '/market-pulse'
-                                        ? 'bg-gray-50 text-gray-900 font-semibold'
-                                        : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
-                                        }`}
-                                >
-                                    <TrendingUp className={`h-4 w-4 ${pathname === '/market-pulse' ? 'text-gray-900' : 'text-gray-400 group-hover:text-gray-600'}`} />
-                                    Market Pulse
-                                </Link>
-                            </TooltipTrigger>
-                            <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
-                                Live Market Data
-                            </TooltipContent>
-                        </Tooltip>
-
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Link
-                                    href="/global-demographics"
-                                    className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === '/global-demographics'
-                                        ? 'bg-gray-50 text-gray-900 font-semibold'
-                                        : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
-                                        }`}
-                                >
-                                    <Activity className={`h-4 w-4 ${pathname === '/global-demographics' ? 'text-gray-900' : 'text-gray-400 group-hover:text-gray-600'}`} />
-                                    Global Demographics
-                                </Link>
-                            </TooltipTrigger>
-                            <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
-                                Real-time Census Data
-                            </TooltipContent>
-                        </Tooltip>
-                    </nav>
-                </div>
-
-                {/* KNOWLEDGE & POLICY GROUP */}
-                <div className="mb-8">
-                    <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 px-4">
-                        KNOWLEDGE & POLICY
-                    </h3>
-                    <nav className="space-y-1">
-                        {/* Regulatory Command / Anti-Trust */}
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Link
-                                    href="/anti-trust"
-                                    className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === '/anti-trust'
-                                        ? 'bg-blue-950/10 text-blue-700 font-bold'
-                                        : 'text-gray-500 hover:bg-blue-50 hover:text-blue-700'
-                                        }`}
-                                >
-                                    <Globe className={`h-4 w-4 ${pathname === '/anti-trust' ? 'text-blue-700' : 'text-gray-400 group-hover:text-blue-700'}`} />
-                                    Regulatory Command
-                                </Link>
-                            </TooltipTrigger>
-                            <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
-                                Anti-Trust & AI Sovereignty
-                            </TooltipContent>
-                        </Tooltip>
+                                        </Link>
+                                    </TooltipTrigger>
+                                    <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
+                                        {link.tooltip}
+                                    </TooltipContent>
+                                </Tooltip>
+                            );
+                        })}
 
                         {/* Future of Code */}
                         {platformLinks.filter(link => link.id === 'future-of-code').map((link) => (
@@ -547,9 +440,126 @@ export function Sidebar() {
                                 </TooltipContent>
                             </Tooltip>
                         ))}
+                    </nav>
+                </div>
 
+                {/* GLOBAL ECONOMY GROUP */}
+                <div className="mb-8">
+                    <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 px-4">
+                        GLOBAL ECONOMY
+                    </h3>
+                    <nav className="space-y-1">
+                        {/* Market Pulse */}
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Link
+                                    href="/market-pulse"
+                                    className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === '/market-pulse'
+                                        ? 'bg-gray-50 text-gray-900 font-semibold'
+                                        : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
+                                        }`}
+                                >
+                                    <TrendingUp className={`h-4 w-4 ${pathname === '/market-pulse' ? 'text-gray-900' : 'text-gray-400 group-hover:text-gray-600'}`} />
+                                    Market Pulse
+                                </Link>
+                            </TooltipTrigger>
+                            <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
+                                Live Market Data
+                            </TooltipContent>
+                        </Tooltip>
+
+                        {/* Earnings Hub */}
+                        {platformLinks.filter(link => link.id === 'earnings').map((link) => (
+                            <Tooltip key={link.id}>
+                                <TooltipTrigger asChild>
+                                    <Link
+                                        href={link.href}
+                                        className={`flex items-center justify-between px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === link.href
+                                            ? 'bg-green-50 text-green-700 font-bold'
+                                            : 'text-gray-500 hover:bg-green-50 hover:text-green-700'
+                                            }`}
+                                    >
+                                        <div className="flex items-center gap-3">
+                                            <link.icon className={`h-4 w-4 ${pathname === link.href ? 'text-green-700' : 'text-gray-400 group-hover:text-green-700'}`} />
+                                            {link.label}
+                                        </div>
+                                    </Link>
+                                </TooltipTrigger>
+                                <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
+                                    {link.tooltip}
+                                </TooltipContent>
+                            </Tooltip>
+                        ))}
+
+                        {/* Regulatory Command */}
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Link
+                                    href="/anti-trust"
+                                    className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === '/anti-trust'
+                                        ? 'bg-blue-950/10 text-blue-700 font-bold'
+                                        : 'text-gray-500 hover:bg-blue-50 hover:text-blue-700'
+                                        }`}
+                                >
+                                    <Globe className={`h-4 w-4 ${pathname === '/anti-trust' ? 'text-blue-700' : 'text-gray-400 group-hover:text-blue-700'}`} />
+                                    Regulatory Command
+                                </Link>
+                            </TooltipTrigger>
+                            <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
+                                Anti-Trust & AI Sovereignty
+                            </TooltipContent>
+                        </Tooltip>
+
+                        {/* Global Demographics */}
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Link
+                                    href="/global-demographics"
+                                    className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === '/global-demographics'
+                                        ? 'bg-gray-50 text-gray-900 font-semibold'
+                                        : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
+                                        }`}
+                                >
+                                    <Activity className={`h-4 w-4 ${pathname === '/global-demographics' ? 'text-gray-900' : 'text-gray-400 group-hover:text-gray-600'}`} />
+                                    Global Demographics
+                                </Link>
+                            </TooltipTrigger>
+                            <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
+                                Real-time Census Data
+                            </TooltipContent>
+                        </Tooltip>
+
+                        {/* Policy */}
+                        {categoryLinks.filter(l => l.id === 'policy').map((link) => (
+                            <Tooltip key={link.id}>
+                                <TooltipTrigger asChild>
+                                    <Link
+                                        href={link.href}
+                                        className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === link.href
+                                            ? 'bg-gray-50 text-gray-900 font-semibold'
+                                            : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
+                                            }`}
+                                    >
+                                        <link.icon className={`h-4 w-4 ${pathname === link.href ? 'text-gray-900' : 'text-gray-400 group-hover:text-gray-600'}`} />
+                                        {link.label}
+                                    </Link>
+                                </TooltipTrigger>
+                                <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
+                                    {link.tooltip}
+                                </TooltipContent>
+                            </Tooltip>
+                        ))}
+                    </nav>
+                </div>
+
+                {/* KNOWLEDGE BASE GROUP */}
+                <div className="mb-8">
+                    <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 px-4">
+                        KNOWLEDGE BASE
+                    </h3>
+                    <nav className="space-y-1">
                         {/* Research */}
-                        {categoryLinks.filter(l => l.id === 'research' || l.id === 'policy').map((link) => (
+                        {categoryLinks.filter(l => l.id === 'research').map((link) => (
                             <Tooltip key={link.id}>
                                 <TooltipTrigger asChild>
                                     <Link
@@ -569,6 +579,7 @@ export function Sidebar() {
                             </Tooltip>
                         ))}
 
+                        {/* Lab & Tools, Hacker News, Trend Watch */}
                         {knowledgeLinks.filter(l => l.id !== 'anti-trust' && l.id !== 'war-room' && l.id !== 'mission' && l.id !== 'about').map((link) => {
                             const isActive = pathname === link.href;
                             return (
@@ -591,6 +602,25 @@ export function Sidebar() {
                                 </Tooltip>
                             );
                         })}
+
+                        {/* Video Feed */}
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Link
+                                    href="/videos"
+                                    className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === '/videos'
+                                        ? 'bg-gray-50 text-gray-900 font-semibold'
+                                        : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
+                                        }`}
+                                >
+                                    <Youtube className={`h-4 w-4 ${pathname === '/videos' ? 'text-gray-900' : 'text-gray-400 group-hover:text-gray-600'}`} />
+                                    Video Feed
+                                </Link>
+                            </TooltipTrigger>
+                            <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
+                                Curated AI Demos & Talks
+                            </TooltipContent>
+                        </Tooltip>
                     </nav>
                 </div>
 
@@ -598,6 +628,31 @@ export function Sidebar() {
                 <div className="mb-8">
                     <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 px-4 flex items-center gap-2">
                         PRO FEATURES <span className="text-[9px] bg-gradient-to-r from-purple-600 to-blue-600 text-white px-1.5 py-0.5 rounded-full">BETA</span>
+                    </h3>
+                    <nav className="space-y-1">
+                        {/* The Oracle (Moved to Pro) */}
+                        {intelligenceLinks.filter(link => link.id === 'oracle').map((link) => (
+                            <Tooltip key={link.id}>
+                                <TooltipTrigger asChild>
+                                    <Link
+                                        href={link.href}
+                                        className={`flex items-center justify-between px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === link.href
+                                            ? 'bg-purple-50 text-purple-700 font-bold'
+                                            : 'text-gray-500 hover:bg-purple-50 hover:text-purple-700'
+                                            }`}
+                                    >
+                                        <div className="flex items-center gap-3">
+                                            <link.icon className={`h-4 w-4 ${pathname === link.href ? 'text-purple-700' : 'text-gray-400 group-hover:text-purple-700'}`} />
+                                            {link.label}
+                                        </div>
+                                        <Lock className="w-3 h-3 text-gray-300" />
+                                    </Link>
+                                </TooltipTrigger>
+                                <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
+                                    {link.tooltip}
+                                </TooltipContent>
+                            </Tooltip>
+                        ))}
                     </h3>
                     <nav className="space-y-1">
                         {/* The Oracle */}
