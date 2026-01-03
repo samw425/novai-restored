@@ -61,7 +61,25 @@ export default function WarRoomPage() {
         return true;
     });
 
-    // ... (fetchData effect remains mostly same, maybe update to include initial naval fetch if desired)
+    // Initial Data Fetch (Global Intel)
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await fetch('/api/feed/war-room?limit=100', { cache: 'no-store' });
+                const data = await res.json();
+                if (data.incidents) {
+                    setIncidents(data.incidents);
+                    // Also populate initial articles for the feed if separate
+                    setArticles(data.incidents);
+                }
+            } catch (error) {
+                console.error('Failed to fetch global intel:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
 
     // Fetch Naval/Wars Data when tab is active
     useEffect(() => {
