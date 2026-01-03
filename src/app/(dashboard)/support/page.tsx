@@ -44,8 +44,9 @@ export default function SupportPage() {
 
                     <h1 className="text-2xl font-black text-gray-900 tracking-tight mb-3">Power the Signal</h1>
                     <p className="text-[15px] text-gray-600 leading-relaxed font-medium">
-                        Novai is proudly independent. No ads, no paywalls, no outside investors.
-                        We rely entirely on the community to fund our GPU clusters and keep real-time intelligence open to everyone.
+                        Novai is building the future of open-source intelligence. While we develop specialized Pro tools for power users, our core mission is to keep the global signal accessible to everyone.
+                        <br /><br />
+                        Your support directly funds the GPU clusters and real-time data feeds that keep this public platform independent, ad-free, and open to the world.
                     </p>
                 </div>
 
