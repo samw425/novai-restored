@@ -286,172 +286,108 @@ export function Sidebar() {
 
             <TooltipProvider delayDuration={300}>
 
-                {/* INTELLIGENCE GROUP */}
+                {/* INTELLIGENCE GROUP - TOP PRIORITY */}
                 <div className="mb-8">
                     <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 px-4 mt-2">
                         INTELLIGENCE
                     </h3>
                     <nav className="space-y-1">
                         {/* 1. Global Feed */}
-                        {platformLinks.filter(link => link.id === 'global-feed').map((link) => {
-                            const isActive = pathname === link.href;
-                            return (
-                                <Tooltip key={link.id}>
-                                    <TooltipTrigger asChild>
-                                        <Link
-                                            href={link.href}
-                                            className={`flex items-center justify-between px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${isActive
-                                                ? 'bg-purple-50 text-purple-700 font-bold'
-                                                : 'text-gray-500 hover:bg-purple-50 hover:text-purple-700'
-                                                }`}
-                                        >
-                                            <div className="flex items-center gap-3">
-                                                <link.icon className={`h-4 w-4 ${isActive ? 'text-purple-700' : 'text-gray-400 group-hover:text-purple-700'}`} />
-                                                {link.label}
-                                            </div>
-                                        </Link>
-                                    </TooltipTrigger>
-                                    <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
-                                        {link.tooltip}
-                                    </TooltipContent>
-                                </Tooltip>
-                            );
-                        })}
+                        {platformLinks.filter(link => link.id === 'global-feed').map((link) => (
+                            <Tooltip key={link.id}>
+                                <TooltipTrigger asChild>
+                                    <Link
+                                        href={link.href}
+                                        className={`flex items-center justify-between px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === link.href
+                                            ? 'bg-purple-50 text-purple-700 font-bold'
+                                            : 'text-gray-500 hover:bg-purple-50 hover:text-purple-700'
+                                            }`}
+                                    >
+                                        <div className="flex items-center gap-3">
+                                            <link.icon className={`h-4 w-4 ${pathname === link.href ? 'text-purple-700' : 'text-gray-400 group-hover:text-purple-700'}`} />
+                                            {link.label}
+                                        </div>
+                                    </Link>
+                                </TooltipTrigger>
+                                <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
+                                    {link.tooltip}
+                                </TooltipContent>
+                            </Tooltip>
+                        ))}
 
-                        {/* 2. Daily Intelligence Brief */}
-                        {intelligenceLinks.filter(link => link.id !== 'oracle').map((link) => {
-                            const isActive = pathname === link.href;
-                            return (
-                                <Tooltip key={link.id}>
-                                    <TooltipTrigger asChild>
-                                        <Link
-                                            href={link.href}
-                                            className={`flex items-center justify-between px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${isActive
-                                                ? 'bg-purple-50 text-purple-700 font-bold'
-                                                : 'text-gray-500 hover:bg-purple-50 hover:text-purple-700'
-                                                }`}
-                                        >
-                                            <div className="flex items-center gap-3">
-                                                <link.icon className={`h-4 w-4 ${isActive ? 'text-purple-700' : 'text-gray-400 group-hover:text-purple-700'}`} />
-                                                {link.label}
-                                            </div>
-                                        </Link>
-                                    </TooltipTrigger>
-                                    <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
-                                        {link.tooltip}
-                                    </TooltipContent>
-                                </Tooltip>
-                            );
-                        })}
-
-
-                        {/* BOOKMARKED FOR PRO: Daily Snapshot render block
-                        {platformLinks.filter(link => link.id === 'daily-snapshot').map((link) => {
-                            const isActive = pathname === link.href;
-                            return (
-                                <Tooltip key={link.id}>
-                                    <TooltipTrigger asChild>
-                                        <Link
-                                            href={link.href}
-                                            className={`flex items-center justify-between px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${isActive
-                                                ? 'bg-purple-50 text-purple-700 font-bold'
-                                                : 'text-gray-500 hover:bg-purple-50 hover:text-purple-700'
-                                                }`}
-                                        >
-                                            <div className="flex items-center gap-3">
-                                                <link.icon className={`h-4 w-4 ${isActive ? 'text-purple-700' : 'text-gray-400 group-hover:text-purple-700'}`} />
-                                                {link.label}
-                                            </div>
-                                        </Link>
-                                    </TooltipTrigger>
-                                    <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
-                                        {link.tooltip}
-                                    </TooltipContent>
-                                </Tooltip>
-                            );
-                        })}
-                        */}
-
-                        {/* 4. Future of Code */}
-                        {platformLinks.filter(link => link.id === 'future-of-code').map((link) => {
-                            const isActive = pathname === link.href;
-                            return (
-                                <Tooltip key={link.id}>
-                                    <TooltipTrigger asChild>
-                                        <Link
-                                            href={link.href}
-                                            className={`flex items-center justify-between px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${isActive
-                                                ? 'bg-purple-50 text-purple-700 font-bold'
-                                                : 'text-gray-500 hover:bg-purple-50 hover:text-purple-700'
-                                                }`}
-                                        >
-                                            <div className="flex items-center gap-3">
-                                                <link.icon className={`h-4 w-4 ${isActive ? 'text-purple-700' : 'text-gray-400 group-hover:text-purple-700'}`} />
-                                                {link.label}
-                                            </div>
-                                        </Link>
-                                    </TooltipTrigger>
-                                    <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
-                                        {link.tooltip}
-                                    </TooltipContent>
-                                </Tooltip>
-                            );
-                        })}
-
-                        {/* 5. Earnings Hub */}
-                        {platformLinks.filter(link => link.id === 'earnings').map((link) => {
-                            const isActive = pathname === link.href;
-                            return (
-                                <Tooltip key={link.id}>
-                                    <TooltipTrigger asChild>
-                                        <Link
-                                            href={link.href}
-                                            className={`flex items-center justify-between px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${isActive
-                                                ? 'bg-green-50 text-green-700 font-bold'
-                                                : 'text-gray-500 hover:bg-green-50 hover:text-green-700'
-                                                }`}
-                                        >
-                                            <div className="flex items-center gap-3">
-                                                <link.icon className={`h-4 w-4 ${isActive ? 'text-green-700' : 'text-gray-400 group-hover:text-green-700'}`} />
-                                                {link.label}
-                                            </div>
-                                        </Link>
-                                    </TooltipTrigger>
-                                    <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
-                                        {link.tooltip}
-                                    </TooltipContent>
-                                </Tooltip>
-                            );
-                        })}
-
-                        {/* 6. Video Feed */}
+                        {/* 2. War Room (Moved up for priority) */}
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <Link
-                                    href="/videos"
-                                    className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === '/videos'
-                                        ? 'bg-gray-50 text-gray-900 font-semibold'
-                                        : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
+                                    href="/war-room"
+                                    className={`flex items-center justify-between px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === '/war-room'
+                                        ? 'bg-red-950/10 text-red-600 font-bold'
+                                        : 'text-gray-500 hover:bg-red-50 hover:text-red-700'
                                         }`}
                                 >
-                                    <Youtube className={`h-4 w-4 ${pathname === '/videos' ? 'text-gray-900' : 'text-gray-400 group-hover:text-gray-600'}`} />
-                                    Video Feed
+                                    <div className="flex items-center gap-3">
+                                        <ShieldAlert className={`h-4 w-4 ${pathname === '/war-room' ? 'text-red-600' : 'text-gray-400 group-hover:text-red-600'}`} />
+                                        War Room
+                                    </div>
+                                    <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
                                 </Link>
                             </TooltipTrigger>
                             <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
-                                Curated AI Demos & Talks
+                                Global Conflict & Geopolitics
                             </TooltipContent>
                         </Tooltip>
+
+                        {/* 3. US Intelligence (Moved up for priority) */}
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Link
+                                    href="/us-intel"
+                                    className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === '/us-intel'
+                                        ? 'bg-gray-900 text-white'
+                                        : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
+                                        }`}
+                                >
+                                    <Shield className={`h-4 w-4 ${pathname === '/us-intel' ? 'text-white' : 'text-gray-400 group-hover:text-gray-600'}`} />
+                                    US Intelligence
+                                </Link>
+                            </TooltipTrigger>
+                            <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
+                                Agency Feeds & Dossiers
+                            </TooltipContent>
+                        </Tooltip>
+
+                        {/* 4. Oracle (Agentic) */}
+                        {intelligenceLinks.filter(link => link.id === 'oracle').map((link) => (
+                            <Tooltip key={link.id}>
+                                <TooltipTrigger asChild>
+                                    <Link
+                                        href={link.href}
+                                        className={`flex items-center justify-between px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === link.href
+                                            ? 'bg-purple-50 text-purple-700 font-bold'
+                                            : 'text-gray-500 hover:bg-purple-50 hover:text-purple-700'
+                                            }`}
+                                    >
+                                        <div className="flex items-center gap-3">
+                                            <link.icon className={`h-4 w-4 ${pathname === link.href ? 'text-purple-700' : 'text-gray-400 group-hover:text-purple-700'}`} />
+                                            {link.label}
+                                        </div>
+                                    </Link>
+                                </TooltipTrigger>
+                                <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
+                                    {link.tooltip}
+                                </TooltipContent>
+                            </Tooltip>
+                        ))}
                     </nav>
                 </div>
 
-                {/* SECTORS GROUP */}
+                {/* SECTORS GROUP (Deep Tech & Industry) */}
                 <div className="mb-8">
                     <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 px-4">
                         SECTORS
                     </h3>
                     <nav className="space-y-1">
-                        {categoryLinks.filter(l => l.id !== 'us-intelligence').map((link) => {
+                        {categoryLinks.filter(l => l.id !== 'us-intelligence' && l.id !== 'market' && l.id !== 'policy' && l.id !== 'tools' && l.id !== 'research').map((link) => {
                             const isActive = pathname === link.href;
                             return (
                                 <Tooltip key={link.id}>
@@ -476,6 +412,56 @@ export function Sidebar() {
                                 </Tooltip>
                             );
                         })}
+                        {/* Video Feed moved to sectors/media area or keep in media? User asked for best pages top. Videos is good but maybe secondary to intel. Let's put it here or Media section. */}
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Link
+                                    href="/videos"
+                                    className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === '/videos'
+                                        ? 'bg-gray-50 text-gray-900 font-semibold'
+                                        : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
+                                        }`}
+                                >
+                                    <Youtube className={`h-4 w-4 ${pathname === '/videos' ? 'text-gray-900' : 'text-gray-400 group-hover:text-gray-600'}`} />
+                                    Video Feed
+                                </Link>
+                            </TooltipTrigger>
+                            <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
+                                Curated AI Demos & Talks
+                            </TooltipContent>
+                        </Tooltip>
+                    </nav>
+                </div>
+
+                {/* MARKET & DATA GROUP */}
+                <div className="mb-8">
+                    <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 px-4">
+                        MARKET & DATA
+                    </h3>
+                    <nav className="space-y-1">
+                        {/* Earnings Hub */}
+                        {platformLinks.filter(link => link.id === 'earnings').map((link) => (
+                            <Tooltip key={link.id}>
+                                <TooltipTrigger asChild>
+                                    <Link
+                                        href={link.href}
+                                        className={`flex items-center justify-between px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === link.href
+                                            ? 'bg-green-50 text-green-700 font-bold'
+                                            : 'text-gray-500 hover:bg-green-50 hover:text-green-700'
+                                            }`}
+                                    >
+                                        <div className="flex items-center gap-3">
+                                            <link.icon className={`h-4 w-4 ${pathname === link.href ? 'text-green-700' : 'text-gray-400 group-hover:text-green-700'}`} />
+                                            {link.label}
+                                        </div>
+                                    </Link>
+                                </TooltipTrigger>
+                                <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
+                                    {link.tooltip}
+                                </TooltipContent>
+                            </Tooltip>
+                        ))}
+
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <Link
@@ -491,71 +477,6 @@ export function Sidebar() {
                             </TooltipTrigger>
                             <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
                                 Live Market Data
-                            </TooltipContent>
-                        </Tooltip>
-                    </nav>
-                </div>
-
-                {/* COMMAND CENTER GROUP */}
-                <div className="mb-8">
-                    <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 px-4 mt-2">
-                        COMMAND CENTER
-                    </h3>
-                    <nav className="space-y-1">
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Link
-                                    href="/war-room"
-                                    className={`flex items-center justify-between px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === '/war-room'
-                                        ? 'bg-red-950/10 text-red-600 font-bold'
-                                        : 'text-gray-500 hover:bg-red-50 hover:text-red-700'
-                                        }`}
-                                >
-                                    <div className="flex items-center gap-3">
-                                        <ShieldAlert className={`h-4 w-4 ${pathname === '/war-room' ? 'text-red-600' : 'text-gray-400 group-hover:text-red-600'}`} />
-                                        War Room
-                                    </div>
-                                    <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
-                                </Link>
-                            </TooltipTrigger>
-                            <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
-                                Global Conflict & Geopolitics
-                            </TooltipContent>
-                        </Tooltip>
-
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Link
-                                    href="/anti-trust"
-                                    className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === '/anti-trust'
-                                        ? 'bg-blue-950/10 text-blue-700 font-bold'
-                                        : 'text-gray-500 hover:bg-blue-50 hover:text-blue-700'
-                                        }`}
-                                >
-                                    <Globe className={`h-4 w-4 ${pathname === '/anti-trust' ? 'text-blue-700' : 'text-gray-400 group-hover:text-blue-700'}`} />
-                                    Regulatory Command
-                                </Link>
-                            </TooltipTrigger>
-                            <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
-                                Anti-Trust & AI Sovereignty
-                            </TooltipContent>
-                        </Tooltip>
-
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Link
-                                    href="/us-intel"
-                                    className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === '/us-intel'
-                                        ? 'bg-gray-900 text-white'
-                                        : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
-                                        }`}
-                                >
-                                    <Shield className={`h-4 w-4 ${pathname === '/us-intel' ? 'text-white' : 'text-gray-400 group-hover:text-gray-600'}`} />
-                                    US Intelligence
-                                </Link>
-                            </TooltipTrigger>
-                            <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
-                                Agency Feeds & Dossiers
                             </TooltipContent>
                         </Tooltip>
 
@@ -579,13 +500,76 @@ export function Sidebar() {
                     </nav>
                 </div>
 
-                {/* KNOWLEDGE GROUP */}
+                {/* KNOWLEDGE & POLICY GROUP */}
                 <div className="mb-8">
                     <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 px-4">
-                        KNOWLEDGE
+                        KNOWLEDGE & POLICY
                     </h3>
                     <nav className="space-y-1">
-                        {knowledgeLinks.filter(l => l.id !== 'anti-trust' && l.id !== 'war-room').map((link) => {
+                        {/* Regulatory Command / Anti-Trust */}
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Link
+                                    href="/anti-trust"
+                                    className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === '/anti-trust'
+                                        ? 'bg-blue-950/10 text-blue-700 font-bold'
+                                        : 'text-gray-500 hover:bg-blue-50 hover:text-blue-700'
+                                        }`}
+                                >
+                                    <Globe className={`h-4 w-4 ${pathname === '/anti-trust' ? 'text-blue-700' : 'text-gray-400 group-hover:text-blue-700'}`} />
+                                    Regulatory Command
+                                </Link>
+                            </TooltipTrigger>
+                            <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
+                                Anti-Trust & AI Sovereignty
+                            </TooltipContent>
+                        </Tooltip>
+
+                        {/* Future of Code */}
+                        {platformLinks.filter(link => link.id === 'future-of-code').map((link) => (
+                            <Tooltip key={link.id}>
+                                <TooltipTrigger asChild>
+                                    <Link
+                                        href={link.href}
+                                        className={`flex items-center justify-between px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === link.href
+                                            ? 'bg-purple-50 text-purple-700 font-bold'
+                                            : 'text-gray-500 hover:bg-purple-50 hover:text-purple-700'
+                                            }`}
+                                    >
+                                        <div className="flex items-center gap-3">
+                                            <link.icon className={`h-4 w-4 ${pathname === link.href ? 'text-purple-700' : 'text-gray-400 group-hover:text-purple-700'}`} />
+                                            {link.label}
+                                        </div>
+                                    </Link>
+                                </TooltipTrigger>
+                                <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
+                                    {link.tooltip}
+                                </TooltipContent>
+                            </Tooltip>
+                        ))}
+
+                        {/* Research */}
+                        {categoryLinks.filter(l => l.id === 'research' || l.id === 'policy').map((link) => (
+                            <Tooltip key={link.id}>
+                                <TooltipTrigger asChild>
+                                    <Link
+                                        href={link.href}
+                                        className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === link.href
+                                            ? 'bg-gray-50 text-gray-900 font-semibold'
+                                            : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
+                                            }`}
+                                    >
+                                        <link.icon className={`h-4 w-4 ${pathname === link.href ? 'text-gray-900' : 'text-gray-400 group-hover:text-gray-600'}`} />
+                                        {link.label}
+                                    </Link>
+                                </TooltipTrigger>
+                                <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
+                                    {link.tooltip}
+                                </TooltipContent>
+                            </Tooltip>
+                        ))}
+
+                        {knowledgeLinks.filter(l => l.id !== 'anti-trust' && l.id !== 'war-room' && l.id !== 'mission' && l.id !== 'about').map((link) => {
                             const isActive = pathname === link.href;
                             return (
                                 <Tooltip key={link.id}>
