@@ -268,7 +268,20 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
                 {/* List Layout */}
                 <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 p-6">
                     <div>
-                        {articles.length === 0 && !loading ? (
+                        {loading && articles.length === 0 ? (
+                            <div className="flex flex-col items-center justify-center py-16 text-slate-500">
+                                <div className="relative mb-4">
+                                    <div className="w-16 h-16 border-4 border-blue-100 border-t-blue-500 rounded-full animate-spin"></div>
+                                    <span className="absolute inset-0 flex items-center justify-center">
+                                        <span className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full animate-pulse"></span>
+                                    </span>
+                                </div>
+                                <span className="text-sm font-bold text-slate-700 mb-1">Processing 109+ Sources...</span>
+                                <span className="text-xs font-mono text-slate-400 uppercase tracking-widest">
+                                    Filtering in Real-Time
+                                </span>
+                            </div>
+                        ) : articles.length === 0 && !loading ? (
                             <div className="text-center py-12 text-slate-400">
                                 <p>No top stories found for this period.</p>
                             </div>
