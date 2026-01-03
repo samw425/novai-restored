@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { VideoItem } from '@/lib/data/video-feed';
 import { Play, Clock, Eye, ExternalLink, Loader2, RefreshCw } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -16,6 +16,8 @@ export function VideoFeedContainer({ liveVideos: initialLiveVideos, briefVideos 
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
     const [visibleCount, setVisibleCount] = useState(10);
+    const [loadingMore, setLoadingMore] = useState(false);
+    const observerTarget = useRef<HTMLDivElement>(null);
 
     const fetchVideos = async () => {
         try {
@@ -43,6 +45,39 @@ export function VideoFeedContainer({ liveVideos: initialLiveVideos, briefVideos 
         setRefreshing(true);
         fetchVideos();
     };
+
+    // Load more function for infinite scroll
+    const loadMore = useCallback(() => {
+        if (loadingMore || visibleCount >= videos.length) return;
+        setLoadingMore(true);
+        // Simulate a small delay for smooth UX
+        setTimeout(() => {
+            setVisibleCount(prev => Math.min(prev + 5, videos.length));
+            setLoadingMore(false);
+        }, 300);
+    }, [loadingMore, visibleCount, videos.length]);
+
+    // Intersection Observer for infinite scroll
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            entries => {
+                if (entries[0].isIntersecting && visibleCount < videos.length && !loadingMore && !loading && activeTab === 'live') {
+                    loadMore();
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        if (observerTarget.current) {
+            observer.observe(observerTarget.current);
+        }
+
+        return () => {
+            if (observerTarget.current) {
+                observer.unobserve(observerTarget.current);
+            }
+        };
+    }, [loadMore, visibleCount, videos.length, loadingMore, loading, activeTab]);
 
     return (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -97,16 +132,18 @@ export function VideoFeedContainer({ liveVideos: initialLiveVideos, briefVideos 
                                         <VideoCard key={video.id} video={video} />
                                     ))}
 
-                                    {visibleCount < videos.length && (
-                                        <div className="pt-4 flex justify-center">
-                                            <button
-                                                onClick={() => setVisibleCount(prev => prev + 5)}
-                                                className="px-6 py-3 bg-white border border-slate-200 text-slate-600 font-medium rounded-full hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm flex items-center gap-2"
-                                            >
-                                                Load More Intelligence
-                                            </button>
-                                        </div>
-                                    )}
+                                    {/* Infinite Scroll Sentinel */}
+                                    <div ref={observerTarget} className="py-8 flex justify-center">
+                                        {loadingMore && (
+                                            <div className="flex flex-col items-center gap-2">
+                                                <Loader2 className="animate-spin text-slate-400" size={24} />
+                                                <span className="text-xs font-mono text-slate-400 uppercase tracking-widest">Loading more...</span>
+                                            </div>
+                                        )}
+                                        {visibleCount >= videos.length && videos.length > 0 && (
+                                            <span className="text-xs text-slate-300 font-mono uppercase tracking-widest">End of Feed</span>
+                                        )}
+                                    </div>
                                 </>
                             )
                         ) : (
