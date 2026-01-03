@@ -266,6 +266,7 @@ export const RSS_FEEDS: FeedSource[] = [
     { id: 'itnewsafrica', name: 'IT News Africa', url: 'https://www.itnewsafrica.com/feed/', category: 'market', priority: 6, region: 'Global' },
 
     // ========== BIOTECHNOLOGY & SYNTHETIC BIOLOGY ==========
+    { id: 'google-biotech', name: 'Biotech News', url: 'https://news.google.com/rss/search?q=Biotechnology+CRISPR+Synthetic+Biology&hl=en-US&gl=US&ceid=US:en', category: 'biotech', priority: 10, region: 'Global' },
     { id: 'nature-biotech', name: 'Nature Biotechnology', url: 'https://www.nature.com/nbt.rss', category: 'biotech', priority: 10, region: 'Global' },
     { id: 'stat-news', name: 'STAT News', url: 'https://www.statnews.com/feed/', category: 'biotech', priority: 10, region: 'US' },
     { id: 'fierce-biotech', name: 'Fierce Biotech', url: 'https://www.fiercebiotech.com/rss/biomarkers', category: 'biotech', priority: 9, region: 'US' },
@@ -276,6 +277,7 @@ export const RSS_FEEDS: FeedSource[] = [
     { id: 'biospace', name: 'BioSpace', url: 'https://www.biospace.com/rss/news/', category: 'biotech', priority: 8, region: 'US' },
 
     // ========== QUANTUM COMPUTING & PHYSICS ==========
+    { id: 'google-quantum', name: 'Quantum Tech News', url: 'https://news.google.com/rss/search?q=Quantum+Computing+Qubit+Superconductor&hl=en-US&gl=US&ceid=US:en', category: 'quantum', priority: 10, region: 'Global' },
     { id: 'quantum-insider', name: 'The Quantum Insider', url: 'https://thequantuminsider.com/feed/', category: 'quantum', priority: 10, region: 'Global' },
     { id: 'quantum-computing-report', name: 'Quantum Computing Report', url: 'https://quantumcomputingreport.com/feed/', category: 'quantum', priority: 10, region: 'US' },
     { id: 'phys-org-quantum', name: 'Phys.org Quantum Physics', url: 'https://phys.org/rss-feed/physics-news/quantum-physics/', category: 'quantum', priority: 9, region: 'Global' },
@@ -284,6 +286,7 @@ export const RSS_FEEDS: FeedSource[] = [
     { id: 'sciencedaily-quantum', name: 'ScienceDaily Quantum', url: 'https://www.sciencedaily.com/rss/matter_energy/quantum_computing.xml', category: 'quantum', priority: 8, region: 'Global' },
 
     // ========== SPACE & SATELLITE INTELLIGENCE ==========
+    { id: 'google-space', name: 'Space Industry News', url: 'https://news.google.com/rss/search?q=SpaceX+NASA+Satellite+Launch+Orbit&hl=en-US&gl=US&ceid=US:en', category: 'space', priority: 10, region: 'Global' },
     { id: 'space-news', name: 'SpaceNews', url: 'https://spacenews.com/feed/', category: 'space', priority: 10, region: 'US' },
     { id: 'nasa-breaking', name: 'NASA Breaking News', url: 'https://www.nasa.gov/rss/dyn/breaking_news.rss', category: 'space', priority: 10, region: 'US' },
     { id: 'space-com', name: 'Space.com', url: 'https://www.space.com/feeds/all', category: 'space', priority: 9, region: 'US' },
@@ -293,6 +296,7 @@ export const RSS_FEEDS: FeedSource[] = [
     { id: 'spaceref', name: 'SpaceRef', url: 'https://spaceref.com/feed/', category: 'space', priority: 8, region: 'Global' },
 
     // ========== SEMICONDUCTORS & CHIPS ==========
+    { id: 'google-chips', name: 'Semiconductor News', url: 'https://news.google.com/rss/search?q=Semiconductor+TSMC+Nvidia+Chips+Wafer&hl=en-US&gl=US&ceid=US:en', category: 'semiconductors', priority: 10, region: 'Global' },
     { id: 'eetimes', name: 'EE Times', url: 'https://www.eetimes.com/feed/', category: 'semiconductors', priority: 10, region: 'Global' },
     { id: 'semi-engineering', name: 'Semiconductor Engineering', url: 'https://semiengineering.com/feed/', category: 'semiconductors', priority: 10, region: 'US' },
     { id: 'semi-analysis', name: 'SemiAnalysis', url: 'https://www.semianalysis.com/feed', category: 'semiconductors', priority: 10, region: 'US' },

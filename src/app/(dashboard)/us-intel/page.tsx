@@ -565,18 +565,7 @@ const AGENCY_PROFILES: Record<string, any> = {
             shadow_budget: 'N/A',
             unacknowledged_projects: ['Open Source Intelligence Synthesis']
         },
-        education_dossier: `
-        > [!NOTE]
-        > **Strategic Analysis Note**: This section provides independent, non-classified synthesis of global security trends. This command center pulls **live, up-to-the-minute briefings** from the world's elite strategic studies institutes to ensure you stay ahead of the signal.
-
-        Defense Analysis represents the analytical layer of the intelligence cycle. While official agencies focus on data collection and operational execution, strategic analysts focus on synthesis, long-term trends, and the 'so what' of global developments.
-
-        The feed below is **live** and aggregates intelligence from respected independent organizations including:
-        • **Institute for the Study of War (ISW):** Real-time ground truth on active conflicts.
-        • **Center for Strategic and International Studies (CSIS):** Long-term policy and security trends.
-        • **RAND Corporation:** data-driven policy analysis.
-        • **War on the Rocks:** Insights from veterans and practitioners.
-        • **Defense News & Breaking Defense:** Industrial and procurement intelligence.`,
+        education_dossier: `Strategic Defense Analysis provides independent, non-classified synthesis of global security trends. This command center pulls live, up-to-the-minute briefings from the world's elite strategic studies institutes to ensure you stay ahead of the signal.\n\nDefense Analysis represents the analytical layer of the intelligence cycle. While official agencies focus on data collection and operational execution, strategic analysts focus on synthesis, long-term trends, and the 'so what' of global developments.\n\nThe feed below aggregates intelligence from respected independent organizations including:\n\n• Institute for the Study of War (ISW): Real-time ground truth on active conflicts.\n• Center for Strategic and International Studies (CSIS): Long-term policy and security trends.\n• RAND Corporation: Data-driven policy analysis.\n• War on the Rocks: Insights from veterans and practitioners.\n• Defense News & Breaking Defense: Industrial and procurement intelligence.`,
         official_links: [
             { title: 'War on the Rocks', url: 'https://warontherocks.com/', description: 'Strategy and foreign policy analysis.' },
             { title: 'Institute for Study of War', url: 'https://www.understandingwar.org/', description: 'Conflict situation maps and analysis.' },
