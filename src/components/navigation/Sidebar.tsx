@@ -21,23 +21,25 @@ const intelligenceLinks = [
         href: '/oracle',
         tooltip: "Agentic Synthesis Engine: The God's Eye View."
     },
-    {
-        id: 'intelligence-brief',
-        label: 'Daily Intelligence Brief',
-        icon: Brain,
-        href: '/intelligence-brief',
-        tooltip: "AI-synthesized insights: what happened, what it means, and why it matters."
-    },
+    // BOOKMARKED FOR PRO: Daily Intelligence Brief (requires AI synthesis infrastructure)
+    // {
+    //     id: 'intelligence-brief',
+    //     label: 'Daily Intelligence Brief',
+    //     icon: Brain,
+    //     href: '/intelligence-brief',
+    //     tooltip: "AI-synthesized insights: what happened, what it means, and why it matters."
+    // },
 ];
 
 const platformLinks = [
-    {
-        id: 'daily-snapshot',
-        label: 'Daily Snapshot',
-        icon: Calendar,
-        href: '/daily-snapshot',
-        tooltip: "Today's curated AI brief."
-    },
+    // BOOKMARKED FOR PRO: Daily Snapshot (requires AI synthesis infrastructure)
+    // {
+    //     id: 'daily-snapshot',
+    //     label: 'Daily Snapshot',
+    //     icon: Calendar,
+    //     href: '/daily-snapshot',
+    //     tooltip: "Today's curated AI brief."
+    // },
     {
         id: 'earnings',
         label: 'Earnings Hub',
@@ -342,7 +344,8 @@ export function Sidebar() {
                             );
                         })}
 
-                        {/* 3. Daily Snapshot */}
+
+                        {/* BOOKMARKED FOR PRO: Daily Snapshot render block
                         {platformLinks.filter(link => link.id === 'daily-snapshot').map((link) => {
                             const isActive = pathname === link.href;
                             return (
@@ -367,6 +370,7 @@ export function Sidebar() {
                                 </Tooltip>
                             );
                         })}
+                        */}
 
                         {/* 4. Future of Code */}
                         {platformLinks.filter(link => link.id === 'future-of-code').map((link) => {
