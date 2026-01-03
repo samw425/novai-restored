@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 import Parser from 'rss-parser/dist/rss-parser.min.js';
 
 // Cache for 5 minutes to reduce function calls
-export const revalidate = 300;
+export const revalidate = 0;
 
 const parser = new Parser({
     headers: {
@@ -153,7 +153,7 @@ export async function GET(request: Request) {
             hasMore: true
         }, {
             headers: {
-                'Cache-Control': 's-maxage=120, stale-while-revalidate=600',
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
             },
         });
 

@@ -355,6 +355,56 @@ export function Sidebar() {
                                 Agency Feeds & Dossiers
                             </TooltipContent>
                         </Tooltip>
+
+                        {/* 4. AI News */}
+                        {categoryLinks.filter(l => l.id === 'ai').map((link) => {
+                            const isActive = pathname === link.href;
+                            return (
+                                <Tooltip key={link.id}>
+                                    <TooltipTrigger asChild>
+                                        <Link
+                                            href={link.href}
+                                            className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${isActive
+                                                ? 'bg-gray-50 text-gray-900 font-semibold'
+                                                : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
+                                                }`}
+                                        >
+                                            {isActive && (
+                                                <div className="absolute left-0 top-1/2 -translate-y-1/2 h-4 w-[2px] bg-gray-900 rounded-r-full" />
+                                            )}
+                                            <link.icon className={`h-4 w-4 ${isActive ? 'text-gray-900' : 'text-gray-400 group-hover:text-gray-600'}`} />
+                                            AI News
+                                        </Link>
+                                    </TooltipTrigger>
+                                    <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
+                                        {link.tooltip}
+                                    </TooltipContent>
+                                </Tooltip>
+                            );
+                        })}
+
+                        {/* 5. Future of Code */}
+                        {platformLinks.filter(link => link.id === 'future-of-code').map((link) => (
+                            <Tooltip key={link.id}>
+                                <TooltipTrigger asChild>
+                                    <Link
+                                        href={link.href}
+                                        className={`flex items-center justify-between px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === link.href
+                                            ? 'bg-purple-50 text-purple-700 font-bold'
+                                            : 'text-gray-500 hover:bg-purple-50 hover:text-purple-700'
+                                            }`}
+                                    >
+                                        <div className="flex items-center gap-3">
+                                            <link.icon className={`h-4 w-4 ${pathname === link.href ? 'text-purple-700' : 'text-gray-400 group-hover:text-purple-700'}`} />
+                                            {link.label}
+                                        </div>
+                                    </Link>
+                                </TooltipTrigger>
+                                <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
+                                    {link.tooltip}
+                                </TooltipContent>
+                            </Tooltip>
+                        ))}
                     </nav>
                 </div>
 
@@ -364,8 +414,8 @@ export function Sidebar() {
                         SECTORS
                     </h3>
                     <nav className="space-y-1">
-                        {/* Standard Categories: AI, LLMs */}
-                        {categoryLinks.filter(l => l.id === 'ai' || l.id === 'llms').map((link) => {
+                        {/* Standard Categories: LLMs (AI removed) */}
+                        {categoryLinks.filter(l => l.id === 'llms').map((link) => {
                             const isActive = pathname === link.href;
                             return (
                                 <Tooltip key={link.id}>
@@ -418,28 +468,7 @@ export function Sidebar() {
                             );
                         })}
 
-                        {/* Future of Code */}
-                        {platformLinks.filter(link => link.id === 'future-of-code').map((link) => (
-                            <Tooltip key={link.id}>
-                                <TooltipTrigger asChild>
-                                    <Link
-                                        href={link.href}
-                                        className={`flex items-center justify-between px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === link.href
-                                            ? 'bg-purple-50 text-purple-700 font-bold'
-                                            : 'text-gray-500 hover:bg-purple-50 hover:text-purple-700'
-                                            }`}
-                                    >
-                                        <div className="flex items-center gap-3">
-                                            <link.icon className={`h-4 w-4 ${pathname === link.href ? 'text-purple-700' : 'text-gray-400 group-hover:text-purple-700'}`} />
-                                            {link.label}
-                                        </div>
-                                    </Link>
-                                </TooltipTrigger>
-                                <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
-                                    {link.tooltip}
-                                </TooltipContent>
-                            </Tooltip>
-                        ))}
+
                     </nav>
                 </div>
 

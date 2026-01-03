@@ -385,48 +385,15 @@ export default function WarRoomPage() {
                         incidents={[
                             ...incidents.filter(i => i.type === 'naval'),
                             ...NAVAL_FACILITIES.map(f => ({
-                                id: f.id,
-                                type: 'naval' as const,
-                                title: `${f.name} (${f.country})`,
-                                description: f.description,
-                                severity: 'info' as const,
-                                location: f.location,
                                 country: f.country as any,
                                 timestamp: new Date().toISOString(),
                                 source: 'Known Base',
                                 url: '#',
                                 assetType: 'Naval Base'
                             }))
-                        ].filter(incident => {
-                            if (navalFilter === 'ALL') return true;
-                            // Mapping countries/categories to the selected filter
-                            const c = (incident.country || '').toUpperCase();
-
-                            if (navalFilter === 'western') return ['US', 'UK', 'FR', 'DE', 'JP', 'NATO'].includes(c);
-                            if (navalFilter === 'eastern') return ['CN', 'KP'].includes(c);
-                            if (navalFilter === 'russia') return ['RU'].includes(c);
-                            if (navalFilter === 'neutral') return ['IN', 'BR', 'ZA'].includes(c);
-                            if (navalFilter === 'hostile') return ['IR', 'SY'].includes(c);
-                            return true;
-                        })}
+                        ]}
                         hasNavalContext={true}
                     />
-                                    ...NAVAL_FACILITIES.map(f => ({
-                        id: f.id,
-                    type: 'naval' as const,
-                    title: `${f.name} (${f.country})`,
-                    description: f.description,
-                    severity: 'info' as const,
-                    location: f.location,
-                    country: f.country as any,
-                    timestamp: new Date().toISOString(),
-                    source: 'Known Base',
-                    url: '#',
-                    assetType: 'Naval Base'
-                                    }))
-                                ]}
-                    hasNavalContext={true}
-                            />
                 </div>
 
                 {/* Fleet Status Sidebar */}
