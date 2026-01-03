@@ -1,5 +1,5 @@
 import React from 'react';
-import { Globe, Zap } from 'lucide-react';
+import { Globe } from 'lucide-react';
 import { Logo } from '@/components/ui/Logo';
 
 export function Footer() {
@@ -10,15 +10,15 @@ export function Footer() {
                     {/* BRAND COLUMN */}
                     <div className="col-span-1 md:col-span-4 space-y-4 pr-8">
                         <Logo theme="light" />
-                        <p className="text-slate-500 text-sm leading-relaxed max-w-sm">
-                            The central nervous system for the post-AI world. Autonomously monitoring 70+ high-signal sources to provide a God's Eye View of the technological singularity.
+                        <p className="text-slate-500 text-sm leading-relaxed max-w-xs font-medium">
+                            The central nervous system for open intelligence.
                         </p>
-                        <div className="flex items-center gap-2 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full w-fit border border-emerald-100">
+                        <div className="flex items-center gap-2 text-[10px] font-bold text-red-600 bg-red-50 px-3 py-1.5 rounded-full w-fit border border-red-100 shadow-sm">
                             <span className="relative flex h-2 w-2">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-600"></span>
                             </span>
-                            SYSTEM OPERATIONAL
+                            LIVE NOW
                         </div>
                     </div>
 
@@ -26,10 +26,10 @@ export function Footer() {
                     <div className="col-span-1 md:col-span-2 space-y-4">
                         <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Platform</h4>
                         <ul className="space-y-2 text-sm font-medium">
-                            <li><a href="/global-feed" className="text-slate-600 hover:text-blue-600 transition-colors">Global Feed</a></li>
-                            <li><a href="/deep-signals" className="text-slate-600 hover:text-blue-600 transition-colors">Deep Signals</a></li>
-                            <li><a href="/daily-snapshot" className="text-slate-600 hover:text-blue-600 transition-colors">Daily Snapshot</a></li>
+                            <li><a href="/" className="text-slate-600 hover:text-blue-600 transition-colors">Global Feed</a></li>
+                            <li><a href="/us-intel" className="text-slate-600 hover:text-blue-600 transition-colors">US Intelligence</a></li>
                             <li><a href="/war-room" className="text-slate-600 hover:text-blue-600 transition-colors">War Room</a></li>
+                            <li><a href="/deep-signals" className="text-slate-600 hover:text-blue-600 transition-colors">Deep Signals</a></li>
                             <li><a href="/market-pulse" className="text-slate-600 hover:text-blue-600 transition-colors">Market Pulse</a></li>
                         </ul>
                     </div>
@@ -39,12 +39,11 @@ export function Footer() {
                         <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Sectors</h4>
                         <ul className="space-y-2 text-sm font-medium">
                             <li><a href="/ai" className="text-slate-600 hover:text-blue-600 transition-colors">AI News</a></li>
-                            <li><a href="/llms" className="text-slate-600 hover:text-blue-600 transition-colors">LLMs & Models</a></li>
-                            <li><a href="/robotics" className="text-slate-600 hover:text-blue-600 transition-colors">Robotics</a></li>
-                            <li><a href="/us-intel" className="text-slate-600 hover:text-blue-600 transition-colors">US Intelligence</a></li>
-                            <li><a href="/research" className="text-slate-600 hover:text-blue-600 transition-colors">Research</a></li>
-                            <li><a href="/policy" className="text-slate-600 hover:text-blue-600 transition-colors">Policy & Regulation</a></li>
-                            <li><a href="/hacker-news" className="text-slate-600 hover:text-blue-600 transition-colors">Hacker News</a></li>
+                            <li><a href="/semiconductors" className="text-slate-600 hover:text-blue-600 transition-colors">Semiconductors</a></li>
+                            <li><a href="/quantum" className="text-slate-600 hover:text-blue-600 transition-colors">Quantum</a></li>
+                            <li><a href="/biotech" className="text-slate-600 hover:text-blue-600 transition-colors">Biotech</a></li>
+                            <li><a href="/space" className="text-slate-600 hover:text-blue-600 transition-colors">Space</a></li>
+                            <li><a href="/future-of-code" className="text-slate-600 hover:text-blue-600 transition-colors">Future of Code</a></li>
                         </ul>
                     </div>
 
@@ -52,16 +51,12 @@ export function Footer() {
                     <div className="col-span-1 md:col-span-2 space-y-4">
                         <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Resources</h4>
                         <ul className="space-y-2 text-sm font-medium">
-                            <li><a href="/tools" className="text-slate-600 hover:text-blue-600 transition-colors">AI Tools Database</a></li>
-                            <li><a href="/lab-tools" className="text-slate-600 hover:text-blue-600 transition-colors">Lab Tools</a></li>
-                            <li><a href="/trend-watch" className="text-slate-600 hover:text-blue-600 transition-colors">Trend Watch</a></li>
-                            <li><a href="/about" className="text-slate-600 hover:text-blue-600 transition-colors">How It Works</a></li>
-                            <li><a href="/about" className="text-slate-600 hover:text-blue-600 transition-colors">Mission</a></li>
                             <li><a href="/master-plan" className="text-slate-600 hover:text-blue-600 transition-colors">Master Plan</a></li>
-
-                            <li><a href="/about" className="text-slate-600 hover:text-blue-600 transition-colors">About Novai</a></li>
+                            <li><a href="/how-it-works" className="text-slate-600 hover:text-blue-600 transition-colors">How It Works</a></li>
+                            <li><a href="/tools" className="text-slate-600 hover:text-blue-600 transition-colors">AI Tools Database</a></li>
+                            <li><a href="/videos" className="text-slate-600 hover:text-blue-600 transition-colors">Video Intel</a></li>
+                            <li className="pt-2"><a href="/about" className="text-slate-600 hover:text-blue-600 transition-colors">About Novai</a></li>
                             <li><a href="/support" className="text-blue-600 font-bold hover:text-blue-700 transition-colors">Support Novai</a></li>
-                            <li><a href="/feedback" className="text-slate-600 hover:text-blue-600 transition-colors">Feedback</a></li>
                         </ul>
                     </div>
 
