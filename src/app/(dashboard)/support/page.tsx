@@ -44,9 +44,9 @@ export default function SupportPage() {
 
                     <h1 className="text-2xl font-black text-gray-900 tracking-tight mb-3">Power the Signal</h1>
                     <p className="text-[15px] text-gray-600 leading-relaxed font-medium">
-                        Novai is building the future of open-source intelligence. While we are developing Pro tools for the long term, our core mission is keeping the global signal accessible today.
+                        Novai is building the future of open-source intelligence. While we develop specialized Pro tools for power users, our core mission is to keep the global signal accessible to everyone.
                         <br /><br />
-                        Your support is dedicated strictly to this <strong>public platform</strong>—funding the GPU clusters and data feeds that keep the signal independent, ad-free, and open to the world.
+                        Your support directly funds the GPU clusters and real-time data feeds that keep this public platform independent, ad-free, and open to the world.
                     </p>
                 </div>
 
