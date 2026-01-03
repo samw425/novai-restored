@@ -1,4 +1,4 @@
-export type FeedCategory = 'research' | 'tools' | 'policy' | 'market' | 'robotics' | 'ai' | 'security' | 'us-intel' | 'current-wars' | 'built-world' | 'antitrust' | 'defense-analysis' | 'biotech' | 'quantum' | 'space' | 'semiconductors';
+export type FeedCategory = 'research' | 'tools' | 'policy' | 'market' | 'robotics' | 'ai' | 'security' | 'us-intel' | 'current-wars' | 'built-world' | 'antitrust' | 'defense-analysis' | 'biotech' | 'quantum' | 'space' | 'semiconductors' | 'real-estate-residential' | 'real-estate-commercial';
 
 export interface FeedSource {
     id: string;

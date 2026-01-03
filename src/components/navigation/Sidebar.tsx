@@ -325,7 +325,6 @@ export function Sidebar() {
                             { id: 'earnings', label: 'Earnings Hub', icon: DollarSign, href: '/earnings', tooltip: 'Corporate Intelligence' },
                             { id: 'antitrust', label: 'Anti-Trust Command', icon: Globe, href: '/anti-trust', tooltip: 'Regulatory War Room' },
                             { id: 'realestate', label: 'Real-Estate', icon: Building2, href: '/real-estate', tooltip: 'Global Property Markets' },
-                            { id: 'middleeast', label: 'Middle East', icon: Shield, href: '/middle-east', tooltip: 'Regional Intelligence' },
                             { id: 'demographics', label: 'Global Census', icon: Activity, href: '/global-demographics', tooltip: 'Real-time Vital Stats' }
                         ].map((link) => {
                             const isActive = pathname === link.href;
