@@ -43,7 +43,8 @@ function BreadcrumbHeaderInner() {
                         <Heart size={14} className="fill-blue-600" />
                         <span className="hidden sm:inline">Support</span>
                     </Link>
-                    <div className="relative hidden md:block group">
+                    {/* Search temporarily disabled per user request while true search is implemented */}
+                    {/* <div className="relative hidden md:block group">
                         <button
                             onClick={handleSearch}
                             className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-600 transition-colors z-10"
@@ -58,7 +59,7 @@ function BreadcrumbHeaderInner() {
                             onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                             className="bg-white border border-gray-200 rounded-lg pl-9 pr-4 py-2 text-xs w-48 lg:w-64 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all shadow-sm"
                         />
-                    </div>
+                    </div> */}
                 </div>
             </header>
         </>
