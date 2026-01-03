@@ -73,29 +73,31 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
         }
     }, [category, forcedCategory, loadingMore, hasMore, viewMode, page, searchQuery]);
 
-    // Initial load & Category/ViewMode change
+    // Initial load & Category/ViewMode/Search change
     useEffect(() => {
         setCursor(undefined);
         setHasMore(true);
         setArticles([]);
         setPage(1);
-        setLoadingMore(false); // Reset loadingMore when category changes!
+        setLoadingMore(false);
+        setNewCount(0); // Reset new badge on sort/search change
 
         const init = async () => {
             setLoading(true);
             try {
                 // Use forcedCategory if present, otherwise current state category
                 const targetCategory = forcedCategory || category;
-                // ... rest of init logic remains logically similar but using fetchArticles
-                const fetchedArticles = await fetchArticles(10, targetCategory, searchQuery, 1); // Page 1
+
+                // If searching, always force live mode behavior initially
+                const isSearching = !!searchQuery;
+
+                const fetchedArticles = await fetchArticles(isSearching ? 20 : 10, targetCategory, searchQuery, 1);
                 setArticles(fetchedArticles || []);
 
-                if (viewMode === 'live') {
+                if (viewMode === 'live' || isSearching) {
                     setPage(1);
-                    // Only set hasMore to false if we got 0 articles
-                    // Otherwise, always allow trying to load more
                     setHasMore((fetchedArticles?.length || 0) > 0);
-                } else if (viewMode === '30-day') {
+                } else if (viewMode === '30-day' && !isSearching) {
                     const res = await fetch(`/api/feed/top-30d?category=${targetCategory}`);
                     const data = await res.json();
                     setArticles(data.articles || []);
@@ -105,7 +107,13 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
                 setLoading(false);
             }
         };
-        init();
+
+        // Debounce search slightly if needed, but for now direct dependence is fine
+        const timer = setTimeout(() => {
+            init();
+        }, 100);
+
+        return () => clearTimeout(timer);
 
     }, [category, forcedCategory, viewMode, searchQuery]);
 
@@ -279,14 +287,16 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
                                         <span className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full animate-pulse"></span>
                                     </span>
                                 </div>
-                                <span className="text-sm font-bold text-slate-700 mb-1">Processing 109+ Sources...</span>
+                                <span className="text-sm font-bold text-slate-700 mb-1">
+                                    {searchQuery ? `Searching Intelligence for "${searchQuery}"...` : 'Processing 109+ Sources...'}
+                                </span>
                                 <span className="text-xs font-mono text-slate-400 uppercase tracking-widest">
-                                    Filtering in Real-Time
+                                    {searchQuery ? 'Scanning Neural Database' : 'Filtering in Real-Time'}
                                 </span>
                             </div>
                         ) : articles.length === 0 && !loading ? (
                             <div className="text-center py-12 text-slate-400">
-                                <p>No top stories found for this period.</p>
+                                <p>{searchQuery ? `No results found for "${searchQuery}"` : 'No top stories found for this period.'}</p>
                             </div>
                         ) : (
                             <AnimatePresence mode="popLayout">
