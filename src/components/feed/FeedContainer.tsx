@@ -79,6 +79,7 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
         setHasMore(true);
         setArticles([]);
         setPage(1);
+        setLoadingMore(false); // Reset loadingMore when category changes!
 
         const init = async () => {
             setLoading(true);
@@ -86,12 +87,14 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
                 // Use forcedCategory if present, otherwise current state category
                 const targetCategory = forcedCategory || category;
                 // ... rest of init logic remains logically similar but using fetchArticles
-                const articles = await fetchArticles(10, targetCategory, searchQuery, 1); // Page 1
-                setArticles(articles || []);
+                const fetchedArticles = await fetchArticles(10, targetCategory, searchQuery, 1); // Page 1
+                setArticles(fetchedArticles || []);
 
                 if (viewMode === 'live') {
                     setPage(1);
-                    setHasMore(true);
+                    // Only set hasMore to false if we got 0 articles
+                    // Otherwise, always allow trying to load more
+                    setHasMore((fetchedArticles?.length || 0) > 0);
                 } else if (viewMode === '30-day') {
                     const res = await fetch(`/api/feed/top-30d?category=${targetCategory}`);
                     const data = await res.json();
