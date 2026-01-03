@@ -46,9 +46,9 @@ export default function SupportPage() {
                     <p className="text-[15px] text-gray-600 leading-relaxed font-medium">
                         <strong>Keep the Signal Independent</strong>
                         <br /><br />
-                        Novai is an independent project built to give everyone access to elite intelligence.
+                        Novai is building the future of open access to elite intelligence.
                         <br /><br />
-                        To remain truly neutral, we refuse venture capital and ads. We answer only to you.
+                        We provide a paywall-free utility that strips away noise to deliver the high-signal information that matters most.
                         <br /><br />
                         If you find value in the signal, you can support the development here. If not, just enjoy the intel.
                     </p>
