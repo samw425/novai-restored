@@ -213,6 +213,22 @@ export default function WarRoomPage() {
     // View Selection Tabs
     return (
         <div className="space-y-6">
+            {/* War Room Hero Banner */}
+            <div className="relative w-full h-48 md:h-64 rounded-xl overflow-hidden shadow-2xl border border-slate-800">
+                <img
+                    src="/images/war-room-hero.png"
+                    alt="War Room - Global Conflict Monitor"
+                    className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <div className="absolute bottom-4 left-6">
+                    <h1 className="text-2xl md:text-3xl font-black text-white tracking-tight">WAR ROOM</h1>
+                    <p className="text-xs md:text-sm text-slate-300 mt-1 max-w-xl">
+                        Real-time global threat monitoring from reputable international sources. Track kinetic conflicts, cyber incidents, naval movements, and emerging crises worldwide.
+                    </p>
+                </div>
+            </div>
+
             <div className="flex border-b border-gray-200">
                 <button
                     onClick={() => setActiveTab('GLOBAL_INTEL')}
@@ -298,13 +314,60 @@ export default function WarRoomPage() {
                             </div>
                         )}
 
-                        {/* Full Width Map - No Overlay */}
-                        <InteractiveMap
-                            incidents={filteredIncidents}
-                        />
+                        {/* Map + OSINT Sidebar Grid Layout */}
+                        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+                            {/* Map - Takes 3/4 width on desktop */}
+                            <div className="lg:col-span-3">
+                                <InteractiveMap incidents={filteredIncidents} />
+                            </div>
+
+                            {/* OSINT Sidebar - Takes 1/4 width on desktop */}
+                            <div className="lg:col-span-1 h-[600px]">
+                                <div className="bg-slate-950 rounded-xl border border-slate-800 shadow-xl h-full flex flex-col overflow-hidden">
+                                    <div className="p-4 border-b border-slate-800 flex justify-between items-center shrink-0">
+                                        <h3 className="text-[10px] font-black text-blue-400 uppercase tracking-[0.15em] flex items-center gap-2">
+                                            <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-ping"></div>
+                                            OSINT LIVE
+                                        </h3>
+                                        <div className="px-2 py-0.5 bg-blue-900/40 border border-blue-800 rounded text-[8px] font-mono text-blue-300">
+                                            {filteredIncidents.length} VECTORS
+                                        </div>
+                                    </div>
+                                    <div className="flex-1 overflow-y-auto p-3 space-y-2">
+                                        {filteredIncidents.slice(0, 30).map((inc: WarRoomIncident) => (
+                                            <a
+                                                key={inc.id}
+                                                href={inc.url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="block p-3 bg-slate-900/80 border border-slate-800 hover:border-blue-500 hover:bg-slate-800 rounded-lg transition-all group"
+                                            >
+                                                <div className="flex items-center justify-between mb-1">
+                                                    <span className={`text-[8px] font-black uppercase ${inc.type === 'conflict' ? 'text-red-500' : inc.type === 'cyber' ? 'text-cyan-400' : inc.type === 'naval' ? 'text-blue-400' : 'text-orange-400'}`}>
+                                                        {inc.type}
+                                                    </span>
+                                                    <span className="text-[7px] font-mono text-slate-500">
+                                                        {new Date(inc.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                    </span>
+                                                </div>
+                                                <h4 className="text-[10px] font-bold text-slate-200 group-hover:text-white line-clamp-2 leading-tight">
+                                                    {inc.title}
+                                                </h4>
+                                                <div className="flex items-center justify-between mt-1">
+                                                    <span className="text-[7px] text-slate-500 font-mono uppercase truncate max-w-[80px]">
+                                                        {inc.source}
+                                                    </span>
+                                                    <ExternalLink size={8} className="text-blue-400 shrink-0" />
+                                                </div>
+                                            </a>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    {/* OSINT LIVE Feed - Below Map */}
+                    {/* Main Intelligence Feed - Below Map */}
                     <div className="bg-slate-950 rounded-xl p-5 border border-slate-800 shadow-xl">
                         <div className="flex justify-between items-center mb-4">
                             <h3 className="text-xs font-black text-blue-400 uppercase tracking-[0.15em] flex items-center gap-2">

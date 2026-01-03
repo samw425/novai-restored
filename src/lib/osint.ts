@@ -47,15 +47,33 @@ const DYNAMIC_CONFLICT_FEEDS = RSS_FEEDS
     .filter(feed => WAR_ROOM_CATEGORIES.includes(feed.category))
     .map(feed => feed.url);
 
-// We keep a small list of "Hardcoded High-Priority" search filters for specific kinetic tracking
-// These supplement the RSS feeds with real-time targeted queries
+// WORLDWIDE REPUTABLE SOURCES - Google News aggregation filtered by trusted outlets
 const KINETIC_SEARCH_FEEDS = [
-    // REFINED GEOPOLITICAL SEARCH (Filtered by Reputable Outlets)
-    'https://news.google.com/rss/search?q=(Ukraine+OR+Russia)+site:reuters.com+OR+site:apnews.com+OR+site:bbc.com&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q=(Gaza+OR+Israel+OR+Lebanon)+site:reuters.com+OR+site:apnews.com+OR+site:wsj.com&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q=(Taiwan+OR+China+OR+South+China+Sea)+site:reuters.com+OR+site:scmp.com+OR+site:nikkei.com&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q=(Sudan+OR+Somalia+OR+Sahel)+site:reuters.com+OR+site:apnews.com+OR+site:theguardian.com&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q=(Red+Sea+OR+Houthi+OR+Yemen)+site:reuters.com+OR+site:apnews.com+OR+site:gcaptain.com&hl=en-US&gl=US&ceid=US:en',
+    // EUROPE - BBC, Guardian, DW, France24, Euronews
+    'https://news.google.com/rss/search?q=(Ukraine+OR+Russia+OR+NATO)+site:bbc.com+OR+site:theguardian.com+OR+site:dw.com&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q=(military+OR+defense+OR+conflict)+site:france24.com+OR+site:euronews.com&hl=en-US&gl=US&ceid=US:en',
+
+    // MIDDLE EAST - Al Jazeera, Times of Israel, Arab News
+    'https://news.google.com/rss/search?q=(Gaza+OR+Israel+OR+Lebanon+OR+Syria)+site:aljazeera.com+OR+site:timesofisrael.com&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q=(Iran+OR+Yemen+OR+Houthi)+site:reuters.com+OR+site:aljazeera.com&hl=en-US&gl=US&ceid=US:en',
+
+    // ASIA-PACIFIC - SCMP, Nikkei, Straits Times, Korea Herald, The Hindu
+    'https://news.google.com/rss/search?q=(Taiwan+OR+China+OR+Indo-Pacific)+site:scmp.com+OR+site:nikkei.com+OR+site:straitstimes.com&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q=(North+Korea+OR+South+Korea+OR+military)+site:koreaherald.com+OR+site:japantimes.co.jp&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q=(India+OR+Pakistan+OR+defense)+site:thehindu.com+OR+site:hindustantimes.com&hl=en-US&gl=US&ceid=US:en',
+
+    // AFRICA - Africa News, VOA, Reuters Africa
+    'https://news.google.com/rss/search?q=(Sudan+OR+Somalia+OR+Sahel+OR+conflict)+site:africanews.com+OR+site:voanews.com&hl=en-US&gl=US&ceid=US:en',
+
+    // AMERICAS - AP, Reuters, WSJ, NYT
+    'https://news.google.com/rss/search?q=(military+OR+attack+OR+defense)+site:apnews.com+OR+site:reuters.com&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q=(Venezuela+OR+Mexico+OR+Latin+America+military)+site:reuters.com+OR+site:bbc.com&hl=en-US&gl=US&ceid=US:en',
+
+    // MARITIME / NAVAL
+    'https://news.google.com/rss/search?q=(Red+Sea+OR+naval+OR+carrier+OR+submarine)+site:gcaptain.com+OR+site:navalnews.com&hl=en-US&gl=US&ceid=US:en',
+
+    // CYBER SECURITY
+    'https://news.google.com/rss/search?q=(cyberattack+OR+ransomware+OR+hacking)+site:wired.com+OR+site:arstechnica.com+OR+site:therecord.media&hl=en-US&gl=US&ceid=US:en',
 ];
 
 // COMBINED FEED LIST
