@@ -1,20 +1,22 @@
-import { useState, useEffect } from 'react';
+'use client';
+
+import { useState, useEffect, Suspense } from 'react';
 import { Search, UserPlus, Heart } from 'lucide-react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { SignUpModal } from '@/components/auth/SignUpModal';
 
-export function BreadcrumbHeader() {
+function BreadcrumbHeaderInner() {
     const pathname = usePathname();
     const router = useRouter();
     const searchParams = useSearchParams();
     const currentView = pathname.split('/').pop()?.replace('-', ' ') || 'Global Feed';
     const [isSignUpOpen, setIsSignUpOpen] = useState(false);
-    const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
+    const [searchQuery, setSearchQuery] = useState('');
 
-    // Sync search query with URL params
+    // Sync search query with URL params (client-side only)
     useEffect(() => {
-        setSearchQuery(searchParams.get('search') || '');
+        setSearchQuery(searchParams?.get('search') || '');
     }, [searchParams]);
 
     const handleSearch = () => {
@@ -60,5 +62,13 @@ export function BreadcrumbHeader() {
                 </div>
             </header>
         </>
+    );
+}
+
+export function BreadcrumbHeader() {
+    return (
+        <Suspense fallback={<div className="h-16 mb-6" />}>
+            <BreadcrumbHeaderInner />
+        </Suspense>
     );
 }
