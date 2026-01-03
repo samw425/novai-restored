@@ -565,9 +565,13 @@ const AGENCY_PROFILES: Record<string, any> = {
             shadow_budget: 'N/A',
             unacknowledged_projects: ['Open Source Intelligence Synthesis']
         },
-        education_dossier: `Defense Analysis represents the analytical layer of the intelligence cycle. While official agencies focus on data collection and operational execution, strategic analysts focus on synthesis, long-term trends, and the 'so what' of global developments.
+        education_dossier: `
+        > [!NOTE]
+        > **Strategic Analysis Note**: This section provides independent, non-classified synthesis of global security trends. This command center pulls **live, up-to-the-minute briefings** from the world's elite strategic studies institutes to ensure you stay ahead of the signal.
 
-        This feed aggregates intelligence from respected independent organizations including:
+        Defense Analysis represents the analytical layer of the intelligence cycle. While official agencies focus on data collection and operational execution, strategic analysts focus on synthesis, long-term trends, and the 'so what' of global developments.
+
+        The feed below is **live** and aggregates intelligence from respected independent organizations including:
         • **Institute for the Study of War (ISW):** Real-time ground truth on active conflicts.
         • **Center for Strategic and International Studies (CSIS):** Long-term policy and security trends.
         • **RAND Corporation:** data-driven policy analysis.

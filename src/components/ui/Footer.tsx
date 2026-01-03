@@ -60,7 +60,7 @@ export function Footer() {
                             <li><a href="/master-plan" className="text-slate-600 hover:text-blue-600 transition-colors">Master Plan</a></li>
 
                             <li><a href="/about" className="text-slate-600 hover:text-blue-600 transition-colors">About Novai</a></li>
-                            <li><a href="/support" className="text-emerald-600 font-bold hover:text-emerald-700 transition-colors">Support Novai</a></li>
+                            <li><a href="/support" className="text-blue-600 font-bold hover:text-blue-700 transition-colors">Support Novai</a></li>
                             <li><a href="/feedback" className="text-slate-600 hover:text-blue-600 transition-colors">Feedback</a></li>
                         </ul>
                     </div>
@@ -84,10 +84,8 @@ export function Footer() {
 
                     <div className="flex items-center gap-6">
                         <a
-                            href="https://buy.stripe.com/fZu00ia5a6VefeKcBp3Nm01"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-1.5 text-[10px] font-bold text-emerald-600 hover:text-emerald-700 uppercase tracking-wider transition-colors"
+                            href="/support"
+                            className="flex items-center gap-1.5 text-[10px] font-bold text-blue-600 hover:text-blue-700 uppercase tracking-wider transition-colors"
                         >
                             <span className="text-xs">❤</span>
                             <span>Support the Mission</span>

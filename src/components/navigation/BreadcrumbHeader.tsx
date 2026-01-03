@@ -1,18 +1,25 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, UserPlus, Heart } from 'lucide-react';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import { SignUpModal } from '@/components/auth/SignUpModal';
 
 export function BreadcrumbHeader() {
     const pathname = usePathname();
     const router = useRouter();
+    const searchParams = useSearchParams();
     const currentView = pathname.split('/').pop()?.replace('-', ' ') || 'Global Feed';
     const [isSignUpOpen, setIsSignUpOpen] = useState(false);
-    const [searchQuery, setSearchQuery] = useState('');
+    const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
+
+    // Sync search query with URL params
+    useEffect(() => {
+        setSearchQuery(searchParams.get('search') || '');
+    }, [searchParams]);
 
     const handleSearch = () => {
         if (searchQuery.trim()) {
-            router.push(`/global-feed?search=${encodeURIComponent(searchQuery)}`);
+            router.push(`/global-feed?search=${encodeURIComponent(searchQuery.trim())}`);
         }
     };
 
@@ -27,17 +34,20 @@ export function BreadcrumbHeader() {
 
                 {/* Actions */}
                 <div className="flex items-center gap-3 md:gap-4 ml-auto lg:ml-0">
-                    <a
-                        href="https://buy.stripe.com/fZu00ia5a6VefeKcBp3Nm01"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 text-xs font-bold text-emerald-600 hover:text-emerald-700 transition-colors mr-2 px-2 py-1 rounded-md hover:bg-emerald-50"
+                    <Link
+                        href="/support"
+                        className="flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors mr-2 px-2 py-1 rounded-md hover:bg-blue-50"
                     >
-                        <Heart size={14} className="fill-emerald-600" />
+                        <Heart size={14} className="fill-blue-600" />
                         <span className="hidden sm:inline">Support</span>
-                    </a>
+                    </Link>
                     <div className="relative hidden md:block group">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors" size={14} />
+                        <button
+                            onClick={handleSearch}
+                            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-600 transition-colors z-10"
+                        >
+                            <Search size={14} />
+                        </button>
                         <input
                             type="text"
                             placeholder="Search Intelligence..."

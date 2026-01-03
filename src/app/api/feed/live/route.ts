@@ -51,7 +51,7 @@ export async function GET(request: Request) {
                     .from('articles')
                     .select('*')
                     .order('published_at', { ascending: false })
-                    .limit(50); // Fetch ample articles
+                    .limit(200); // Fetch ample articles to support infinite scroll across categories
 
                 if (category !== 'All') {
                     // Approximate category matching if needed, or rely on exact match
@@ -115,8 +115,8 @@ export async function GET(request: Request) {
             const feedPromises = feedsToFetch.map(async (source, sourceIndex) => {
                 try {
                     const feed = await parser.parseURL(source.url);
-                    // Limit to 3 items per source at ingestion level to save memory
-                    return feed.items.slice(0, 10).map((item, itemIndex) => ({
+                    // Limit to 30 items per source at ingestion level to support infinite scroll
+                    return feed.items.slice(0, 30).map((item, itemIndex) => ({
                         id: `${source.id}-${Date.now()}-${sourceIndex}-${itemIndex}-${item.guid || item.link || Math.random()}`,
                         source: source.name,
                         title: item.title || 'Untitled',
@@ -196,7 +196,7 @@ export async function GET(request: Request) {
                 if (strongSignals.some(s => text.includes(s))) return true;
 
                 // 3. CATEGORY AUTOMATIC ACCEPT
-                if (['robotics', 'research', 'code', 'market', 'policy', 'tech'].includes(article.category)) {
+                if (['robotics', 'research', 'code', 'market', 'policy', 'tech', 'biotech', 'quantum', 'space', 'semiconductors'].includes(article.category)) {
                     return true;
                 }
 
