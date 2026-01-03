@@ -15,37 +15,18 @@ import {
 
 const intelligenceLinks = [
     {
-        id: 'oracle',
-        label: 'The Oracle',
-        icon: Sparkles,
-        href: '/oracle',
-        tooltip: "Agentic Synthesis Engine: The God's Eye View."
+        id: 'global-feed',
+        label: 'Global Feed',
+        icon: Activity,
+        href: '/global-feed',
+        tooltip: "Real-time stream of AI news from all sources."
     },
-    // BOOKMARKED FOR PRO: Daily Intelligence Brief (requires AI synthesis infrastructure)
-    // {
-    //     id: 'intelligence-brief',
-    //     label: 'Daily Intelligence Brief',
-    //     icon: Brain,
-    //     href: '/intelligence-brief',
-    //     tooltip: "AI-synthesized insights: what happened, what it means, and why it matters."
-    // },
-];
-
-const platformLinks = [
-    // BOOKMARKED FOR PRO: Daily Snapshot (requires AI synthesis infrastructure)
-    // {
-    //     id: 'daily-snapshot',
-    //     label: 'Daily Snapshot',
-    //     icon: Calendar,
-    //     href: '/daily-snapshot',
-    //     tooltip: "Today's curated AI brief."
-    // },
     {
-        id: 'earnings',
-        label: 'Earnings Hub',
-        icon: DollarSign,
-        href: '/earnings',
-        tooltip: "Real-time earnings calendar and AI analysis."
+        id: 'ai-news',
+        label: 'AI News',
+        icon: Hexagon,
+        href: '/ai',
+        tooltip: "General AI news and developments."
     },
     {
         id: 'future-of-code',
@@ -54,28 +35,8 @@ const platformLinks = [
         href: '/future-of-code',
         tooltip: "Tracking the end of human coding."
     },
-    {
-        id: 'global-feed',
-        label: 'Global Feed',
-        icon: Activity,
-        href: '/global-feed',
-        tooltip: "Real-time stream of AI news from all sources."
-    },
-    {
-        id: 'global-demographics',
-        label: 'Global Demographics',
-        icon: Globe,
-        href: '/global-demographics',
-        tooltip: "Real-time global census and demographic data."
-    },
-    {
-        id: 'videos',
-        label: 'Video Feed',
-        icon: Youtube,
-        href: '/videos',
-        tooltip: "Curated high-signal AI videos and demos."
-    },
 ];
+
 
 const categoryLinks = [
     {
@@ -216,57 +177,6 @@ const proFeatureLinks = [
     },
 ];
 
-const knowledgeLinks = [
-    {
-        id: 'hacker-news',
-        label: 'Hacker News',
-        icon: Radio,
-        href: '/hacker-news',
-        tooltip: "Latest AI discussions from HN community."
-    },
-    {
-        id: 'lab-tools',
-        label: 'Lab & Tools',
-        icon: FlaskConical,
-        href: '/lab-tools',
-        tooltip: "New AI tools, frameworks, and products worth knowing."
-    },
-    {
-        id: 'trend-watch',
-        label: 'Trend Watch',
-        icon: TrendingUp,
-        href: '/trend-watch',
-        tooltip: "Macro trends shaping AI over weeks and months."
-    },
-    {
-        id: 'anti-trust',
-        label: 'Anti-Trust',
-        icon: Scale,
-        href: '/anti-trust',
-        tooltip: "The Regulatory War Room. Tracking the breakup of Big Tech."
-    },
-    {
-        id: 'war-room',
-        label: 'War Room',
-        icon: Shield,
-        href: '/war-room',
-        tooltip: "Risks, incidents, and policy heat you should watch."
-    },
-    {
-        id: 'mission',
-        label: 'Mission',
-        icon: Building2,
-        href: '/landing',
-        tooltip: "The Citizen Intelligence Agency."
-    },
-    {
-        id: 'about',
-        label: 'About Novai',
-        icon: Info,
-        href: '/about',
-        tooltip: "Mission, Methodology, and Roadmap."
-    },
-];
 
 export function Sidebar() {
     const pathname = usePathname();
@@ -293,27 +203,28 @@ export function Sidebar() {
                     </h3>
                     <nav className="space-y-1">
                         {/* 1. Global Feed */}
-                        {platformLinks.filter(link => link.id === 'global-feed').map((link) => (
-                            <Tooltip key={link.id}>
-                                <TooltipTrigger asChild>
-                                    <Link
-                                        href={link.href}
-                                        className={`flex items-center justify-between px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === link.href
-                                            ? 'bg-purple-50 text-purple-700 font-bold'
-                                            : 'text-gray-500 hover:bg-purple-50 hover:text-purple-700'
-                                            }`}
-                                    >
-                                        <div className="flex items-center gap-3">
-                                            <link.icon className={`h-4 w-4 ${pathname === link.href ? 'text-purple-700' : 'text-gray-400 group-hover:text-purple-700'}`} />
+                        {intelligenceLinks.map((link) => {
+                            const isActive = pathname === link.href;
+                            return (
+                                <Tooltip key={link.id}>
+                                    <TooltipTrigger asChild>
+                                        <Link
+                                            href={link.href}
+                                            className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${isActive
+                                                ? 'bg-blue-50 text-blue-700 font-bold'
+                                                : 'text-gray-500 hover:bg-blue-50 hover:text-blue-700'
+                                                }`}
+                                        >
+                                            <link.icon className={`h-4 w-4 ${isActive ? 'text-blue-700' : 'text-gray-400 group-hover:text-blue-700'}`} />
                                             {link.label}
-                                        </div>
-                                    </Link>
-                                </TooltipTrigger>
-                                <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
-                                    {link.tooltip}
-                                </TooltipContent>
-                            </Tooltip>
-                        ))}
+                                        </Link>
+                                    </TooltipTrigger>
+                                    <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
+                                        {link.tooltip}
+                                    </TooltipContent>
+                                </Tooltip>
+                            );
+                        })}
 
                         {/* 2. War Room */}
                         <Tooltip>
@@ -343,8 +254,8 @@ export function Sidebar() {
                                 <Link
                                     href="/us-intel"
                                     className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === '/us-intel'
-                                        ? 'bg-gray-900 text-white'
-                                        : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
+                                        ? 'bg-slate-900 text-white'
+                                        : 'text-gray-500 hover:bg-slate-50 hover:text-slate-900'
                                         }`}
                                 >
                                     <Shield className={`h-4 w-4 ${pathname === '/us-intel' ? 'text-white' : 'text-gray-400 group-hover:text-gray-600'}`} />
@@ -355,56 +266,6 @@ export function Sidebar() {
                                 Agency Feeds & Dossiers
                             </TooltipContent>
                         </Tooltip>
-
-                        {/* 4. AI News */}
-                        {categoryLinks.filter(l => l.id === 'ai').map((link) => {
-                            const isActive = pathname === link.href;
-                            return (
-                                <Tooltip key={link.id}>
-                                    <TooltipTrigger asChild>
-                                        <Link
-                                            href={link.href}
-                                            className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${isActive
-                                                ? 'bg-gray-50 text-gray-900 font-semibold'
-                                                : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
-                                                }`}
-                                        >
-                                            {isActive && (
-                                                <div className="absolute left-0 top-1/2 -translate-y-1/2 h-4 w-[2px] bg-gray-900 rounded-r-full" />
-                                            )}
-                                            <link.icon className={`h-4 w-4 ${isActive ? 'text-gray-900' : 'text-gray-400 group-hover:text-gray-600'}`} />
-                                            AI News
-                                        </Link>
-                                    </TooltipTrigger>
-                                    <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
-                                        {link.tooltip}
-                                    </TooltipContent>
-                                </Tooltip>
-                            );
-                        })}
-
-                        {/* 5. Future of Code */}
-                        {platformLinks.filter(link => link.id === 'future-of-code').map((link) => (
-                            <Tooltip key={link.id}>
-                                <TooltipTrigger asChild>
-                                    <Link
-                                        href={link.href}
-                                        className={`flex items-center justify-between px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === link.href
-                                            ? 'bg-purple-50 text-purple-700 font-bold'
-                                            : 'text-gray-500 hover:bg-purple-50 hover:text-purple-700'
-                                            }`}
-                                    >
-                                        <div className="flex items-center gap-3">
-                                            <link.icon className={`h-4 w-4 ${pathname === link.href ? 'text-purple-700' : 'text-gray-400 group-hover:text-purple-700'}`} />
-                                            {link.label}
-                                        </div>
-                                    </Link>
-                                </TooltipTrigger>
-                                <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
-                                    {link.tooltip}
-                                </TooltipContent>
-                            </Tooltip>
-                        ))}
                     </nav>
                 </div>
 
@@ -414,8 +275,8 @@ export function Sidebar() {
                         SECTORS
                     </h3>
                     <nav className="space-y-1">
-                        {/* Standard Categories: LLMs (AI removed) */}
-                        {categoryLinks.filter(l => l.id === 'llms').map((link) => {
+                        {/* Standard Categories: LLMs, Robotics, Deep Tech */}
+                        {categoryLinks.filter(l => l.id === 'llms' || l.id === 'robotics' || l.id === 'semiconductors' || l.id === 'quantum' || l.id === 'space' || l.id === 'biotech').map((link) => {
                             const isActive = pathname === link.href;
                             return (
                                 <Tooltip key={link.id}>
@@ -423,13 +284,10 @@ export function Sidebar() {
                                         <Link
                                             href={link.href}
                                             className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${isActive
-                                                ? 'bg-gray-50 text-gray-900 font-semibold'
+                                                ? 'bg-gray-100 text-gray-900 font-bold'
                                                 : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
                                                 }`}
                                         >
-                                            {isActive && (
-                                                <div className="absolute left-0 top-1/2 -translate-y-1/2 h-4 w-[2px] bg-gray-900 rounded-r-full" />
-                                            )}
                                             <link.icon className={`h-4 w-4 ${isActive ? 'text-gray-900' : 'text-gray-400 group-hover:text-gray-600'}`} />
                                             {link.label}
                                         </Link>
@@ -440,35 +298,6 @@ export function Sidebar() {
                                 </Tooltip>
                             );
                         })}
-
-                        {/* Deep Tech: Chips, Quantum, Space, Biotech, Robotics */}
-                        {categoryLinks.filter(l => l.id === 'semiconductors' || l.id === 'quantum' || l.id === 'space' || l.id === 'biotech' || l.id === 'robotics').map((link) => {
-                            const isActive = pathname === link.href;
-                            return (
-                                <Tooltip key={link.id}>
-                                    <TooltipTrigger asChild>
-                                        <Link
-                                            href={link.href}
-                                            className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${isActive
-                                                ? 'bg-gray-50 text-gray-900 font-semibold'
-                                                : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
-                                                }`}
-                                        >
-                                            {isActive && (
-                                                <div className="absolute left-0 top-1/2 -translate-y-1/2 h-4 w-[2px] bg-gray-900 rounded-r-full" />
-                                            )}
-                                            <link.icon className={`h-4 w-4 ${isActive ? 'text-gray-900' : 'text-gray-400 group-hover:text-gray-600'}`} />
-                                            {link.label}
-                                        </Link>
-                                    </TooltipTrigger>
-                                    <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
-                                        {link.tooltip}
-                                    </TooltipContent>
-                                </Tooltip>
-                            );
-                        })}
-
-
                     </nav>
                 </div>
 
@@ -478,98 +307,48 @@ export function Sidebar() {
                         GLOBAL ECONOMY
                     </h3>
                     <nav className="space-y-1">
-                        {/* Market Pulse */}
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Link
-                                    href="/market-pulse"
-                                    className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === '/market-pulse'
-                                        ? 'bg-gray-50 text-gray-900 font-semibold'
-                                        : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
-                                        }`}
-                                >
-                                    <TrendingUp className={`h-4 w-4 ${pathname === '/market-pulse' ? 'text-gray-900' : 'text-gray-400 group-hover:text-gray-600'}`} />
-                                    Market Pulse
-                                </Link>
-                            </TooltipTrigger>
-                            <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
-                                Live Market Data
-                            </TooltipContent>
-                        </Tooltip>
-
-                        {/* Earnings Hub */}
-                        {platformLinks.filter(link => link.id === 'earnings').map((link) => (
-                            <Tooltip key={link.id}>
-                                <TooltipTrigger asChild>
-                                    <Link
-                                        href={link.href}
-                                        className={`flex items-center justify-between px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === link.href
-                                            ? 'bg-green-50 text-green-700 font-bold'
-                                            : 'text-gray-500 hover:bg-green-50 hover:text-green-700'
-                                            }`}
-                                    >
-                                        <div className="flex items-center gap-3">
-                                            <link.icon className={`h-4 w-4 ${pathname === link.href ? 'text-green-700' : 'text-gray-400 group-hover:text-green-700'}`} />
+                        {/* Market, Earnings, Policy */}
+                        {[
+                            { id: 'market', label: 'Market Pulse', icon: TrendingUp, href: '/market-pulse', tooltip: 'Live Market Data' },
+                            { id: 'earnings', label: 'Earnings Hub', icon: DollarSign, href: '/earnings', tooltip: 'Corporate Intelligence' },
+                            { id: 'antitrust', label: 'Anti-Trust Command', icon: Globe, href: '/anti-trust', tooltip: 'Regulatory War Room' },
+                            { id: 'realestate', label: 'Real-Estate', icon: Building2, href: '/real-estate', tooltip: 'Global Property Markets' },
+                            { id: 'middleeast', label: 'Middle East', icon: Shield, href: '/middle-east', tooltip: 'Regional Intelligence' },
+                            { id: 'demographics', label: 'Global Census', icon: Activity, href: '/global-demographics', tooltip: 'Real-time Vital Stats' }
+                        ].map((link) => {
+                            const isActive = pathname === link.href;
+                            return (
+                                <Tooltip key={link.id}>
+                                    <TooltipTrigger asChild>
+                                        <Link
+                                            href={link.href}
+                                            className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${isActive
+                                                ? 'bg-emerald-50 text-emerald-700 font-bold'
+                                                : 'text-gray-500 hover:bg-emerald-50 hover:text-emerald-700'
+                                                }`}
+                                        >
+                                            <link.icon className={`h-4 w-4 ${isActive ? 'text-emerald-700' : 'text-gray-400 group-hover:text-emerald-700'}`} />
                                             {link.label}
-                                        </div>
-                                    </Link>
-                                </TooltipTrigger>
-                                <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
-                                    {link.tooltip}
-                                </TooltipContent>
-                            </Tooltip>
-                        ))}
+                                        </Link>
+                                    </TooltipTrigger>
+                                    <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
+                                        {link.tooltip}
+                                    </TooltipContent>
+                                </Tooltip>
+                            );
+                        })}
 
-                        {/* Regulatory Command */}
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Link
-                                    href="/anti-trust"
-                                    className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === '/anti-trust'
-                                        ? 'bg-blue-950/10 text-blue-700 font-bold'
-                                        : 'text-gray-500 hover:bg-blue-50 hover:text-blue-700'
-                                        }`}
-                                >
-                                    <Globe className={`h-4 w-4 ${pathname === '/anti-trust' ? 'text-blue-700' : 'text-gray-400 group-hover:text-blue-700'}`} />
-                                    Regulatory Command
-                                </Link>
-                            </TooltipTrigger>
-                            <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
-                                Anti-Trust & AI Sovereignty
-                            </TooltipContent>
-                        </Tooltip>
-
-                        {/* Global Demographics */}
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Link
-                                    href="/global-demographics"
-                                    className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === '/global-demographics'
-                                        ? 'bg-gray-50 text-gray-900 font-semibold'
-                                        : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
-                                        }`}
-                                >
-                                    <Activity className={`h-4 w-4 ${pathname === '/global-demographics' ? 'text-gray-900' : 'text-gray-400 group-hover:text-gray-600'}`} />
-                                    Global Demographics
-                                </Link>
-                            </TooltipTrigger>
-                            <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
-                                Real-time Census Data
-                            </TooltipContent>
-                        </Tooltip>
-
-                        {/* Policy */}
                         {categoryLinks.filter(l => l.id === 'policy').map((link) => (
                             <Tooltip key={link.id}>
                                 <TooltipTrigger asChild>
                                     <Link
                                         href={link.href}
                                         className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === link.href
-                                            ? 'bg-gray-50 text-gray-900 font-semibold'
-                                            : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
+                                            ? 'bg-emerald-50 text-emerald-700 font-bold'
+                                            : 'text-gray-500 hover:bg-emerald-50 hover:text-emerald-700'
                                             }`}
                                     >
-                                        <link.icon className={`h-4 w-4 ${pathname === link.href ? 'text-gray-900' : 'text-gray-400 group-hover:text-gray-600'}`} />
+                                        <link.icon className={`h-4 w-4 ${pathname === link.href ? 'text-emerald-700' : 'text-gray-400 group-hover:text-emerald-700'}`} />
                                         {link.label}
                                     </Link>
                                 </TooltipTrigger>
@@ -587,18 +366,18 @@ export function Sidebar() {
                         KNOWLEDGE BASE
                     </h3>
                     <nav className="space-y-1">
-                        {/* Research */}
+                        {/* Research, Lab, HN, Video */}
                         {categoryLinks.filter(l => l.id === 'research').map((link) => (
                             <Tooltip key={link.id}>
                                 <TooltipTrigger asChild>
                                     <Link
                                         href={link.href}
                                         className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === link.href
-                                            ? 'bg-gray-50 text-gray-900 font-semibold'
-                                            : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
+                                            ? 'bg-orange-50 text-orange-700 font-bold'
+                                            : 'text-gray-500 hover:bg-orange-50 hover:text-orange-700'
                                             }`}
                                     >
-                                        <link.icon className={`h-4 w-4 ${pathname === link.href ? 'text-gray-900' : 'text-gray-400 group-hover:text-gray-600'}`} />
+                                        <link.icon className={`h-4 w-4 ${pathname === link.href ? 'text-orange-700' : 'text-gray-400 group-hover:text-orange-700'}`} />
                                         {link.label}
                                     </Link>
                                 </TooltipTrigger>
@@ -608,8 +387,11 @@ export function Sidebar() {
                             </Tooltip>
                         ))}
 
-                        {/* Lab & Tools, Hacker News, Trend Watch */}
-                        {knowledgeLinks.filter(l => l.id !== 'anti-trust' && l.id !== 'war-room' && l.id !== 'mission' && l.id !== 'about').map((link) => {
+                        {[
+                            { id: 'tools', label: 'Signal Tools', icon: Wrench, href: '/lab-tools', tooltip: 'Next-gen AI utilities' },
+                            { id: 'hn', label: 'Hacker News', icon: Radio, href: '/hacker-news', tooltip: 'Community Pulse' },
+                            { id: 'videos', label: 'Alpha Stream', icon: Youtube, href: '/videos', tooltip: 'Curated AI demos' }
+                        ].map((link) => {
                             const isActive = pathname === link.href;
                             return (
                                 <Tooltip key={link.id}>
@@ -617,11 +399,11 @@ export function Sidebar() {
                                         <Link
                                             href={link.href}
                                             className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${isActive
-                                                ? 'bg-gray-50 text-gray-900 font-semibold'
-                                                : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
+                                                ? 'bg-orange-50 text-orange-700 font-bold'
+                                                : 'text-gray-500 hover:bg-orange-50 hover:text-orange-700'
                                                 }`}
                                         >
-                                            <link.icon className={`h-4 w-4 ${isActive ? 'text-gray-900' : 'text-gray-400 group-hover:text-gray-600'}`} />
+                                            <link.icon className={`h-4 w-4 ${isActive ? 'text-orange-700' : 'text-gray-400 group-hover:text-orange-700'}`} />
                                             {link.label}
                                         </Link>
                                     </TooltipTrigger>
@@ -631,25 +413,6 @@ export function Sidebar() {
                                 </Tooltip>
                             );
                         })}
-
-                        {/* Video Feed */}
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Link
-                                    href="/videos"
-                                    className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === '/videos'
-                                        ? 'bg-gray-50 text-gray-900 font-semibold'
-                                        : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
-                                        }`}
-                                >
-                                    <Youtube className={`h-4 w-4 ${pathname === '/videos' ? 'text-gray-900' : 'text-gray-400 group-hover:text-gray-600'}`} />
-                                    Video Feed
-                                </Link>
-                            </TooltipTrigger>
-                            <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
-                                Curated AI Demos & Talks
-                            </TooltipContent>
-                        </Tooltip>
                     </nav>
                 </div>
 
@@ -677,7 +440,7 @@ export function Sidebar() {
                                 </Link>
                             </TooltipTrigger>
                             <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
-                                Agentic Synthesis Engine: The God's Eye View.
+                                Agentic Synthesis Engine: The God&apos;s Eye View.
                             </TooltipContent>
                         </Tooltip>
 
@@ -730,13 +493,10 @@ export function Sidebar() {
                     </nav>
                 </div>
 
-                {/* FOOTER - Removed redundant links as per user request */}
                 <div className="mt-8 px-4 space-y-6">
                 </div>
-
             </TooltipProvider>
 
-            {/* PRO WAITLIST MODAL */}
             <ProWaitlistModal
                 isOpen={proModalOpen}
                 onClose={() => setProModalOpen(false)}
@@ -745,3 +505,4 @@ export function Sidebar() {
         </div>
     );
 }
+

@@ -16,10 +16,11 @@ interface Incident {
     type: 'conflict' | 'cyber' | 'naval' | 'air' | 'alert' | 'earthquake' | 'outbreak';
     severity: 'critical' | 'high' | 'medium' | 'low' | 'warning' | 'info';
     location: Location;
-    country: string;
     description: string;
     timestamp: string;
+    country?: string;
     assetType?: string;
+    url?: string;
 }
 
 interface InteractiveMapProps {
@@ -120,16 +121,16 @@ export function InteractiveMap({ incidents, hasNavalContext, showsNavalFacilitie
                                 }`}>
                                 {/* Ping Animation - Dynamic Color based on Country for Naval */}
                                 <div className={`absolute inset-0 rounded-full animate-ping opacity-75 ${incident.type === 'naval'
-                                        ? (isWestern ? 'bg-blue-500'
-                                            : isRed ? 'bg-red-600'
-                                                : isOrange ? 'bg-orange-600'
-                                                    : isEmerald ? 'bg-emerald-600'
-                                                        : isYellow ? 'bg-yellow-600'
-                                                            : 'bg-slate-500')
-                                        : incident.type === 'conflict' ? 'bg-orange-500'
-                                            : incident.type === 'cyber' ? 'bg-cyan-500'
-                                                : incident.type === 'earthquake' ? 'bg-amber-500'
-                                                    : 'bg-red-500'
+                                    ? (isWestern ? 'bg-blue-500'
+                                        : isRed ? 'bg-red-600'
+                                            : isOrange ? 'bg-orange-600'
+                                                : isEmerald ? 'bg-emerald-600'
+                                                    : isYellow ? 'bg-yellow-600'
+                                                        : 'bg-slate-500')
+                                    : incident.type === 'conflict' ? 'bg-orange-500'
+                                        : incident.type === 'cyber' ? 'bg-cyan-500'
+                                            : incident.type === 'earthquake' ? 'bg-amber-500'
+                                                : 'bg-red-500'
                                     }`} style={{ width: '200%', height: '200%', left: '-50%', top: '-50%' }}></div>
                                 {incident.type === 'naval' ? <Ship size={12} /> :
                                     incident.type === 'air' ? <Plane size={12} /> :

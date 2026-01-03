@@ -7,7 +7,7 @@ export function SystemStatus() {
     return (
         <div className="mt-6 p-4 bg-slate-50 rounded-xl border border-slate-100">
             <div className="flex items-center justify-between mb-3">
-                <span className="text-[10px] font-bold uppercase text-slate-400 tracking-widest">System Status</span>
+                <span className="text-[10px] font-bold uppercase text-slate-400 tracking-widest text-emerald-500">LIVE NOW</span>
                 <span className="flex h-2 w-2 relative">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>

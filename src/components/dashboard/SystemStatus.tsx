@@ -11,7 +11,7 @@ export function SystemStatus() {
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                         <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                     </span>
-                    <span className="text-emerald-600 font-bold uppercase tracking-wider">System Online</span>
+                    <span className="text-emerald-600 font-bold uppercase tracking-wider">LIVE NOW</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                     <Database size={12} className="text-blue-500" />
