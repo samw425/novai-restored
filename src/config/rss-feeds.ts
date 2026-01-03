@@ -19,9 +19,10 @@ export const RSS_FEEDS: FeedSource[] = [
     { id: 'microsoft-research', name: 'Microsoft Research', url: 'https://www.microsoft.com/en-us/research/feed/', category: 'research', priority: 10, region: 'US' },
     { id: 'aws-ml', name: 'AWS Machine Learning', url: 'https://aws.amazon.com/blogs/machine-learning/feed/', category: 'research', priority: 9, region: 'US' },
     { id: 'nvidia-blog', name: 'NVIDIA AI', url: 'https://blogs.nvidia.com/feed/', category: 'research', priority: 9, region: 'US' },
-    { id: 'baair', name: 'Berkeley AI Research', url: 'https://bair.berkeley.edu/blog/feed.xml', category: 'research', priority: 9, region: 'US' },
-    { id: 'stanford-hai', name: 'Stanford HAI', url: 'https://hai.stanford.edu/news/feed', category: 'research', priority: 9, region: 'US' },
-    { id: 'mit-csail', name: 'MIT CSAIL', url: 'https://www.csail.mit.edu/news/rss', category: 'research', priority: 9, region: 'US' },
+    { id: 'baair', name: 'Berkeley AI Research', url: 'https://bair.berkeley.edu/blog/feed.xml', category: 'research', priority: 10, region: 'US' },
+    { id: 'stanford-hai', name: 'Stanford HAI', url: 'https://hai.stanford.edu/news/feed', category: 'research', priority: 10, region: 'US' },
+    { id: 'mit-csail', name: 'MIT CSAIL', url: 'https://www.csail.mit.edu/news/rss', category: 'research', priority: 10, region: 'US' },
+    { id: 'mit-ai-news', name: 'MIT AI News', url: 'https://news.mit.edu/rss/topic/artificial-intelligence', category: 'research', priority: 10, region: 'US' },
     { id: 'nature-mi', name: 'Nature Machine Intelligence', url: 'https://www.nature.com/natmachintell.rss', category: 'research', priority: 10, region: 'Global' },
     { id: 'arxiv-ai', name: 'arXiv AI', url: 'http://export.arxiv.org/rss/cs.AI', category: 'research', priority: 10, region: 'Global' },
 
@@ -57,6 +58,8 @@ export const RSS_FEEDS: FeedSource[] = [
 
     // ========== ENGINEERING, TOOLS & CODE (Priority 8) ==========
     { id: 'github-blog', name: 'GitHub Blog', url: 'https://github.blog/feed/', category: 'tools', priority: 9, region: 'US' },
+    { id: 'netflix-tech', name: 'Netflix Tech Blog', url: 'https://netflixtechblog.com/feed', category: 'tools', priority: 8, region: 'US' },
+    { id: 'uber-eng', name: 'Uber Engineering', url: 'https://eng.uber.com/feed/', category: 'tools', priority: 8, region: 'US' },
     { id: 'huggingface', name: 'Hugging Face', url: 'https://huggingface.co/blog/feed.xml', category: 'tools', priority: 10, region: 'Global' },
     { id: 'langchain', name: 'LangChain', url: 'https://blog.langchain.dev/rss/', category: 'tools', priority: 9, region: 'US' },
     { id: 'pytorch', name: 'PyTorch', url: 'https://pytorch.org/blog/feed.xml', category: 'tools', priority: 8, region: 'US' },
@@ -75,6 +78,7 @@ export const RSS_FEEDS: FeedSource[] = [
     { id: 'ieee-robotics', name: 'IEEE Robotics', url: 'https://spectrum.ieee.org/feeds/topic/robotics.rss', category: 'robotics', priority: 9, region: 'Global' },
     { id: 'robotics-business', name: 'Robotics Business', url: 'https://www.roboticsbusinessreview.com/feed/', category: 'robotics', priority: 8, region: 'US' },
     { id: 'boston-dynamics', name: 'Boston Dynamics', url: 'https://bostondynamics.com/feed/', category: 'robotics', priority: 9, region: 'US' },
+    { id: 'nasa-robotics', name: 'NASA Robotics', url: 'https://www.nasa.gov/rss/dyn/robotics.rss', category: 'robotics', priority: 8, region: 'US' },
 
     // ========== AI NEWS & ANALYSIS (Priority 8) ==========
     { id: 'wired-ai', name: 'Wired AI', url: 'https://www.wired.com/feed/tag/ai/latest/rss', category: 'ai', priority: 8, region: 'US' },
@@ -111,22 +115,22 @@ export const RSS_FEEDS: FeedSource[] = [
     // Backup sources (still war-focused)
     { id: 'middle-east-war', name: 'Middle East Conflict', url: 'https://news.google.com/rss/search?q=Middle+East+War+conflict+military&hl=en-US&gl=US&ceid=US:en', category: 'current-wars', priority: 9, region: 'Global' },
 
-    // ========== DEFENSE & STRATEGIC STUDIES (Priority 10) ==========
-    { id: 'defense-news', name: 'Defense News', url: 'https://www.defensenews.com/arc/outboundfeeds/rss/', category: 'us-intel', priority: 10, region: 'US' },
-    { id: 'war-on-rocks', name: 'War on the Rocks', url: 'https://warontherocks.com/feed/', category: 'us-intel', priority: 10, region: 'US' },
-    { id: 'breaking-defense', name: 'Breaking Defense', url: 'https://breakingdefense.com/feed/', category: 'us-intel', priority: 9, region: 'US' },
-    { id: 'defense-one', name: 'Defense One', url: 'https://www.defenseone.com/rss/all/', category: 'us-intel', priority: 9, region: 'US' },
-    { id: 'isw-updates', name: 'Institute for Study of War', url: 'https://www.understandingwar.org/feeds.xml', category: 'us-intel', priority: 10, region: 'Global' },
-    { id: 'csis', name: 'CSIS', url: 'https://www.csis.org/rss/analysis', category: 'us-intel', priority: 9, region: 'US' },
-    { id: 'rand-corp', name: 'RAND Corporation', url: 'https://www.rand.org/news/rss.xml', category: 'us-intel', priority: 9, region: 'US' },
-    { id: 'usni-news', name: 'US Naval Institute', url: 'https://news.usni.org/feed', category: 'us-intel', priority: 9, region: 'US' },
-    { id: 'army-times', name: 'Army Times', url: 'https://www.armytimes.com/arc/outboundfeeds/rss/', category: 'us-intel', priority: 8, region: 'US' },
-    { id: 'air-force-times', name: 'Air Force Times', url: 'https://www.airforcetimes.com/arc/outboundfeeds/rss/', category: 'us-intel', priority: 8, region: 'US' },
+    // ========== DEFENSE & STRATEGIC STUDIES (Aggregated Analysis) ==========
+    { id: 'defense-news', name: 'Defense News', url: 'https://www.defensenews.com/arc/outboundfeeds/rss/', category: 'market', priority: 10, region: 'US' },
+    { id: 'war-on-rocks', name: 'War on the Rocks', url: 'https://warontherocks.com/feed/', category: 'market', priority: 10, region: 'US' },
+    { id: 'breaking-defense', name: 'Breaking Defense', url: 'https://breakingdefense.com/feed/', category: 'market', priority: 9, region: 'US' },
+    { id: 'defense-one', name: 'Defense One', url: 'https://www.defenseone.com/rss/all/', category: 'market', priority: 9, region: 'US' },
+    { id: 'isw-updates', name: 'Institute for Study of War', url: 'https://www.understandingwar.org/feeds.xml', category: 'market', priority: 10, region: 'Global' },
+    { id: 'csis', name: 'CSIS', url: 'https://www.csis.org/rss/analysis', category: 'market', priority: 9, region: 'US' },
+    { id: 'rand-corp', name: 'RAND Corporation', url: 'https://www.rand.org/news/rss.xml', category: 'market', priority: 9, region: 'US' },
+    { id: 'usni-news', name: 'US Naval Institute', url: 'https://news.usni.org/feed', category: 'market', priority: 9, region: 'US' },
+    { id: 'army-times', name: 'Army Times', url: 'https://www.armytimes.com/arc/outboundfeeds/rss/', category: 'market', priority: 8, region: 'US' },
+    { id: 'air-force-times', name: 'Air Force Times', url: 'https://www.airforcetimes.com/arc/outboundfeeds/rss/', category: 'market', priority: 8, region: 'US' },
 
-    // ========== GLOBAL INTELLIGENCE & GEOPOLITICS (Priority 10) ==========
-    { id: 'foreign-policy', name: 'Foreign Policy', url: 'https://foreignpolicy.com/feed/', category: 'us-intel', priority: 10, region: 'Global' },
+    // ========== GLOBAL INTELLIGENCE & GEOPOLITICS (Aggregated Analysis) ==========
+    { id: 'foreign-policy', name: 'Foreign Policy', url: 'https://foreignpolicy.com/feed/', category: 'market', priority: 10, region: 'Global' },
     // REMOVED: Foreign Affairs - paywall
-    { id: 'the-diplomat', name: 'The Diplomat', url: 'https://thediplomat.com/feed/', category: 'us-intel', priority: 9, region: 'Asia' },
+    { id: 'the-diplomat', name: 'The Diplomat', url: 'https://thediplomat.com/feed/', category: 'market', priority: 9, region: 'Asia' },
     { id: 'scmp-tech', name: 'South China Morning Post', url: 'https://www.scmp.com/rss/318421/feed', category: 'market', priority: 9, region: 'Asia' },
     // FREE ASIA ALTERNATIVES (replacing Nikkei Asia):
     { id: 'japan-times', name: 'Japan Times', url: 'https://www.japantimes.co.jp/feed/', category: 'market', priority: 8, region: 'Asia' },
@@ -179,6 +183,7 @@ export const RSS_FEEDS: FeedSource[] = [
     { id: 'stanford-cyber', name: 'Stanford Cyber', url: 'https://cyber.fsi.stanford.edu/news/rss', category: 'policy', priority: 9, region: 'US' },
     { id: 'lawfare', name: 'Lawfare', url: 'https://www.lawfaremedia.org/feeds/rss', category: 'policy', priority: 9, region: 'US' },
     { id: 'ai-now', name: 'AI Now Institute', url: 'https://ainowinstitute.org/feed', category: 'policy', priority: 9, region: 'US' },
+    { id: 'nist-ai', name: 'NIST AI Updates', url: 'https://www.nist.gov/news-events/artificial-intelligence/rss.xml', category: 'policy', priority: 10, region: 'US' },
 
     // ========== ANTITRUST & COURT DOCKETS (Priority 10) ==========
     // Official Government Sources
