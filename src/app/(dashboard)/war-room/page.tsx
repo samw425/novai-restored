@@ -205,6 +205,11 @@ export default function WarRoomPage() {
         if (nvInView && !loadingNv && navalArticles.length > 0) loadMoreNv();
     }, [nvInView]);
 
+    // Show loading state
+    if (loading) {
+        return <ResourceLoader />;
+    }
+
     // View Selection Tabs
     return (
         <div className="space-y-6">
