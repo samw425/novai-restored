@@ -67,8 +67,11 @@ export default function SupportPage() {
                     </div>
 
                     <div className="text-center">
-                        <p className="text-xs text-gray-400 leading-relaxed max-w-xs mx-auto">
+                        <p className="text-xs text-gray-400 leading-relaxed max-w-xs mx-auto mb-3">
                             Your contribution is non-transactional and helps sustain the platform infrastructure. Novai remains free for all.
+                        </p>
+                        <p className="text-xs font-semibold text-gray-500">
+                            Whether you support us or not, thank you for being part of the signal.
                         </p>
                     </div>
                 </div>
