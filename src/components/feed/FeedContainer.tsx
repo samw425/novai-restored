@@ -321,7 +321,18 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
 
                 {/* Loading / End Sentinel */}
                 <div ref={ref} className="py-12 flex justify-center w-full">
-                    {loading && <Loader2 className="h-8 w-8 animate-spin text-gray-400" />}
+                    {loading && (
+                        <div className="flex flex-col items-center gap-3">
+                            <div className="relative">
+                                <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+                                <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
+                                </span>
+                            </div>
+                            <span className="text-xs font-mono text-slate-400 uppercase tracking-widest">Processing 109+ sources...</span>
+                        </div>
+                    )}
                     {!hasMore && articles.length > 0 && viewMode === 'live' && (
                         <p className="text-gray-400 text-sm font-medium">End of Stream.</p>
                     )}

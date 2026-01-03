@@ -82,10 +82,6 @@ export function Footer() {
                     </div>
 
                     <div className="flex items-center gap-6">
-                        <a href="https://aether-architect.vercel.app/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs font-bold text-slate-500 uppercase tracking-wider hover:text-blue-600 transition-colors">
-                            <Zap size={14} className="text-amber-500" />
-                            <span>Powered by Aether</span>
-                        </a>
                         <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
                             <Globe size={12} />
                             <span>Los Angeles, CA</span>
