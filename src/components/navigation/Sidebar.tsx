@@ -630,31 +630,6 @@ export function Sidebar() {
                         PRO FEATURES <span className="text-[9px] bg-gradient-to-r from-purple-600 to-blue-600 text-white px-1.5 py-0.5 rounded-full">BETA</span>
                     </h3>
                     <nav className="space-y-1">
-                        {/* The Oracle (Moved to Pro) */}
-                        {intelligenceLinks.filter(link => link.id === 'oracle').map((link) => (
-                            <Tooltip key={link.id}>
-                                <TooltipTrigger asChild>
-                                    <Link
-                                        href={link.href}
-                                        className={`flex items-center justify-between px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === link.href
-                                            ? 'bg-purple-50 text-purple-700 font-bold'
-                                            : 'text-gray-500 hover:bg-purple-50 hover:text-purple-700'
-                                            }`}
-                                    >
-                                        <div className="flex items-center gap-3">
-                                            <link.icon className={`h-4 w-4 ${pathname === link.href ? 'text-purple-700' : 'text-gray-400 group-hover:text-purple-700'}`} />
-                                            {link.label}
-                                        </div>
-                                        <Lock className="w-3 h-3 text-gray-300" />
-                                    </Link>
-                                </TooltipTrigger>
-                                <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
-                                    {link.tooltip}
-                                </TooltipContent>
-                            </Tooltip>
-                        ))}
-                    </h3>
-                    <nav className="space-y-1">
                         {/* The Oracle */}
                         <Tooltip>
                             <TooltipTrigger asChild>
@@ -669,6 +644,7 @@ export function Sidebar() {
                                         <Sparkles className={`h-4 w-4 ${pathname === '/oracle' ? 'text-purple-700' : 'text-gray-400 group-hover:text-purple-700'}`} />
                                         The Oracle
                                     </div>
+                                    <Lock className="w-3 h-3 text-gray-300" />
                                 </Link>
                             </TooltipTrigger>
                             <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
