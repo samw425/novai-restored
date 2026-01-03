@@ -122,7 +122,56 @@ export default function WarRoomPage() {
         }
     }, [activeTab, israelGazaArticles.length, navalArticles.length]);
 
-    // ... (loadMoreNv handler needed)
+    // Infinite Scroll Handlers
+    const [pageNv, setPageNv] = useState(1);
+    const [pageGaza, setPageGaza] = useState(1);
+    const [pageUkr, setPageUkr] = useState(1);
+
+    const loadMoreNv = async () => {
+        if (loadingNv) return;
+        setLoadingNv(true);
+        try {
+            const nextPage = pageNv + 1;
+            const res = await fetch(`/api/feed/war-room?category=naval&limit=20&page=${nextPage}`, { cache: 'no-store' });
+            const data = await res.json();
+            if (data.items && data.items.length > 0) {
+                setNavalArticles(prev => [...prev, ...data.items]);
+                setPageNv(nextPage);
+            }
+        } catch (error) {
+            console.error('Failed to load more naval:', error);
+        } finally {
+            setLoadingNv(false);
+        }
+    };
+
+    const loadMoreGaza = async () => {
+        const nextPage = pageGaza + 1;
+        try {
+            const res = await fetch(`/api/feed/war-room?category=israel-gaza&limit=10&page=${nextPage}`, { cache: 'no-store' });
+            const data = await res.json();
+            if (data.items?.length) {
+                setIsraelGazaArticles(prev => [...prev, ...data.items]);
+                setPageGaza(nextPage);
+            }
+        } catch (e) { console.error(e); }
+    };
+
+    const loadMoreUkraine = async () => {
+        const nextPage = pageUkr + 1;
+        try {
+            const res = await fetch(`/api/feed/war-room?category=russia-ukraine&limit=10&page=${nextPage}`, { cache: 'no-store' });
+            const data = await res.json();
+            if (data.items?.length) {
+                setRussiaUkraineArticles(prev => [...prev, ...data.items]);
+                setPageUkr(nextPage);
+            }
+        } catch (e) { console.error(e); }
+    };
+
+    useEffect(() => {
+        if (nvInView && !loadingNv && navalArticles.length > 0) loadMoreNv();
+    }, [nvInView]);
 
     // View Selection Tabs
     return (
@@ -487,6 +536,11 @@ export default function WarRoomPage() {
                             <FeedCard key={article.id} article={article} />
                         ))}
                         {israelGazaArticles.length === 0 && <div className="text-center py-10 text-slate-400">Loading Intelligence...</div>}
+                        {israelGazaArticles.length > 0 && (
+                            <button onClick={loadMoreGaza} className="w-full mt-4 text-xs font-bold text-slate-500 hover:text-orange-500 py-2 border-t border-slate-100 uppercase tracking-widest">
+                                Load More Intel
+                            </button>
+                        )}
                     </div>
                 </div>
 
@@ -503,6 +557,11 @@ export default function WarRoomPage() {
                             <FeedCard key={article.id} article={article} />
                         ))}
                         {russiaUkraineArticles.length === 0 && <div className="text-center py-10 text-slate-400">Loading Intelligence...</div>}
+                        {russiaUkraineArticles.length > 0 && (
+                            <button onClick={loadMoreUkraine} className="w-full mt-4 text-xs font-bold text-slate-500 hover:text-red-500 py-2 border-t border-slate-100 uppercase tracking-widest">
+                                Load More Intel
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
