@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
-import { Ship, Plane, AlertTriangle, Crosshair, Map as MapIcon, ZoomIn, ZoomOut, Maximize } from 'lucide-react';
+import { Ship, Plane, AlertTriangle, Crosshair, Map as MapIcon, ZoomIn, ZoomOut, Maximize, Anchor, Target } from 'lucide-react';
 
 interface Location {
     lat: number;
@@ -27,11 +27,38 @@ interface InteractiveMapProps {
     incidents: Incident[];
     hasNavalContext?: boolean;
     showsNavalFacilities?: boolean;
+    onCountryFilter?: (country: string | null) => void;
 }
 
-export function InteractiveMap({ incidents, hasNavalContext, showsNavalFacilities }: InteractiveMapProps) {
+// Country legend configuration
+const COUNTRY_LEGEND = [
+    { code: 'US', name: 'United States', flag: '🇺🇸', color: 'bg-blue-500', textColor: 'text-blue-400' },
+    { code: 'CN', name: 'China', flag: '🇨🇳', color: 'bg-red-500', textColor: 'text-red-400' },
+    { code: 'RU', name: 'Russia', flag: '🇷🇺', color: 'bg-orange-500', textColor: 'text-orange-400' },
+    { code: 'UK', name: 'United Kingdom', flag: '🇬🇧', color: 'bg-blue-400', textColor: 'text-blue-300' },
+    { code: 'JP', name: 'Japan', flag: '🇯🇵', color: 'bg-blue-300', textColor: 'text-blue-200' },
+    { code: 'FR', name: 'France', flag: '🇫🇷', color: 'bg-blue-600', textColor: 'text-blue-500' },
+    { code: 'IN', name: 'India', flag: '🇮🇳', color: 'bg-yellow-500', textColor: 'text-yellow-400' },
+    { code: 'KR', name: 'South Korea', flag: '🇰🇷', color: 'bg-sky-500', textColor: 'text-sky-400' },
+    { code: 'IT', name: 'Italy', flag: '🇮🇹', color: 'bg-emerald-500', textColor: 'text-emerald-400' },
+    { code: 'AU', name: 'Australia', flag: '🇦🇺', color: 'bg-cyan-500', textColor: 'text-cyan-400' },
+];
+
+export function InteractiveMap({ incidents, hasNavalContext, showsNavalFacilities, onCountryFilter }: InteractiveMapProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const [scale, setScale] = useState(1);
+    const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+
+    // Filter incidents by selected country
+    const filteredIncidents = selectedCountry
+        ? incidents.filter(inc => (inc.country || '').toUpperCase() === selectedCountry)
+        : incidents;
+
+    const handleCountryClick = (countryCode: string) => {
+        const newCountry = selectedCountry === countryCode ? null : countryCode;
+        setSelectedCountry(newCountry);
+        onCountryFilter?.(newCountry);
+    };
 
     // Convert Lat/Lng to % positions (Mercator approximation)
     const getPosition = (lat: number, lng: number) => {
@@ -86,7 +113,7 @@ export function InteractiveMap({ incidents, hasNavalContext, showsNavalFacilitie
                 <div className="absolute inset-0 bg-[linear-gradient(rgba(0,255,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,0,0.03)_1px,transparent_1px)] bg-[size:50px_50px] pointer-events-none"></div>
 
                 {/* Incidents & Assets */}
-                {incidents.map((incident) => {
+                {filteredIncidents.map((incident) => {
                     const pos = getPosition(incident.location.lat, incident.location.lng);
 
                     // Country grouping
@@ -100,7 +127,7 @@ export function InteractiveMap({ incidents, hasNavalContext, showsNavalFacilitie
                     return (
                         <a
                             key={incident.id}
-                            href={(incident as any).url || '#'}
+                            href={incident.url || '#'}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="absolute transform -translate-x-1/2 -translate-y-1/2 z-10 group/marker cursor-pointer"
@@ -159,22 +186,86 @@ export function InteractiveMap({ incidents, hasNavalContext, showsNavalFacilitie
                     );
                 })}
             </motion.div>
+            {/* Country Filter Legend - Interactive */}
+            <div className="absolute bottom-4 left-4 z-20">
+                <div className="bg-slate-950/95 backdrop-blur-sm rounded-xl border border-slate-800 p-3 shadow-2xl">
+                    <div className="flex items-center justify-between mb-3">
+                        <h4 className="text-[9px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                            <Anchor size={10} className="text-blue-400" />
+                            NAVAL POWERS
+                        </h4>
+                        {selectedCountry && (
+                            <button
+                                onClick={() => handleCountryClick(selectedCountry)}
+                                className="text-[8px] text-blue-400 hover:text-blue-300 font-mono uppercase"
+                            >
+                                CLEAR
+                            </button>
+                        )}
+                    </div>
 
-            {/* Overlay UI Elements */}
-            <div className="absolute bottom-4 left-4 z-10 flex flex-col gap-2 pointer-events-none">
-                <div className="flex items-center gap-2 bg-black/60 backdrop-blur px-3 py-1.5 rounded border border-slate-800">
-                    <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
-                    <span className="text-[10px] font-bold text-slate-300 uppercase">Naval Assets</span>
-                </div>
-                <div className="flex items-center gap-2 bg-black/60 backdrop-blur px-3 py-1.5 rounded border border-slate-800">
-                    <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
-                    <span className="text-[10px] font-bold text-slate-300 uppercase">Conflict Zones</span>
-                </div>
-                <div className="flex items-center gap-2 bg-black/60 backdrop-blur px-3 py-1.5 rounded border border-slate-800">
-                    <span className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span>
-                    <span className="text-[10px] font-bold text-slate-300 uppercase">Cyber Attacks</span>
+                    <div className="grid grid-cols-2 gap-1.5">
+                        {COUNTRY_LEGEND.map((country) => {
+                            const isActive = selectedCountry === country.code;
+                            const countryIncidents = incidents.filter(inc => (inc.country || '').toUpperCase() === country.code);
+
+                            return (
+                                <button
+                                    key={country.code}
+                                    onClick={() => handleCountryClick(country.code)}
+                                    className={`flex items-center gap-2 px-2 py-1.5 rounded-md text-left transition-all ${isActive
+                                            ? `${country.color} text-white ring-2 ring-white/30 shadow-lg`
+                                            : selectedCountry
+                                                ? 'bg-slate-900/50 text-slate-500 opacity-50'
+                                                : 'bg-slate-900/80 text-slate-300 hover:bg-slate-800'
+                                        }`}
+                                >
+                                    <span className="text-sm">{country.flag}</span>
+                                    <span className="text-[9px] font-bold uppercase tracking-wide flex-1">{country.code}</span>
+                                    <span className={`text-[8px] font-mono ${isActive ? 'text-white' : 'text-slate-500'}`}>
+                                        {countryIncidents.length}
+                                    </span>
+                                </button>
+                            );
+                        })}
+                    </div>
+
+                    {/* Vessel Type Legend */}
+                    <div className="mt-3 pt-3 border-t border-slate-800">
+                        <div className="grid grid-cols-3 gap-1 text-[8px]">
+                            <div className="flex items-center gap-1 text-slate-400">
+                                <Ship size={10} className="text-blue-400" />
+                                <span>Naval</span>
+                            </div>
+                            <div className="flex items-center gap-1 text-slate-400">
+                                <AlertTriangle size={10} className="text-red-400" />
+                                <span>Conflict</span>
+                            </div>
+                            <div className="flex items-center gap-1 text-slate-400">
+                                <Crosshair size={10} className="text-cyan-400" />
+                                <span>Cyber</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            {/* Active Filter Indicator */}
+            {selectedCountry && (
+                <div className="absolute top-4 left-4 z-20">
+                    <div className="bg-slate-950/95 backdrop-blur-sm rounded-lg border border-slate-700 px-4 py-2 shadow-xl flex items-center gap-3">
+                        <span className="text-lg">{COUNTRY_LEGEND.find(c => c.code === selectedCountry)?.flag}</span>
+                        <div>
+                            <div className="text-[10px] font-black text-white uppercase tracking-wider">
+                                {COUNTRY_LEGEND.find(c => c.code === selectedCountry)?.name}
+                            </div>
+                            <div className="text-[9px] text-slate-400 font-mono">
+                                {filteredIncidents.length} ASSETS TRACKED
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
