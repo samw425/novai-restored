@@ -47,7 +47,7 @@ export function AgencySelector({ activeAgency, onSelect, agencies }: AgencySelec
                             `}
                         >
                             <Shield size={14} className={activeAgency === key ? 'text-white' : 'text-slate-400'} />
-                            {key}
+                            {key === 'DOD' ? 'DOD/Dept. of War' : key}
                         </button>
                     ))}
                 </div>

@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { PageHeader } from '@/components/ui/PageHeader';
-import { Bot, Cpu, Play, ArrowUpRight, Battery, Activity, Zap } from 'lucide-react';
+import { Bot, Cpu, Play, ArrowUpRight, Battery, Activity, Zap, Loader2 } from 'lucide-react';
 import { ROBOT_SPECS } from '@/lib/data/robotics-specs';
 
 interface RoboticsItem {
@@ -20,7 +20,10 @@ export default function RoboticsPage() {
     const [feedItems, setFeedItems] = useState<RoboticsItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState<'live' | 'brief'>('live');
-    const [visibleItems, setVisibleItems] = useState(10);
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+    const [loadingMore, setLoadingMore] = useState(false);
+    const observerTarget = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -39,6 +42,50 @@ export default function RoboticsPage() {
 
         fetchData();
     }, []);
+
+    // Load more function for infinite scroll
+    const loadMore = useCallback(async () => {
+        if (loadingMore || !hasMore) return;
+        setLoadingMore(true);
+        try {
+            const nextPage = page + 1;
+            const res = await fetch(`/api/feed/robotics?page=${nextPage}&limit=20`);
+            const data = await res.json();
+            if (data.items && data.items.length > 0) {
+                setFeedItems(prev => [...prev, ...data.items]);
+                setPage(nextPage);
+                setHasMore(data.items.length >= 20);
+            } else {
+                setHasMore(false);
+            }
+        } catch (e) {
+            console.error('Failed to load more robotics data:', e);
+        } finally {
+            setLoadingMore(false);
+        }
+    }, [page, loadingMore, hasMore]);
+
+    // Intersection Observer for infinite scroll
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            entries => {
+                if (entries[0].isIntersecting && hasMore && !loadingMore && !loading && activeTab === 'live') {
+                    loadMore();
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        if (observerTarget.current) {
+            observer.observe(observerTarget.current);
+        }
+
+        return () => {
+            if (observerTarget.current) {
+                observer.unobserve(observerTarget.current);
+            }
+        };
+    }, [loadMore, hasMore, loadingMore, loading, activeTab]);
 
     const videos = feedItems.filter(i => i.type === 'video');
     const news = feedItems.filter(i => i.type === 'news');
@@ -141,7 +188,7 @@ export default function RoboticsPage() {
                             </div>
                         ) : activeTab === 'live' ? (
                             <>
-                                {news.slice(0, visibleItems).map((item, i) => (
+                                {news.map((item, i) => (
                                     <div key={i} className="p-5 hover:bg-slate-50 transition-colors group">
                                         <div className="flex justify-between items-start gap-4">
                                             <div>
@@ -165,16 +212,18 @@ export default function RoboticsPage() {
                                         </div>
                                     </div>
                                 ))}
-                                {visibleItems < news.length && (
-                                    <div className="p-4 text-center">
-                                        <button
-                                            onClick={() => setVisibleItems(prev => prev + 10)}
-                                            className="text-xs font-bold text-slate-500 hover:text-blue-600 uppercase tracking-wider transition-colors"
-                                        >
-                                            Load More Intelligence
-                                        </button>
-                                    </div>
-                                )}
+                                {/* Infinite Scroll Sentinel */}
+                                <div ref={observerTarget} className="py-8 flex justify-center">
+                                    {loadingMore && (
+                                        <div className="flex flex-col items-center gap-2">
+                                            <Loader2 className="animate-spin text-blue-500" size={24} />
+                                            <span className="text-xs font-mono text-slate-400 uppercase tracking-widest">Loading more...</span>
+                                        </div>
+                                    )}
+                                    {!hasMore && news.length > 0 && (
+                                        <span className="text-xs text-slate-300 font-mono uppercase tracking-widest">End of Feed</span>
+                                    )}
+                                </div>
                             </>
                         ) : (
                             // 30-Day Brief View (Filtered by last 30 days, maybe sorted by 'importance' if we had it, for now just date)

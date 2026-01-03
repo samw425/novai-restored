@@ -33,6 +33,7 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
     const [cursor, setCursor] = useState<string | undefined>(undefined);
     const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(false);
+    const [loadingMore, setLoadingMore] = useState(false);
     const [newCount, setNewCount] = useState(0);
     const [isSignUpOpen, setIsSignUpOpen] = useState(false);
 
@@ -42,51 +43,35 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
 
     const [page, setPage] = useState(1);
 
-    const loadArticles = useCallback(async (reset = false) => {
-        if (loading) return;
+    // Load more articles (for infinite scroll)
+    const loadMore = useCallback(async () => {
+        if (loadingMore || !hasMore || viewMode !== 'live') return;
 
-        setLoading(true);
+        setLoadingMore(true);
 
         try {
-            let newArticles: Article[] = [];
-            const targetPage = reset ? 1 : page + 1;
-
-            if (viewMode === 'live') {
-                newArticles = await fetchArticles(10, category, searchQuery, targetPage);
-            } else {
-                // Fetch 30-day top stories
-                const response = await fetch(`/api/feed/top-30d?category=${category}`);
-                const data = await response.json();
-                newArticles = data.articles || [];
-            }
+            const targetCategory = forcedCategory || category;
+            const nextPage = page + 1;
+            const newArticles = await fetchArticles(10, targetCategory, searchQuery, nextPage);
 
             // Check if we hit end of stream
-            if (viewMode === 'live' && newArticles.length < 10) {
+            if (newArticles.length < 10) {
                 setHasMore(false);
             }
 
             setArticles(prev => {
-                if (reset) return newArticles;
                 // Filter out duplicates based on ID
                 const uniqueNew = newArticles.filter(n => !prev.some(p => p.id === n.id));
                 return [...prev, ...uniqueNew];
             });
 
-            if (viewMode === 'live') {
-                setPage(targetPage);
-            }
-
-            // If in 30-day mode, we loaded everything at once
-            if (viewMode === '30-day') {
-                setHasMore(false);
-            }
-
+            setPage(nextPage);
         } catch (error) {
-            console.error("Failed to load articles", error);
+            console.error("Failed to load more articles", error);
         } finally {
-            setLoading(false);
+            setLoadingMore(false);
         }
-    }, [category, loading, viewMode, page, searchQuery]);
+    }, [category, forcedCategory, loadingMore, hasMore, viewMode, page, searchQuery]);
 
     // Initial load & Category/ViewMode change
     useEffect(() => {
@@ -123,10 +108,10 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
 
     // Infinite scroll trigger
     useEffect(() => {
-        if (inView && hasMore && !loading && viewMode === 'live') {
-            loadArticles();
+        if (inView && hasMore && !loading && !loadingMore && viewMode === 'live') {
+            loadMore();
         }
-    }, [inView, hasMore, loading, loadArticles, viewMode]);
+    }, [inView, hasMore, loading, loadingMore, loadMore, viewMode]);
 
     // Poll for new articles every 2 minutes (ONLY when tab is visible)
     // CRITICAL: Reduced from 15s to prevent CPU overuse
@@ -321,7 +306,7 @@ export function FeedContainer({ initialCategory = 'all', forcedCategory, showTic
 
                 {/* Loading / End Sentinel */}
                 <div ref={ref} className="py-12 flex justify-center w-full">
-                    {loading && (
+                    {loadingMore && (
                         <div className="flex flex-col items-center gap-3">
                             <div className="relative">
                                 <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
