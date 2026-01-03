@@ -206,319 +206,301 @@ export default function WarRoomPage() {
                 </button>
             </div>
 
-            {/* Interactive Global Threat Map (Only in Global Intel Tab) */}
+            {/* Global Intel View */}
             {activeTab === 'GLOBAL_INTEL' && (
-                <div className="mb-8 grid grid-cols-1 lg:grid-cols-4 gap-6">
-                    {/* Main Map Display */}
-                    <div className="lg:col-span-3">
-                        {/* Interactive Legend / Filter Bar */}
-                        <div className="flex flex-wrap gap-2 mb-4 justify-between items-center">
-                            {/* LEFT: Standard Filters */}
-                            <div className="flex gap-2">
-                                {[
-                                    { id: 'ALL', label: 'ALL SECTORS', color: 'bg-orange-500' },
-                                    { id: 'CONFLICT', label: 'KINETIC', color: 'bg-red-500' },
-                                    { id: 'CYBER', label: 'CYBER', color: 'bg-cyan-400' }
-                                ].map((filter) => (
-                                    <button
-                                        key={filter.id}
-                                        onClick={() => {
-                                            setSelectedFilter(filter.id as any);
-                                            // auto-switch out of naval specific mode if clicking general filters
-                                            if (selectedFilter === 'NAVAL') setSelectedFilter('ALL');
-                                        }}
-                                        className={`px-3 py-1.5 rounded text-[10px] font-bold font-mono uppercase tracking-wider border transition-all ${selectedFilter === filter.id
-                                            ? `${filter.color} text-white border-transparent shadow-lg scale-105`
-                                            : 'bg-white border-gray-200 text-gray-400 hover:border-gray-400 hover:text-gray-600'
-                                            }`}
-                                    >
-                                        <span className={`inline-block w-2 h-2 rounded-full mr-2 ${filter.color}`}></span>
-                                        {filter.label}
-                                    </button>
-                                ))}
+                <>
+                    <div className="mb-8 grid grid-cols-1 lg:grid-cols-4 gap-6">
+                        {/* Main Map Display */}
+                        <div className="lg:col-span-3">
+                            {/* Interactive Legend / Filter Bar */}
+                            <div className="flex flex-wrap gap-2 mb-4 justify-between items-center">
+                                {/* LEFT: Standard Filters */}
+                                <div className="flex gap-2">
+                                    {[
+                                        { id: 'ALL', label: 'ALL SECTORS', color: 'bg-orange-500' },
+                                        { id: 'CONFLICT', label: 'KINETIC', color: 'bg-red-500' },
+                                        { id: 'CYBER', label: 'CYBER', color: 'bg-cyan-400' }
+                                    ].map((filter) => (
+                                        <button
+                                            key={filter.id}
+                                            onClick={() => {
+                                                setSelectedFilter(filter.id as any);
+                                                // auto-switch out of naval specific mode if clicking general filters
+                                                if (selectedFilter === 'NAVAL') setSelectedFilter('ALL');
+                                            }}
+                                            className={`px-3 py-1.5 rounded text-[10px] font-bold font-mono uppercase tracking-wider border transition-all ${selectedFilter === filter.id
+                                                ? `${filter.color} text-white border-transparent shadow-lg scale-105`
+                                                : 'bg-white border-gray-200 text-gray-400 hover:border-gray-400 hover:text-gray-600'
+                                                }`}
+                                        >
+                                            <span className={`inline-block w-2 h-2 rounded-full mr-2 ${filter.color}`}></span>
+                                            {filter.label}
+                                        </button>
+                                    ))}
+                                </div>
+
+                                {/* RIGHT: Dedicated Naval Toggle */}
+                                <button
+                                    onClick={() => setSelectedFilter(selectedFilter === 'NAVAL' ? 'ALL' : 'NAVAL')}
+                                    className={`px-4 py-1.5 rounded text-[10px] font-bold font-mono uppercase tracking-wider border transition-all flex items-center gap-2 ${selectedFilter === 'NAVAL'
+                                        ? 'bg-blue-900 text-blue-100 border-blue-700 shadow-[0_0_15px_rgba(30,58,138,0.5)] ring-1 ring-blue-400'
+                                        : 'bg-slate-100 border-slate-200 text-slate-500 hover:bg-slate-200'
+                                        }`}
+                                >
+                                    <span className={`w-2 h-2 rounded-full ${selectedFilter === 'NAVAL' ? 'bg-blue-400 animate-pulse' : 'bg-slate-400'}`}></span>
+                                    NAVAL TRACKER
+                                </button>
                             </div>
 
-                            {/* RIGHT: Dedicated Naval Toggle */}
-                            <button
-                                onClick={() => setSelectedFilter(selectedFilter === 'NAVAL' ? 'ALL' : 'NAVAL')}
-                                className={`px-4 py-1.5 rounded text-[10px] font-bold font-mono uppercase tracking-wider border transition-all flex items-center gap-2 ${selectedFilter === 'NAVAL'
-                                    ? 'bg-blue-900 text-blue-100 border-blue-700 shadow-[0_0_15px_rgba(30,58,138,0.5)] ring-1 ring-blue-400'
-                                    : 'bg-slate-100 border-slate-200 text-slate-500 hover:bg-slate-200'
-                                    }`}
-                            >
-                                <span className={`w-2 h-2 rounded-full ${selectedFilter === 'NAVAL' ? 'bg-blue-400 animate-pulse' : 'bg-slate-400'}`}></span>
-                                NAVAL TRACKER
-                            </button>
+                            {/* NAVAL HUD - Only visible when Naval Tracker is active */}
+                            {selectedFilter === 'NAVAL' && (
+                                <div className="mb-4 p-3 bg-blue-950/90 border border-blue-800 rounded-lg text-blue-200 text-xs font-mono flex gap-6 items-center shadow-inner animate-in fade-in slide-in-from-top-2">
+                                    <span className="font-bold text-blue-400">TRACKING ASSETS:</span>
+                                    <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-blue-500"></span> US/ALLIED</span>
+                                    <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500"></span> CN/RU/HOSTILE</span>
+                                    <span className="ml-auto text-[10px] opacity-70">DATA SOURCE: OSINT/AIS ESTIMATES</span>
+                                </div>
+                            )}
+
+                            <InteractiveMap
+                                incidents={filteredIncidents}
+                            />
                         </div>
 
-                        {/* NAVAL HUD - Only visible when Naval Tracker is active */}
-                        {selectedFilter === 'NAVAL' && (
-                            <div className="mb-4 p-3 bg-blue-950/90 border border-blue-800 rounded-lg text-blue-200 text-xs font-mono flex gap-6 items-center shadow-inner animate-in fade-in slide-in-from-top-2">
-                                <span className="font-bold text-blue-400">TRACKING ASSETS:</span>
-                                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-blue-500"></span> US/ALLIED</span>
-                                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500"></span> CN/RU/HOSTILE</span>
-                                <span className="ml-auto text-[10px] opacity-70">DATA SOURCE: OSINT/AIS ESTIMATES</span>
+                        {/* Right Side: OSINT LOG */}
+                        <div className="bg-slate-950 rounded-xl p-5 border border-slate-800 shadow-2xl flex flex-col h-[600px]">
+                            <div className="flex justify-between items-center mb-6">
+                                <h3 className="text-xs font-black text-blue-400 uppercase tracking-[0.2em] flex items-center gap-2">
+                                    <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-ping"></div>
+                                    OSINT INCIDENT LOG
+                                </h3>
+                                <div className="px-2 py-0.5 bg-blue-900/40 border border-blue-800 rounded text-[9px] font-mono text-blue-300">
+                                    {filteredIncidents.length} VECTORS
+                                </div>
+                            </div>
+
+                            <div className="flex-1 overflow-y-auto space-y-3 pr-2 scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent">
+                                {filteredIncidents.slice(0, 10).map((inc: any) => (
+                                    <div key={inc.id} className="flex gap-2 h-14">
+                                        <button
+                                            onClick={() => handleManualFocus(inc.location)}
+                                            className="flex-1 text-left p-3 flex flex-col justify-center bg-gray-900 border border-gray-800 hover:bg-gray-800 hover:border-gray-700 rounded transition-all duration-200 group relative overflow-hidden shadow-sm"
+                                        >
+                                            <div className="flex items-center justify-between pointer-events-none">
+                                                <span className={`text-[9px] font-black uppercase tracking-widest ${inc.type === 'conflict' ? 'text-red-500' : inc.type === 'cyber' ? 'text-cyan-400' : 'text-blue-400'}`}>
+                                                    {inc.type} // {inc.country || 'GLOBAL'}
+                                                </span>
+                                                <span className="text-[8px] font-mono text-gray-500">
+                                                    {new Date(inc.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                </span>
+                                            </div>
+                                            <div className="text-xs font-medium text-gray-300 group-hover:text-white group-hover:shadow-[0_0_10px_rgba(59,130,246,0.3)] transition-all line-clamp-2 leading-snug font-mono mt-1">
+                                                {inc.title}
+                                            </div>
+                                        </button>
+                                        <a
+                                            href={inc.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="p-3 h-full flex items-center justify-center bg-gray-900 border border-gray-800 hover:bg-blue-600 hover:border-blue-500 text-gray-500 hover:text-white rounded transition-all duration-200 shadow-sm"
+                                            title="Open Intel Source"
+                                        >
+                                            <ExternalLink size={14} />
+                                        </a>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Main Incident Feed for Global Intel (outside map grid but part of tab) */}
+                    <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden mt-6">
+                        <div className="p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
+                            <h2 className="text-base font-bold text-slate-900 flex items-center gap-2 font-mono">
+                                <Radio className="h-4 w-4 text-orange-500 animate-pulse" />
+                                LIVE INTELLIGENCE FEED
+                            </h2>
+                            <div className="flex items-center gap-2">
+                                <span className="flex h-2 w-2">
+                                    <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-orange-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
+                                </span>
+                                <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest">
+                                    Processing Real-Time Streams
+                                </span>
+                            </div>
+                        </div>
+                        <div className="p-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {articles.map((article: any) => (
+                                    <FeedCard key={article.id} article={article} />
+                                ))}
+                            </div>
+                            <div ref={globalRef} className="pt-8 flex justify-center w-full min-h-[50px]">
+                                {loadingMore && <Loader2 size={24} className="animate-spin text-orange-400" />}
+                            </div>
+                        </div>
+                    </div>
+                </>
+            )}
+
+            {/* Naval Tracker View */}
+            {activeTab === 'NAVAL_TRACKER' && (
+                <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4">
+                    <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                        <div className="lg:col-span-3">
+                            <div className="mb-4 flex flex-wrap justify-between items-center bg-slate-100 p-2 rounded-lg border border-slate-200">
+                                <span className="text-[10px] font-bold font-mono text-blue-900 bg-blue-100 px-2 py-1 rounded border border-blue-200 uppercase tracking-widest flex items-center gap-2">
+                                    <span className="relative flex h-2 w-2">
+                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                                        <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                                    </span>
+                                    Live Naval Tracking
+                                </span>
+
+                                <div className="flex flex-wrap gap-2 text-[10px] font-mono font-bold text-slate-600 items-center mt-2 sm:mt-0">
+                                    <span className="uppercase tracking-wider opacity-60 mr-2">Fleet Filter:</span>
+                                    <button onClick={() => setNavalFilter('ALL')} className={`flex items-center gap-1.5 px-2 py-1 rounded border shadow-sm transition-all ${navalFilter === 'ALL' ? 'bg-slate-800 text-white border-slate-700' : 'bg-white border-slate-200 hover:bg-slate-50'}`}>
+                                        ALL
+                                    </button>
+                                    <button onClick={() => setNavalFilter('western')} className={`flex items-center gap-1.5 px-2 py-1 rounded border shadow-sm transition-all ${navalFilter === 'western' ? 'bg-blue-900 text-white border-blue-700' : 'bg-white border-slate-200 hover:bg-slate-50'}`}>
+                                        <span className="w-2 h-2 rounded-full bg-blue-600"></span> US / NATO
+                                    </button>
+                                    <button onClick={() => setNavalFilter('eastern')} className={`flex items-center gap-1.5 px-2 py-1 rounded border shadow-sm transition-all ${navalFilter === 'eastern' ? 'bg-red-900 text-white border-red-700' : 'bg-white border-slate-200 hover:bg-slate-50'}`}>
+                                        <span className="w-2 h-2 rounded-full bg-red-600"></span> CHINA
+                                    </button>
+                                    <button onClick={() => setNavalFilter('russia')} className={`flex items-center gap-1.5 px-2 py-1 rounded border shadow-sm transition-all ${navalFilter === 'russia' ? 'bg-orange-900 text-white border-orange-700' : 'bg-white border-slate-200 hover:bg-slate-50'}`}>
+                                        <span className="w-2 h-2 rounded-full bg-orange-600"></span> RUSSIA
+                                    </button>
+                                    <button onClick={() => setNavalFilter('neutral')} className={`flex items-center gap-1.5 px-2 py-1 rounded border shadow-sm transition-all ${navalFilter === 'neutral' ? 'bg-yellow-900 text-white border-yellow-700' : 'bg-white border-slate-200 hover:bg-slate-50'}`}>
+                                        <span className="w-2 h-2 rounded-full bg-yellow-500"></span> INDIA
+                                    </button>
+                                    <button onClick={() => setNavalFilter('hostile')} className={`flex items-center gap-1.5 px-2 py-1 rounded border shadow-sm transition-all ${navalFilter === 'hostile' ? 'bg-emerald-900 text-white border-emerald-700' : 'bg-white border-slate-200 hover:bg-slate-50'}`}>
+                                        <span className="w-2 h-2 rounded-full bg-emerald-600"></span> IRAN
+                                    </button>
+                                </div>
+                            </div>
+
+                            <InteractiveMap
+                                incidents={[
+                                    ...incidents.filter((i: any) => i.type === 'naval'),
+                                    ...NAVAL_FACILITIES.map(f => ({
+                                        id: f.id,
+                                        type: 'naval' as const,
+                                        title: `${f.name} (${f.country})`,
+                                        description: f.description,
+                                        severity: 'info' as const,
+                                        location: f.location,
+                                        country: f.country,
+                                        timestamp: new Date().toISOString(),
+                                        source: 'Known Base',
+                                        url: '#'
+                                    }))
+                                ].filter((incident: any) => {
+                                    if (navalFilter === 'ALL') return true;
+                                    const c = (incident.country || '').toUpperCase();
+                                    if (navalFilter === 'western') return ['US', 'UK', 'FR', 'DE', 'JP', 'NATO'].includes(c);
+                                    if (navalFilter === 'eastern') return ['CN', 'KP'].includes(c);
+                                    if (navalFilter === 'russia') return ['RU'].includes(c);
+                                    if (navalFilter === 'neutral') return ['IN', 'BR', 'ZA'].includes(c);
+                                    if (navalFilter === 'hostile') return ['IR', 'SY'].includes(c);
+                                    return true;
+                                })}
+                                hasNavalContext={true}
+                            />
+                        </div>
+
+                        <div className="space-y-6">
+                            <div className="bg-slate-900 rounded-xl p-5 shadow-xl border border-slate-800">
+                                <h3 className="text-xs font-bold text-blue-400 uppercase tracking-widest mb-4 font-mono flex items-center gap-2">
+                                    <Activity className="w-4 h-4" />
+                                    Live Intel Metrics
+                                </h3>
+                                <div className="space-y-4">
+                                    <div className="flex justify-between items-center border-b border-slate-800 pb-2">
+                                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Active Alerts</span>
+                                        <span className="text-lg font-mono text-white font-bold">{incidents.filter((i: any) => i.type === 'naval').length}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center border-b border-slate-800 pb-2">
+                                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Critical Priority</span>
+                                        <span className="text-lg font-mono text-red-500 font-bold">{incidents.filter((i: any) => i.type === 'naval' && i.severity === 'critical').length}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Sources Monitored</span>
+                                        <span className="text-lg font-mono text-blue-400 font-bold">LIVE</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+                                <div className="p-4 border-b border-slate-50 bg-slate-50/50">
+                                    <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
+                                        <Shield className="h-3 w-3" />
+                                        STRATEGIC FLEET ADVISORY
+                                    </h3>
+                                </div>
+                                <div className="p-4 space-y-4">
+                                    {incidents.filter((i: any) => i.type === 'naval').slice(0, 5).map((inc: any) => (
+                                        <div key={inc.id} className="group relative">
+                                            <div className="flex justify-between items-start mb-1">
+                                                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${inc.country === 'US' ? 'bg-blue-100 text-blue-700' : 'bg-red-100 text-red-700'}`}>
+                                                    {inc.country}
+                                                </span>
+                                                <span className="text-[10px] font-mono text-slate-400">LIVE</span>
+                                            </div>
+                                            <h4 className="text-xs font-bold text-slate-900 leading-tight group-hover:text-blue-600 transition-colors uppercase">
+                                                {inc.title}
+                                            </h4>
+                                            <p className="text-[10px] text-slate-500 line-clamp-2 mt-1 font-medium">{inc.description}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-100">
+                                <h3 className="text-xs font-bold text-slate-900 uppercase tracking-widest mb-4 font-mono">
+                                    MARITIME INTEL STREAM
+                                </h3>
+                                <div className="space-y-4">
+                                    {navalArticles.map((article: any) => (
+                                        <FeedCard key={article.id} article={article} />
+                                    ))}
+                                    <div ref={nvRef} className="pt-4 flex justify-center">
+                                        {loadingNv && <Loader2 size={16} className="animate-spin text-blue-500" />}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Full Width Naval OSINT Stream */}
+                    <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+                        <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-1.5 px-2 py-1 bg-white rounded border border-slate-200 text-[10px] font-mono text-slate-500">
+                                <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                                VETTED SOURCES
+                            </div>
+                        </div>
+                    </div>
+                    <div className="p-6">
+                        {navalArticles.length > 0 ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {navalArticles.map(article => (
+                                    <FeedCard key={article.id} article={article} />
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="py-20 flex flex-col items-center justify-center text-slate-400 space-y-4">
+                                <Loader2 className="w-8 h-8 animate-spin opacity-20" />
+                                <p className="text-sm font-mono tracking-widest uppercase">Initializing Ocean Surveillance...</p>
                             </div>
                         )}
 
-                        {/* Flat Map Component */}
-                        <InteractiveMap incidents={filteredIncidents} />
-                    </div>
-
-                    {/* Quick Select / Recent Alerts Panel */}
-                    <div className="bg-black border border-gray-800 rounded-xl p-4 overflow-y-auto max-h-[700px] hidden lg:block shadow-2xl">
-                        <h3 className="text-sm font-bold text-red-500 uppercase tracking-widest mb-4 font-mono flex items-center gap-2 border-b border-gray-800 pb-3">
-                            <Activity className="w-4 h-4 animate-pulse" />
-                            Active Vectors ({filteredIncidents.length})
-                        </h3>
-                        <div className="space-y-3">
-                            {filteredIncidents.slice(0, 10).map((inc: any) => (
-                                <div key={inc.id} className="flex gap-2 h-14">
-                                    <button
-                                        onClick={() => handleManualFocus(inc.location)}
-                                        className="flex-1 text-left p-3 flex flex-col justify-center bg-gray-900 border border-gray-800 hover:bg-gray-800 hover:border-gray-700 rounded transition-all duration-200 group relative overflow-hidden shadow-sm"
-                                    >
-                                        <div className="flex items-center justify-between pointer-events-none">
-                                            <span className={`text-[9px] font-black uppercase tracking-widest ${inc.type === 'conflict' ? 'text-red-500' : inc.type === 'cyber' ? 'text-cyan-400' : 'text-blue-400'}`}>
-                                                {inc.type} // {inc.country || 'GLOBAL'}
-                                            </span>
-                                            <span className="text-[8px] font-mono text-gray-500">
-                                                {new Date(inc.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                            </span>
-                                        </div>
-                                        <div className="text-xs font-medium text-gray-300 group-hover:text-white group-hover:shadow-[0_0_10px_rgba(59,130,246,0.3)] transition-all line-clamp-2 leading-snug font-mono mt-1">
-                                            {inc.title}
-                                        </div>
-                                    </button>
-                                    <a
-                                        href={inc.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="p-3 h-full flex items-center justify-center bg-gray-900 border border-gray-800 hover:bg-blue-600 hover:border-blue-500 text-gray-500 hover:text-white rounded transition-all duration-200 shadow-sm"
-                                        title="Open Intel Source"
-                                    >
-                                        <ExternalLink size={14} />
-                                    </a>
-                                </div>
-                            ))}
+                        <div ref={nvRef} className="pt-8 flex justify-center w-full min-h-[50px]">
+                            {loadingNv && <Loader2 size={24} className="animate-spin text-blue-400" />}
                         </div>
                     </div>
                 </div>
-
-                    {/* Main Incident Feed for Global Intel */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden mt-6">
-                <div className="p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
-                    <h2 className="text-base font-bold text-slate-900 flex items-center gap-2 font-mono">
-                        <Radio className="h-4 w-4 text-orange-500 animate-pulse" />
-                        LIVE INTELLIGENCE FEED
-                    </h2>
-                    <div className="flex items-center gap-2">
-                        <span className="flex h-2 w-2">
-                            <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-orange-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
-                        </span>
-                        <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest">
-                            Processing Real-Time Streams
-                        </span>
-                    </div>
-                </div>
-                <div className="p-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {articles.map(article => (
-                            <FeedCard key={article.id} article={article} />
-                        ))}
-                    </div>
-
-                    <div ref={globalRef} className="pt-8 flex justify-center w-full min-h-[50px]">
-                        {loadingMore && <Loader2 size={24} className="animate-spin text-orange-400" />}
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
-}
-
-{/* Naval Tracker View */ }
-{
-    activeTab === 'NAVAL_TRACKER' && (
-        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4">
-            {/* Naval Intel Map Section */}
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-                <div className="lg:col-span-3">
-                    <div className="mb-4 flex flex-wrap justify-between items-center bg-slate-100 p-2 rounded-lg border border-slate-200">
-                        <span className="text-[10px] font-bold font-mono text-blue-900 bg-blue-100 px-2 py-1 rounded border border-blue-200 uppercase tracking-widest flex items-center gap-2">
-                            <span className="relative flex h-2 w-2">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-                            </span>
-                            Live Naval Tracking
-                        </span>
-
-                        <div className="flex flex-wrap gap-2 text-[10px] font-mono font-bold text-slate-600 items-center mt-2 sm:mt-0">
-                            <span className="uppercase tracking-wider opacity-60 mr-2">Fleet Filter:</span>
-                            <button onClick={() => setNavalFilter('ALL')} className={`flex items-center gap-1.5 px-2 py-1 rounded border shadow-sm transition-all ${navalFilter === 'ALL' ? 'bg-slate-800 text-white border-slate-700' : 'bg-white border-slate-200 hover:bg-slate-50'}`}>
-                                ALL
-                            </button>
-                            <button onClick={() => setNavalFilter('western')} className={`flex items-center gap-1.5 px-2 py-1 rounded border shadow-sm transition-all ${navalFilter === 'western' ? 'bg-blue-900 text-white border-blue-700' : 'bg-white border-slate-200 hover:bg-slate-50'}`}>
-                                <span className="w-2 h-2 rounded-full bg-blue-600"></span> US / NATO
-                            </button>
-                            <button onClick={() => setNavalFilter('eastern')} className={`flex items-center gap-1.5 px-2 py-1 rounded border shadow-sm transition-all ${navalFilter === 'eastern' ? 'bg-red-900 text-white border-red-700' : 'bg-white border-slate-200 hover:bg-slate-50'}`}>
-                                <span className="w-2 h-2 rounded-full bg-red-600"></span> CHINA
-                            </button>
-                            <button onClick={() => setNavalFilter('russia')} className={`flex items-center gap-1.5 px-2 py-1 rounded border shadow-sm transition-all ${navalFilter === 'russia' ? 'bg-orange-900 text-white border-orange-700' : 'bg-white border-slate-200 hover:bg-slate-50'}`}>
-                                <span className="w-2 h-2 rounded-full bg-orange-600"></span> RUSSIA
-                            </button>
-                            <button onClick={() => setNavalFilter('neutral')} className={`flex items-center gap-1.5 px-2 py-1 rounded border shadow-sm transition-all ${navalFilter === 'neutral' ? 'bg-yellow-900 text-white border-yellow-700' : 'bg-white border-slate-200 hover:bg-slate-50'}`}>
-                                <span className="w-2 h-2 rounded-full bg-yellow-500"></span> INDIA
-                            </button>
-                            <button onClick={() => setNavalFilter('hostile')} className={`flex items-center gap-1.5 px-2 py-1 rounded border shadow-sm transition-all ${navalFilter === 'hostile' ? 'bg-emerald-900 text-white border-emerald-700' : 'bg-white border-slate-200 hover:bg-slate-50'}`}>
-                                <span className="w-2 h-2 rounded-full bg-emerald-600"></span> IRAN
-                            </button>
-                        </div>
-                    </div>
-                    {/* The Map pre-filtered for naval + Static Facilities */}
-                    <InteractiveMap
-                        incidents={[
-                            ...incidents.filter((i: any) => i.type === 'naval'),
-                            ...NAVAL_FACILITIES.map(f => ({
-                                id: f.id,
-                                type: 'naval' as const,
-                                title: `${f.name} (${f.country})`,
-                                description: f.description,
-                                severity: 'info' as const,
-                                location: f.location,
-                                country: f.country,
-                                timestamp: new Date().toISOString(),
-                                source: 'Known Base',
-                                url: '#'
-                            }))
-                        ].filter((incident: any) => {
-                            if (navalFilter === 'ALL') return true;
-                            const c = (incident.country || '').toUpperCase();
-                            if (navalFilter === 'western') return ['US', 'UK', 'FR', 'DE', 'JP', 'NATO'].includes(c);
-                            if (navalFilter === 'eastern') return ['CN', 'KP'].includes(c);
-                            if (navalFilter === 'russia') return ['RU'].includes(c);
-                            if (navalFilter === 'neutral') return ['IN', 'BR', 'ZA'].includes(c);
-                            if (navalFilter === 'hostile') return ['IR', 'SY'].includes(c);
-                            return true;
-                        })}
-                        hasNavalContext={true}
-                    />
-                </div>
-
-                {/* Fleet Status Sidebar */}
-                <div className="space-y-6">
-                    {/* Live Stats Computed from Incidents */}
-                    <div className="bg-slate-900 rounded-xl p-5 shadow-xl border border-slate-800">
-                        <h3 className="text-xs font-bold text-blue-400 uppercase tracking-widest mb-4 font-mono flex items-center gap-2">
-                            <Activity className="w-4 h-4" />
-                            Live Intel Metrics
-                        </h3>
-                        <div className="space-y-4">
-                            <div className="flex justify-between items-center border-b border-slate-800 pb-2">
-                                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Active Alerts</span>
-                                <span className="text-lg font-mono text-white font-bold">{incidents.filter(i => i.type === 'naval').length}</span>
-                            </div>
-                            <div className="flex justify-between items-center border-b border-slate-800 pb-2">
-                                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest sh">Critical Priority</span>
-                                <span className="text-lg font-mono text-red-500 font-bold">{incidents.filter(i => i.type === 'naval' && i.severity === 'critical').length}</span>
-                            </div>
-                            <div className="flex justify-between items-center">
-                                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Sources Monitored</span>
-                                <span className="text-lg font-mono text-blue-400 font-bold">LIVE</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
-                        <div className="p-4 border-b border-slate-50 bg-slate-50/50">
-                            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
-                                <Shield className="h-3 w-3" />
-                                STRATEGIC FLEET ADVISORY
-                            </h3>
-                        </div>
-                        <div className="p-4 space-y-4">
-                            {incidents.filter((i: any) => i.type === 'naval').slice(0, 5).map((inc: any) => (
-                                <div key={inc.id} className="group relative">
-                                    <div className="flex justify-between items-start mb-1">
-                                        <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${inc.country === 'US' ? 'bg-blue-100 text-blue-700' : 'bg-red-100 text-red-700'}`}>
-                                            {inc.country}
-                                        </span>
-                                        <span className="text-[10px] font-mono text-slate-400">LIVE</span>
-                                    </div>
-                                    <h4 className="text-xs font-bold text-slate-900 leading-tight group-hover:text-blue-600 transition-colors uppercase">
-                                        {inc.title}
-                                    </h4>
-                                    <p className="text-[10px] text-slate-500 line-clamp-2 mt-1 font-medium">{inc.description}</p>
-                                </div>
-                            ))}
-                            {incidents.filter((i: any) => i.type === 'naval').length === 0 && (
-                                <div className="text-[10px] text-slate-400 font-mono text-center py-4 italic border border-dashed border-slate-200 rounded">
-                                    Awaiting real-time detection...
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                    {/* Naval Intelligence Small Feed */}
-                    <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-100 flex-grow">
-                        <h3 className="text-xs font-bold text-slate-900 uppercase tracking-widest mb-4 font-mono">
-                            Maritime Signals
-                        </h3>
-                        <div className="space-y-4">
-                            {loading ? (
-                                <div className="py-4"><Loader2 className="w-4 h-4 animate-spin mx-auto text-slate-300" /></div>
-                            ) : navalArticles.slice(0, 5).map(article => (
-                                <div key={article.id} className="group">
-                                    <a href={article.url} target="_blank" className="text-[11px] font-bold text-slate-700 group-hover:text-blue-600 line-clamp-2 leading-tight">
-                                        {article.title}
-                                    </a>
-                                    <div className="flex justify-between mt-1 opacity-50 text-[9px] font-mono">
-                                        <span>{article.source}</span>
-                                        <span>1h ago</span>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                        <button className="w-full mt-4 text-[10px] font-bold text-blue-500 hover:bg-blue-50 py-1 rounded transition-colors uppercase tracking-widest border border-blue-100">
-                            Open Full Naval Feed
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            {/* Full Width Naval OSINT Stream */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
-                <div className="p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
-                    <h2 className="text-base font-bold text-slate-900 flex items-center gap-2 font-mono">
-                        <Radio className="h-4 w-4 text-blue-500 animate-pulse" />
-                        GLOBAL MARITIME INTELLIGENCE STREAM
-                    </h2>
-                    <div className="flex items-center gap-3">
-                        <div className="flex items-center gap-1.5 px-2 py-1 bg-white rounded border border-slate-200 text-[10px] font-mono text-slate-500">
-                            <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
-                            VETTED SOURCES
-                        </div>
-                    </div>
-                </div>
-                <div className="p-6">
-                    {navalArticles.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {navalArticles.map(article => (
-                                <FeedCard key={article.id} article={article} />
-                            ))}
-                        </div>
-                    ) : (
-                        <div className="py-20 flex flex-col items-center justify-center text-slate-400 space-y-4">
-                            <Loader2 className="w-8 h-8 animate-spin opacity-20" />
-                            <p className="text-sm font-mono tracking-widest uppercase">Initializing Ocean Surveillance...</p>
-                        </div>
-                    )}
-
-                    <div ref={nvRef} className="pt-8 flex justify-center w-full min-h-[50px]">
-                        {loadingNv && <Loader2 size={24} className="animate-spin text-blue-400" />}
-                    </div>
-                </div>
-            </div>
         </div>
     )
 }
