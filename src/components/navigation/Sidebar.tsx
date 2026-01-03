@@ -22,13 +22,6 @@ const intelligenceLinks = [
         tooltip: "Real-time stream of AI news from all sources."
     },
     {
-        id: 'ai-news',
-        label: 'AI News',
-        icon: Hexagon,
-        href: '/ai',
-        tooltip: "General AI news and developments."
-    },
-    {
         id: 'future-of-code',
         label: 'Future of Code',
         icon: Terminal,
@@ -275,6 +268,25 @@ export function Sidebar() {
                         SECTORS
                     </h3>
                     <nav className="space-y-1">
+                        {/* AI News - Moved from Intelligence */}
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Link
+                                    href="/ai"
+                                    className={`flex items-center gap-3 px-4 h-10 rounded-lg text-[13px] font-medium transition-all group relative ${pathname === '/ai'
+                                        ? 'bg-gray-100 text-gray-900 font-bold'
+                                        : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
+                                        }`}
+                                >
+                                    <Hexagon className={`h-4 w-4 ${pathname === '/ai' ? 'text-gray-900' : 'text-gray-400 group-hover:text-gray-600'}`} />
+                                    AI News
+                                </Link>
+                            </TooltipTrigger>
+                            <TooltipContent side="right" className="text-xs bg-gray-900 text-white border-none shadow-xl">
+                                General AI news and developments.
+                            </TooltipContent>
+                        </Tooltip>
+
                         {/* Standard Categories: LLMs, Robotics, Deep Tech */}
                         {categoryLinks.filter(l => l.id === 'llms' || l.id === 'robotics' || l.id === 'semiconductors' || l.id === 'quantum' || l.id === 'space' || l.id === 'biotech').map((link) => {
                             const isActive = pathname === link.href;

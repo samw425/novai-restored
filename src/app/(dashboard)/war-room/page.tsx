@@ -210,112 +210,114 @@ export default function WarRoomPage() {
             {/* Global Intel View */}
             {activeTab === 'GLOBAL_INTEL' && (
                 <>
-                    <div className="mb-8 grid grid-cols-1 lg:grid-cols-4 gap-6">
-                        {/* Main Map Display */}
-                        <div className="lg:col-span-3">
-                            {/* Interactive Legend / Filter Bar */}
-                            <div className="flex flex-wrap gap-2 mb-4 justify-between items-center">
-                                {/* LEFT: Standard Filters */}
-                                <div className="flex gap-2">
-                                    {[
-                                        { id: 'ALL', label: 'ALL SECTORS', color: 'bg-orange-500' },
-                                        { id: 'CONFLICT', label: 'KINETIC', color: 'bg-red-500' },
-                                        { id: 'CYBER', label: 'CYBER', color: 'bg-cyan-400' }
-                                    ].map((filter) => (
-                                        <button
-                                            key={filter.id}
-                                            onClick={() => {
-                                                setSelectedFilter(filter.id as 'ALL' | 'NAVAL' | 'CONFLICT' | 'CYBER');
-                                                // auto-switch out of naval specific mode if clicking general filters
-                                                if (selectedFilter === 'NAVAL') setSelectedFilter('ALL');
-                                            }}
-                                            className={`px-3 py-1.5 rounded text-[10px] font-bold font-mono uppercase tracking-wider border transition-all ${selectedFilter === filter.id
-                                                ? `${filter.color} text-white border-transparent shadow-lg scale-105`
-                                                : 'bg-white border-gray-200 text-gray-400 hover:border-gray-400 hover:text-gray-600'
-                                                }`}
-                                        >
-                                            <span className={`inline-block w-2 h-2 rounded-full mr-2 ${filter.color}`}></span>
-                                            {filter.label}
-                                        </button>
-                                    ))}
-                                </div>
-
-                                {/* RIGHT: Dedicated Naval Toggle */}
-                                <button
-                                    onClick={() => setSelectedFilter(selectedFilter === 'NAVAL' ? 'ALL' : 'NAVAL')}
-                                    className={`px-4 py-1.5 rounded text-[10px] font-bold font-mono uppercase tracking-wider border transition-all flex items-center gap-2 ${selectedFilter === 'NAVAL'
-                                        ? 'bg-blue-900 text-blue-100 border-blue-700 shadow-[0_0_15px_rgba(30,58,138,0.5)] ring-1 ring-blue-400'
-                                        : 'bg-slate-100 border-slate-200 text-slate-500 hover:bg-slate-200'
-                                        }`}
-                                >
-                                    <span className={`w-2 h-2 rounded-full ${selectedFilter === 'NAVAL' ? 'bg-blue-400 animate-pulse' : 'bg-slate-400'}`}></span>
-                                    NAVAL TRACKER
-                                </button>
+                    {/* Map Container with OSINT Overlay */}
+                    <div className="mb-8 relative">
+                        {/* Interactive Legend / Filter Bar */}
+                        <div className="flex flex-wrap gap-2 mb-4 justify-between items-center">
+                            {/* LEFT: Standard Filters */}
+                            <div className="flex gap-2">
+                                {[
+                                    { id: 'ALL', label: 'ALL SECTORS', color: 'bg-orange-500' },
+                                    { id: 'CONFLICT', label: 'KINETIC', color: 'bg-red-500' },
+                                    { id: 'CYBER', label: 'CYBER', color: 'bg-cyan-400' }
+                                ].map((filter) => (
+                                    <button
+                                        key={filter.id}
+                                        onClick={() => {
+                                            setSelectedFilter(filter.id as 'ALL' | 'NAVAL' | 'CONFLICT' | 'CYBER');
+                                            // auto-switch out of naval specific mode if clicking general filters
+                                            if (selectedFilter === 'NAVAL') setSelectedFilter('ALL');
+                                        }}
+                                        className={`px-3 py-1.5 rounded text-[10px] font-bold font-mono uppercase tracking-wider border transition-all ${selectedFilter === filter.id
+                                            ? `${filter.color} text-white border-transparent shadow-lg scale-105`
+                                            : 'bg-white border-gray-200 text-gray-400 hover:border-gray-400 hover:text-gray-600'
+                                            }`}
+                                    >
+                                        <span className={`inline-block w-2 h-2 rounded-full mr-2 ${filter.color}`}></span>
+                                        {filter.label}
+                                    </button>
+                                ))}
                             </div>
 
-                            {/* NAVAL HUD - Only visible when Naval Tracker is active */}
-                            {selectedFilter === 'NAVAL' && (
-                                <div className="mb-4 p-3 bg-blue-950/90 border border-blue-800 rounded-lg text-blue-200 text-xs font-mono flex gap-6 items-center shadow-inner animate-in fade-in slide-in-from-top-2">
-                                    <span className="font-bold text-blue-400">TRACKING ASSETS:</span>
-                                    <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-blue-500"></span> US/ALLIED</span>
-                                    <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500"></span> CN/RU/HOSTILE</span>
-                                    <span className="ml-auto text-[10px] opacity-70">DATA SOURCE: OSINT/AIS ESTIMATES</span>
-                                </div>
-                            )}
+                            {/* RIGHT: Dedicated Naval Toggle */}
+                            <button
+                                onClick={() => setSelectedFilter(selectedFilter === 'NAVAL' ? 'ALL' : 'NAVAL')}
+                                className={`px-4 py-1.5 rounded text-[10px] font-bold font-mono uppercase tracking-wider border transition-all flex items-center gap-2 ${selectedFilter === 'NAVAL'
+                                    ? 'bg-blue-900 text-blue-100 border-blue-700 shadow-[0_0_15px_rgba(30,58,138,0.5)] ring-1 ring-blue-400'
+                                    : 'bg-slate-100 border-slate-200 text-slate-500 hover:bg-slate-200'
+                                    }`}
+                            >
+                                <span className={`w-2 h-2 rounded-full ${selectedFilter === 'NAVAL' ? 'bg-blue-400 animate-pulse' : 'bg-slate-400'}`}></span>
+                                NAVAL TRACKER
+                            </button>
+                        </div>
 
+                        {/* NAVAL HUD - Only visible when Naval Tracker is active */}
+                        {selectedFilter === 'NAVAL' && (
+                            <div className="mb-4 p-3 bg-blue-950/90 border border-blue-800 rounded-lg text-blue-200 text-xs font-mono flex gap-6 items-center shadow-inner animate-in fade-in slide-in-from-top-2">
+                                <span className="font-bold text-blue-400">TRACKING ASSETS:</span>
+                                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-blue-500"></span> US/ALLIED</span>
+                                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500"></span> CN/RU/HOSTILE</span>
+                                <span className="ml-auto text-[10px] opacity-70">DATA SOURCE: OSINT/AIS ESTIMATES</span>
+                            </div>
+                        )}
+
+                        {/* Map + OSINT Overlay Container */}
+                        <div className="relative">
+                            {/* Full Width Map */}
                             <InteractiveMap
                                 incidents={filteredIncidents}
                             />
-                        </div>
 
-                        {/* Right Side: OSINT LOG */}
-                        <div className="bg-slate-950 rounded-xl p-5 border border-slate-800 shadow-2xl flex flex-col h-[600px]">
-                            <div className="flex justify-between items-center mb-6">
-                                <h3 className="text-xs font-black text-blue-400 uppercase tracking-[0.2em] flex items-center gap-2">
-                                    <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-ping"></div>
-                                    OSINT INCIDENT LOG
-                                </h3>
-                                <div className="px-2 py-0.5 bg-blue-900/40 border border-blue-800 rounded text-[9px] font-mono text-blue-300">
-                                    {filteredIncidents.length} VECTORS
+                            {/* OSINT Log Overlay - Positioned on Right Side of Map */}
+                            <div className="absolute top-4 right-4 w-80 max-h-[560px] bg-slate-950/95 backdrop-blur-sm rounded-xl p-4 border border-slate-800 shadow-2xl overflow-hidden z-20">
+                                <div className="flex justify-between items-center mb-4">
+                                    <h3 className="text-[10px] font-black text-blue-400 uppercase tracking-[0.15em] flex items-center gap-2">
+                                        <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-ping"></div>
+                                        OSINT LIVE
+                                    </h3>
+                                    <div className="px-2 py-0.5 bg-blue-900/40 border border-blue-800 rounded text-[8px] font-mono text-blue-300">
+                                        {filteredIncidents.length} VECTORS
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div className="flex-1 overflow-y-auto space-y-3 pr-2 scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent">
-                                {filteredIncidents.slice(0, 10).map((inc: WarRoomIncident) => (
-                                    <div key={inc.id} className="flex gap-2 h-14">
-                                        <button
-                                            onClick={() => handleManualFocus(inc.location)}
-                                            className="flex-1 text-left p-3 flex flex-col justify-center bg-gray-900 border border-gray-800 hover:bg-gray-800 hover:border-gray-700 rounded transition-all duration-200 group relative overflow-hidden shadow-sm"
-                                        >
-                                            <div className="flex items-center justify-between pointer-events-none">
-                                                <span className={`text-[9px] font-black uppercase tracking-widest ${inc.type === 'conflict' ? 'text-red-500' : inc.type === 'cyber' ? 'text-cyan-400' : 'text-blue-400'}`}>
-                                                    {inc.type} / {inc.country || 'GLOBAL'}
-                                                </span>
-                                                <span className="text-[8px] font-mono text-gray-500">
-                                                    {new Date(inc.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                                </span>
-                                            </div>
-                                            <div className="text-xs font-medium text-gray-300 group-hover:text-white group-hover:shadow-[0_0_10px_rgba(59,130,246,0.3)] transition-all line-clamp-2 leading-snug font-mono mt-1">
-                                                {inc.title}
-                                            </div>
-                                        </button>
+                                <div className="overflow-y-auto max-h-[480px] space-y-2 pr-1 scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
+                                    {filteredIncidents.slice(0, 15).map((inc: WarRoomIncident) => (
                                         <a
+                                            key={inc.id}
                                             href={inc.url}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="p-3 h-full flex items-center justify-center bg-gray-900 border border-gray-800 hover:bg-blue-600 hover:border-blue-500 text-gray-500 hover:text-white rounded transition-all duration-200 shadow-sm"
-                                            title="Open Intel Source"
+                                            className="block p-3 bg-slate-900/80 border border-slate-800 hover:border-blue-500 hover:bg-slate-800 rounded-lg transition-all duration-200 group"
                                         >
-                                            <ExternalLink size={14} />
+                                            <div className="flex items-center justify-between mb-1">
+                                                <span className={`text-[8px] font-black uppercase tracking-widest ${inc.type === 'conflict' ? 'text-red-500' : inc.type === 'cyber' ? 'text-cyan-400' : inc.type === 'naval' ? 'text-blue-400' : 'text-orange-400'}`}>
+                                                    {inc.type} / {inc.country || 'GLOBAL'}
+                                                </span>
+                                                <span className="text-[7px] font-mono text-slate-500">
+                                                    {new Date(inc.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                </span>
+                                            </div>
+                                            <h4 className="text-[11px] font-bold text-slate-200 group-hover:text-white line-clamp-2 leading-tight">
+                                                {inc.title}
+                                            </h4>
+                                            <div className="flex items-center justify-between mt-1.5">
+                                                <span className="text-[8px] text-slate-500 font-mono uppercase truncate max-w-[120px]">
+                                                    {inc.source}
+                                                </span>
+                                                <span className="text-[8px] text-blue-400 group-hover:text-blue-300 flex items-center gap-0.5">
+                                                    <ExternalLink size={8} />
+                                                </span>
+                                            </div>
                                         </a>
-                                    </div>
-                                ))}
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    {/* Main Incident Feed for Global Intel (outside map grid but part of tab) */}
-                    <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden mt-6">
+                    {/* Main Intelligence Feed - Below Map */}
+                    <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
                         <div className="p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
                             <h2 className="text-base font-bold text-slate-900 flex items-center gap-2 font-mono">
                                 <Radio className="h-4 w-4 text-orange-500 animate-pulse" />
@@ -332,7 +334,7 @@ export default function WarRoomPage() {
                             </div>
                         </div>
                         <div className="p-6">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-4">
                                 {articles.map((article: Article) => (
                                     <FeedCard key={article.id} article={article} />
                                 ))}
