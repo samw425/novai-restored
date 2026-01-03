@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Shield, Activity, Globe, Lock, Loader2, ArrowUp, AlertOctagon, Radio, ExternalLink, Map as MapIcon, ShieldAlert, Target, Zap } from 'lucide-react';
+import { Shield, Activity, Globe, Lock, Loader2, ArrowUp, AlertOctagon, Radio, ExternalLink, Map as MapIcon, ShieldAlert, Target, Zap, Anchor, Ship } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
 import { AnimatePresence, motion } from 'framer-motion';
 import { PageHeader } from '@/components/ui/PageHeader';
@@ -11,6 +11,9 @@ import { InteractiveMap } from '@/components/ui/InteractiveMap';
 import { Article } from '@/types';
 import { NAVAL_FACILITIES } from '@/lib/naval-data';
 import { WarRoomIncident } from '@/lib/osint';
+import { useAISStream } from '@/hooks/useAISStream';
+import { COUNTRY_INFO, VESSEL_TYPE_INFO } from '@/lib/naval-vessels';
+import type { LiveVessel } from '@/lib/ais-stream';
 
 // Prevent static generation for this page to ensure real-time data
 export const dynamic = 'force-dynamic';
@@ -50,9 +53,37 @@ export default function WarRoomPage() {
     const [navalFilter, setNavalFilter] = useState<'ALL' | 'western' | 'eastern' | 'russia' | 'neutral' | 'hostile'>('ALL');
     const [focusedLocation, setFocusedLocation] = useState<{ lat: number; lng: number } | null>(null);
 
+    // Live AIS Vessel Tracking
+    const {
+        vessels: liveVessels,
+        isConnected: aisConnected,
+        vesselCount: liveVesselCount,
+        lastUpdate: aisLastUpdate
+    } = useAISStream({ enabled: activeTab === 'NAVAL_TRACKER' });
+
+    // Convert live vessels to incidents for map display
+    const liveVesselIncidents: WarRoomIncident[] = liveVessels.map((v: LiveVessel) => ({
+        id: `ais-${v.mmsi}`,
+        title: `${v.name} (${v.type.toUpperCase()})`,
+        type: 'naval' as const,
+        severity: 'info' as const,
+        description: `${v.class || 'Unknown class'} - Speed: ${v.speed.toFixed(1)} kts, Heading: ${v.heading}°`,
+        location: {
+            lat: v.lat,
+            lng: v.lng,
+            region: v.destination || 'At Sea'
+        },
+        country: v.country,
+        assetType: v.type,
+        timestamp: v.timestamp,
+        source: 'AIS Live',
+        url: '#'
+    }));
+
     const handleManualFocus = (loc: { lat: number; lng: number } | null) => {
         setFocusedLocation(loc);
     };
+
 
     // Filter Incidents Logic
     const filteredIncidents = incidents.filter(inc => {
@@ -384,9 +415,30 @@ export default function WarRoomPage() {
                                 </div>
                             </div>
 
+                            {/* AIS Connection Status */}
+                            <div className={`mb-4 p-3 rounded-lg border flex items-center justify-between ${aisConnected ? 'bg-emerald-950/50 border-emerald-800' : 'bg-yellow-950/50 border-yellow-800'}`}>
+                                <div className="flex items-center gap-3">
+                                    <Anchor className={`w-5 h-5 ${aisConnected ? 'text-emerald-400' : 'text-yellow-400'}`} />
+                                    <div>
+                                        <div className={`text-xs font-bold ${aisConnected ? 'text-emerald-300' : 'text-yellow-300'}`}>
+                                            {aisConnected ? 'AIS STREAM CONNECTED' : 'CONNECTING TO AIS...'}
+                                        </div>
+                                        <div className="text-[10px] text-slate-400 font-mono">
+                                            {liveVesselCount} vessels tracked in real-time
+                                            {aisLastUpdate && ` • Last update: ${aisLastUpdate.toLocaleTimeString()}`}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className={`w-2 h-2 rounded-full ${aisConnected ? 'bg-emerald-400 animate-pulse' : 'bg-yellow-400 animate-bounce'}`}></div>
+                            </div>
+
                             <InteractiveMap
                                 incidents={[
+                                    // Live AIS Vessels (priority)
+                                    ...liveVesselIncidents,
+                                    // OSINT Naval Incidents
                                     ...incidents.filter((i: WarRoomIncident) => i.type === 'naval'),
+                                    // Known Naval Bases
                                     ...NAVAL_FACILITIES.map(f => ({
                                         id: f.id,
                                         type: 'naval' as const,
@@ -402,7 +454,7 @@ export default function WarRoomPage() {
                                 ].filter((incident: WarRoomIncident) => {
                                     if (navalFilter === 'ALL') return true;
                                     const c = (incident.country || '').toUpperCase();
-                                    if (navalFilter === 'western') return ['US', 'UK', 'FR', 'DE', 'JP', 'NATO'].includes(c);
+                                    if (navalFilter === 'western') return ['US', 'UK', 'FR', 'DE', 'JP', 'NATO', 'KR', 'AU', 'IT'].includes(c);
                                     if (navalFilter === 'eastern') return ['CN', 'KP'].includes(c);
                                     if (navalFilter === 'russia') return ['RU'].includes(c);
                                     if (navalFilter === 'neutral') return ['IN', 'BR', 'ZA'].includes(c);
