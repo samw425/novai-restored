@@ -44,13 +44,13 @@ export default function SupportPage() {
 
                     <h1 className="text-2xl font-black text-gray-900 tracking-tight mb-3">Power the Signal</h1>
                     <p className="text-[15px] text-gray-600 leading-relaxed font-medium">
-                        <strong>Keep the Signal Pure</strong>
+                        <strong>Keep the Signal Independent</strong>
                         <br /><br />
-                        In a world of paywalled data, Novai stands apart. We aggregate elite-level intelligence and make it a public utility—free, open, and accessible to everyone.
+                        Novai is an independent project built to give everyone access to elite intelligence.
                         <br /><br />
-                        To remain truly neutral, we refuse outside investors and ads. We rely entirely on the community to fund the infrastructure (GPU clusters & data feeds) that powers this engine.
+                        To remain truly neutral, we refuse venture capital and ads. We answer only to you.
                         <br /><br />
-                        Your support keeps the signal independent.
+                        If you find value in the signal, you can support the development here. If not, just enjoy the intel.
                     </p>
                 </div>
 
@@ -72,7 +72,7 @@ export default function SupportPage() {
 
                     <div className="text-center">
                         <p className="text-xs text-gray-400 leading-relaxed max-w-xs mx-auto mb-3">
-                            Support is optional. It keeps Novai live, ad-free, and open to the world.
+                            Your support keeps Novai free for all.
                         </p>
                         <p className="text-xs font-semibold text-gray-500">
                             Whether you support us or not, thank you for being part of the signal.
