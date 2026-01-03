@@ -35,31 +35,14 @@ function BreadcrumbHeaderInner() {
                 </div>
 
                 {/* Actions */}
-                <div className="flex items-center gap-3 md:gap-4 ml-auto lg:ml-0">
+                <div className="flex items-center gap-3 md:gap-4 ml-auto">
                     <Link
                         href="/support"
-                        className="flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors mr-2 px-2 py-1 rounded-md hover:bg-blue-50"
+                        className="flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors px-2 py-1 rounded-md hover:bg-blue-50"
                     >
                         <Heart size={14} className="fill-blue-600" />
                         <span className="hidden sm:inline">Support</span>
                     </Link>
-                    {/* Search temporarily disabled per user request while true search is implemented */}
-                    {/* <div className="relative hidden md:block group">
-                        <button
-                            onClick={handleSearch}
-                            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-600 transition-colors z-10"
-                        >
-                            <Search size={14} />
-                        </button>
-                        <input
-                            type="text"
-                            placeholder="Search Intelligence..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                            className="bg-white border border-gray-200 rounded-lg pl-9 pr-4 py-2 text-xs w-48 lg:w-64 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all shadow-sm"
-                        />
-                    </div> */}
                 </div>
             </header>
         </>
