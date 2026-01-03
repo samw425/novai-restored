@@ -1,4 +1,4 @@
-export type FeedCategory = 'research' | 'tools' | 'policy' | 'market' | 'robotics' | 'ai' | 'security' | 'us-intel' | 'current-wars' | 'built-world' | 'antitrust';
+export type FeedCategory = 'research' | 'tools' | 'policy' | 'market' | 'robotics' | 'ai' | 'security' | 'us-intel' | 'current-wars' | 'built-world' | 'antitrust' | 'defense-analysis' | 'biotech' | 'quantum' | 'space' | 'semiconductors';
 
 export interface FeedSource {
     id: string;
@@ -116,16 +116,16 @@ export const RSS_FEEDS: FeedSource[] = [
     { id: 'middle-east-war', name: 'Middle East Conflict', url: 'https://news.google.com/rss/search?q=Middle+East+War+conflict+military&hl=en-US&gl=US&ceid=US:en', category: 'current-wars', priority: 9, region: 'Global' },
 
     // ========== DEFENSE & STRATEGIC STUDIES (Aggregated Analysis) ==========
-    { id: 'defense-news', name: 'Defense News', url: 'https://www.defensenews.com/arc/outboundfeeds/rss/', category: 'market', priority: 10, region: 'US' },
-    { id: 'war-on-rocks', name: 'War on the Rocks', url: 'https://warontherocks.com/feed/', category: 'market', priority: 10, region: 'US' },
-    { id: 'breaking-defense', name: 'Breaking Defense', url: 'https://breakingdefense.com/feed/', category: 'market', priority: 9, region: 'US' },
-    { id: 'defense-one', name: 'Defense One', url: 'https://www.defenseone.com/rss/all/', category: 'market', priority: 9, region: 'US' },
-    { id: 'isw-updates', name: 'Institute for Study of War', url: 'https://www.understandingwar.org/feeds.xml', category: 'market', priority: 10, region: 'Global' },
-    { id: 'csis', name: 'CSIS', url: 'https://www.csis.org/rss/analysis', category: 'market', priority: 9, region: 'US' },
-    { id: 'rand-corp', name: 'RAND Corporation', url: 'https://www.rand.org/news/rss.xml', category: 'market', priority: 9, region: 'US' },
-    { id: 'usni-news', name: 'US Naval Institute', url: 'https://news.usni.org/feed', category: 'market', priority: 9, region: 'US' },
-    { id: 'army-times', name: 'Army Times', url: 'https://www.armytimes.com/arc/outboundfeeds/rss/', category: 'market', priority: 8, region: 'US' },
-    { id: 'air-force-times', name: 'Air Force Times', url: 'https://www.airforcetimes.com/arc/outboundfeeds/rss/', category: 'market', priority: 8, region: 'US' },
+    { id: 'defense-news', name: 'Defense News', url: 'https://www.defensenews.com/arc/outboundfeeds/rss/', category: 'defense-analysis', priority: 10, region: 'US' },
+    { id: 'war-on-rocks', name: 'War on the Rocks', url: 'https://warontherocks.com/feed/', category: 'defense-analysis', priority: 10, region: 'US' },
+    { id: 'breaking-defense', name: 'Breaking Defense', url: 'https://breakingdefense.com/feed/', category: 'defense-analysis', priority: 9, region: 'US' },
+    { id: 'defense-one', name: 'Defense One', url: 'https://www.defenseone.com/rss/all/', category: 'defense-analysis', priority: 9, region: 'US' },
+    { id: 'isw-updates', name: 'Institute for Study of War', url: 'https://www.understandingwar.org/feeds.xml', category: 'defense-analysis', priority: 10, region: 'Global' },
+    { id: 'csis', name: 'CSIS', url: 'https://www.csis.org/rss/analysis', category: 'defense-analysis', priority: 9, region: 'US' },
+    { id: 'rand-corp', name: 'RAND Corporation', url: 'https://www.rand.org/news/rss.xml', category: 'defense-analysis', priority: 9, region: 'US' },
+    { id: 'usni-news', name: 'US Naval Institute', url: 'https://news.usni.org/feed', category: 'defense-analysis', priority: 9, region: 'US' },
+    { id: 'army-times', name: 'Army Times', url: 'https://www.armytimes.com/arc/outboundfeeds/rss/', category: 'defense-analysis', priority: 8, region: 'US' },
+    { id: 'air-force-times', name: 'Air Force Times', url: 'https://www.airforcetimes.com/arc/outboundfeeds/rss/', category: 'defense-analysis', priority: 8, region: 'US' },
 
     // ========== GLOBAL INTELLIGENCE & GEOPOLITICS (Aggregated Analysis) ==========
     { id: 'foreign-policy', name: 'Foreign Policy', url: 'https://foreignpolicy.com/feed/', category: 'market', priority: 10, region: 'Global' },
@@ -264,6 +264,42 @@ export const RSS_FEEDS: FeedSource[] = [
     // Middle East & Africa (All Free)
     { id: 'arabnews-tech', name: 'Arab News Tech', url: 'https://www.arabnews.com/taxonomy/term/469/feed', category: 'market', priority: 6, region: 'Global' },
     { id: 'itnewsafrica', name: 'IT News Africa', url: 'https://www.itnewsafrica.com/feed/', category: 'market', priority: 6, region: 'Global' },
+
+    // ========== BIOTECHNOLOGY & SYNTHETIC BIOLOGY ==========
+    { id: 'nature-biotech', name: 'Nature Biotechnology', url: 'https://www.nature.com/nbt.rss', category: 'biotech', priority: 10, region: 'Global' },
+    { id: 'stat-news', name: 'STAT News', url: 'https://www.statnews.com/feed/', category: 'biotech', priority: 10, region: 'US' },
+    { id: 'fierce-biotech', name: 'Fierce Biotech', url: 'https://www.fiercebiotech.com/rss/biomarkers', category: 'biotech', priority: 9, region: 'US' },
+    { id: 'biopharma-dive', name: 'BioPharma Dive', url: 'https://www.biopharmadive.com/feed/', category: 'biotech', priority: 9, region: 'US' },
+    { id: 'gen-news', name: 'GEN News', url: 'https://www.genengnews.com/feed/', category: 'biotech', priority: 9, region: 'Global' },
+    { id: 'mit-biology', name: 'MIT News - Biology', url: 'https://news.mit.edu/rss/topic/biology', category: 'biotech', priority: 8, region: 'US' },
+    { id: 'crispr-journal', name: 'The CRISPR Journal', url: 'https://www.liebertpub.com/action/showFeed?jc=crispr&type=etoc&feed=rss', category: 'biotech', priority: 10, region: 'Global' },
+    { id: 'biospace', name: 'BioSpace', url: 'https://www.biospace.com/rss/news/', category: 'biotech', priority: 8, region: 'US' },
+
+    // ========== QUANTUM COMPUTING & PHYSICS ==========
+    { id: 'quantum-insider', name: 'The Quantum Insider', url: 'https://thequantuminsider.com/feed/', category: 'quantum', priority: 10, region: 'Global' },
+    { id: 'quantum-computing-report', name: 'Quantum Computing Report', url: 'https://quantumcomputingreport.com/feed/', category: 'quantum', priority: 10, region: 'US' },
+    { id: 'phys-org-quantum', name: 'Phys.org Quantum Physics', url: 'https://phys.org/rss-feed/physics-news/quantum-physics/', category: 'quantum', priority: 9, region: 'Global' },
+    { id: 'nature-quantum', name: 'Nature Quantum Information', url: 'https://www.nature.com/npjqi.rss', category: 'quantum', priority: 10, region: 'Global' },
+    { id: 'ieee-quantum', name: 'IEEE Quantum', url: 'https://quantum.ieee.org/feed/', category: 'quantum', priority: 9, region: 'Global' },
+    { id: 'sciencedaily-quantum', name: 'ScienceDaily Quantum', url: 'https://www.sciencedaily.com/rss/matter_energy/quantum_computing.xml', category: 'quantum', priority: 8, region: 'Global' },
+
+    // ========== SPACE & SATELLITE INTELLIGENCE ==========
+    { id: 'space-news', name: 'SpaceNews', url: 'https://spacenews.com/feed/', category: 'space', priority: 10, region: 'US' },
+    { id: 'nasa-breaking', name: 'NASA Breaking News', url: 'https://www.nasa.gov/rss/dyn/breaking_news.rss', category: 'space', priority: 10, region: 'US' },
+    { id: 'space-com', name: 'Space.com', url: 'https://www.space.com/feeds/all', category: 'space', priority: 9, region: 'US' },
+    { id: 'satellite-today', name: 'Via Satellite', url: 'https://www.satellitetoday.com/feed/', category: 'space', priority: 9, region: 'Global' },
+    { id: 'esa-news', name: 'ESA News', url: 'https://www.esa.int/rssfeed/Our_Activities/Space_Transportation', category: 'space', priority: 9, region: 'Europe' },
+    { id: 'ars-space', name: 'Ars Technica Space', url: 'https://feeds.arstechnica.com/arstechnica/space', category: 'space', priority: 9, region: 'US' },
+    { id: 'spaceref', name: 'SpaceRef', url: 'https://spaceref.com/feed/', category: 'space', priority: 8, region: 'Global' },
+
+    // ========== SEMICONDUCTORS & CHIPS ==========
+    { id: 'eetimes', name: 'EE Times', url: 'https://www.eetimes.com/feed/', category: 'semiconductors', priority: 10, region: 'Global' },
+    { id: 'semi-engineering', name: 'Semiconductor Engineering', url: 'https://semiengineering.com/feed/', category: 'semiconductors', priority: 10, region: 'US' },
+    { id: 'semi-analysis', name: 'SemiAnalysis', url: 'https://www.semianalysis.com/feed', category: 'semiconductors', priority: 10, region: 'US' },
+    { id: 'ee-journal', name: 'EE Journal', url: 'https://www.eejournal.com/feed/', category: 'semiconductors', priority: 9, region: 'US' },
+    { id: 'anandtech-chips', name: 'AnandTech CPUs', url: 'https://www.anandtech.com/rss/cpus', category: 'semiconductors', priority: 9, region: 'US' },
+    { id: 'chips-n-cheese', name: 'Chips and Cheese', url: 'https://chipsandcheese.com/feed/', category: 'semiconductors', priority: 9, region: 'Global' },
+    { id: 'digitimes', name: 'DIGITIMES', url: 'https://www.digitimes.com/rss/news.xml', category: 'semiconductors', priority: 10, region: 'Asia' },
 ];
 
 

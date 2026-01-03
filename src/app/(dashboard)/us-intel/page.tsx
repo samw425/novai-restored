@@ -544,6 +544,48 @@ const AGENCY_PROFILES: Record<string, any> = {
                 content: 'The AG has authorized the use of RICO statutes to target transnational criminal organizations involved in human trafficking, signaling a more aggressive posture.'
             }
         ]
+    },
+    DEFENSE_ANALYSIS: {
+        name: 'Strategic Defense Analysis',
+        acronym: 'ANALYSIS',
+        founded: 'N/A',
+        headquarters: 'Global Network',
+        director: 'Multiple Independent Analysts',
+        budget: '$0 (Independent)',
+        mission: 'Provide independent, high-signal analysis and strategic assessment of defense, security, and geopolitical developments. This section synthesizes reports from top think tanks and strategic studies institutes.',
+        mission_url: '#',
+        jurisdiction: 'Cognitive Domain / Analysis',
+        ai_stance: 'Utilizing cross-domain data synthesis and pattern recognition to identify strategic trends before they surface in official agency reports.',
+        active_directives: [
+            { title: 'Global Conflict Monitoring', description: 'Continuous assessment of active war zones.', link: '#' },
+            { title: 'Emerging Tech Impact', description: 'Analyzing how AI and quantum tech reshape warfare.', link: '#' }
+        ],
+        classified_annex: {
+            codename: 'ECHO CHAMBER',
+            shadow_budget: 'N/A',
+            unacknowledged_projects: ['Open Source Intelligence Synthesis']
+        },
+        education_dossier: `Defense Analysis represents the analytical layer of the intelligence cycle. While official agencies focus on data collection and operational execution, strategic analysts focus on synthesis, long-term trends, and the 'so what' of global developments.
+
+        This feed aggregates intelligence from respected independent organizations including:
+        • **Institute for the Study of War (ISW):** Real-time ground truth on active conflicts.
+        • **Center for Strategic and International Studies (CSIS):** Long-term policy and security trends.
+        • **RAND Corporation:** data-driven policy analysis.
+        • **War on the Rocks:** Insights from veterans and practitioners.
+        • **Defense News & Breaking Defense:** Industrial and procurement intelligence.`,
+        official_links: [
+            { title: 'War on the Rocks', url: 'https://warontherocks.com/', description: 'Strategy and foreign policy analysis.' },
+            { title: 'Institute for Study of War', url: 'https://www.understandingwar.org/', description: 'Conflict situation maps and analysis.' },
+            { title: 'Breaking Defense', url: 'https://breakingdefense.com/', description: 'The digital magazine of defense strategy.' }
+        ],
+        novai_analysis: [
+            {
+                title: 'The Rise of Algorithmic Warfare',
+                date: '2025-12-20',
+                type: 'Trend Analysis',
+                content: 'Analysis across multiple think tanks suggests that the "OODA loop" is being compressed by AI to the point where human decision-makers are becoming the bottleneck. Expect a shift toward "Human-on-the-loop" systems.'
+            }
+        ]
     }
 };
 

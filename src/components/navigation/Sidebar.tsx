@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Logo } from '@/components/ui/Logo';
 import { ProWaitlistModal } from '@/components/modals/ProWaitlistModal';
-import { Calendar, Activity, Radio, FlaskConical, TrendingUp, Shield, Info, Hexagon, Bot, Scale, Wrench, Brain, Youtube, Terminal, Globe, Lock, Sparkles, ShieldAlert, Building2, DollarSign } from 'lucide-react';
+import { Calendar, Activity, Radio, FlaskConical, TrendingUp, Shield, Info, Hexagon, Bot, Scale, Wrench, Brain, Youtube, Terminal, Globe, Lock, Sparkles, ShieldAlert, Building2, DollarSign, Dna, Atom, Rocket, Cpu } from 'lucide-react';
 import {
     Tooltip,
     TooltipContent,
@@ -131,6 +131,34 @@ const categoryLinks = [
         icon: Wrench,
         href: '/tools',
         tooltip: "New AI tools and frameworks."
+    },
+    {
+        id: 'biotech',
+        label: 'Biotech',
+        icon: Dna,
+        href: '/biotech',
+        tooltip: "Synthetic biology and life sciences intel."
+    },
+    {
+        id: 'quantum',
+        label: 'Quantum',
+        icon: Atom,
+        href: '/quantum',
+        tooltip: "Quantum computing and physics breakthroughs."
+    },
+    {
+        id: 'space',
+        label: 'Space',
+        icon: Rocket,
+        href: '/space',
+        tooltip: "Space exploration and satellite intelligence."
+    },
+    {
+        id: 'semiconductors',
+        label: 'Chips',
+        icon: Cpu,
+        href: '/semiconductors',
+        tooltip: "Semiconductor industry and hardware updates."
     },
 ];
 

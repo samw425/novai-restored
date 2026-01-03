@@ -35,106 +35,42 @@ const CISA_RSS_URL = 'https://www.cisa.gov/uscert/ncas/alerts.xml';
 
 // COMPREHENSIVE WORLDWIDE DEFENSE & SECURITY SOURCES
 const CONFLICT_FEEDS = [
-    // GLOBAL CONFLICT & INTEL (Google News Topics for Reliability)
-    'https://news.google.com/rss/search?q=Ukraine+War&hl=en-US&gl=US&ceid=US:en', // Ukraine Conflict
-    'https://news.google.com/rss/search?q=Gaza+Conflict&hl=en-US&gl=US&ceid=US:en', // Gaza/Israel
-    'https://news.google.com/rss/search?q=South+China+Sea+Tension&hl=en-US&gl=US&ceid=US:en', // APAC Tension
-    'https://news.google.com/rss/search?q=Sudan+Conflict&hl=en-US&gl=US&ceid=US:en', // Sudan
-    'https://news.google.com/rss/search?q=Yemen+Houthi+Conflict&hl=en-US&gl=US&ceid=US:en', // Yemen
-    'https://news.google.com/rss/search?q=Taiwan+Strait+Tension&hl=en-US&gl=US&ceid=US:en', // Taiwan
-    'https://news.google.com/rss/search?q=North+Korea+Missile&hl=en-US&gl=US&ceid=US:en', // North Korea
-    'https://news.google.com/rss/search?q=Iran+Nuclear+Tension&hl=en-US&gl=US&ceid=US:en', // Iran
-    'https://news.google.com/rss/search?q=Somalia+Al-Shabaab&hl=en-US&gl=US&ceid=US:en', // Somalia
-    'https://news.google.com/rss/search?q=Sahel+Region+Conflict&hl=en-US&gl=US&ceid=US:en', // Sahel/Africa
-    'https://news.google.com/rss/search?q=Myanmar+Civil+War&hl=en-US&gl=US&ceid=US:en', // Myanmar
-    'https://news.google.com/rss/search?q=Haiti+Gang+Violence&hl=en-US&gl=US&ceid=US:en', // Haiti
-    'https://news.google.com/rss/search?q=Mexico+Cartel+Violence&hl=en-US&gl=US&ceid=US:en', // Mexico
-
-    // COMPREHENSIVE NAVAL & MARITIME ASSETS (WORLDWIDE)
-    'https://news.google.com/rss/search?q=US+Carrier+Strike+Group&hl=en-US&gl=US&ceid=US:en', // US Carrier Groups
-    'https://news.google.com/rss/search?q=USS+Aircraft+Carrier+deployment&hl=en-US&gl=US&ceid=US:en', // US Carriers
-    'https://news.google.com/rss/search?q=US+Navy+destroyer+OR+frigate&hl=en-US&gl=US&ceid=US:en', // US Surface Fleet
-    'https://news.google.com/rss/search?q=US+submarine+patrol+OR+deployment&hl=en-US&gl=US&ceid=US:en', // US Submarines
-    'https://news.google.com/rss/search?q=Royal+Navy+HMS+deployment&hl=en-US&gl=US&ceid=US:en', // UK Royal Navy
-    'https://news.google.com/rss/search?q=Russian+Navy+fleet+OR+warship&hl=en-US&gl=US&ceid=US:en', // Russian Navy
-    'https://news.google.com/rss/search?q=Chinese+Navy+PLAN+warship+OR+carrier&hl=en-US&gl=US&ceid=US:en', // Chinese Navy
-    'https://news.google.com/rss/search?q=Indian+Navy+INS+deployment&hl=en-US&gl=US&ceid=US:en', // Indian Navy
-    'https://news.google.com/rss/search?q=Japan+Maritime+Self+Defense+Force&hl=en-US&gl=US&ceid=US:en', // Japanese Navy
-    'https://news.google.com/rss/search?q=French+Navy+Marine+Nationale&hl=en-US&gl=US&ceid=US:en', // French Navy
-    'https://news.google.com/rss/search?q=Mediterranean+naval+exercise&hl=en-US&gl=US&ceid=US:en', // Med Ops
-    'https://news.google.com/rss/search?q=Pacific+Fleet+operations&hl=en-US&gl=US&ceid=US:en', // Pacific Fleet
-    'https://news.google.com/rss/search?q=Atlantic+Fleet+operations&hl=en-US&gl=US&ceid=US:en', // Atlantic Fleet
-    'https://news.google.com/rss/search?q=Persian+Gulf+naval+presence&hl=en-US&gl=US&ceid=US:en', // Persian Gulf
-    'https://news.google.com/rss/search?q=Strait+of+Hormuz+shipping&hl=en-US&gl=US&ceid=US:en', // Hormuz
-    'https://news.google.com/rss/search?q=Bab+el+Mandeb+maritime&hl=en-US&gl=US&ceid=US:en', // Bab el-Mandeb
-    'https://news.google.com/rss/search?q=Baltic+Sea+NATO+naval&hl=en-US&gl=US&ceid=US:en', // Baltic
-    'https://news.google.com/rss/search?q=Black+Sea+naval+operations&hl=en-US&gl=US&ceid=US:en', // Black Sea
-    'https://news.google.com/rss/search?q=Arctic+naval+patrol&hl=en-US&gl=US&ceid=US:en', // Arctic
-
-    // AIR ASSETS 
-    'https://news.google.com/rss/search?q=Air+Force+bomber+deployment&hl=en-US&gl=US&ceid=US:en', // Bombers
-    'https://news.google.com/rss/search?q=F-35+OR+F-22+deployment&hl=en-US&gl=US&ceid=US:en', // US Fighters
-
-    // OFFICIAL GOVERNMENT DIRECT FEEDS (The "Realest" Intel)
-    'https://www.defense.gov/DesktopModules/ArticleCS/RSS.ashx?ContentType=1&Site=945&max=10', // US Dept of Defense (Official)
-    'https://www.state.gov/rss/channels/travel.xml', // US State Dept Travel Advisories (Conflict Indicators)
-    'https://www.gov.uk/government/organisations/ministry-of-defence.atom', // UK Ministry of Defence (Official)
+    // PRIMARY GLOBAL INTEL SOURCES (The "Realest" Intel)
+    'https://www.defense.gov/DesktopModules/ArticleCS/RSS.ashx?ContentType=1&Site=945&max=20', // US Dept of Defense (Official)
+    'https://www.state.gov/rss/channels/travel.xml', // US State Dept Travel Advisories
+    'https://news.un.org/feed/subscribe/en/news/topic/peace-and-security/feed/rss.xml', // UN News Peace & Security
+    'https://www.interpol.int/en/layout/set/html/News-Events/News/RSS-Feed', // INTERPOL News
     'https://www.nato.int/cps/en/natohq/news.rss', // NATO Official News
+    'https://www.gov.uk/government/organisations/ministry-of-defence.atom', // UK Ministry of Defence
+    'https://www.diplomatie.gouv.fr/spip.php?page=backend&id_rubrique=1&lang=en', // French Foreign Ministry
 
-    // HIGH-GRADE OSINT & ANALYSIS (Strategic Depth)
-    'https://www.understandingwar.org/feeds.xml', // Institute for the Study of War (ISW) - Gold Standard
+    // HIGH-GRADE ANALYSIS & OSINT (Vetted Bureau)
+    'https://www.understandingwar.org/feeds.xml', // Institute for the Study of War (ISW)
+    'https://www.crisisgroup.org/rss/news', // International Crisis Group
+    'https://www.sipri.org/rss.xml', // SIPRI (Arms Control & Security)
     'https://www.bellingcat.com/feed/', // Bellingcat (Investigative OSINT)
-    'https://www.csis.org/rss/analysis', // CSIS (Strategic Studies)
-    'https://www.rand.org/news/press.xml', // RAND Corporation (Defense Analysis)
+    'https://www.csis.org/rss/analysis', // CSIS
+    'https://www.rand.org/news/press.xml', // RAND Corporation
+    'https://www.iiss.org/rss/news', // IISS (Strategic Studies)
 
-    // AGENCY PROXIES (Intel & State Sources)
-    // FIVE EYES (US, UK, CAN, AUS, NZ)
-    'https://news.google.com/rss/search?q=CIA+Intelligence+Report+OR+Declassified&hl=en-US&gl=US&ceid=US:en', // CIA (US) - Refined for "Report"
-    'https://news.google.com/rss/search?q=NSA+Cyber+Security+Advisory&hl=en-US&gl=US&ceid=US:en', // NSA (US)
-    'https://news.google.com/rss/search?q=MI6+Secret+Intelligence+Service&hl=en-US&gl=US&ceid=US:en', // MI6 (UK)
-    'https://news.google.com/rss/search?q=GCHQ+Cyber+Threat&hl=en-US&gl=US&ceid=US:en', // GCHQ (UK)
-    'https://news.google.com/rss/search?q=CSIS+Canada+Intelligence&hl=en-US&gl=US&ceid=US:en', // CSIS (Canada)
-    'https://news.google.com/rss/search?q=ASIS+Australia+Intelligence&hl=en-US&gl=US&ceid=US:en', // ASIS (Australia)
+    // REFINED GEOPOLITICAL SEARCH (Filtered by Reputable Outlets)
+    // We use "site:" filters to ensure we only get vetted reporting
+    'https://news.google.com/rss/search?q=(Ukraine+OR+Russia)+site:reuters.com+OR+site:apnews.com+OR+site:bbc.com&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q=(Gaza+OR+Israel+OR+Lebanon)+site:reuters.com+OR+site:apnews.com+OR+site:wsj.com&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q=(Taiwan+OR+China+OR+South+China+Sea)+site:reuters.com+OR+site:scmp.com+OR+site:nikkei.com&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q=(Sudan+OR+Somalia+OR+Sahel)+site:reuters.com+OR+site:apnews.com+OR+site:theguardian.com&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q=(Red+Sea+OR+Houthi+OR+Yemen)+site:reuters.com+OR+site:apnews.com+OR+site:gcaptain.com&hl=en-US&gl=US&ceid=US:en',
 
-    // EUROPEAN INTEL
-    'https://news.google.com/rss/search?q=DGSE+France+Intelligence&hl=en-US&gl=US&ceid=US:en', // DGSE (France)
-    'https://news.google.com/rss/search?q=BND+Germany+Intelligence&hl=en-US&gl=US&ceid=US:en', // BND (Germany)
+    // NAVAL & MARITIME INTELLIGENCE
+    'https://news.google.com/rss/search?q=(USS+Carrier+OR+Carrier+Strike+Group)+site:navy.mil+OR+site:usni.org&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q=(Submarine+patrol+OR+nuclear+sub)+site:reuters.com+OR+site:navy.mil+OR+site:navalnews.com&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q=(Royal+Navy+OR+Type+45)+site:mod.uk+OR+site:navylookout.com&hl=en-US&gl=US&ceid=US:en',
 
-    // MIDDLE EAST & ASIA
-    'https://news.google.com/rss/search?q=Mossad+Operation&hl=en-US&gl=US&ceid=US:en', // Mossad (Israel)
-    'https://news.google.com/rss/search?q=Shin+Bet+Security&hl=en-US&gl=US&ceid=US:en', // Shin Bet (Israel)
-    'https://news.google.com/rss/search?q=IDF+Military+Operation&hl=en-US&gl=US&ceid=US:en', // IDF (Israel)
-    'https://news.google.com/rss/search?q=MIT+Turkey+Intelligence&hl=en-US&gl=US&ceid=US:en', // MIT (Turkey)
-    'https://news.google.com/rss/search?q=MOIS+Iran+Intelligence&hl=en-US&gl=US&ceid=US:en', // MOIS (Iran)
-
-    // ADVERSARIAL / COMPETITOR AGENCIES
-    'https://news.google.com/rss/search?q=FSB+Russia+Security&hl=en-US&gl=US&ceid=US:en', // FSB (Russia)
-    'https://news.google.com/rss/search?q=SVR+Russia+Foreign+Intel&hl=en-US&gl=US&ceid=US:en', // SVR (Russia)
-    'https://news.google.com/rss/search?q=GRU+Russia+Military+Intel&hl=en-US&gl=US&ceid=US:en', // GRU (Russia)
-    'https://news.google.com/rss/search?q=MSS+China+Ministry+State+Security&hl=en-US&gl=US&ceid=US:en', // MSS (China)
-    'https://news.google.com/rss/search?q=RGB+North+Korea+Intel&hl=en-US&gl=US&ceid=US:en', // RGB (North Korea)
-
-    // SOUTH ASIA
-    'https://news.google.com/rss/search?q=RAW+India+Intelligence&hl=en-US&gl=US&ceid=US:en', // RAW (India)
-    'https://news.google.com/rss/search?q=ISI+Pakistan+Intelligence&hl=en-US&gl=US&ceid=US:en', // ISI (Pakistan)
-
-    // CYBER WARFARE & THREAT INTEL (Real-Time)
-    'https://feeds.feedburner.com/TheHackersNews', // The Hacker News
-    'https://www.bleepingcomputer.com/feed/',
-    'https://threatpost.com/feed/',
-    'https://news.google.com/rss/search?q=Cyberattack+Data+Breach&hl=en-US&gl=US&ceid=US:en', // General Cyber Alerts
-    'https://news.google.com/rss/search?q=Ransomware+Attack&hl=en-US&gl=US&ceid=US:en', // Ransomware
-    'https://news.google.com/rss/search?q=Nation+State+Cyber+Attack&hl=en-US&gl=US&ceid=US:en', // Nation State Cyber
-    'https://www.cisa.gov/cybersecurity-advisories/all.xml', // CISA (Keep, usually good)
-
-    // US DOMESTIC SECURITY (NEW & EXPANDED)
-    'https://news.google.com/rss/search?q=US+Civil+Unrest+Protests&hl=en-US&gl=US&ceid=US:en', // Civil Unrest
-    'https://news.google.com/rss/search?q=US+Border+Security+Crisis&hl=en-US&gl=US&ceid=US:en', // Border Security
-    'https://news.google.com/rss/search?q=FBI+Breaking+News&hl=en-US&gl=US&ceid=US:en', // FBI
-    'https://news.google.com/rss/search?q=DHS+Security+Alert&hl=en-US&gl=US&ceid=US:en', // DHS
-    'https://news.google.com/rss/search?q=US+Mass+Shooting+Alert&hl=en-US&gl=US&ceid=US:en', // Shootings
-    'https://news.google.com/rss/search?q=US+Police+Emergency&hl=en-US&gl=US&ceid=US:en', // Police Incidents
-    'https://news.google.com/rss/search?q=US+Infrastructure+Attack&hl=en-US&gl=US&ceid=US:en', // Infrastructure
+    // CYBER & THREAT INTEL
+    'https://www.cisa.gov/cybersecurity-advisories/all.xml', // CISA Official
+    'https://www.ncsc.gov.uk/api/v1/inform/rss/reports', // UK NCSC Reports
+    'https://www.mandiant.com/resources/blog/rss.xml', // Mandiant (Now Google) Threat Intel
+    'https://unit42.paloaltonetworks.com/feed/', // Unit 42 (Palo Alto) High-grade Cyber Intel
 ];
 
 export async function fetchUSGSIncidents(): Promise<WarRoomIncident[]> {

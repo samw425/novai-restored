@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, UserPlus } from 'lucide-react';
+import { Search, UserPlus, Heart } from 'lucide-react';
 import { useRouter, usePathname } from 'next/navigation';
 import { SignUpModal } from '@/components/auth/SignUpModal';
 
@@ -27,6 +27,15 @@ export function BreadcrumbHeader() {
 
                 {/* Actions */}
                 <div className="flex items-center gap-3 md:gap-4 ml-auto lg:ml-0">
+                    <a
+                        href="https://buy.stripe.com/fZu00ia5a6VefeKcBp3Nm01"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1.5 text-xs font-bold text-emerald-600 hover:text-emerald-700 transition-colors mr-2 px-2 py-1 rounded-md hover:bg-emerald-50"
+                    >
+                        <Heart size={14} className="fill-emerald-600" />
+                        <span className="hidden sm:inline">Support</span>
+                    </a>
                     <div className="relative hidden md:block group">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors" size={14} />
                         <input

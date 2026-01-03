@@ -1,6 +1,6 @@
 'use client';
 
-import { Shield, Globe, ChevronRight, Target } from 'lucide-react';
+import { Shield, Globe, ChevronRight, Target, BrainCircuit } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface AgencySelectorProps {
@@ -33,23 +33,44 @@ export function AgencySelector({ activeAgency, onSelect, agencies }: AgencySelec
                         )}
                     </button>
 
+                    <button
+                        onClick={() => onSelect('DEFENSE_ANALYSIS')}
+                        className={`
+                            relative px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 whitespace-nowrap
+                            ${activeAgency === 'DEFENSE_ANALYSIS'
+                                ? 'bg-purple-600 text-white shadow-md ring-2 ring-purple-600 ring-offset-2'
+                                : 'bg-purple-50 text-purple-700 hover:bg-purple-100 hover:text-purple-900 border border-purple-100'}
+                        `}
+                    >
+                        <BrainCircuit size={14} className={activeAgency === 'DEFENSE_ANALYSIS' ? 'text-white' : 'text-purple-400'} />
+                        Defense Analysis
+                        {activeAgency === 'DEFENSE_ANALYSIS' && (
+                            <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-purple-500"></span>
+                            </span>
+                        )}
+                    </button>
+
                     <div className="w-px h-6 bg-slate-200 mx-2 shrink-0"></div>
 
-                    {Object.entries(agencies).map(([key, profile]) => (
-                        <button
-                            key={key}
-                            onClick={() => onSelect(key)}
-                            className={`
+                    {Object.entries(agencies)
+                        .filter(([key]) => key !== 'DEFENSE_ANALYSIS')
+                        .map(([key, profile]) => (
+                            <button
+                                key={key}
+                                onClick={() => onSelect(key)}
+                                className={`
                                 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 whitespace-nowrap
                                 ${activeAgency === key
-                                    ? 'bg-blue-600 text-white shadow-md ring-2 ring-blue-600 ring-offset-2'
-                                    : 'bg-white border border-slate-200 text-slate-600 hover:border-blue-300 hover:text-blue-600'}
+                                        ? 'bg-blue-600 text-white shadow-md ring-2 ring-blue-600 ring-offset-2'
+                                        : 'bg-white border border-slate-200 text-slate-600 hover:border-blue-300 hover:text-blue-600'}
                             `}
-                        >
-                            <Shield size={14} className={activeAgency === key ? 'text-white' : 'text-slate-400'} />
-                            {key === 'DOD' ? 'DOD/Dept. of War' : key}
-                        </button>
-                    ))}
+                            >
+                                <Shield size={14} className={activeAgency === key ? 'text-white' : 'text-slate-400'} />
+                                {key === 'DOD' ? 'DOD/Dept. of War' : key}
+                            </button>
+                        ))}
                 </div>
             </div>
         </div>

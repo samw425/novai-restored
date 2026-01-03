@@ -146,51 +146,78 @@ export async function GET(request: Request) {
 
         const feedResults = [];
 
-        // Fetch sequentially to avoid rate-limiting from Google/Agencies
-        for (const [agency, url] of Object.entries(FEEDS)) {
-            // If filtering by agency, skip others
-            // Note: If filtering by STATE, we check both 'STATE' and 'State Dept' to match frontend
-            if (agencyFilter !== 'ALL' &&
-                agency !== agencyFilter &&
-                !(agency === 'STATE' && agencyFilter === 'State Dept') &&
-                !(agency === 'WHITE_HOUSE' && agencyFilter === 'White House') &&
-                !(agency === 'USDT' && agencyFilter === 'Treasury')
-            ) continue;
+        if (agencyFilter === 'DEFENSE_ANALYSIS') {
+            // Fetch from RSS_FEEDS config for Defense Analysis
+            const { RSS_FEEDS } = await import('@/config/rss-feeds');
+            const analysisFeeds = RSS_FEEDS.filter(f => f.category === 'defense-analysis');
 
-            try {
-                // Timeout promise to prevent hanging
-                const timeout = new Promise((_, reject) =>
-                    setTimeout(() => reject(new Error('Timeout')), 5000)
-                );
+            for (const feedConfig of analysisFeeds) {
+                try {
+                    const timeout = new Promise((_, reject) =>
+                        setTimeout(() => reject(new Error('Timeout')), 5000)
+                    );
+                    const feed: any = await Promise.race([
+                        parser.parseURL(`${feedConfig.url}${feedConfig.url.includes('?') ? '&' : '?'}?_t=${Date.now()}`),
+                        timeout
+                    ]);
+                    const items = feed.items.map((item: any) => ({
+                        ...item,
+                        agency: 'DEFENSE_ANALYSIS',
+                        source: feedConfig.name,
+                        novai_analysis: "STRATEGIC ANALYSIS: Synthesized intelligence from independent defense analysts."
+                    }));
+                    feedResults.push(...items);
+                } catch (e) {
+                    console.error(`Failed to fetch ${feedConfig.name}:`, e);
+                }
+            }
+        } else {
+            // Fetch sequentially to avoid rate-limiting from Google/Agencies
+            for (const [agency, url] of Object.entries(FEEDS)) {
+                // If filtering by agency, skip others
+                // Note: If filtering by STATE, we check both 'STATE' and 'State Dept' to match frontend
+                if (agencyFilter !== 'ALL' &&
+                    agency !== agencyFilter &&
+                    !(agency === 'STATE' && agencyFilter === 'State Dept') &&
+                    !(agency === 'WHITE_HOUSE' && agencyFilter === 'White House') &&
+                    !(agency === 'USDT' && agencyFilter === 'Treasury')
+                ) continue;
 
-                const feed: any = await Promise.race([
-                    parser.parseURL(`${url}${url.includes('?') ? '&' : '?'}?_t=${Date.now()}`),
-                    timeout
-                ]);
+                try {
+                    // Timeout promise to prevent hanging
+                    const timeout = new Promise((_, reject) =>
+                        setTimeout(() => reject(new Error('Timeout')), 5000)
+                    );
 
-                const AGENCY_NAMES: Record<string, string> = {
-                    FBI: 'Federal Bureau of Investigation',
-                    NSA: 'National Security Agency',
-                    DHS: 'Dept. of Homeland Security',
-                    CISA: 'CISA',
-                    CIA: 'Central Intelligence Agency',
-                    ODNI: 'Office of Director of Nat. Intel',
-                    STATE: 'Department of State',
-                    DOD: 'Department of Defense',
-                    DOJ: 'Department of Justice',
-                    WHITE_HOUSE: 'The White House',
-                    USDT: 'Department of the Treasury'
-                };
+                    const feed: any = await Promise.race([
+                        parser.parseURL(`${url}${url.includes('?') ? '&' : '?'}?_t=${Date.now()}`),
+                        timeout
+                    ]);
 
-                const items = feed.items.map((item: any) => ({
-                    ...item,
-                    agency: (agency === 'WHITE_HOUSE') ? 'White House' : (agency === 'STATE' ? 'State Dept' : (agency === 'USDT' ? 'Treasury' : agency)),
-                    source: AGENCY_NAMES[agency] || 'Official Feed'
-                }));
-                feedResults.push(...items);
-            } catch (error) {
-                console.error(`Failed to fetch ${agency} feed:`, error);
-                // Continue to next feed even if one fails
+                    const AGENCY_NAMES: Record<string, string> = {
+                        FBI: 'Federal Bureau of Investigation',
+                        NSA: 'National Security Agency',
+                        DHS: 'Dept. of Homeland Security',
+                        CISA: 'CISA',
+                        CIA: 'Central Intelligence Agency',
+                        ODNI: 'Office of Director of Nat. Intel',
+                        STATE: 'Department of State',
+                        DOD: 'Department of Defense',
+                        DOJ: 'Department of Justice',
+                        WHITE_HOUSE: 'The White House',
+                        USDT: 'Department of the Treasury'
+                    };
+
+                    const items = feed.items.map((item: any) => ({
+                        ...item,
+                        agency: (agency === 'WHITE_HOUSE') ? 'White House' : (agency === 'STATE' ? 'State Dept' : (agency === 'USDT' ? 'Treasury' : agency)),
+                        source: AGENCY_NAMES[agency] || 'Official Feed'
+                    }));
+                    feedResults.push(...items);
+                } catch (error) {
+                    console.error(`Failed to fetch ${agency} feed:`, error);
+                    // Continue to next feed even if one fails
+                }
             }
         }
 
@@ -234,8 +261,8 @@ export async function GET(request: Request) {
                 const date = new Date(item.pubDate);
                 const isValidDate = !isNaN(date.getTime());
 
-                // Allow our specific agency names
-                const allowedAgencies = ['CISA', 'FBI', 'NSA', 'ODNI', 'CIA', 'DHS', 'DOD', 'DOJ', 'STATE', 'State Dept', 'WHITE_HOUSE', 'White House', 'USDT', 'Treasury'];
+                // Allow our specific agency names and the new section
+                const allowedAgencies = ['CISA', 'FBI', 'NSA', 'ODNI', 'CIA', 'DHS', 'DOD', 'DOJ', 'STATE', 'State Dept', 'WHITE_HOUSE', 'White House', 'USDT', 'Treasury', 'DEFENSE_ANALYSIS'];
                 const isAgencyWhitelisted = allowedAgencies.includes(item.agency);
 
                 const isRelevant = item.score > 0 || isAgencyWhitelisted;
