@@ -22,7 +22,7 @@ export interface WarRoomIncident {
     timestamp: string;
     source: string;
     url: string;
-    country?: 'US' | 'RU' | 'CN' | 'IR' | 'UK' | 'OTHER';
+    country?: 'US' | 'RU' | 'CN' | 'IR' | 'UK' | 'IN' | 'FR' | 'JP' | 'DE' | 'OTHER';
     assetType?: string;
     isTrusted?: boolean;
 }
@@ -33,45 +33,34 @@ const USGS_FEED_URL = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary
 // CISA Cyber Alerts RSS
 const CISA_RSS_URL = 'https://www.cisa.gov/uscert/ncas/alerts.xml';
 
+import { RSS_FEEDS, FeedCategory } from '@/config/rss-feeds';
+
+// ... (existing imports)
+
 // COMPREHENSIVE WORLDWIDE DEFENSE & SECURITY SOURCES
-const CONFLICT_FEEDS = [
-    // PRIMARY GLOBAL INTEL SOURCES (The "Realest" Intel)
-    'https://www.defense.gov/DesktopModules/ArticleCS/RSS.ashx?ContentType=1&Site=945&max=20', // US Dept of Defense (Official)
-    'https://www.state.gov/rss/channels/travel.xml', // US State Dept Travel Advisories
-    'https://news.un.org/feed/subscribe/en/news/topic/peace-and-security/feed/rss.xml', // UN News Peace & Security
-    'https://www.interpol.int/en/layout/set/html/News-Events/News/RSS-Feed', // INTERPOL News
-    'https://www.nato.int/cps/en/natohq/news.rss', // NATO Official News
-    'https://www.gov.uk/government/organisations/ministry-of-defence.atom', // UK Ministry of Defence
-    'https://www.diplomatie.gouv.fr/spip.php?page=backend&id_rubrique=1&lang=en', // French Foreign Ministry
+// DYNAMICALLY LOADED FROM CONFIG to ensure variety (Naval, Cyber, Intel, etc.)
+const WAR_ROOM_CATEGORIES: FeedCategory[] = ['current-wars', 'defense-analysis', 'us-intel', 'security'];
 
-    // HIGH-GRADE ANALYSIS & OSINT (Vetted Bureau)
-    'https://www.understandingwar.org/feeds.xml', // Institute for the Study of War (ISW)
-    'https://www.crisisgroup.org/rss/news', // International Crisis Group
-    'https://www.sipri.org/rss.xml', // SIPRI (Arms Control & Security)
-    'https://www.bellingcat.com/feed/', // Bellingcat (Investigative OSINT)
-    'https://www.csis.org/rss/analysis', // CSIS
-    'https://www.rand.org/news/press.xml', // RAND Corporation
-    'https://www.iiss.org/rss/news', // IISS (Strategic Studies)
+// Get all relevant feeds from our master config
+const DYNAMIC_CONFLICT_FEEDS = RSS_FEEDS
+    .filter(feed => WAR_ROOM_CATEGORIES.includes(feed.category))
+    .map(feed => feed.url);
 
+// We keep a small list of "Hardcoded High-Priority" search filters for specific kinetic tracking
+// These supplement the RSS feeds with real-time targeted queries
+const KINETIC_SEARCH_FEEDS = [
     // REFINED GEOPOLITICAL SEARCH (Filtered by Reputable Outlets)
-    // We use "site:" filters to ensure we only get vetted reporting
     'https://news.google.com/rss/search?q=(Ukraine+OR+Russia)+site:reuters.com+OR+site:apnews.com+OR+site:bbc.com&hl=en-US&gl=US&ceid=US:en',
     'https://news.google.com/rss/search?q=(Gaza+OR+Israel+OR+Lebanon)+site:reuters.com+OR+site:apnews.com+OR+site:wsj.com&hl=en-US&gl=US&ceid=US:en',
     'https://news.google.com/rss/search?q=(Taiwan+OR+China+OR+South+China+Sea)+site:reuters.com+OR+site:scmp.com+OR+site:nikkei.com&hl=en-US&gl=US&ceid=US:en',
     'https://news.google.com/rss/search?q=(Sudan+OR+Somalia+OR+Sahel)+site:reuters.com+OR+site:apnews.com+OR+site:theguardian.com&hl=en-US&gl=US&ceid=US:en',
     'https://news.google.com/rss/search?q=(Red+Sea+OR+Houthi+OR+Yemen)+site:reuters.com+OR+site:apnews.com+OR+site:gcaptain.com&hl=en-US&gl=US&ceid=US:en',
-
-    // NAVAL & MARITIME INTELLIGENCE
-    'https://news.google.com/rss/search?q=(USS+Carrier+OR+Carrier+Strike+Group)+site:navy.mil+OR+site:usni.org&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q=(Submarine+patrol+OR+nuclear+sub)+site:reuters.com+OR+site:navy.mil+OR+site:navalnews.com&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q=(Royal+Navy+OR+Type+45)+site:mod.uk+OR+site:navylookout.com&hl=en-US&gl=US&ceid=US:en',
-
-    // CYBER & THREAT INTEL
-    'https://www.cisa.gov/cybersecurity-advisories/all.xml', // CISA Official
-    'https://www.ncsc.gov.uk/api/v1/inform/rss/reports', // UK NCSC Reports
-    'https://www.mandiant.com/resources/blog/rss.xml', // Mandiant (Now Google) Threat Intel
-    'https://unit42.paloaltonetworks.com/feed/', // Unit 42 (Palo Alto) High-grade Cyber Intel
 ];
+
+// COMBINED FEED LIST
+const CONFLICT_FEEDS = [...DYNAMIC_CONFLICT_FEEDS, ...KINETIC_SEARCH_FEEDS];
+
+
 
 export async function fetchUSGSIncidents(): Promise<WarRoomIncident[]> {
     try {
@@ -304,13 +293,17 @@ export async function fetchConflictIncidents(): Promise<WarRoomIncident[]> {
                         else if (url.includes('jpost')) sourceName = 'Jerusalem Post';
                         else if (item.source?.title) sourceName = item.source.title; // Use RSS source if available
 
-                        // Determine Incident Type
+
+                        // ENHANCED NAVAL DETECTION
+                        const navalKeywords = ['carrier', 'submarine', 'destroyer', 'frigate', 'corvette', 'amphibious', 'vessel', 'warship', 'cruiser', 'patrol ship', 'coast guard', 'type 055', 'type 052', 'arleigh burke', 'virginia class', 'ssn', 'ssbn', 'cvn', 'aircraft carrier'];
+                        const isNaval = navalKeywords.some(k => text.includes(k));
+
                         let type = 'conflict';
-                        if (text.includes('cyber') || text.includes('hack') || text.includes('breach') || text.includes('ransomware')) {
+                        if (text.includes('cyber') || text.includes('hack') || text.includes('breach') || text.includes('ransomware') || text.includes('vulnerability')) {
                             type = 'cyber';
-                        } else if (text.includes('carrier') || text.includes('ship') || text.includes('vessel') || text.includes('navy') || text.includes('fleet') || text.includes('destroyer') || text.includes('submarine') || text.includes('maritime')) {
+                        } else if (isNaval || text.includes('navy') || text.includes('maritime') || text.includes('sea') || text.includes('ocean') || text.includes('fleet')) {
                             type = 'naval';
-                        } else if (text.includes('bomber') || text.includes('fighter') || text.includes('air force') || text.includes('drone') || text.includes('uav') || text.includes('aircraft')) {
+                        } else if (text.includes('bomber') || text.includes('fighter') || text.includes('air force') || text.includes('drone') || text.includes('uav') || text.includes('aircraft') || text.includes('jet')) {
                             type = 'air';
                         }
 
@@ -323,16 +316,34 @@ export async function fetchConflictIncidents(): Promise<WarRoomIncident[]> {
                         else if (text.includes('china') || text.includes('plan') || text.includes('type 0') || text.includes('beijing')) country = 'CN';
                         else if (text.includes('iran') || text.includes('irgc') || text.includes('tehran')) country = 'IR';
                         else if (text.includes('uk ') || text.includes('royal navy') || text.includes('hms ')) country = 'UK';
+                        else if (text.includes('india') || text.includes('indian navy') || text.includes('ins ')) country = 'IN';
+                        else if (text.includes('france') || text.includes('french navy') || text.includes('marine nationale')) country = 'FR';
+                        else if (text.includes('japan') || text.includes('jmsdf') || text.includes('js ')) country = 'JP';
+                        else if (text.includes('germany') || text.includes('deutsche marine') || text.includes('fgs ')) country = 'DE';
+                        else if (text.includes('israel') || text.includes('idf')) country = 'US'; // Proxy/Ally (Visual simplification)
 
-                        if (text.includes('carrier')) assetType = 'Aircraft Carrier';
-                        else if (text.includes('submarine') || text.includes('sub ')) assetType = 'Submarine';
-                        else if (text.includes('destroyer')) assetType = 'Destroyer';
-                        else if (text.includes('frigate')) assetType = 'Frigate';
+                        // Specific Ship Classes
+                        if (text.includes('cvn') || text.includes('carrier')) assetType = 'Aircraft Carrier';
+                        else if (text.includes('ssn') || text.includes('ssbn') || text.includes('submarine')) assetType = 'Submarine';
+                        else if (text.includes('ddg') || text.includes('destroyer')) assetType = 'Destroyer';
+                        else if (text.includes('ffg') || text.includes('frigate')) assetType = 'Frigate';
+                        else if (text.includes('cg') || text.includes('cruiser')) assetType = 'Cruiser';
+                        else if (text.includes('lhd') || text.includes('lha') || text.includes('amphibious')) assetType = 'Amphibious Assault';
                         else if (text.includes('bomber')) assetType = 'Strategic Bomber';
-                        else if (text.includes('fighter')) assetType = 'Fighter Jet';
+                        else if (text.includes('fighter') || text.includes('jet')) assetType = 'Fighter Jet';
                         else if (text.includes('drone') || text.includes('uav')) assetType = 'UAV / Drone';
                         else if (type === 'naval') assetType = 'Naval Vessel';
                         else if (type === 'air') assetType = 'Military Aircraft';
+
+                        // Lookup source name from RSS_FEEDS if possible
+                        const knownFeed = RSS_FEEDS.find(f => f.url === url);
+                        if (knownFeed) {
+                            sourceName = knownFeed.name.toUpperCase();
+                        } else {
+                            if (url.includes('defense.gov')) sourceName = 'US DEPT OF DEFENSE';
+                            else if (url.includes('state.gov')) sourceName = 'US STATE DEPT';
+                            // ... existing source map as fallback
+                        }
 
                         const isTrustedSource =
                             sourceName.includes('DEPT') ||

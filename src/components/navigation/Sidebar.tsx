@@ -701,14 +701,8 @@ export function Sidebar() {
                     </nav>
                 </div>
 
-                {/* FOOTER */}
+                {/* FOOTER - Removed redundant links as per user request */}
                 <div className="mt-8 px-4 space-y-6">
-                    <div className="flex flex-wrap gap-x-4 gap-y-2 text-[10px] font-medium text-gray-400">
-                        <Link href="/about" className="hover:text-gray-600 transition-colors">Docs</Link>
-                        <Link href="/about" className="hover:text-gray-600 transition-colors">API</Link>
-                        <Link href="/about" className="hover:text-gray-600 transition-colors">Status</Link>
-                        <Link href="/about" className="hover:text-gray-600 transition-colors">Privacy</Link>
-                    </div>
                 </div>
 
             </TooltipProvider>

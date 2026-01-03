@@ -203,6 +203,30 @@ export const RSS_FEEDS: FeedSource[] = [
     { id: 'competition-policy-intl', name: 'Competition Policy Intl', url: 'https://www.competitionpolicyinternational.com/feed/', category: 'antitrust', priority: 8, region: 'Global' },
     { id: 'mlexwatch', name: 'MLex Antitrust', url: 'https://mlexwatch.com/feed/', category: 'antitrust', priority: 8, region: 'Global' },
 
+    // ========== NAVAL & MARITIME INTELLIGENCE (Priority 10) ==========
+    // Specialized high-grade feeds for the Naval Map
+    { id: 'usni-news', name: 'US Naval Institute', url: 'https://news.usni.org/feed', category: 'defense-analysis', priority: 10, region: 'US' },
+    { id: 'naval-news', name: 'Naval News', url: 'https://www.navalnews.com/feed/', category: 'defense-analysis', priority: 10, region: 'Global' },
+    { id: 'navy-times', name: 'Navy Times', url: 'https://www.navytimes.com/arc/outboundfeeds/rss/', category: 'defense-analysis', priority: 9, region: 'US' },
+    { id: 'maritime-exec', name: 'Maritime Executive', url: 'https://www.maritime-executive.com/rss', category: 'market', priority: 9, region: 'Global' },
+    { id: 'gcaptain', name: 'gCaptain', url: 'https://gcaptain.com/feed/', category: 'market', priority: 9, region: 'Global' },
+    { id: 'naval-technology', name: 'Naval Technology', url: 'https://www.naval-technology.com/feed/', category: 'defense-analysis', priority: 8, region: 'Global' },
+    { id: 'def-post-naval', name: 'Defense Post Naval', url: 'https://www.thedefensepost.com/category/naval/feed/', category: 'defense-analysis', priority: 8, region: 'Global' },
+    { id: 'seapower-mag', name: 'Seapower Magazine', url: 'https://seapowermagazine.org/feed/', category: 'defense-analysis', priority: 8, region: 'US' },
+    { id: 'navy-recognition', name: 'Navy Recognition', url: 'https://www.navyrecognition.com/index.php?format=feed&type=rss', category: 'defense-analysis', priority: 8, region: 'Global' },
+    { id: 'uk-navy-lookout', name: 'Navy Lookout', url: 'https://www.navylookout.com/feed/', category: 'defense-analysis', priority: 9, region: 'Europe' },
+    { id: 'nav-war-coll', name: 'Naval War College', url: 'https://digital-commons.usnwc.edu/rss/nwc-review.xml', category: 'research', priority: 9, region: 'US' },
+    { id: 'cimsec', name: 'CIMSEC', url: 'https://cimsec.org/feed/', category: 'defense-analysis', priority: 9, region: 'Global' },
+    { id: 'defense-news-naval', name: 'Defense News Naval', url: 'https://www.defensenews.com/arc/outboundfeeds/rss/category/naval/', category: 'defense-analysis', priority: 10, region: 'US' },
+    { id: 'janes-defense', name: 'Janes Defense (Public)', url: 'https://www.janes.com/feeds/news', category: 'defense-analysis', priority: 9, region: 'Global' },
+
+    // Eurasian/Pacific Naval Focus for Balance
+    { id: 'china-naval-mod', name: 'China Military Online', url: 'http://eng.chinamil.com.cn/rss/rss_index.xml', category: 'defense-analysis', priority: 8, region: 'Asia' },
+    { id: 'naval-news-asia', name: 'Naval News Asia', url: 'https://www.navalnews.com/category/news/region/indo-pacific/feed/', category: 'defense-analysis', priority: 9, region: 'Asia' },
+    // Specific Google News filters for non-western Naval activity (Hard to get direct RSS for PLA/PLAN)
+    { id: 'plan-navy-news', name: 'PLA Navy News', url: 'https://news.google.com/rss/search?q=PLA+Navy+movements+South+China+Sea&hl=en-US&gl=US&ceid=US:en', category: 'current-wars', priority: 9, region: 'Asia' },
+    { id: 'russian-navy-news', name: 'Russian Navy News', url: 'https://news.google.com/rss/search?q=Russian+Navy+Northern+Fleet+Black+Sea+Fleet&hl=en-US&gl=US&ceid=US:en', category: 'current-wars', priority: 9, region: 'Europe' },
+
     // ========== ADDITIONAL FREE SOURCES (High Quality) ==========
     // Major Tech News (All Free)
     { id: 'cnet', name: 'CNET', url: 'https://www.cnet.com/rss/news/', category: 'market', priority: 8, region: 'US' },

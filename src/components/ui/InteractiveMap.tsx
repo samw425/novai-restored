@@ -24,9 +24,11 @@ interface Incident {
 
 interface InteractiveMapProps {
     incidents: Incident[];
+    hasNavalContext?: boolean;
+    showsNavalFacilities?: boolean;
 }
 
-export function InteractiveMap({ incidents }: InteractiveMapProps) {
+export function InteractiveMap({ incidents, hasNavalContext, showsNavalFacilities }: InteractiveMapProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const [scale, setScale] = useState(1);
 
@@ -89,6 +91,11 @@ export function InteractiveMap({ incidents }: InteractiveMapProps) {
                     const pos = getPosition(incident.location.lat, incident.location.lng);
                     const isCritical = incident.severity === 'critical';
 
+                    // Determine Color based on Country/Alliance
+                    const isWestern = ['US', 'UK', 'FR', 'JP', 'DE', 'NATO'].includes(incident.country);
+                    const isHostile = ['CN', 'RU', 'IR', 'KP'].includes(incident.country);
+                    const isNeutral = ['IN', 'BR', 'QS'].includes(incident.country);
+
                     return (
                         <a
                             key={incident.id}
@@ -99,18 +106,26 @@ export function InteractiveMap({ incidents }: InteractiveMapProps) {
                             style={{ left: pos.left, top: pos.top }}
                             title={`Click to open: ${incident.title}`}
                         >
-                            {/* Ping Animation */}
-                            <div className={`absolute inset-0 rounded-full animate-ping opacity-75 ${incident.type === 'conflict' ? 'bg-orange-500' :
-                                incident.type === 'naval' ? 'bg-blue-500' :
-                                    incident.type === 'cyber' ? 'bg-cyan-500' : 'bg-red-500'
+                            {/* Ping Animation - Dynamic Color based on Country for Naval */}
+                            <div className={`absolute inset-0 rounded-full animate-ping opacity-75 ${incident.type === 'naval'
+                                ? (isWestern ? 'bg-blue-500'
+                                    : isHostile ? (incident.country === 'CN' ? 'bg-red-500' : incident.country === 'IR' ? 'bg-emerald-500' : 'bg-orange-500') // Specific hostile colors
+                                        : isNeutral ? 'bg-yellow-500' // India etc
+                                            : 'bg-slate-500') // Unknown
+                                : incident.type === 'conflict' ? 'bg-orange-500'
+                                    : incident.type === 'cyber' ? 'bg-cyan-500'
+                                        : 'bg-red-500'
                                 }`} style={{ width: '200%', height: '200%', left: '-50%', top: '-50%' }}></div>
 
-                            {/* Marker Icon */}
-                            <div className={`relative w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border-2 shadow-[0_0_15px_rgba(0,0,0,0.8)] transition-transform hover:scale-150 hover:ring-2 hover:ring-white/50 ${incident.type === 'conflict' ? 'bg-orange-600 border-orange-400 text-white' :
-                                incident.type === 'naval' ? 'bg-blue-600 border-blue-400 text-white' :
-                                    incident.type === 'air' ? 'bg-sky-600 border-sky-400 text-white' :
-                                        incident.type === 'cyber' ? 'bg-cyan-900 border-cyan-500 text-cyan-400' :
-                                            'bg-red-600 border-red-400 text-white'
+                            {/* Marker Icon - Dynamic Color */}
+                            <div className={`relative w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border-2 shadow-[0_0_15px_rgba(0,0,0,0.8)] transition-transform hover:scale-150 hover:ring-2 hover:ring-white/50 ${incident.type === 'naval'
+                                ? (isWestern ? 'bg-blue-600 border-blue-400 text-white'
+                                    : isHostile ? (incident.country === 'CN' ? 'bg-red-600 border-red-400 text-white' : incident.country === 'IR' ? 'bg-emerald-600 border-emerald-400 text-white' : 'bg-orange-600 border-orange-400 text-white')
+                                        : isNeutral ? 'bg-yellow-600 border-yellow-400 text-white'
+                                            : 'bg-slate-600 border-slate-400 text-white')
+                                : incident.type === 'air' ? 'bg-sky-600 border-sky-400 text-white'
+                                    : incident.type === 'cyber' ? 'bg-cyan-900 border-cyan-500 text-cyan-400'
+                                        : 'bg-red-600 border-red-400 text-white'
                                 }`}>
                                 {incident.type === 'naval' ? <Ship size={12} /> :
                                     incident.type === 'air' ? <Plane size={12} /> :

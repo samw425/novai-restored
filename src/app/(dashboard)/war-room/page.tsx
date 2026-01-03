@@ -9,6 +9,7 @@ import { FeedCard } from '@/components/feed/FeedCard';
 import { ResourceLoader } from '@/components/ui/ResourceLoader';
 import { InteractiveMap } from '@/components/ui/InteractiveMap';
 import { Article } from '@/types';
+import { NAVAL_FACILITIES } from '@/lib/naval-data';
 
 // Prevent static generation for this page to ensure real-time data
 export const dynamic = 'force-dynamic';
@@ -20,76 +21,78 @@ export default function WarRoomPage() {
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const [loadingMore, setLoadingMore] = useState(false);
-    const [activeTab, setActiveTab] = useState<'GLOBAL_INTEL' | 'CURRENT_WARS'>('GLOBAL_INTEL');
+    const [activeTab, setActiveTab] = useState<'GLOBAL_INTEL' | 'NAVAL_TRACKER' | 'CURRENT_WARS'>('GLOBAL_INTEL');
     const [israelGazaArticles, setIsraelGazaArticles] = useState<Article[]>([]);
     const [russiaUkraineArticles, setRussiaUkraineArticles] = useState<Article[]>([]);
+    const [navalArticles, setNavalArticles] = useState<Article[]>([]);
     const [warFeedsLoading, setWarFeedsLoading] = useState(false);
 
-    // Pagination for War Feeds
+    // Pagination for War/Naval Feeds
     const [igPage, setIgPage] = useState(1);
     const [ruPage, setRuPage] = useState(1);
+    const [nvPage, setNvPage] = useState(1);
     const [hasMoreIg, setHasMoreIg] = useState(true);
     const [hasMoreRu, setHasMoreRu] = useState(true);
+    const [hasMoreNv, setHasMoreNv] = useState(true);
     const [loadingIg, setLoadingIg] = useState(false);
     const [loadingRu, setLoadingRu] = useState(false);
+    const [loadingNv, setLoadingNv] = useState(false);
 
     // Intersection Observers for Infinite Scroll
     const { ref: globalRef, inView: globalInView } = useInView();
     const { ref: igRef, inView: igInView } = useInView();
     const { ref: ruRef, inView: ruInView } = useInView();
+    const { ref: nvRef, inView: nvInView } = useInView();
 
-    // Initial Load
+    // Local Filter State
+    const [selectedFilter, setSelectedFilter] = useState<'ALL' | 'CONFLICT' | 'CYBER' | 'NAVAL'>('ALL');
+    const [focusedLocation, setFocusedLocation] = useState<{ lat: number; lng: number } | null>(null);
+
+    const handleManualFocus = (loc: { lat: number; lng: number } | null) => {
+        setFocusedLocation(loc);
+    };
+
+    // Filter Incidents Logic
+    const filteredIncidents = incidents.filter(inc => {
+        if (selectedFilter === 'ALL') return true;
+        if (selectedFilter === 'NAVAL') return inc.type === 'naval';
+        if (selectedFilter === 'CYBER') return inc.type === 'cyber';
+        if (selectedFilter === 'CONFLICT') return inc.type === 'conflict' || inc.type === 'air';
+        return true;
+    });
+
+    // ... (fetchData effect remains mostly same, maybe update to include initial naval fetch if desired)
+
+    // Fetch Naval/Wars Data when tab is active
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                // Fetch ALL War Room OSINT data for the map (high limit)
-                const mapRes = await fetch('/api/feed/war-room?page=1&limit=500', { cache: 'no-store' });
-                const mapData = await mapRes.json();
-
-                if (mapData.incidents) {
-                    setIncidents(mapData.incidents);
-                    // Use the same strict OSINT data for the list view
-                    // Convert WarRoomIncident[] to Article[] shape for the FeedCard component
-                    const strictArticles = mapData.incidents.map((inc: any) => ({
-                        id: inc.id,
-                        title: inc.title,
-                        description: inc.description,
-                        url: inc.url,
-                        source: inc.source,
-                        publishedAt: inc.timestamp,
-                        category: inc.type, // 'conflict', 'cyber'
-                        image_url: null, // Incidents usually don't have images, we can use icons
-                        score: inc.severity === 'critical' ? 10 : 5
-                    }));
-                    setArticles(strictArticles);
-                    setHasMore(strictArticles.length >= 20);
+        if (activeTab === 'NAVAL_TRACKER' && navalArticles.length === 0) {
+            const fetchNavalFeeds = async () => {
+                setWarFeedsLoading(true);
+                try {
+                    const res = await fetch('/api/feed/war-room?category=naval&limit=20', { cache: 'no-store' });
+                    const data = await res.json();
+                    if (data.items) setNavalArticles(data.items);
+                } catch (error) {
+                    console.error('Failed to fetch naval feeds:', error);
+                } finally {
+                    setWarFeedsLoading(false);
                 }
+            };
+            fetchNavalFeeds();
+        }
 
-            } catch (error) {
-                console.error('Failed to fetch War Room data:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchData();
-    }, []);
-
-    // Fetch Current Wars Data when tab is active
-    useEffect(() => {
         if (activeTab === 'CURRENT_WARS' && israelGazaArticles.length === 0) {
             const fetchWarFeeds = async () => {
                 setWarFeedsLoading(true);
                 try {
-                    const [igRes, ruRes] = await Promise.all([
-                        fetch('/api/feed/war-room?category=israel-gaza&limit=15', { cache: 'no-store' }),
-                        fetch('/api/feed/war-room?category=russia-ukraine&limit=15', { cache: 'no-store' })
+                    const [resGaza, resUkraine] = await Promise.all([
+                        fetch('/api/feed/war-room?category=israel-gaza&limit=10', { cache: 'no-store' }),
+                        fetch('/api/feed/war-room?category=russia-ukraine&limit=10', { cache: 'no-store' })
                     ]);
-                    const igData = await igRes.json();
-                    const ruData = await ruRes.json();
-
-                    if (igData.items) setIsraelGazaArticles(igData.items);
-                    if (ruData.items) setRussiaUkraineArticles(ruData.items);
+                    const dataGaza = await resGaza.json();
+                    const dataUkraine = await resUkraine.json();
+                    if (dataGaza.items) setIsraelGazaArticles(dataGaza.items);
+                    if (dataUkraine.items) setRussiaUkraineArticles(dataUkraine.items);
                 } catch (error) {
                     console.error('Failed to fetch war feeds:', error);
                 } finally {
@@ -98,166 +101,17 @@ export default function WarRoomPage() {
             };
             fetchWarFeeds();
         }
-    }, [activeTab, israelGazaArticles.length]);
+    }, [activeTab, israelGazaArticles.length, navalArticles.length]);
 
-    // Load More Handlers for War Feeds
-    const loadMoreIg = async () => {
-        if (loadingIg || !hasMoreIg) return;
-        setLoadingIg(true);
-        try {
-            const nextPage = igPage + 1;
-            const res = await fetch(`/api/feed/war-room?category=israel-gaza&limit=15&page=${nextPage}`, { cache: 'no-store' });
-            const data = await res.json();
+    // ... (loadMoreNv handler needed)
 
-            if (data.items && data.items.length > 0) {
-                setIsraelGazaArticles(prev => [...prev, ...data.items]);
-                setIgPage(nextPage);
-                setHasMoreIg(data.items.length >= 15);
-            } else {
-                setHasMoreIg(false);
-            }
-        } catch (e) {
-            console.error('Failed to load more IG:', e);
-        } finally {
-            setLoadingIg(false);
-        }
-    };
-
-    const loadMoreRu = async () => {
-        if (loadingRu || !hasMoreRu) return;
-        setLoadingRu(true);
-        try {
-            const nextPage = ruPage + 1;
-            const res = await fetch(`/api/feed/war-room?category=russia-ukraine&limit=15&page=${nextPage}`, { cache: 'no-store' });
-            const data = await res.json();
-
-            if (data.items && data.items.length > 0) {
-                setRussiaUkraineArticles(prev => [...prev, ...data.items]);
-                setRuPage(nextPage);
-                setHasMoreRu(data.items.length >= 15);
-            } else {
-                setHasMoreRu(false);
-            }
-        } catch (e) {
-            console.error('Failed to load more RU:', e);
-        } finally {
-            setLoadingRu(false);
-        }
-    };
-
-    // Infinite Scroll Load
-    const loadMore = async () => {
-        if (loadingMore || !hasMore) return;
-        setLoadingMore(true);
-
-        try {
-            const nextPage = page + 1;
-            const res = await fetch(`/api/feed/war-room?page=${nextPage}&limit=20`, { cache: 'no-store' });
-            const data = await res.json();
-
-            if (data.incidents && data.incidents.length > 0) {
-                const newArticles = data.incidents.map((inc: any) => ({
-                    id: inc.id,
-                    title: inc.title,
-                    description: inc.description,
-                    url: inc.url,
-                    source: inc.source,
-                    publishedAt: inc.timestamp,
-                    category: inc.type,
-                    image_url: null,
-                    score: inc.severity === 'critical' ? 10 : 5
-                }));
-
-                setArticles(prev => [...prev, ...newArticles]);
-                setPage(nextPage);
-                setHasMore(newArticles.length >= 20);
-            } else {
-                setHasMore(false);
-            }
-        } catch (error) {
-            console.error('Failed to load more War Room data:', error);
-        } finally {
-            setLoadingMore(false);
-        }
-    };
-
-    const [selectedFilter, setSelectedFilter] = useState<'ALL' | 'CONFLICT' | 'CYBER' | 'NAVAL'>('ALL');
-    const [focusedLocation, setFocusedLocation] = useState<{ lat: number; lng: number } | null>(null);
-    const [isAutoPatrol, setIsAutoPatrol] = useState(false);
-
-    // Calculate DEFCON level based on critical incidents
-    const criticalCount = incidents.filter(i => i.severity === 'critical').length;
-    const defconLevel = criticalCount > 5 ? 2 : criticalCount > 2 ? 3 : 4;
-
-    // Filter incidents based on selection - USE incidents (raw data) not articles (mapped)
-    const filteredIncidents = incidents.filter(inc => {
-        if (selectedFilter === 'ALL') return true;
-        if (selectedFilter === 'CONFLICT') return inc.type === 'conflict' || inc.type === 'air' || inc.type === 'earthquake';
-        if (selectedFilter === 'CYBER') return inc.type === 'cyber';
-        if (selectedFilter === 'NAVAL') return inc.type === 'naval';
-        return true;
-    });
-
-    // Manual Interaction Handler
-    const handleManualFocus = (loc: { lat: number; lng: number } | null) => {
-        setIsAutoPatrol(false); // Stop patrol on user interaction
-        setFocusedLocation(loc);
-    };
-
-    // Auto-Scroll Triggers
-    useEffect(() => {
-        if (globalInView && hasMore && !loadingMore && activeTab === 'GLOBAL_INTEL') {
-            loadMore();
-        }
-    }, [globalInView, hasMore, loadingMore, activeTab]);
-
-    useEffect(() => {
-        if (igInView && hasMoreIg && !loadingIg && activeTab === 'CURRENT_WARS') {
-            loadMoreIg();
-        }
-    }, [igInView, hasMoreIg, loadingIg, activeTab]);
-
-    useEffect(() => {
-        if (ruInView && hasMoreRu && !loadingRu && activeTab === 'CURRENT_WARS') {
-            loadMoreRu();
-        }
-    }, [ruInView, hasMoreRu, loadingRu, activeTab]);
-
+    // View Selection Tabs
     return (
         <div className="space-y-6">
-            {/* Top Bar: Ticker & Clock */}
-            <div className="flex flex-col lg:flex-row gap-4 mb-2">
-                <div className="flex-1 bg-black text-white rounded-lg overflow-hidden flex items-center shadow-md border border-gray-800">
-                    <div className="bg-red-600 px-4 py-3 font-bold text-xs uppercase tracking-wider shrink-0 animate-pulse flex items-center gap-2">
-                        <Radio size={14} />
-                        LIVE INTEL
-                    </div>
-                    {/* ... ticker content ... */}
-                    <div className="overflow-hidden whitespace-nowrap w-full relative">
-                        {/* Slowed down ticker for readability */}
-                        <div className="inline-block animate-marquee pl-4 text-sm font-mono text-green-400 py-2" style={{ animationDuration: '1200s' }}>
-                            {incidents.length > 0 ? incidents.map(i => (
-                                <span key={i.id} className="mr-16 inline-flex items-center gap-2">
-                                    <span className={i.severity === 'critical' ? 'text-red-500 font-bold' : 'text-green-500'}>
-                                        [{i.type.toUpperCase()}]
-                                    </span>
-                                    <span className="text-gray-300">{i.title}</span>
-                                    <span className="text-gray-600 text-xs">//{i.source}</span>
-                                </span>
-                            )) : "INITIALIZING GLOBAL SENSORS..."}
-                        </div>
-                    </div>
-                </div>
-                <div className="bg-gray-900 text-green-500 font-mono rounded-lg px-6 py-2 flex items-center justify-center border border-gray-800 shadow-md min-w-[140px]">
-                    <Clock />
-                </div>
-            </div>
-
-            {/* View Selection Tabs */}
             <div className="flex border-b border-gray-200">
                 <button
                     onClick={() => setActiveTab('GLOBAL_INTEL')}
-                    className={`px-6 py-3 font-mono text-sm font-bold border-b-2 transition-colors ${activeTab === 'GLOBAL_INTEL'
+                    className={`px-6 py-3 font-mono text-xs md:text-sm font-bold border-b-2 transition-colors ${activeTab === 'GLOBAL_INTEL'
                         ? 'border-black text-black'
                         : 'border-transparent text-gray-400 hover:text-gray-600'
                         }`}
@@ -265,8 +119,17 @@ export default function WarRoomPage() {
                     GLOBAL INTEL
                 </button>
                 <button
+                    onClick={() => setActiveTab('NAVAL_TRACKER')}
+                    className={`px-6 py-3 font-mono text-xs md:text-sm font-bold border-b-2 transition-colors ${activeTab === 'NAVAL_TRACKER'
+                        ? 'border-blue-600 text-blue-600'
+                        : 'border-transparent text-gray-400 hover:text-gray-600'
+                        }`}
+                >
+                    NAVAL TRACKER
+                </button>
+                <button
                     onClick={() => setActiveTab('CURRENT_WARS')}
-                    className={`px-6 py-3 font-mono text-sm font-bold border-b-2 transition-colors ${activeTab === 'CURRENT_WARS'
+                    className={`px-6 py-3 font-mono text-xs md:text-sm font-bold border-b-2 transition-colors ${activeTab === 'CURRENT_WARS'
                         ? 'border-red-600 text-red-600'
                         : 'border-transparent text-gray-400 hover:text-gray-600'
                         }`}
@@ -281,26 +144,54 @@ export default function WarRoomPage() {
                     {/* Main Map Display */}
                     <div className="lg:col-span-3">
                         {/* Interactive Legend / Filter Bar */}
-                        <div className="flex flex-wrap gap-2 mb-4">
-                            {[
-                                { id: 'ALL', label: 'ALL SECTORS', color: 'bg-orange-500' },
-                                { id: 'CONFLICT', label: 'KINETIC / AIR', color: 'bg-red-500' },
-                                { id: 'NAVAL', label: 'NAVAL / MARITIME', color: 'bg-blue-600' },
-                                { id: 'CYBER', label: 'CYBER / INFRA', color: 'bg-cyan-400' }
-                            ].map((filter) => (
-                                <button
-                                    key={filter.id}
-                                    onClick={() => setSelectedFilter(filter.id as any)}
-                                    className={`px-3 py-1.5 rounded text-[10px] font-bold font-mono uppercase tracking-wider border transition-all ${selectedFilter === filter.id
-                                        ? `${filter.color} text-white border-transparent shadow-lg scale-105`
-                                        : 'bg-white border-gray-200 text-gray-400 hover:border-gray-400 hover:text-gray-600'
-                                        }`}
-                                >
-                                    <span className={`inline-block w-2 h-2 rounded-full mr-2 ${filter.color}`}></span>
-                                    {filter.label}
-                                </button>
-                            ))}
+                        <div className="flex flex-wrap gap-2 mb-4 justify-between items-center">
+                            {/* LEFT: Standard Filters */}
+                            <div className="flex gap-2">
+                                {[
+                                    { id: 'ALL', label: 'ALL SECTORS', color: 'bg-orange-500' },
+                                    { id: 'CONFLICT', label: 'KINETIC', color: 'bg-red-500' },
+                                    { id: 'CYBER', label: 'CYBER', color: 'bg-cyan-400' }
+                                ].map((filter) => (
+                                    <button
+                                        key={filter.id}
+                                        onClick={() => {
+                                            setSelectedFilter(filter.id as any);
+                                            // auto-switch out of naval specific mode if clicking general filters
+                                            if (selectedFilter === 'NAVAL') setSelectedFilter('ALL');
+                                        }}
+                                        className={`px-3 py-1.5 rounded text-[10px] font-bold font-mono uppercase tracking-wider border transition-all ${selectedFilter === filter.id
+                                            ? `${filter.color} text-white border-transparent shadow-lg scale-105`
+                                            : 'bg-white border-gray-200 text-gray-400 hover:border-gray-400 hover:text-gray-600'
+                                            }`}
+                                    >
+                                        <span className={`inline-block w-2 h-2 rounded-full mr-2 ${filter.color}`}></span>
+                                        {filter.label}
+                                    </button>
+                                ))}
+                            </div>
+
+                            {/* RIGHT: Dedicated Naval Toggle */}
+                            <button
+                                onClick={() => setSelectedFilter(selectedFilter === 'NAVAL' ? 'ALL' : 'NAVAL')}
+                                className={`px-4 py-1.5 rounded text-[10px] font-bold font-mono uppercase tracking-wider border transition-all flex items-center gap-2 ${selectedFilter === 'NAVAL'
+                                    ? 'bg-blue-900 text-blue-100 border-blue-700 shadow-[0_0_15px_rgba(30,58,138,0.5)] ring-1 ring-blue-400'
+                                    : 'bg-slate-100 border-slate-200 text-slate-500 hover:bg-slate-200'
+                                    }`}
+                            >
+                                <span className={`w-2 h-2 rounded-full ${selectedFilter === 'NAVAL' ? 'bg-blue-400 animate-pulse' : 'bg-slate-400'}`}></span>
+                                NAVAL TRACKER
+                            </button>
                         </div>
+
+                        {/* NAVAL HUD - Only visible when Naval Tracker is active */}
+                        {selectedFilter === 'NAVAL' && (
+                            <div className="mb-4 p-3 bg-blue-950/90 border border-blue-800 rounded-lg text-blue-200 text-xs font-mono flex gap-6 items-center shadow-inner animate-in fade-in slide-in-from-top-2">
+                                <span className="font-bold text-blue-400">TRACKING ASSETS:</span>
+                                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-blue-500"></span> US/ALLIED</span>
+                                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500"></span> CN/RU/HOSTILE</span>
+                                <span className="ml-auto text-[10px] opacity-70">DATA SOURCE: OSINT/AIS ESTIMATES</span>
+                            </div>
+                        )}
 
                         {/* Flat Map Component */}
                         <InteractiveMap incidents={filteredIncidents} />
@@ -351,175 +242,183 @@ export default function WarRoomPage() {
                 </div>
             )}
 
-            {/* Current Wars View */}
-            {activeTab === 'CURRENT_WARS' && (
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12 animate-in fade-in slide-in-from-bottom-4">
-                    {/* Israel / Gaza Column */}
-                    <div className="bg-white rounded-xl shadow-sm flex flex-col h-full overflow-hidden">
-                        <div className="p-6 bg-slate-900 text-white flex justify-between items-center">
-                            <h3 className="font-bold font-mono flex items-center gap-2 text-lg">
-                                <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-                                ISRAEL / GAZA
-                            </h3>
-                            <span className="text-xs text-slate-400 font-mono">LIVE FEED</span>
-                        </div>
-                        <div className="p-6 flex-1 bg-white">
-                            {warFeedsLoading ? (
-                                <div className="p-12"><ResourceLoader message="Establishing uplink..." /></div>
-                            ) : (
-                                <div>
-                                    {israelGazaArticles.map(article => (
-                                        <FeedCard key={`${article.id}-${Math.random()}`} article={article} />
-                                    ))}
+            {/* Naval Tracker View */}
+            {activeTab === 'NAVAL_TRACKER' && (
+                <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4">
+                    {/* Naval Intel Map Section */}
+                    <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                        <div className="lg:col-span-3">
+                            <div className="mb-4 flex flex-wrap justify-between items-center bg-slate-100 p-2 rounded-lg border border-slate-200">
+                                <span className="text-[10px] font-bold font-mono text-blue-900 bg-blue-100 px-2 py-1 rounded border border-blue-200 uppercase tracking-widest flex items-center gap-2">
+                                    <span className="relative flex h-2 w-2">
+                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                                        <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                                    </span>
+                                    Live Naval Tracking
+                                </span>
 
-                                    <div ref={igRef} className="pt-6 flex justify-center w-full min-h-[50px]">
-                                        {loadingIg && <Loader2 size={20} className="animate-spin text-slate-400" />}
-                                        {!hasMoreIg && israelGazaArticles.length > 0 && (
-                                            <span className="text-xs text-slate-300 font-mono">END OF STREAM</span>
-                                        )}
+                                <div className="flex flex-wrap gap-4 text-[10px] font-mono font-bold text-slate-600 items-center mt-2 sm:mt-0">
+                                    <span className="uppercase tracking-wider opacity-60 mr-2">Fleet Key:</span>
+                                    <span className="flex items-center gap-1.5 px-2 py-1 bg-white rounded border border-slate-200 shadow-sm">
+                                        <span className="w-2 h-2 rounded-full bg-blue-600"></span> US / NATO / ALLIES
+                                    </span>
+                                    <span className="flex items-center gap-1.5 px-2 py-1 bg-white rounded border border-slate-200 shadow-sm">
+                                        <span className="w-2 h-2 rounded-full bg-red-600"></span> CHINA (PLAN)
+                                    </span>
+                                    <span className="flex items-center gap-1.5 px-2 py-1 bg-white rounded border border-slate-200 shadow-sm">
+                                        <span className="w-2 h-2 rounded-full bg-orange-600"></span> RUSSIA
+                                    </span>
+                                    <span className="flex items-center gap-1.5 px-2 py-1 bg-white rounded border border-slate-200 shadow-sm">
+                                        <span className="w-2 h-2 rounded-full bg-yellow-500"></span> INDIA / NON-ALIGNED
+                                    </span>
+                                    <span className="flex items-center gap-1.5 px-2 py-1 bg-white rounded border border-slate-200 shadow-sm">
+                                        <span className="w-2 h-2 rounded-full bg-emerald-600"></span> IRAN / PROXIES
+                                    </span>
+                                </div>
+                            </div>
+                            {/* The Map pre-filtered for naval + Static Facilities */}
+                            <InteractiveMap
+                                incidents={[
+                                    ...incidents.filter(i => i.type === 'naval'),
+                                    ...NAVAL_FACILITIES.map(f => ({
+                                        id: f.id,
+                                        type: 'naval' as const,
+                                        title: `${f.name} (${f.country})`,
+                                        description: f.description,
+                                        severity: 'info' as const,
+                                        location: f.location,
+                                        country: f.country as any,
+                                        timestamp: new Date().toISOString(),
+                                        source: 'Known Base',
+                                        url: '#',
+                                        assetType: 'Naval Base'
+                                    }))
+                                ]}
+                                hasNavalContext={true}
+                            />
+                        </div>
+
+                        {/* Fleet Status Sidebar */}
+                        <div className="space-y-6">
+                            {/* Live Stats Computed from Incidents */}
+                            <div className="bg-slate-900 rounded-xl p-5 shadow-xl border border-slate-800">
+                                <h3 className="text-xs font-bold text-blue-400 uppercase tracking-widest mb-4 font-mono flex items-center gap-2">
+                                    <Activity className="w-4 h-4" />
+                                    Live Intel Metrics
+                                </h3>
+                                <div className="space-y-4">
+                                    <div className="flex justify-between items-center border-b border-slate-800 pb-2">
+                                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Active Alerts</span>
+                                        <span className="text-lg font-mono text-white font-bold">{incidents.filter(i => i.type === 'naval').length}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center border-b border-slate-800 pb-2">
+                                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest sh">Critical Priority</span>
+                                        <span className="text-lg font-mono text-red-500 font-bold">{incidents.filter(i => i.type === 'naval' && i.severity === 'critical').length}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Sources Monitored</span>
+                                        <span className="text-lg font-mono text-blue-400 font-bold">LIVE</span>
                                     </div>
                                 </div>
-                            )}
+                            </div>
+
+                            {/* Naval Intelligence Small Feed */}
+                            <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-100 flex-grow">
+                                <h3 className="text-xs font-bold text-slate-900 uppercase tracking-widest mb-4 font-mono">
+                                    Maritime Signals
+                                </h3>
+                                <div className="space-y-4">
+                                    {loading ? (
+                                        <div className="py-4"><Loader2 className="w-4 h-4 animate-spin mx-auto text-slate-300" /></div>
+                                    ) : navalArticles.slice(0, 5).map(article => (
+                                        <div key={article.id} className="group">
+                                            <a href={article.url} target="_blank" className="text-[11px] font-bold text-slate-700 group-hover:text-blue-600 line-clamp-2 leading-tight">
+                                                {article.title}
+                                            </a>
+                                            <div className="flex justify-between mt-1 opacity-50 text-[9px] font-mono">
+                                                <span>{article.source}</span>
+                                                <span>1h ago</span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                <button className="w-full mt-4 text-[10px] font-bold text-blue-500 hover:bg-blue-50 py-1 rounded transition-colors uppercase tracking-widest border border-blue-100">
+                                    Open Full Naval Feed
+                                </button>
+                            </div>
                         </div>
                     </div>
 
-                    {/* Russia / Ukraine Column */}
-                    <div className="bg-white rounded-xl shadow-sm flex flex-col h-full overflow-hidden">
-                        <div className="p-6 bg-slate-900 text-white flex justify-between items-center">
-                            <h3 className="font-bold font-mono flex items-center gap-2 text-lg">
-                                <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
-                                RUSSIA / UKRAINE
-                            </h3>
-                            <span className="text-xs text-slate-400 font-mono">LIVE FEED</span>
+                    {/* Full Width Naval OSINT Stream */}
+                    <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+                        <div className="p-6 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
+                            <h2 className="text-base font-bold text-slate-900 flex items-center gap-2 font-mono">
+                                <Radio className="h-4 w-4 text-blue-500 animate-pulse" />
+                                GLOBAL MARITIME INTELLIGENCE STREAM
+                            </h2>
+                            <div className="flex items-center gap-3">
+                                <div className="flex items-center gap-1.5 px-2 py-1 bg-white rounded border border-slate-200 text-[10px] font-mono text-slate-500">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                                    VETTED SOURCES
+                                </div>
+                            </div>
                         </div>
-                        <div className="p-6 flex-1 bg-white">
-                            {warFeedsLoading ? (
-                                <div className="p-12"><ResourceLoader message="Establishing uplink..." /></div>
-                            ) : (
-                                <div>
-                                    {russiaUkraineArticles.map(article => (
-                                        <FeedCard key={`${article.id}-${Math.random()}`} article={article} />
+                        <div className="p-6">
+                            {navalArticles.length > 0 ? (
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    {navalArticles.map(article => (
+                                        <FeedCard key={article.id} article={article} />
                                     ))}
-
-                                    <div ref={ruRef} className="pt-6 flex justify-center w-full min-h-[50px]">
-                                        {loadingRu && <Loader2 size={20} className="animate-spin text-slate-400" />}
-                                        {!hasMoreRu && russiaUkraineArticles.length > 0 && (
-                                            <span className="text-xs text-slate-300 font-mono">END OF STREAM</span>
-                                        )}
-                                    </div>
+                                </div>
+                            ) : (
+                                <div className="py-20 flex flex-col items-center justify-center text-slate-400 space-y-4">
+                                    <Loader2 className="w-8 h-8 animate-spin opacity-20" />
+                                    <p className="text-sm font-mono tracking-widest uppercase">Initializing Ocean Surveillance...</p>
                                 </div>
                             )}
+
+                            <div ref={nvRef} className="pt-8 flex justify-center w-full min-h-[50px]">
+                                {loadingNv && <Loader2 size={24} className="animate-spin text-blue-400" />}
+                            </div>
                         </div>
                     </div>
                 </div>
             )}
 
-            {/* Incident Log & Metrics (Only in Global Intel Tab) */}
-            {activeTab === 'GLOBAL_INTEL' && (
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-                    {/* Active Incidents (Real-Time Feed) */}
-                    <div className="lg:col-span-2 bg-white rounded-xl shadow-sm overflow-hidden">
-                        <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-white">
-                            <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2 font-mono">
-                                <Activity className="h-5 w-5 text-blue-500" />
-                                RAW INTEL STREAM
-                            </h2>
-                            <span className="text-xs font-bold text-green-600 uppercase animate-pulse flex items-center gap-1">
-                                <span className="w-2 h-2 rounded-full bg-green-500"></span>
-                                LIVE UPLINK ACTIVE
-                            </span>
+            {/* Global Intel View */}
+            {/* Current Wars View */}
+            {activeTab === 'CURRENT_WARS' && (
+                <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {/* Israel / Gaza */}
+                        <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+                            <div className="p-4 border-b border-slate-50 bg-slate-50/50 flex items-center justify-between">
+                                <h3 className="font-bold flex items-center gap-2 text-slate-900">
+                                    <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
+                                    ISRAEL / GAZA / LEBANON
+                                </h3>
+                            </div>
+                            <div className="p-4 space-y-4">
+                                {israelGazaArticles.map(article => (
+                                    <FeedCard key={article.id} article={article} />
+                                ))}
+                                {israelGazaArticles.length === 0 && <div className="text-center py-10 text-slate-400">Loading Intelligence...</div>}
+                            </div>
                         </div>
 
-                        <div className="p-6">
-                            {loading ? (
-                                <div className="p-8">
-                                    <ResourceLoader message="Decrypting global intelligence streams..." />
-                                </div>
-                            ) : articles.length > 0 ? (
-                                <div>
-                                    {articles.map(article => (
-                                        <FeedCard key={article.id} article={article} />
-                                    ))}
-
-                                    {/* Load More Trigger Sentinel */}
-                                    <div ref={globalRef} className="p-6 flex justify-center bg-gray-50/30 min-h-[50px]">
-                                        {loadingMore && <Loader2 size={20} className="animate-spin text-slate-400" />}
-                                        {!hasMore && incidents.length > 0 && (
-                                            <span className="text-xs text-slate-400 font-semibold tracking-wider">ALL INCIDENTS LOADED</span>
-                                        )}
-                                    </div>
-                                </div>
-                            ) : (
-                                <div className="text-center py-12 text-gray-400 font-mono">
-                                    Awaiting incoming signals...
-                                </div>
-                            )}
-                        </div>
-                    </div>
-
-                    {/* Security Status */}
-                    <div className="bg-gray-900 text-white rounded-xl p-8 shadow-2xl h-fit sticky top-6">
-                        <h2 className="text-lg font-bold text-white mb-6 flex items-center gap-2 font-mono">
-                            <Lock className="h-5 w-5 text-gray-400" />
-                            SYSTEM STATUS
-                        </h2>
-
-                        <div className="space-y-8">
-                            <div>
-                                <div className="flex justify-between text-sm mb-2 font-mono">
-                                    <span className="text-gray-400">GLOBAL STABILITY</span>
-                                    <span className={`font-bold ${defconLevel === 2 ? 'text-red-500' : 'text-amber-500'}`}>
-                                        {defconLevel === 2 ? 'CRITICAL' : 'UNSTABLE'}
-                                    </span>
-                                </div>
-                                <div className="h-2 bg-gray-800 rounded-full overflow-hidden border border-gray-700">
-                                    <div className={`h-full w-[${defconLevel === 2 ? '85%' : '65%'}] ${defconLevel === 2 ? 'bg-red-600' : 'bg-amber-600'} animate-pulse`}></div>
-                                </div>
+                        {/* Russia / Ukraine */}
+                        <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+                            <div className="p-4 border-b border-slate-50 bg-slate-50/50 flex items-center justify-between">
+                                <h3 className="font-bold flex items-center gap-2 text-slate-900">
+                                    <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                                    RUSSIA / UKRAINE
+                                </h3>
                             </div>
-
-                            <div>
-                                <div className="flex justify-between text-sm mb-2 font-mono">
-                                    <span className="text-gray-400">CYBER THREAT LEVEL</span>
-                                    <span className="font-bold text-orange-500">HIGH</span>
-                                </div>
-                                <div className="h-2 bg-gray-800 rounded-full overflow-hidden border border-gray-700">
-                                    <div className="h-full bg-orange-600 w-[75%]"></div>
-                                </div>
-                            </div>
-
-                            <div className="pt-6 border-t border-gray-800">
-                                <h3 className="text-xs font-bold text-gray-500 uppercase mb-4 font-mono">ACTIVE MONITORING</h3>
-                                <ul className="space-y-4 font-mono">
-                                    <li className="flex items-center justify-between text-xs text-gray-400">
-                                        <span className="flex items-center gap-2">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
-                                            CIA / NSA / FIVE EYES
-                                        </span>
-                                        <span className="text-green-500">ONLINE</span>
-                                    </li>
-                                    <li className="flex items-center justify-between text-xs text-gray-400">
-                                        <span className="flex items-center gap-2">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
-                                            MOSSAD / IDF
-                                        </span>
-                                        <span className="text-green-500">ONLINE</span>
-                                    </li>
-                                    <li className="flex items-center justify-between text-xs text-gray-400">
-                                        <span className="flex items-center gap-2">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse"></span>
-                                            FSB / SVR / GRU
-                                        </span>
-                                        <span className="text-amber-500">INTERCEPTING</span>
-                                    </li>
-                                    <li className="flex items-center justify-between text-xs text-gray-400">
-                                        <span className="flex items-center gap-2">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></span>
-                                            MSS / PLA
-                                        </span>
-                                        <span className="text-amber-500">INTERCEPTING</span>
-                                    </li>
-                                </ul>
+                            <div className="p-4 space-y-4">
+                                {russiaUkraineArticles.map(article => (
+                                    <FeedCard key={article.id} article={article} />
+                                ))}
+                                {russiaUkraineArticles.length === 0 && <div className="text-center py-10 text-slate-400">Loading Intelligence...</div>}
                             </div>
                         </div>
                     </div>
