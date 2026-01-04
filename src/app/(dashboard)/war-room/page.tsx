@@ -368,49 +368,6 @@ export default function WarRoomPage() {
                     </div>
 
                     {/* Main Intelligence Feed - Below Map */}
-                    <div className="bg-slate-950 rounded-xl p-5 border border-slate-800 shadow-xl">
-                        <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-xs font-black text-blue-400 uppercase tracking-[0.15em] flex items-center gap-2">
-                                <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-ping"></div>
-                                OSINT LIVE FEED
-                            </h3>
-                            <div className="px-2 py-0.5 bg-blue-900/40 border border-blue-800 rounded text-[9px] font-mono text-blue-300">
-                                {filteredIncidents.length} VECTORS
-                            </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                            {filteredIncidents.slice(0, 9).map((inc: WarRoomIncident) => (
-                                <a
-                                    key={inc.id}
-                                    href={inc.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="block p-3 bg-slate-900/80 border border-slate-800 hover:border-blue-500 hover:bg-slate-800 rounded-lg transition-all duration-200 group"
-                                >
-                                    <div className="flex items-center justify-between mb-1">
-                                        <span className={`text-[8px] font-black uppercase tracking-widest ${inc.type === 'conflict' ? 'text-red-500' : inc.type === 'cyber' ? 'text-cyan-400' : inc.type === 'naval' ? 'text-blue-400' : 'text-orange-400'}`}>
-                                            {inc.type} / {inc.country || 'GLOBAL'}
-                                        </span>
-                                        <span className="text-[7px] font-mono text-slate-500">
-                                            {new Date(inc.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                        </span>
-                                    </div>
-                                    <h4 className="text-[11px] font-bold text-slate-200 group-hover:text-white line-clamp-2 leading-tight">
-                                        {inc.title}
-                                    </h4>
-                                    <div className="flex items-center justify-between mt-1.5">
-                                        <span className="text-[8px] text-slate-500 font-mono uppercase truncate max-w-[120px]">
-                                            {inc.source}
-                                        </span>
-                                        <span className="text-[8px] text-blue-400 group-hover:text-blue-300 flex items-center gap-0.5">
-                                            <ExternalLink size={8} />
-                                        </span>
-                                    </div>
-                                </a>
-                            ))}
-                        </div>
-                    </div>
 
                     {/* Main Intelligence Feed - Below Map */}
                     <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">

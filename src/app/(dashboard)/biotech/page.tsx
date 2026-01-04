@@ -2,12 +2,6 @@ import { Dna } from 'lucide-react';
 import { Suspense } from 'react';
 import { FeedContainer } from '@/components/feed/FeedContainer';
 import { PageHeader } from '@/components/ui/PageHeader';
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-    title: 'Biotech Intelligence',
-    description: 'Curated intelligence from the frontier of synthetic biology, genomics, and life sciences.',
-};
 
 export default function BiotechPage() {
     return (

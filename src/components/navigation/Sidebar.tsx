@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Logo } from '@/components/ui/Logo';
 import { ProWaitlistModal } from '@/components/modals/ProWaitlistModal';
-import { Calendar, Activity, Radio, FlaskConical, TrendingUp, Shield, Info, Hexagon, Bot, Scale, Wrench, Brain, Youtube, Terminal, Globe, Lock, Sparkles, ShieldAlert, Building2, DollarSign, Dna, Atom, Rocket, Cpu } from 'lucide-react';
+import { Calendar, Activity, Radio, FlaskConical, TrendingUp, Shield, Info, Hexagon, Bot, Scale, Wrench, Brain, Youtube, Terminal, Globe, Lock, Sparkles, ShieldAlert, Building2, DollarSign, Dna, Atom, Rocket, Cpu, FileText } from 'lucide-react';
 import {
     Tooltip,
     TooltipContent,
@@ -400,6 +400,7 @@ export function Sidebar() {
 
                         {[
                             { id: 'tools', label: 'Signal Tools', icon: Wrench, href: '/lab-tools', tooltip: 'Next-gen AI utilities' },
+                            { id: 'howitworks', label: 'How It Works', icon: FileText, href: '/how-it-works', tooltip: 'Power User Protocol' },
                             { id: 'hn', label: 'Hacker News', icon: Radio, href: '/hacker-news', tooltip: 'Community Pulse' },
                             { id: 'videos', label: 'Alpha Stream', icon: Youtube, href: '/videos', tooltip: 'Curated AI demos' }
                         ].map((link) => {

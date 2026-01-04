@@ -48,7 +48,7 @@ export default function HowItWorksPage() {
                         <h3 className="text-lg font-semibold text-blue-600">Start with the God's Eye View</h3>
                         <p className="text-slate-600 leading-relaxed text-lg">
                             Check the <Link href="/global-feed" className="text-blue-600 hover:underline font-medium">Global Feed</Link> first.
-                            It aggregates 50+ major sources into a single stream. Scan the headlines to understand the macro narrative in 60 seconds.
+                            It aggregates 109+ major sources into a single stream. Scan the headlines to understand the macro narrative in 60 seconds.
                         </p>
                     </div>
                 </div>

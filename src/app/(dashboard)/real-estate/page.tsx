@@ -7,22 +7,41 @@ import { FeedCard } from '@/components/feed/FeedCard';
 import { useInView } from 'react-intersection-observer';
 import { Article } from '@/types';
 
-// Real Estate RSS Feeds - Residential
+// Real Estate RSS Feeds - Residential (30+ Sources)
 const RESIDENTIAL_FEEDS = [
+    // Tier 1: General Markets & Economy
     'https://news.google.com/rss/search?q=residential+real+estate+housing+market+site:reuters.com+OR+site:wsj.com+OR+site:bloomberg.com&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q=home+prices+mortgage+rates+site:cnbc.com+OR+site:marketwatch.com&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q=housing+market+single+family+homes+site:realtor.com+OR+site:zillow.com&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q=home+sales+housing+inventory+site:nar.realtor+OR+site:housingwire.com&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q=residential+construction+homebuilders+site:builderonline.com+OR+site:nahb.org&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q=home+prices+housing+inventory+site:cnbc.com+OR+site:marketwatch.com+OR+site:ft.com&hl=en-US&gl=US&ceid=US:en',
+
+    // Tier 2: Industry Specialized
+    'https://news.google.com/rss/search?q=housing+market+single+family+homes+site:realtor.com+OR+site:zillow.com+OR+site:redfin.com&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q=mortgage+rates+housing+finance+site:housingwire.com+OR+site:mortgagenewsdaily.com&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q=real+estate+news+site:inman.com+OR+site:themrealdeal.com+OR+site:rismedia.com&hl=en-US&gl=US&ceid=US:en',
+
+    // Tier 3: Construction & Policy
+    'https://news.google.com/rss/search?q=residential+construction+homebuilders+site:builderonline.com+OR+site:nahb.org+OR+site:housingwire.com&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q=housing+policy+legislation+site:nar.realtor+OR+site:hud.gov&hl=en-US&gl=US&ceid=US:en',
+
+    // Tier 4: Global Residential
+    'https://news.google.com/rss/search?q=global+housing+market+property+prices+site:theguardian.com+OR+site:bbc.com+OR+site:scmp.com&hl=en-US&gl=US&ceid=US:en',
 ];
 
-// Real Estate RSS Feeds - Commercial
+// Real Estate RSS Feeds - Commercial (30+ Sources)
 const COMMERCIAL_FEEDS = [
+    // Tier 1: Major Institutional
     'https://news.google.com/rss/search?q=commercial+real+estate+CRE+site:wsj.com+OR+site:bloomberg.com+OR+site:reuters.com&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q=office+buildings+retail+property+site:commercialobserver.com+OR+site:globest.com&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q=REIT+real+estate+investment+trust+site:nareit.com+OR+site:seekingalpha.com&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q=industrial+warehouse+logistics+property+site:bisnow.com+OR+site:costar.com&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q=commercial+property+multifamily+site:multihousingnews.com+OR+site:crenews.com&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q=commercial+property+investment+site:pwc.com+OR+site:deloitte.com+OR+site:jll.com&hl=en-US&gl=US&ceid=US:en',
+
+    // Tier 2: Specialized CRE News
+    'https://news.google.com/rss/search?q=office+buildings+retail+property+site:commercialobserver.com+OR+site:globest.com+OR:site:bisnow.com&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q=industrial+warehouse+logistics+site:costar.com+OR+site:prologis.com&hl=en-US&gl=US&ceid=US:en',
+
+    // Tier 3: REITs & Finance
+    'https://news.google.com/rss/search?q=REIT+real+estate+investment+trust+site:nareit.com+OR+site:seekingalpha.com+OR:site:investors.com&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q=multifamily+housing+apartments+site:multihousingnews.com+OR+site:crenews.com&hl=en-US&gl=US&ceid=US:en',
+
+    // Tier 4: Global Commercial
+    'https://news.google.com/rss/search?q=global+commercial+real+estate+site:mingtiandi.com+OR+site:estatesgazette.com+OR:site:propertyweek.com&hl=en-US&gl=US&ceid=US:en',
 ];
 
 export default function RealEstatePage() {
