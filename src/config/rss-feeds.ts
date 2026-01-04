@@ -328,6 +328,25 @@ export const RSS_FEEDS: FeedSource[] = [
     { id: 'anandtech-chips', name: 'AnandTech CPUs', url: 'https://www.anandtech.com/rss/cpus', category: 'semiconductors', priority: 9, region: 'US' },
     { id: 'chips-n-cheese', name: 'Chips and Cheese', url: 'https://chipsandcheese.com/feed/', category: 'semiconductors', priority: 9, region: 'Global' },
     { id: 'digitimes', name: 'DIGITIMES', url: 'https://www.digitimes.com/rss/news.xml', category: 'semiconductors', priority: 10, region: 'Asia' },
+
+    // ========== REAL ESTATE - RESIDENTIAL (Priority 9-10) ==========
+    { id: 're-res-tier1-a', name: 'Reuters / WSJ / Bloomberg (Residential)', url: 'https://news.google.com/rss/search?q=residential+real+estate+housing+market+site:reuters.com+OR+site:wsj.com+OR+site:bloomberg.com&hl=en-US&gl=US&ceid=US:en', category: 'real-estate-residential', priority: 10, region: 'Global' },
+    { id: 're-res-tier1-b', name: 'CNBC / MarketWatch / FT (Residential)', url: 'https://news.google.com/rss/search?q=home+prices+housing+inventory+site:cnbc.com+OR+site:marketwatch.com+OR+site:ft.com&hl=en-US&gl=US&ceid=US:en', category: 'real-estate-residential', priority: 10, region: 'Global' },
+    { id: 're-res-specialized-a', name: 'Realtor / Zillow / Redfin', url: 'https://news.google.com/rss/search?q=housing+market+single+family+homes+site:realtor.com+OR+site:zillow.com+OR+site:redfin.com&hl=en-US&gl=US&ceid=US:en', category: 'real-estate-residential', priority: 10, region: 'US' },
+    { id: 're-res-finance', name: 'HousingWire / Mortgage News Daily', url: 'https://news.google.com/rss/search?q=mortgage+rates+housing+finance+site:housingwire.com+OR+site:mortgagenewsdaily.com&hl=en-US&gl=US&ceid=US:en', category: 'real-estate-residential', priority: 10, region: 'US' },
+    { id: 're-res-industry', name: 'Inman / The Real Deal / RISMedia', url: 'https://news.google.com/rss/search?q=real+estate+news+site:inman.com+OR+site:themrealdeal.com+OR+site:rismedia.com&hl=en-US&gl=US&ceid=US:en', category: 'real-estate-residential', priority: 9, region: 'US' },
+    { id: 're-res-construction', name: 'Builder Online / NAHB', url: 'https://news.google.com/rss/search?q=residential+construction+homebuilders+site:builderonline.com+OR+site:nahb.org+OR+site:housingwire.com&hl=en-US&gl=US&ceid=US:en', category: 'real-estate-residential', priority: 9, region: 'US' },
+    { id: 're-res-policy', name: 'NAR / HUD Policy', url: 'https://news.google.com/rss/search?q=housing+policy+legislation+site:nar.realtor+OR+site:hud.gov&hl=en-US&gl=US&ceid=US:en', category: 'real-estate-residential', priority: 9, region: 'US' },
+    { id: 're-res-global', name: 'Guardian / BBC / SCMP (Global Housing)', url: 'https://news.google.com/rss/search?q=global+housing+market+property+prices+site:theguardian.com+OR+site:bbc.com+OR+site:scmp.com&hl=en-US&gl=US&ceid=US:en', category: 'real-estate-residential', priority: 9, region: 'Global' },
+
+    // ========== REAL ESTATE - COMMERCIAL (Priority 9-10) ==========
+    { id: 're-com-tier1-a', name: 'Institutional CRE (WSJ/BBG/Reuters)', url: 'https://news.google.com/rss/search?q=commercial+real+estate+CRE+site:wsj.com+OR+site:bloomberg.com+OR+site:reuters.com&hl=en-US&gl=US&ceid=US:en', category: 'real-estate-commercial', priority: 10, region: 'Global' },
+    { id: 're-com-tier1-b', name: 'PWC / Deloitte / JLL (CRE)', url: 'https://news.google.com/rss/search?q=commercial+property+investment+site:pwc.com+OR+site:deloitte.com+OR+site:jll.com&hl=en-US&gl=US&ceid=US:en', category: 'real-estate-commercial', priority: 10, region: 'Global' },
+    { id: 're-com-specialized-a', name: 'Commercial Observer / GlobeSt / Bisnow', url: 'https://news.google.com/rss/search?q=office+buildings+retail+property+site:commercialobserver.com+OR+site:globest.com+OR:site:bisnow.com&hl=en-US&gl=US&ceid=US:en', category: 'real-estate-commercial', priority: 10, region: 'US' },
+    { id: 're-com-logistics', name: 'CoStar / Prologis (Industrial)', url: 'https://news.google.com/rss/search?q=industrial+warehouse+logistics+site:costar.com+OR+site:prologis.com&hl=en-US&gl=US&ceid=US:en', category: 'real-estate-commercial', priority: 9, region: 'Global' },
+    { id: 're-com-reits', name: 'NAREIT / Seeking Alpha (REITs)', url: 'https://news.google.com/rss/search?q=REIT+real+estate+investment+trust+site:nareit.com+OR+site:seekingalpha.com+OR:site:investors.com&hl=en-US&gl=US&ceid=US:en', category: 'real-estate-commercial', priority: 10, region: 'Global' },
+    { id: 're-com-multifamily', name: 'MultiHousing / CRE News', url: 'https://news.google.com/rss/search?q=multifamily+housing+apartments+site:multihousingnews.com+OR+site:crenews.com&hl=en-US&gl=US&ceid=US:en', category: 'real-estate-commercial', priority: 9, region: 'US' },
+    { id: 're-com-global', name: 'Mingtiandi / EG / Property Week', url: 'https://news.google.com/rss/search?q=global+commercial+real+estate+site:mingtiandi.com+OR+site:estatesgazette.com+OR:site:propertyweek.com&hl=en-US&gl=US&ceid=US:en', category: 'real-estate-commercial', priority: 9, region: 'Global' },
 ];
 
 

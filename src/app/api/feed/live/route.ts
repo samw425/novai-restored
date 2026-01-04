@@ -173,7 +173,7 @@ export async function GET(request: Request) {
                     'kansai airport', 'airport food', 'japanese food', 'restaurant', 'cuisine',
                     'anime', 'manga', 'k-pop', 'singer', 'concert', 'music festival',
                     'fashion', 'sports', 'soccer', 'basketball', 'olympics', 'football',
-                    'real estate', 'property', 'housing market', 'tourism', 'travel destination',
+                    'tourism', 'travel destination',
                     'video game', 'gaming console', 'movie release', 'film festival'
                 ];
 
@@ -196,7 +196,7 @@ export async function GET(request: Request) {
                 if (strongSignals.some(s => text.includes(s))) return true;
 
                 // 3. CATEGORY AUTOMATIC ACCEPT
-                if (['robotics', 'research', 'code', 'market', 'policy', 'tech', 'biotech', 'quantum', 'space', 'semiconductors'].includes(article.category)) {
+                if (['robotics', 'research', 'code', 'market', 'policy', 'tech', 'biotech', 'quantum', 'space', 'semiconductors', 'real-estate-residential', 'real-estate-commercial'].includes(article.category)) {
                     return true;
                 }
 
