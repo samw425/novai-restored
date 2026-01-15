@@ -367,10 +367,16 @@ export default function Home() {
                   <span className="text-[10px] font-mono tracking-[0.4em] text-zenith-accent uppercase">Verified Signal Entry</span>
                 </div>
                 <h2 className="text-3xl font-bold tracking-tight leading-tight text-white mb-2">{selectedProperty.address}</h2>
-                <div className="flex items-center gap-2 opacity-40">
+                <div className="flex items-center gap-2 opacity-40 mb-1">
                   <Activity className="w-3 h-3" />
                   <span className="text-[9px] font-mono tracking-[0.2em] uppercase">PARCEL_ID: {selectedProperty.id}</span>
                 </div>
+                {selectedProperty.county && (
+                  <div className="flex items-center gap-2 text-zenith-accent/60">
+                    <ShieldCheck className="w-3 h-3" />
+                    <span className="text-[8px] font-mono tracking-[0.2em] uppercase">SOURCE: {selectedProperty.county} COUNTY ASSESSOR</span>
+                  </div>
+                )}
               </div>
               <button
                 onClick={() => setSelectedProperty(null)}

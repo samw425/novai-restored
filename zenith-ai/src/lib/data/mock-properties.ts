@@ -18,6 +18,7 @@ export interface Property {
         description: string;
     };
     lastSaleDate: string;
+    county?: string;
 }
 
 export type ZenithProperty = Property;

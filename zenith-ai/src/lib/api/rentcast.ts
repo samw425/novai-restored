@@ -107,7 +107,8 @@ export async function searchRentCastProperties(location: string): Promise<{ prop
                     estimatedValue,
                     equity: Math.floor(impliedEquity),
                     ownerType: safeOwner(p.owner?.type || ''),
-                    lastSaleDate: p.lastSaleDate ? new Date(p.lastSaleDate).toISOString().split('T')[0] : "Unknown"
+                    lastSaleDate: p.lastSaleDate ? new Date(p.lastSaleDate).toISOString().split('T')[0] : "Unknown",
+                    county: p.county
                 };
             });
 
