@@ -7,7 +7,6 @@
     "build": "next build",
     "pages:build": "npx @cloudflare/next-on-pages",
     "start": "npm run pages:dev",
-    "pages:build": "npx @cloudflare/next-on-pages",
     "pages:deploy": "npm run pages:build && wrangler pages deploy .vercel/output/static",
     "pages:watch": "npx @cloudflare/next-on-pages --watch",
     "pages:dev": "wrangler pages dev .vercel/output/static --compatibility-date=2024-09-23 --compatibility-flag=nodejs_compat",
