@@ -1,0 +1,44 @@
+{
+  "name": "zenith-ai",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "npm run pages:dev",
+    "pages:build": "npx @cloudflare/next-on-pages",
+    "pages:deploy": "npm run pages:build && wrangler pages deploy .vercel/output/static",
+    "pages:watch": "npx @cloudflare/next-on-pages --watch",
+    "pages:dev": "wrangler pages dev .vercel/output/static --compatibility-date=2024-09-23 --compatibility-flag=nodejs_compat",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.90.1",
+    "axios": "^1.13.2",
+    "clsx": "^2.1.1",
+    "csv-parse": "^6.1.0",
+    "framer-motion": "^12.26.2",
+    "leaflet": "^1.9.4",
+    "lucide-react": "^0.562.0",
+    "mapbox-gl": "^3.18.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-leaflet": "^4.2.1",
+    "tailwind-merge": "^3.4.0"
+  },
+  "devDependencies": {
+    "@cloudflare/next-on-pages": "1.13.10",
+    "@tailwindcss/postcss": "^4",
+    "@types/leaflet": "^1.9.21",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.23",
+    "eslint": "8.57.1",
+    "eslint-config-next": "14.2.15",
+    "next": "14.2.15",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.15",
+    "typescript": "^5"
+  }
+}

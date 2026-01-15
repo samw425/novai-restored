@@ -1,0 +1,141 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #050505;
+  --foreground: #e5e5e5;
+  --zenith-panel: rgba(12, 12, 14, 0.85);
+  --zenith-border: rgba(255, 255, 255, 0.06);
+  --zenith-accent: #00ff9d;
+  --zenith-accent-glow: rgba(0, 255, 157, 0.5);
+  --zenith-gold: #ffd700;
+  --zenith-gold-glow: rgba(255, 215, 0, 0.4);
+  --zenith-distress: #ff453a;
+  /* LIGHT MODE / CLEAN PROFESSIONAL THEME */
+  --background: #F3F4F6;
+  --foreground: #111827;
+
+  --zenith-accent: #0D9488;
+  /* Professional Teal */
+  --zenith-distress: #DC2626;
+  /* Urgent Red */
+  --zenith-warn: #D97706;
+  /* Warning Orange */
+  --zenith-muted: #6B7280;
+  /* Cool Gray */
+  --zenith-border: #E5E7EB;
+
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.6);
+  --glass-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  overflow: hidden;
+}
+
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  opacity: 0.3;
+}
+
+/* Blueprint Grid for Light Mode */
+.bg-grid-pattern {
+  background-image: linear-gradient(to right, #E5E7EB 1px, transparent 1px),
+    linear-gradient(to bottom, #E5E7EB 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(circle at center, black 30%, transparent 80%);
+  transform: perspective(1000px) rotateX(10deg) scale(1.5);
+  transform-origin: top center;
+  animation: grid-move 20s linear infinite;
+}
+
+@keyframes grid-move {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 0 60px;
+  }
+}
+
+.elite-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid var(--zenith-border);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+}
+
+.elite-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-4px);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 255, 148, 0.05);
+}
+
+.glow-accent {
+  box-shadow: 0 0 20px var(--zenith-accent-glow);
+}
+
+.glow-gold {
+  box-shadow: 0 0 20px var(--zenith-gold-glow);
+}
+
+.glow-distress {
+  box-shadow: 0 0 20px rgba(255, 51, 51, 0.25);
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.05) 50%,
+      rgba(255, 255, 255, 0) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite linear;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Mapbox overrides for dark mode */
+.mapboxgl-popup-content {
+  background-color: var(--zenith-panel) !important;
+  border: 1px solid var(--zenith-border) !important;
+  color: var(--zenith-accent) !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+}
+
+.mapboxgl-popup-tip {
+  border-top-color: #0a0a0c !important;
+}

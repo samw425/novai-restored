@@ -1,0 +1,9 @@
+#:schema node_modules/wrangler/config-schema.json
+title = "zenith-ai"
+name = "zenith-ai"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".vercel/output/static"
+
+[vars]
+NEXT_PUBLIC_RENTCAST_KEY = "416354ac9d4c400f9f91d04f41d57b58"
