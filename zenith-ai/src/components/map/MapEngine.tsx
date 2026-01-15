@@ -5,9 +5,32 @@ import L from "leaflet";
 import { Property } from "@/lib/data/mock-properties";
 import { Wifi, Satellite, Layers, Map as MapIcon } from "lucide-react";
 
-// ... (Icons code remains same)
+// Fix Leaflet Default Icon Issue
+const icon = L.icon({
+    iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
+    iconRetinaUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
+    shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+});
 
-// ... (MapController remains same)
+// Custom Markers
+const createCustomIcon = (color: string) => L.divIcon({
+    className: "custom-marker",
+    html: `<div style="background-color: ${color}; width: 12px; height: 12px; border-radius: 50%; box-shadow: 0 0 10px ${color};"></div>`,
+    iconSize: [12, 12],
+    iconAnchor: [6, 6]
+});
+
+function MapController({ center }: { center: { lat: number, lng: number } | null }) {
+    const map = useMap();
+    useEffect(() => {
+        if (center) {
+            map.flyTo([center.lat, center.lng], 13, { duration: 1.5 });
+        }
+    }, [center, map]);
+    return null;
+}
 
 interface MapEngineProps {
     properties: Property[];
