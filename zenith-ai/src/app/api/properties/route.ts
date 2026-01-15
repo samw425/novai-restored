@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
 
     try {
         const queryParams = new URLSearchParams();
-        queryParams.set('limit', '25');
+        queryParams.set('limit', '500'); // MAX DENSITY: Fetch 500 properties per search
 
         // Robust Location Logic
         const cleanLoc = location.trim();

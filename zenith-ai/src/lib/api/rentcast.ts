@@ -101,7 +101,8 @@ export async function searchRentCastProperties(location: string): Promise<{ prop
                     address: p.formattedAddress || `${p.addressLine1}, ${p.city}`,
                     lat: p.latitude,
                     lng: p.longitude,
-                    type: safeType(p.propertyType),
+                    // Map any RentCast type to our display types
+                    type: (['Condo', 'Townhouse', 'Apartment', 'Multi-Family'].includes(p.propertyType) ? 'MF_4' : 'SFR') as any,
                     status: score > 75 ? 'TAX_DELINQUENT' : 'OFF_MARKET', // High Score = High Priority Target
                     motivationScore: finalScore,
                     estimatedValue,
