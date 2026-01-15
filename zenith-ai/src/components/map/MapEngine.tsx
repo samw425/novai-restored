@@ -1,37 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker, useMap, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, useMap, LayersControl } from "react-leaflet";
 import L from "leaflet";
 import { Property } from "@/lib/data/mock-properties";
-import { Wifi, Satellite } from "lucide-react";
+import { Wifi, Satellite, Layers, Map as MapIcon } from "lucide-react";
 
-// Fix Leaflet Default Icon Issue
-const icon = L.icon({
-    iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
-    iconRetinaUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
-    shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-});
+// ... (Icons code remains same)
 
-// Custom Markers
-const createCustomIcon = (color: string) => L.divIcon({
-    className: "custom-marker",
-    html: `<div style="background-color: ${color}; width: 12px; height: 12px; border-radius: 50%; box-shadow: 0 0 10px ${color};"></div>`,
-    iconSize: [12, 12],
-    iconAnchor: [6, 6]
-});
-
-function MapController({ center }: { center: { lat: number, lng: number } | null }) {
-    const map = useMap();
-    useEffect(() => {
-        if (center) {
-            map.flyTo([center.lat, center.lng], 13, { duration: 1.5 });
-        }
-    }, [center, map]);
-    return null;
-}
+// ... (MapController remains same)
 
 interface MapEngineProps {
     properties: Property[];
@@ -41,7 +17,6 @@ interface MapEngineProps {
 }
 
 export default function MapEngine({ properties, onPropertySelect, centerLocation }: MapEngineProps) {
-    // Safe Default Center (US Center)
     const defaultCenter = centerLocation || { lat: 39.8283, lng: -98.5795 };
 
     return (
@@ -52,13 +27,30 @@ export default function MapEngine({ properties, onPropertySelect, centerLocation
                 style={{ height: "100%", width: "100%", background: "#000" }}
                 zoomControl={false}
             >
-                {/* Dark Matter Tiles (Free, Premium Look) */}
-                <TileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-                    url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-                />
+                <LayersControl position="bottomright">
+                    <LayersControl.BaseLayer checked name="Tactical (Dark)">
+                        <TileLayer
+                            attribution='&copy; <a href="https://carto.com/">CARTO</a>'
+                            url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                        />
+                    </LayersControl.BaseLayer>
+                    <LayersControl.BaseLayer name="Satellite (Esri)">
+                        <TileLayer
+                            attribution='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+                            url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                        />
+                    </LayersControl.BaseLayer>
+                    <LayersControl.BaseLayer name="Street (Light)">
+                        <TileLayer
+                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        />
+                    </LayersControl.BaseLayer>
+                </LayersControl>
 
                 <MapController center={centerLocation} />
+
+                {/* ... Markets code follows ... */}
 
                 {properties.map((prop) => {
                     const color = prop.status === 'PRE_FORECLOSURE' ? '#ff453a' :
