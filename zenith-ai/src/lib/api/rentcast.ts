@@ -137,3 +137,25 @@ export async function searchRentCastProperties(location: string): Promise<{ prop
         return { ...simResult, isSimulated: true };
     }
 }
+
+// Helper: Map API Property Types to Zenith Schema
+function safeType(apiType: string | undefined): ZenithProperty['type'] {
+    if (!apiType) return "SFR";
+    const t = apiType.toLowerCase();
+    if (t.includes("family") && !t.includes("multi")) return "SFR";
+    if (t.includes("condo") || t.includes("apartment")) return "MF_4";
+    if (t.includes("townhouse")) return "MF_2";
+    if (t.includes("multi")) return "MF_4";
+    if (t.includes("triplex")) return "MF_3";
+    if (t.includes("fourplex")) return "MF_4";
+    return "SFR"; // Default to Single Family
+}
+
+// Helper: Map API Owner Types to Zenith Schema
+function safeOwner(apiOwner: string | undefined): ZenithProperty['ownerType'] {
+    if (!apiOwner) return "INDIVIDUAL";
+    const o = apiOwner.toLowerCase();
+    if (o.includes("corp") || o.includes("llc") || o.includes("inc") || o.includes("invest")) return "CORP";
+    if (o.includes("trust") || o.includes("estate")) return "ABSENTEE";
+    return "INDIVIDUAL";
+}
