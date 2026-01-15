@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, useMap, LayersControl } from "react-leaflet";
 import L from "leaflet";
 import { Property } from "@/lib/data/mock-properties";
