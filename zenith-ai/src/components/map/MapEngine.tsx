@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, useMap, Popup } from "react-leaflet";
-import { MapContainer, TileLayer, Marker, useMap, Popup } from "react-leaflet";
 import L from "leaflet";
 import { Property } from "@/lib/data/mock-properties";
 import { Wifi, Satellite } from "lucide-react";
