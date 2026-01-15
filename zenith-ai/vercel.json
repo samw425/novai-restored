@@ -1,0 +1,14 @@
+{
+    "version": 2,
+    "name": "zenith-ai-cloudflare-only",
+    "builds": [
+        {
+            "src": "package.json",
+            "use": "@vercel/static-build",
+            "config": {
+                "distDir": "public"
+            }
+        }
+    ],
+    "ignoreCommand": "echo 'This is a Cloudflare Pages project. Skipping Vercel build.' && exit 0"
+}
