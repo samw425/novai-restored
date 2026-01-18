@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, TrendingUp, Info } from 'lucide-react';
-import { ZenithProperty } from '@/lib/data/mock-properties';
+import { ZenithProperty } from '@/lib/types';
 import { getMotivationLabel } from '@/lib/data/motivation-engine';
 
 interface PremiumCardProps {

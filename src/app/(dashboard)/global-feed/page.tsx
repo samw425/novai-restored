@@ -3,6 +3,7 @@ import { Suspense } from 'react';
 import { FeedContainerClient as FeedContainer } from '@/components/feed/FeedContainerClient';
 import { Globe, Activity } from 'lucide-react';
 import { PremiumGlobeClient as PremiumGlobe } from '@/components/ui/PremiumGlobeClient';
+import { NewsletterSignup } from '@/components/ui/NewsletterSignup';
 
 export default function GlobalFeedPage() {
     return (
@@ -26,6 +27,11 @@ export default function GlobalFeedPage() {
                         <p className="text-xl md:text-2xl text-slate-500 font-medium max-w-2xl mx-auto leading-relaxed font-sans tracking-tight">
                             The signal you need. The noise you don't.
                         </p>
+
+                        {/* Newsletter Signup Growth Engine */}
+                        <div className="pt-4 pb-2 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-200">
+                            <NewsletterSignup />
+                        </div>
                     </div>
 
                     {/* Stats/Badges - Command Center Style */}

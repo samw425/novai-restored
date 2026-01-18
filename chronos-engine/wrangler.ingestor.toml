@@ -1,0 +1,23 @@
+name = "chronos-ingestor"
+compatibility_date = "2024-01-01"
+main = "src/workers/ingestor.ts"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "PROD_CHRONOS_DB"
+database_id = "69d9d2f2-1c52-46b8-b64f-759f7fc2e484"
+
+[[vectorize]]
+binding = "VECTORS"
+index_name = "existential-knowledge-base"
+
+[ai]
+binding = "AI"
+
+[triggers]
+crons = ["*/10 * * * *"]
+
+[vars]
+NASA_API_KEY = "DEMO_KEY"
+GDELT_ENABLED = "true"
+ARXIV_ENABLED = "true"

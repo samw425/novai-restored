@@ -1,0 +1,48 @@
+name: Stelar Weekly Rankings Update
+
+on:
+  schedule:
+    # Run at 09:00 UTC every Tuesday (Billboard charts update ~Monday night/Tuesday morning)
+    - cron: '0 9 * * 2'
+  workflow_dispatch: # Allow manual trigger button in GitHub UI
+
+permissions:
+  contents: write # Needed to commit the new JSON file
+
+jobs:
+  refresh-rankings:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+          
+      - name: Run Stelar Engine (Billboard Scraper)
+        run: |
+          cd stelar/data
+          python generate_rankings.py
+          
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name 'Stelar Bot'
+          git config --global user.email 'bot@stelarmusic.com'
+          
+          # Check if there are changes
+          if [[ -n $(git status -s stelar/web/public/rankings.json) ]]; then
+            echo "Rankings have changed. Committing..."
+            git add stelar/web/public/rankings.json
+            git commit -m "🤖 Auto-Update: Weekly Billboard Rankings"
+            git push
+          else
+            echo "No changes in rankings detected."
+          fi

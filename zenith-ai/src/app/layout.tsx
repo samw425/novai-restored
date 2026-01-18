@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google"; // Use standardized fonts
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import "leaflet/dist/leaflet.css"; // Global Map Styles
+import "leaflet/dist/leaflet.css";
 
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-inter", // Define variable for Tailwind
+  variable: "--font-inter",
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -14,11 +14,42 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ZENITH | THE OFF-MARKET ENGINE",
-  description: "Direct-to-owner real estate intelligence. Access unlisted properties, pre-foreclosures, and motivated sellers with live data feeds.",
+  title: "Zenith | Buy & Sell Off-Market Properties",
+  description: "The P2P real estate marketplace for off-market properties. Buy directly from owners, sell without agents. Save thousands on commissions.",
+  openGraph: {
+    title: "Zenith | Buy & Sell Off-Market Properties",
+    description: "The P2P real estate marketplace for off-market properties. Buy directly from owners, skip the agent, save thousands.",
+    url: "https://zenith.homes",
+    siteName: "Zenith",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Zenith - P2P Real Estate Marketplace",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Zenith | Buy & Sell Off-Market Properties",
+    description: "The P2P real estate marketplace for off-market properties. Save thousands on agent commissions.",
+    images: ["/og-image.png"],
+  },
+  keywords: [
+    "off-market properties",
+    "FSBO",
+    "for sale by owner",
+    "P2P real estate",
+    "no agent fees",
+    "direct buyer seller",
+    "real estate marketplace",
+    "pre-foreclosure",
+    "motivated sellers",
+  ],
 };
-
-// Static Export Mode
 
 export default function RootLayout({
   children,
@@ -28,7 +59,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${jetbrainsMono.variable} antialiased bg-zenith-black text-zenith-accent h-screen w-screen overflow-hidden`}
+        className={`${inter.variable} ${jetbrainsMono.variable} antialiased bg-white text-gray-900`}
       >
         {children}
       </body>

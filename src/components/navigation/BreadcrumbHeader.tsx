@@ -38,7 +38,7 @@ function BreadcrumbHeaderInner() {
                 <div className="flex items-center gap-3 md:gap-4 ml-auto">
                     <Link
                         href="/support"
-                        className="flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors px-2 py-1 rounded-md hover:bg-blue-50"
+                        className="flex md:hidden items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors px-2 py-1 rounded-md hover:bg-blue-50"
                     >
                         <Heart size={14} className="fill-blue-600" />
                         <span className="hidden sm:inline">Support</span>

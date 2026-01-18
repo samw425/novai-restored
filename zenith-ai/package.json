@@ -7,7 +7,7 @@
     "build": "next build",
     "pages:build": "npx @cloudflare/next-on-pages",
     "start": "npm run pages:dev",
-    "pages:deploy": "npm run pages:build && wrangler pages deploy .vercel/output/static",
+    "pages:deploy": "npm run pages:build && wrangler pages deploy .vercel/output/static --project-name zenith-ai --commit-dirty=true",
     "pages:watch": "npx @cloudflare/next-on-pages --watch",
     "pages:dev": "wrangler pages dev .vercel/output/static --compatibility-date=2024-09-23 --compatibility-flag=nodejs_compat",
     "lint": "next lint"
@@ -34,9 +34,11 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.23",
+    "dotenv": "^17.2.3",
     "eslint": "8.57.1",
     "eslint-config-next": "14.2.15",
     "next": "14.2.15",
+    "node-fetch": "^3.3.2",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.15",
     "typescript": "^5"

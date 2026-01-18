@@ -1,0 +1,19 @@
+name = "chronoslive"
+pages_build_output_dir = "dist"
+compatibility_date = "2024-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "PROD_CHRONOS_DB"
+database_id = "69d9d2f2-1c52-46b8-b64f-759f7fc2e484"
+
+[[vectorize]]
+binding = "VECTORS"
+index_name = "existential-knowledge-base"
+
+[ai]
+binding = "AI"
+
+[[kv_namespaces]]
+binding = "CACHE"
+id = "41e96a2ab5e54a81af4ec0650a11670c"

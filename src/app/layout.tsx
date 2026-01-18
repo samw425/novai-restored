@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     images: [
       {
-        url: 'https://usenovai.live/opengraph-image.png',
+        url: '/opengraph-image.png',
         width: 1200,
         height: 630,
         alt: 'Novai Intelligence - Global Intelligence For the AI Era',
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     title: "Novai Intelligence",
     description: "Real-time intelligence from 109+ sources. AI news, US Intel, War Room, Antitrust tracking.",
     creator: "@NovaiIntel",
-    images: ['https://usenovai.live/opengraph-image.png'],
+    images: ['/opengraph-image.png'],
   },
   robots: {
     index: true,

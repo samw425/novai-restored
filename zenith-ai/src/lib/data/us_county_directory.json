@@ -1,0 +1,122 @@
+[
+    {
+        "county": "Cook",
+        "state": "IL",
+        "url": "https://gis.cookcountyil.gov/traditional/rest/services/connectToCook/MapServer/0"
+    },
+    {
+        "county": "Los Angeles",
+        "state": "CA",
+        "url": "https://public.gis.lacounty.gov/public/rest/services/LACounty_Cache/LACounty_Parcel/MapServer/0"
+    },
+    {
+        "county": "Harris",
+        "state": "TX",
+        "url": "https://services.hcad.org/ArcGIS/rest/services/HCAD/Parcels/MapServer/0"
+    },
+    {
+        "county": "Maricopa",
+        "state": "AZ",
+        "url": "https://gis.maricopa.gov/arcgis/rest/services/Parcels/MapServer/0"
+    },
+    {
+        "county": "Miami-Dade",
+        "state": "FL",
+        "url": "https://services.arcgis.com/8Pc9XBTAsYuxx9Ny/arcgis/rest/services/Parcelpoly_gdb/FeatureServer/0"
+    },
+    {
+        "county": "King",
+        "state": "WA",
+        "url": "https://gisdata.kingcounty.gov/arcgis/rest/services/OpenDataPortal/property__parcel_address_area/MapServer/1722"
+    },
+    {
+        "county": "San Diego",
+        "state": "CA",
+        "url": "https://sdgis.sandag.org/rdw/rest/services/Parcels/MapServer/0"
+    },
+    {
+        "county": "Clark",
+        "state": "NV",
+        "url": "https://maps.clarkcountynv.gov/arcgis/rest/services/OpenWeb/Parcels/MapServer/0"
+    },
+    {
+        "county": "Tarrant",
+        "state": "TX",
+        "url": "https://gis.tarrantcounty.com/arcgis/rest/services/TadParcels/MapServer/0"
+    },
+    {
+        "county": "Bexar",
+        "state": "TX",
+        "url": "https://gis.bexar.org/arcgis/rest/services/Parcels/MapServer/0"
+    },
+    {
+        "county": "Broward",
+        "state": "FL",
+        "url": "https://gis.broward.org/arcgis/rest/services/BCGIS/BCGIS_Parcels/MapServer/0"
+    },
+    {
+        "county": "Orange",
+        "state": "FL",
+        "url": "https://ocgis.orangecountyfl.net/arcgis/rest/services/Parcels/MapServer/0"
+    },
+    {
+        "county": "Travis",
+        "state": "TX",
+        "url": "https://services.arcgis.com/8db99369e59d48b1975e52643a139a03/arcgis/rest/services/EXTERNAL_tcad_parcel/FeatureServer/0"
+    },
+    {
+        "county": "Fulton",
+        "state": "GA",
+        "url": "https://gis.fultoncountyga.gov/arcgis/rest/services/TaxParcels/MapServer/0"
+    },
+    {
+        "county": "Wake",
+        "state": "NC",
+        "url": "https://maps.wakegov.com/arcgis/rest/services/Property/Parcels/MapServer/0"
+    },
+    {
+        "county": "Mecklenburg",
+        "state": "NC",
+        "url": "https://polaris3g.mecklenburgcountync.gov/arcgis/rest/services/TaxParcels/MapServer/0"
+    },
+    {
+        "county": "Alameda",
+        "state": "CA",
+        "url": "https://gis.acgov.org/arcgis/rest/services/Parcels/MapServer/0"
+    },
+    {
+        "county": "Sacramento",
+        "state": "CA",
+        "url": "https://services.sacog.org/arcgis/rest/services/Parcels/MapServer/0"
+    },
+    {
+        "county": "Palm Beach",
+        "state": "FL",
+        "url": "https://maps.co.palm-beach.fl.us/arcgis/rest/services/PBC_Parcels/MapServer/0"
+    },
+    {
+        "county": "Hillsborough",
+        "state": "FL",
+        "url": "https://maps.hillsboroughcounty.org/arcgis/rest/services/Property/Parcels/MapServer/0"
+    },
+    {
+        "county": "Orange",
+        "state": "CA",
+        "url": "https://gis.ocgov.com/arcgis/rest/services/LandRecords/Parcels/MapServer/0"
+    },
+    {
+        "county": "Franklin",
+        "state": "OH",
+        "url": "https://gis.franklincountyohio.gov/arcgis/rest/services/Parcels/MapServer/0"
+    },
+    {
+        "county": "Allegheny",
+        "state": "PA",
+        "url": "https://openac-alcogis.opendata.arcgis.com/datasets/alcogis::allegheny-county-parcel-boundaries"
+    },
+    {
+        "county": "Louisville",
+        "state": "KY",
+        "url": "https://services.lojic.org/arcgis/rest/services/Lojic/LojicOnDemand/MapServer/3"
+    }
+]

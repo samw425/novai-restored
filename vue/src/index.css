@@ -1,0 +1,54 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+:root {
+  --vue-black: #000000;
+  --vue-green: #00FF5F;
+  --vue-red: #FF3B30;
+  --vue-font: "SF Pro Display", -apple-system, "Inter", system-ui, sans-serif;
+
+  background-color: var(--vue-black);
+  color: white;
+  font-family: var(--vue-font);
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.022em;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background-color: var(--vue-black);
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(50px);
+  -webkit-backdrop-filter: blur(50px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(60px);
+  -webkit-backdrop-filter: blur(60px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.btn-primary {
+  @apply flex items-center justify-center gap-2 px-8 py-4 rounded-full font-bold transition-all duration-300;
+  background-color: var(--vue-green);
+  color: black;
+  box-shadow: 0 0 30px rgba(0, 255, 95, 0.15);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 0 50px rgba(0, 255, 95, 0.4);
+  transform: scale(1.02);
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}

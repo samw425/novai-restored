@@ -1,0 +1,72 @@
+{
+    "travis_county_tx": {
+        "rest_url": "https://services.arcgis.com/8db99369e59d48b1975e52643a139a03/arcgis/rest/services/EXTERNAL_tcad_parcel/FeatureServer/0",
+        "name": "Travis County Tax Parcels",
+        "jurisdiction": "AUSTIN",
+        "district": "TRAVIS",
+        "state": "TX",
+        "fields": {
+            "address": "Situs_Address",
+            "owner": "Owner_Name",
+            "parcel_id": "Geo_ID",
+            "value": "Market_Value",
+            "year_built": "Year_Built"
+        }
+    },
+    "la_county_ca": {
+        "rest_url": "https://public.gis.lacounty.gov/public/rest/services/LACounty_Cache/LACounty_Parcel/MapServer/0",
+        "name": "LA County Parcels",
+        "jurisdiction": "LOS ANGELES",
+        "district": "LOS ANGELES",
+        "state": "CA",
+        "fields": {
+            "address": "SitusAddress",
+            "owner": "ain",
+            "parcel_id": "AIN",
+            "value": "Roll_LandValue",
+            "year_built": "EffectiveYearBuilt"
+        }
+    },
+    "miami_dade_fl": {
+        "rest_url": "https://services.arcgis.com/8Pc9XBTAsYuxx9Ny/arcgis/rest/services/Parcelpoly_gdb/FeatureServer/0",
+        "name": "Miami-Dade Parcels",
+        "jurisdiction": "MIAMI",
+        "district": "MIAMI-DADE",
+        "state": "FL",
+        "fields": {
+            "address": "SITEADDRESS",
+            "owner": "OWNER1",
+            "parcel_id": "FOLIO",
+            "value": "ASSESSED_VAL",
+            "year_built": "ACTUAL_YEAR_BUILT"
+        }
+    },
+    "harris_county_tx": {
+        "rest_url": "https://services.hcad.org/ArcGIS/rest/services/HCAD/Parcels/MapServer/0",
+        "name": "Harris County Parcels",
+        "jurisdiction": "HOUSTON",
+        "district": "HARRIS",
+        "state": "TX",
+        "fields": {
+            "address": "SITE_ADDR",
+            "owner": "OWNER_NAME",
+            "parcel_id": "ACCOUNT",
+            "value": "MARKET_VAL",
+            "year_built": "YR_BUILT"
+        }
+    },
+    "maricopa_county_az": {
+        "rest_url": "https://maps.maricopa.gov/arcgis/rest/services/Parcels/MapServer/0",
+        "name": "Maricopa County Parcels",
+        "jurisdiction": "PHOENIX",
+        "district": "MARICOPA",
+        "state": "AZ",
+        "fields": {
+            "address": "SITUS_ADDR",
+            "owner": "OWNER_NAME",
+            "parcel_id": "APN",
+            "value": "FULL_CASH_ADDR",
+            "year_built": "YEAR_BUILT"
+        }
+    }
+}

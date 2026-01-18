@@ -1,0 +1,11 @@
+name = "vue-brain"
+main = "src/index.ts"
+compatibility_date = "2024-04-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "vue-db"
+database_id = "907c8418-d6bc-4889-a7d2-659841e8da4b" # Reusing existing remote DB
+
+[triggers]
+crons = ["0 * * * *"] # Run every hour

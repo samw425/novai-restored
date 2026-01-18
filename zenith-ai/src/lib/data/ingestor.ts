@@ -1,9 +1,9 @@
-import { ZenithProperty } from "./mock-properties";
+import { ZenithProperty } from "@/lib/types";
 
 // ZENITH PROPRIETARY INGESTOR
 // Goal: Direct connection to 3,143 County Assessor Databases.
 // Strategy: Hybrid Fetch.
-// 1. RentCast (Base Layer - Speed)
+// 1. Institutional Core (Base Layer - Speed)
 // 2. Zenith Direct (Deep Layer - Ownership)
 
 export interface CountySource {
@@ -35,11 +35,6 @@ export async function queryCountyDatabase(county: string, parcelId: string): Pro
 
     // Return "Verified" fields that might represent deeper data than RentCast
     return {
-        distressSignal: {
-            type: "TAX_DELINQUENT_VERIFIED",
-            date: new Date().toISOString().split('T')[0],
-            description: `CONFIRMED via ${county} County Ledger. Active Lien.`,
-            amount: Math.floor(Math.random() * 15000) + 5000
-        }
+        // distressSignal removed
     };
 }

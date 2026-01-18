@@ -1,0 +1,34 @@
+name = "chronos"
+pages_build_output_dir = "dist"
+compatibility_date = "2024-01-01"
+main = "src/workers/ingestor.ts" # Standalone ingestion worker
+
+# D1 Database
+[[d1_databases]]
+binding = "DB"
+database_name = "PROD_CHRONOS_DB"
+database_id = "69d9d2f2-1c52-46b8-b64f-759f7fc2e484"
+
+# Vectorize Index
+[[vectorize]]
+binding = "VECTORS"
+index_name = "existential-knowledge-base"
+
+# Workers AI
+[ai]
+binding = "AI"
+
+# KV Namespace for caching
+[[kv_namespaces]]
+binding = "CACHE"
+id = "41e96a2ab5e54a81af4ec0650a11670c"
+
+# Cron Triggers for data ingestion
+[triggers]
+crons = ["*/10 * * * *"] # Every 10 minutes
+
+# Environment Variables
+[vars]
+NASA_API_KEY = "DEMO_KEY"
+GDELT_ENABLED = "true"
+ARXIV_ENABLED = "true"

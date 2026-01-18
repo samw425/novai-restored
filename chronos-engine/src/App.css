@@ -1,0 +1,311 @@
+/**
+ * CHRONOS ENGINE - LIGHT NEOMORPHISM (V3 NUCLEAR)
+ * Premium "Raised" Aesthetics
+ */
+
+:root {
+  /* BASE COLORS (Pure White) */
+  --bg-main: #e0e5ec;
+  --bg-card: #e0e5ec;
+
+  /* NEOMORPHIC SHADOWS (The "Raised" Look) */
+  --shadow-raised: 9px 9px 16px rgb(163, 177, 198, 0.6), -9px -9px 16px rgba(255, 255, 255, 0.5);
+  --shadow-pressed: inset 6px 6px 10px 0 rgba(163, 177, 198, 0.7), inset -6px -6px 10px 0 rgba(255, 255, 255, 0.8);
+  --shadow-floating: 15px 15px 30px rgb(163, 177, 198, 0.5), -15px -15px 30px rgba(255, 255, 255, 0.6);
+
+  /* ACCENTS */
+  --accent-primary: #3d5afe;
+  /* Royal Blue */
+  --accent-secondary: #00b0ff;
+  /* Light Blue */
+
+  /* TEXT */
+  --text-dark: #2d3748;
+  --text-medium: #4a5568;
+  --text-light: #718096;
+
+  /* TRANSITIONS */
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.app {
+  width: 100%;
+  height: 100vh;
+  background: var(--bg-main);
+  color: var(--text-dark);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ══════════════════════════════════════════
+   DASHBOARD SIDEBAR (Floating HUD)
+   ══════════════════════════════════════════ */
+.dashboard {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 420px;
+  height: 100vh;
+  background: rgba(224, 229, 236, 0.9);
+  /* Slight transparency for HUD feel */
+  backdrop-filter: blur(20px);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  z-index: 100;
+  box-shadow: -10px 0 30px rgba(163, 177, 198, 0.2);
+}
+
+/* Header & Logo */
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.logo-well {
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+  background: var(--bg-main);
+  box-shadow: var(--shadow-raised);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+.logo-img {
+  width: 42px;
+  height: 42px;
+  filter: drop-shadow(0 2px 4px rgba(61, 90, 254, 0.3));
+}
+
+.brand-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--text-dark);
+  text-shadow: 1px 1px 0 #fff;
+}
+
+.brand-subtitle {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-medium);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Status Orb */
+.status-pill {
+  padding: 12px 24px;
+  border-radius: 50px;
+  background: var(--bg-main);
+  box-shadow: var(--shadow-pressed);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  align-self: flex-start;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  background: #00e676;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #00e676;
+}
+
+.status-text {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-medium);
+}
+
+/* Metrics Cards (Raised) */
+.metrics-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.neomorph-card {
+  padding: 24px;
+  border-radius: 24px;
+  background: var(--bg-main);
+  box-shadow: var(--shadow-raised);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  transition: all 0.3s var(--ease-soft);
+}
+
+.neomorph-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 12px 12px 20px rgb(163, 177, 198, 0.7), -12px -12px 20px rgba(255, 255, 255, 0.8);
+}
+
+.metric-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.metric-name {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.metric-value {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--accent-primary);
+  font-size: 1.1rem;
+}
+
+.metric-desc {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  line-height: 1.4;
+}
+
+/* Daily Rhyme (Featured Card) */
+.daily-rhyme {
+  margin-top: auto;
+  padding: 28px;
+  border-radius: 28px;
+  background: var(--bg-main);
+  box-shadow: var(--shadow-raised);
+  position: relative;
+  overflow: hidden;
+}
+
+.rhyme-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--accent-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.rhyme-content {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.rhyme-historical {
+  font-size: 0.95rem;
+  color: var(--text-medium);
+  font-style: italic;
+}
+
+/* ══════════════════════════════════════════
+   NEBULA CONTAINER
+   ══════════════════════════════════════════ */
+.nebula-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  /* Below Dashboard */
+  background: transparent;
+}
+
+/* ══════════════════════════════════════════
+   DETAIL PANEL (Floating Topography)
+   ══════════════════════════════════════════ */
+.detail-floater {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  width: 480px;
+  padding: 40px;
+  border-radius: 40px;
+  background: var(--bg-main);
+  box-shadow: var(--shadow-floating);
+  z-index: 200;
+  animation: slideUp 0.5s var(--ease-soft);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.detail-cat {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--accent-primary);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.detail-head {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  margin-bottom: 20px;
+  line-height: 1.1;
+  letter-spacing: -1px;
+}
+
+.detail-body {
+  font-size: 1.1rem;
+  color: var(--text-medium);
+  line-height: 1.6;
+}
+
+.close-fab {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg-main);
+  box-shadow: var(--shadow-raised);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-medium);
+  font-size: 1.2rem;
+  transition: all 0.2s;
+}
+
+.close-fab:hover {
+  box-shadow: var(--shadow-pressed);
+  color: var(--accent-primary);
+  transform: scale(0.95);
+}

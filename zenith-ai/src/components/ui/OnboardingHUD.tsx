@@ -34,6 +34,11 @@ export default function OnboardingHUD({ onComplete }: { onComplete: () => void }
             title: "DIRECT ACCESS",
             desc: "Skip the 6% agent commission. Contact owners directly with skip-traced phone and email data.",
             icon: Zap
+        },
+        {
+            title: "UNIFIED NETWORK",
+            desc: "The definitive hub for Buyers, Sellers, Pros, and Elite Investors. Access localized RE groups and join target operations in every city.",
+            icon: CheckCircle
         }
     ];
 

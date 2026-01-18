@@ -1,0 +1,21 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="100" cy="100" r="95" stroke="#007aff" stroke-width="4" />
+  <circle cx="100" cy="100" r="75" stroke="#1c1c1e" stroke-width="1" opacity="0.3" />
+  <path d="M100 20V180M20 100H180" stroke="#1c1c1e" stroke-width="4" stroke-linecap="round" opacity="0.6" />
+  <path d="M100 10L110 30H90L100 10Z" fill="#007aff" />
+  <path d="M100 190L90 170H110L100 190Z" fill="#007aff" />
+  <path d="M10 100L30 90V110L10 100Z" fill="#007aff" />
+  <path d="M190 100L170 110V90L190 100Z" fill="#007aff" />
+  <circle cx="100" cy="100" r="40" fill="url(#paint0_radial)" filter="url(#glow)" />
+  <circle cx="100" cy="100" r="8" fill="#fff" stroke="#1c1c1e" stroke-width="2" />
+  <defs>
+    <radialGradient id="paint0_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(100 100) rotate(90) scale(40)">
+      <stop stop-color="#00f2ff" />
+      <stop offset="1" stop-color="#00f2ff" stop-opacity="0" />
+    </radialGradient>
+    <filter id="glow" x="0" y="0" width="200" height="200" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="15" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+</svg>

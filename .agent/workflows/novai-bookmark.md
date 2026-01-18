@@ -1,21 +1,23 @@
 ---
-description: Novai Intelligence Project Bookmark - Resume for Real Estate Signal Sharpening
+description: NovAI Parked - Resume if focusing on specific vertical
 ---
 
-# Jan 3, 2026 Session Summary: Platform Refinement
+# NovAI Status (Parked Jan 10, 2026)
 
-## Current State
-- **War Room:** Overhauled with 70/30 split (Map/OSINT Sidebar), Cinematic Hero Banner, and cleaned-up feed logic.
-- **Global Metadata:** Per-page `layout.tsx` files implemented for all sidebar pages for unique social sharing titles.
-- **Real Estate Engine:** Residential/Commercial tabbed interface restored using the `FeedContainer` engine. 30+ initial sources integrated.
-- **Backend Analytics:** `isHighSignal` (formerly `isRelevantToAI`) updated to allow real estate content while blocking consumer noise.
+## Why Parked
+- Too generic/general - trying to serve 18 verticals
+- Traffic but only 2 signups = not solving a pain point
+- Need to pick ONE niche to win
 
-## 🛑 Resumption Objectives
-- **CRITICAL: Paywall Audit:** Immediately audit and remove sources like WSJ, Bloomberg, and FT from the real estate RSS configuration. Replace them with truly free deep-signal sources (Calculated Risk, CoreLogic Research, Fannie/Freddie Analyst Briefings).
-- **Keyword Precision:** Refine the backend "High-Signal" filter to enforce much stricter industry relevance (e.g., exclude "how-to" consumer guides and decoration articles) while prioritizing professional data points (Cap Rates, MBS spreads, Absorption).
-- **Mobile War Room:** Perform a mobile-specific aesthetic audit of the new 70/30 layout.
+## What's Built
+- 150+ RSS feeds across 18 categories
+- War Room real-time monitoring
+- Stripe integration
+- Pro tier setup
+- Live at usenovai.live
 
-## How to Resume
-1. View `/src/config/rss-feeds.ts` to identify real estate sources.
-2. Verify `/src/app/api/feed/live/route.ts` filtering logic.
-3. Test Real Estate feed quality at `usenovai.live/real-estate`.
+## To Resume
+1. Pick ONE vertical (defense, cybersecurity, etc.)
+2. Strip out everything else
+3. Go deep on that niche
+4. Reposition as the specialist tool
