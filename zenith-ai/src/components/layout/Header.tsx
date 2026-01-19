@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ChevronDown, Search } from "lucide-react";
@@ -10,46 +11,6 @@ interface HeaderProps {
     variant?: "default" | "transparent";
 }
 
-// Zenith Logo Icon - Modern geometric "Z" with upward arrow (matching approved design)
-function ZenithLogo({ className = "w-8 h-8" }: { className?: string }) {
-    return (
-        <svg
-            viewBox="0 0 48 48"
-            fill="none"
-            className={className}
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            <defs>
-                <linearGradient id="zenithGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#0052CC" />
-                    <stop offset="50%" stopColor="#006AFF" />
-                    <stop offset="100%" stopColor="#3B82F6" />
-                </linearGradient>
-            </defs>
-            {/* Main Z shape with upward arrow */}
-            <path
-                d="M6 12L24 12L14 24L38 24L38 28L14 28L24 16L6 16V12Z"
-                fill="url(#zenithGradient)"
-            />
-            {/* Top arrow pointing up */}
-            <path
-                d="M24 4L32 14H16L24 4Z"
-                fill="url(#zenithGradient)"
-            />
-            {/* Bottom accent bar */}
-            <path
-                d="M6 36L42 36L42 42L6 42L6 36Z"
-                fill="url(#zenithGradient)"
-            />
-            {/* Right side accent */}
-            <path
-                d="M38 12L42 12L42 28L38 28L38 12Z"
-                fill="url(#zenithGradient)"
-            />
-        </svg>
-    );
-}
-
 export default function Header({ onSearchOpen, variant = "default" }: HeaderProps) {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [buyDropdownOpen, setBuyDropdownOpen] = useState(false);
@@ -57,12 +18,17 @@ export default function Header({ onSearchOpen, variant = "default" }: HeaderProp
     return (
         <header className={`header ${variant === "transparent" ? "bg-transparent border-transparent" : ""}`}>
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2.5 group">
-                <ZenithLogo className="w-10 h-10 transition-transform group-hover:scale-105" />
-                <span className="text-xl font-extrabold tracking-tight text-gray-900">
-                    ZENITH
-                </span>
+            <Link href="/" className="flex items-center gap-2 group">
+                <Image
+                    src="/zenith-logo.png"
+                    alt="Zenith"
+                    width={140}
+                    height={40}
+                    className="h-9 w-auto object-contain transition-transform group-hover:scale-105"
+                    priority
+                />
             </Link>
+
 
             {/* Desktop Navigation */}
             <nav className="header-nav">
@@ -205,6 +171,3 @@ export default function Header({ onSearchOpen, variant = "default" }: HeaderProp
         </header>
     );
 }
-
-// Export logo for use elsewhere
-export { ZenithLogo };
