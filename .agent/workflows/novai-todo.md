@@ -2,78 +2,71 @@
 description: Novai Intelligence - To-Do List for when we resume work
 ---
 
-# Novai Intelligence - To-Do List
-**Last Updated:** Dec 23, 2024 @ 7:21 PM
-**Status:** Site live, holding off on deploys (over Fluid CPU limit)
+# Novai Intelligence - Master To-Do List
+**Last Updated:** Jan 21, 2026 @ 10:22 AM
+**Status:** Local dev active, auto-save every 60s enabled
 
 ---
 
-## 🔴 DO NOT DEPLOY UNTIL CPU RESETS
+## 🔴 CURRENT MISSION: Phase 1 - Foundation & AI Synthesis
 
-- GitHub auto-deploy is **DISCONNECTED**
-- Only deploy with `vercel --prod`
-- Wait for billing cycle to reset before next deploy
+### In Progress [/]
+- **AI Daily Briefing**
+  - [x] Created `src/lib/synthesis.ts` - Gemini-powered news clustering
+  - [x] Created `src/app/api/daily-brief/route.ts` - API endpoint
+  - [x] Created `src/components/dashboard/DailyBriefHero.tsx` - Component
+  - [ ] **NEXT**: Integrate DailyBriefHero into Global Feed page
+  - [ ] Wire up actual email sending (Resend) for daily newsletter
 
----
-
-## 🟡 PENDING WORK (Ready to Deploy When Safe)
-
-### 1. OG Images for All Pages
-**Goal:** Every page needs its own OG image so link previews look professional.
-
-**Two-tier approach:**
-- **Major pages** (custom distinct designs): War Room, US Intel, Earnings, Robotics, Market, AI, Antitrust
-- **Minor pages** (template-based): Support, Feedback, Terms, Privacy, etc.
-
-**Already done:**
-- ✅ `/` (Home) - Globe + Shield design
-- ✅ `/signup` - "Join Novai" + perks footer (code exists, may need cache refresh)
-- ✅ `/us-intel` - PNG static image
-- ✅ `/war-room` - PNG static image
-
-**Need to create (33 pages total):**
-- `/earnings` - Stock/earnings theme
-- `/robotics` - Robotics theme
-- `/market` - Market data theme
-- `/global-feed` - AI news theme
-- `/ai` - AI deep dive theme
-- `/anti-trust` - Legal theme
-- `/support` - Support theme
-- All other pages - Use template design
-
-**Template file created:** `src/lib/og-template.tsx`
-**HTML previews saved:** `og-previews/` folder
-
-### 2. Signup OG Image Not Showing
-- File exists: `src/app/signup/opengraph-image.tsx`
-- May be caching issue on social platforms
-- Try: Twitter Card Validator, Facebook Debugger after next deploy
+### Pending
+- [ ] **Signal Score Engine**
+  - [ ] Implement `calculateSignalScore()` in backend/api layer
+  - [ ] Add visual "Impact Index" gauges to `FeedCard`
+- [ ] **Tactile UI Overhaul**
+  - [ ] "Digital Clay" design system (CSS depth/inertia)
+  - [ ] Kinetic typography for "System Status" indicators
+- [ ] **The OG Audit**
+  - [ ] Generate 33 high-quality OG images
 
 ---
 
-## ✅ COMPLETED (Dec 21-23)
-
-1. Email visibility fixed (removed from feedback, privacy, terms pages)
-2. 176+ RSS feeds added (paywalls removed)
-3. Main OG image updated (Remastered Classic)
-4. GitHub disconnected from Vercel auto-deploy
-5. Last deploy: Dec 23 @ 1:33 AM
+## 🟡 Phase 2: Interactive Intelligence (After Phase 1)
+- [ ] War Room "Ask the Feed" RAG
+- [ ] Custom "Signals" (Watchlists) with notifications
+- [ ] The Oracle (Beta) - Predictive trends
 
 ---
 
-## 📁 KEY FILES
+## 🔴 Phase 3: Monetization & B2B (Future)
+- [ ] Tiered SaaS (Stripe Pro/Enterprise)
+- [ ] Verticalization: NovAI: Defense
+- [ ] API Documentation for licensing
 
-- **Main OG:** `src/app/opengraph-image.tsx`
-- **Signup OG:** `src/app/signup/opengraph-image.tsx`
-- **OG Template:** `src/lib/og-template.tsx`
-- **HTML Previews:** `og-previews/` folder
-- **RSS Feeds:** `src/config/rss-feeds.ts`
+---
+
+## 📁 KEY FILES (Current Work)
+
+| File | Purpose |
+|------|---------|
+| `src/lib/synthesis.ts` | Gemini AI synthesis engine |
+| `src/app/api/daily-brief/route.ts` | Daily Brief API endpoint |
+| `src/components/dashboard/DailyBriefHero.tsx` | Daily Brief UI component |
+| `src/app/(dashboard)/global-feed/page.tsx` | Global Feed page (needs integration) |
 
 ---
 
 ## ⚠️ CRITICAL REMINDERS
 
-1. **NEVER use `git push`** - triggers automatic Vercel builds
-2. **ONLY use `vercel --prod`** - single manual deploy
-3. **Check CPU usage** before any deploy
-4. **Bundle all changes** into one deploy to minimize usage
+1. **Auto-save active** - Git commits every 60 seconds
+2. **Dev server running** - http://localhost:3000
+3. **NEVER use `git push`** - triggers automatic Vercel builds
+4. **Build local, test, deploy ONCE** when ready
+
+---
+
+## 🎯 IMMEDIATE NEXT STEPS
+
+1. Integrate `DailyBriefHero` into `/global-feed` page
+2. Test the AI synthesis locally
+3. Wire up Resend email for daily newsletter
+4. Verify feeds are infinite/real-time
