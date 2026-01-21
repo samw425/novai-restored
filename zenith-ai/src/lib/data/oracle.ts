@@ -15,6 +15,7 @@ import { ReconAgent } from "../agents/ReconAgent";
 import { ZillowAgent } from "../agents/ZillowAgent";
 import { PredictiveAlphaAgent } from "../agents/PredictiveAlphaAgent";
 import { NarrativeSynthesisAgent } from "../agents/NarrativeSynthesisAgent";
+import { PropertyCache } from "./cache";
 
 export interface DataProvenance {
     source: string;
@@ -63,6 +64,14 @@ export async function queryZenithOracle(
     bounds?: { latMin: number, latMax: number, lngMin: number, lngMax: number }
 ): Promise<ZenithOracleResponse> {
     console.log(`[ZENITH ORACLE] SYNTHESIZING MULTI-SOURCE INTEL FOR SECTOR: ${location}`);
+
+    // Check cache first
+    const cacheKey = PropertyCache.generateKey(location, bounds);
+    const cached = PropertyCache.get<ZenithOracleResponse>(cacheKey);
+    if (cached && cached.properties.length > 0) {
+        console.log(`[ZENITH ORACLE] CACHE HIT: ${cached.properties.length} properties`);
+        return cached;
+    }
 
     let center = { lat: 39.8283, lng: -98.5795 };
 
@@ -198,37 +207,53 @@ export async function queryZenithOracle(
         });
 
         // 5.5. PRE-ENRICH WITH RENTCAST AVM FOR PROPERTIES MISSING VALUES
-        // This is critical for OSM/Socrata properties that come in with $0 value
+        // OPTIONAL ENRICHMENT - wrapped in timeout to prevent blocking on API failures
         const propertiesForAVM = Array.from(propertyMap.values()).filter(
             p => !p.estimatedValue || p.estimatedValue < 50000
         );
 
         if (propertiesForAVM.length > 0) {
-            console.log(`[ZENITH ORACLE] ENRICHING ${propertiesForAVM.length} PROPERTIES WITH RENTCAST AVM...`);
-            const avmEnriched = await enrichWithAVM(propertiesForAVM);
+            console.log(`[ZENITH ORACLE] ATTEMPTING RENTCAST AVM ENRICHMENT (${propertiesForAVM.length} properties)...`);
 
-            // Update the map with enriched values
-            avmEnriched.forEach(prop => {
-                if (prop.estimatedValue && prop.estimatedValue > 50000) {
-                    const addr = prop.address?.toLowerCase().trim() || prop.id;
-                    const existing = propertyMap.get(addr);
-                    if (existing) {
-                        propertyMap.set(addr, {
-                            ...existing,
-                            estimatedValue: prop.estimatedValue,
-                            provenance: {
-                                ...existing.provenance,
-                                financial: {
-                                    source: 'RENTCAST_AVM_LIVE',
-                                    verifiedAt: new Date().toISOString(),
-                                    confidence: 0.95
+            // Wrap in timeout - don't let RentCast issues block the whole request
+            const avmTimeout = new Promise<ZenithProperty[]>((resolve) =>
+                setTimeout(() => {
+                    console.warn('[ZENITH ORACLE] RENTCAST TIMEOUT - Using ZenithValuation fallback');
+                    resolve([]);
+                }, 5000)
+            );
+
+            try {
+                const avmEnriched = await Promise.race([
+                    enrichWithAVM(propertiesForAVM.slice(0, 10)), // Limit to 10 to avoid rate limits
+                    avmTimeout
+                ]);
+
+                // Update the map with enriched values
+                avmEnriched.forEach(prop => {
+                    if (prop.estimatedValue && prop.estimatedValue > 50000) {
+                        const addr = prop.address?.toLowerCase().trim() || prop.id;
+                        const existing = propertyMap.get(addr);
+                        if (existing) {
+                            propertyMap.set(addr, {
+                                ...existing,
+                                estimatedValue: prop.estimatedValue,
+                                provenance: {
+                                    ...existing.provenance,
+                                    financial: {
+                                        source: 'RENTCAST_AVM_LIVE',
+                                        verifiedAt: new Date().toISOString(),
+                                        confidence: 0.95
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        }
                     }
-                }
-            });
-            console.log(`[ZENITH ORACLE] AVM ENRICHMENT COMPLETE.`);
+                });
+                console.log(`[ZENITH ORACLE] AVM ENRICHMENT COMPLETE.`);
+            } catch (avmError) {
+                console.warn('[ZENITH ORACLE] RENTCAST AVM FAILED - Continuing with ZenithValuation:', avmError);
+            }
         }
 
         // 6. ENRICH & EXPAND with ZenithValuation (Sovereign Engine)
@@ -331,7 +356,7 @@ export async function queryZenithOracle(
         if (zip) activeSector = `${location.toUpperCase()} - SECTOR ${zip}`;
     }
 
-    return {
+    const response: ZenithOracleResponse = {
         properties: finalProperties,
         signals: [
             { type: "COUNCIL_STATUS", status: "STABLE", source: "ELITE_HARDENING" },
@@ -345,6 +370,13 @@ export async function queryZenithOracle(
         networkGroups,
         intelFeed
     };
+
+    // Cache the response for 5 minutes
+    if (response.properties.length > 0) {
+        PropertyCache.set(cacheKey, response);
+    }
+
+    return response;
 }
 /**
  * DEEP ENRICHMENT LAYER
@@ -436,9 +468,9 @@ async function integrateInstitutionalFeed(location: string): Promise<ZenithPrope
                     zip: p.zipCode,
                     lat: p.latitude,
                     lng: p.longitude,
-                    type: p.propertyType === 'Single Family' ? 'SFR' : 'MF',
+                    type: (p.propertyType === 'Single Family' ? 'SFR' : 'MF') as 'SFR' | 'MF',
                     subType: p.propertyType,
-                    status: "OFF_MARKET",
+                    status: "OFF_MARKET" as const,
                     estimatedValue: estimatedValue,
                     equity: Math.round(estimatedValue * 0.15),
                     motivationScore: 50 + Math.floor(Math.random() * 30),

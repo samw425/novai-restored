@@ -9,6 +9,7 @@
 
 import { supabase } from "../supabase/client";
 import { CreditService } from "../credits/credit-service";
+import { SkipTraceCache } from "./cache";
 
 // ============== TYPE DEFINITIONS ==============
 
@@ -258,7 +259,14 @@ async function callRealityMoleAPI(ownerName: string, address: string): Promise<S
  * Check cache for existing skip trace data
  */
 async function checkSkipTraceCache(propertyId: string): Promise<SkipTraceResult | null> {
+    // 1. Check localStorage first (fastest)
+    const local = SkipTraceCache.get(propertyId);
+    if (local) return local;
+
+    // 2. Fallback to Supabase if available
     try {
+        if (!supabase) return null;
+
         const { data, error } = await supabase
             .from('skip_trace_cache')
             .select('*')
@@ -267,16 +275,7 @@ async function checkSkipTraceCache(propertyId: string): Promise<SkipTraceResult 
 
         if (error || !data) return null;
 
-        // Check if cache is expired
-        const cachedDate = new Date(data.created_at);
-        const expiryDate = new Date(cachedDate.getTime() + CACHE_TTL_DAYS * 24 * 60 * 60 * 1000);
-
-        if (new Date() > expiryDate) {
-            console.log('[SKIP-TRACE] Cache expired');
-            return null;
-        }
-
-        return {
+        const result: SkipTraceResult = {
             ownerName: data.owner_name,
             mailingAddress: data.mailing_address,
             phones: JSON.parse(data.phones || '[]'),
@@ -287,8 +286,11 @@ async function checkSkipTraceCache(propertyId: string): Promise<SkipTraceResult 
             cached: true,
             timestamp: data.created_at
         };
+
+        // Populate local cache for next time
+        SkipTraceCache.set(propertyId, result);
+        return result;
     } catch (error) {
-        console.warn('[SKIP-TRACE] Cache check failed:', error);
         return null;
     }
 }
@@ -297,10 +299,13 @@ async function checkSkipTraceCache(propertyId: string): Promise<SkipTraceResult 
  * Cache skip trace result for future lookups
  */
 async function cacheSkipTraceResult(propertyId: string, result: SkipTraceResult): Promise<void> {
+    // Save to localStorage (MVP Cache)
+    SkipTraceCache.set(propertyId, result);
+
+    // Save to Supabase (Global Cache)
     try {
-        await supabase
-            .from('skip_trace_cache')
-            .upsert({
+        if (supabase) {
+            await supabase.from('skip_trace_cache').upsert({
                 property_id: propertyId,
                 owner_name: result.ownerName,
                 mailing_address: result.mailingAddress,
@@ -310,8 +315,9 @@ async function cacheSkipTraceResult(propertyId: string, result: SkipTraceResult)
                 source: result.source,
                 created_at: new Date().toISOString()
             });
+        }
     } catch (error) {
-        console.warn('[SKIP-TRACE] Cache write failed:', error);
+        console.warn('[SKIP-TRACE] Global cache sync failed:', error);
     }
 }
 

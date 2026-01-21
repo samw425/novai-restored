@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ChevronLeft, ChevronRight, Home, FileText, History, MapPin, Phone, ExternalLink, Bed, Bath, Maximize, Calendar, Building, TrendingUp, GraduationCap, Shield, Footprints, Bus, Bike, DollarSign, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import { X, Share2, Star, Check, ChevronLeft, ChevronRight, Home, FileText, History, MapPin, Phone, ExternalLink, Bed, Bath, Maximize, Calendar, Building, TrendingUp, GraduationCap, Shield, Footprints, Bus, Bike, DollarSign, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import { ZenithProperty } from '@/lib/types';
 import ImageGallery from '@/components/property/ImageGallery';
 
@@ -15,6 +15,31 @@ type TabType = 'overview' | 'details' | 'history' | 'neighborhood' | 'contact';
 
 export default function PropertyDetailModal({ property, onClose }: PropertyDetailModalProps) {
     const [activeTab, setActiveTab] = useState<TabType>('overview');
+    const [isCopied, setIsCopied] = useState(false);
+    const [isSaved, setIsSaved] = useState(() => {
+        if (typeof window === 'undefined') return false;
+        const saved = JSON.parse(localStorage.getItem('zenith_saved') || '[]');
+        return saved.includes(property.id);
+    });
+
+    const handleSave = () => {
+        const saved = JSON.parse(localStorage.getItem('zenith_saved') || '[]');
+        let newSaved;
+        if (isSaved) {
+            newSaved = saved.filter((id: string) => id !== property.id);
+        } else {
+            newSaved = [...saved, property.id];
+        }
+        localStorage.setItem('zenith_saved', JSON.stringify(newSaved));
+        setIsSaved(!isSaved);
+    };
+
+    const handleShare = () => {
+        const url = `${window.location.origin}/search?propertyId=${property.id}`;
+        navigator.clipboard.writeText(url);
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 2000);
+    };
 
     // Keyboard navigation
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -89,13 +114,29 @@ export default function PropertyDetailModal({ property, onClose }: PropertyDetai
                     transition={{ type: 'spring', damping: 25, stiffness: 300 }}
                     className="relative w-full max-w-5xl max-h-[90vh] overflow-hidden rounded-3xl bg-gradient-to-b from-slate-900 to-slate-950 border border-white/10 shadow-2xl"
                 >
-                    {/* Close Button */}
-                    <button
-                        onClick={onClose}
-                        className="absolute top-4 right-4 z-10 p-2 rounded-full bg-black/50 hover:bg-black/70 transition-colors"
-                    >
-                        <X size={20} className="text-white" />
-                    </button>
+                    {/* Top Actions */}
+                    <div className="absolute top-4 right-4 z-10 flex gap-2">
+                        <button
+                            onClick={handleSave}
+                            className={`p-2 rounded-full backdrop-blur-md transition-all ${isSaved ? 'bg-blue-500 text-white' : 'bg-black/50 text-white hover:bg-black/70'}`}
+                            title={isSaved ? "Remove from saved" : "Save property"}
+                        >
+                            <Star size={20} fill={isSaved ? "currentColor" : "none"} />
+                        </button>
+                        <button
+                            onClick={handleShare}
+                            className="p-2 rounded-full bg-black/50 text-white hover:bg-black/70 backdrop-blur-md transition-colors"
+                            title="Share property"
+                        >
+                            {isCopied ? <Check size={20} className="text-emerald-400" /> : <Share2 size={20} />}
+                        </button>
+                        <button
+                            onClick={onClose}
+                            className="p-2 rounded-full bg-black/50 text-white hover:bg-black/70 backdrop-blur-md transition-colors"
+                        >
+                            <X size={20} />
+                        </button>
+                    </div>
 
                     {/* Image Gallery Header */}
                     <div className="relative h-72 md:h-80">
@@ -399,54 +440,7 @@ export default function PropertyDetailModal({ property, onClose }: PropertyDetai
                             )}
 
                             {activeTab === 'contact' && (
-                                <div className="space-y-4">
-                                    <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-                                        <h4 className="text-sm font-semibold text-slate-400 mb-3">Owner Information</h4>
-                                        <p className="text-lg font-medium text-white">{property.ownerName || 'Unknown Owner'}</p>
-                                        <p className="text-sm text-slate-400">{property.ownerType || 'Individual'}</p>
-                                    </div>
-
-                                    {/* Locked Contact Info */}
-                                    <div className="relative p-4 rounded-xl bg-white/5 border border-white/10 overflow-hidden">
-                                        <div className="absolute inset-0 backdrop-blur-md bg-slate-900/50 flex items-center justify-center">
-                                            <div className="text-center">
-                                                <p className="text-white font-semibold mb-2">🔒 Unlock Contact Info</p>
-                                                <button className="px-6 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 text-white font-medium transition-colors">
-                                                    Reveal (1 Credit)
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div className="opacity-30">
-                                            <p className="text-white">📞 (XXX) XXX-XXXX</p>
-                                            <p className="text-white">📧 owner@xxxxx.com</p>
-                                        </div>
-                                    </div>
-
-                                    {/* Free OSINT Links */}
-                                    <div className="p-4 rounded-xl bg-slate-800/50">
-                                        <h4 className="text-sm font-semibold text-slate-400 mb-3">Free Lookup Tools</h4>
-                                        <div className="flex flex-wrap gap-2">
-                                            <a
-                                                href={`https://www.truepeoplesearch.com/results?name=${encodeURIComponent(property.ownerName || '')}&citystatezip=${encodeURIComponent(property.city + ', ' + property.state)}`}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-sm text-slate-300 transition-colors"
-                                            >
-                                                <ExternalLink size={14} />
-                                                TruePeopleSearch
-                                            </a>
-                                            <a
-                                                href={`https://www.fastpeoplesearch.com/name/${encodeURIComponent((property.ownerName || '').replace(/\s+/g, '-').toLowerCase())}`}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-sm text-slate-300 transition-colors"
-                                            >
-                                                <ExternalLink size={14} />
-                                                FastPeopleSearch
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
+                                <SkipTraceTab property={property} />
                             )}
                         </div>
                     </div>
@@ -523,6 +517,238 @@ function ScoreCircle({ label, score, icon }: { label: string; score: number; ico
             <div className="flex items-center gap-1.5 text-slate-400">
                 {icon}
                 <span className="text-xs font-medium">{label}</span>
+            </div>
+        </div>
+    );
+}
+
+// Skip Trace Tab Component with Live API Integration
+function SkipTraceTab({ property }: { property: ZenithProperty }) {
+    const [isLoading, setIsLoading] = useState(false);
+    const [isRevealed, setIsRevealed] = useState(false);
+    const [contactData, setContactData] = useState<any>(null);
+    const [error, setError] = useState<string | null>(null);
+
+    const handleReveal = async () => {
+        setIsLoading(true);
+        setError(null);
+
+        try {
+            // Import and call the skip trace service
+            const { revealOwnerContact } = await import('@/lib/data/skip-trace');
+            const fullAddress = `${property.address}, ${property.city}, ${property.state} ${property.zip}`;
+
+            const result = await revealOwnerContact(
+                property.id,
+                property.ownerName,
+                fullAddress,
+                'demo-user' // Anonymous user for now
+            );
+
+            if (result) {
+                setContactData(result);
+                setIsRevealed(true);
+            } else {
+                setError('No contact information found');
+            }
+        } catch (err) {
+            console.error('Skip trace failed:', err);
+            setError('Failed to retrieve contact information');
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    // Generate comprehensive public records links
+    const getPublicRecordLinks = () => {
+        const ownerName = property.ownerName || '';
+        const address = property.address || '';
+        const city = property.city || '';
+        const state = property.state || '';
+        const zip = property.zip || '';
+        const fullAddress = `${address}, ${city}, ${state} ${zip}`;
+
+        return [
+            {
+                name: 'TruePeopleSearch',
+                url: `https://www.truepeoplesearch.com/results?name=${encodeURIComponent(ownerName)}&citystatezip=${encodeURIComponent(city + ', ' + state)}`,
+                description: 'Free phone & address lookup'
+            },
+            {
+                name: 'FastPeopleSearch',
+                url: `https://www.fastpeoplesearch.com/name/${encodeURIComponent(ownerName.replace(/\s+/g, '-').toLowerCase())}`,
+                description: 'Reverse phone lookup'
+            },
+            {
+                name: 'Spokeo',
+                url: `https://www.spokeo.com/${encodeURIComponent(ownerName.replace(/\s+/g, '-'))}`,
+                description: 'Social media profiles'
+            },
+            {
+                name: 'WhitePages',
+                url: `https://www.whitepages.com/name/${encodeURIComponent(ownerName.replace(/\s+/g, '-'))}/${state}`,
+                description: 'Background check'
+            },
+            {
+                name: 'County Records',
+                url: getCountyRecordsUrl(state, zip),
+                description: 'Official tax records'
+            },
+            {
+                name: 'Google Search',
+                url: `https://www.google.com/search?q=${encodeURIComponent(ownerName + ' ' + city + ' ' + state + ' property owner')}`,
+                description: 'General search'
+            }
+        ];
+    };
+
+    // Get county-specific property appraiser URLs
+    function getCountyRecordsUrl(state: string, zip: string): string {
+        if (zip.startsWith('33') || zip.startsWith('34')) {
+            return 'https://www.miamidade.gov/Apps/PA/propertysearch/';
+        } else if (zip.startsWith('90') || zip.startsWith('91')) {
+            return 'https://portal.assessor.lacounty.gov/';
+        } else if (zip.startsWith('60')) {
+            return 'https://www.cookcountyassessor.com/';
+        } else if (zip.startsWith('77')) {
+            return 'https://hcad.org/';
+        } else if (zip.startsWith('85')) {
+            return 'https://mcassessor.maricopa.gov/';
+        } else if (zip.startsWith('30')) {
+            return 'https://qpublic.schneidercorp.com/Application.aspx?AppID=1031';
+        } else if (zip.startsWith('75') || zip.startsWith('76')) {
+            return 'https://www.dallascad.org/';
+        }
+        return `https://www.google.com/search?q=${encodeURIComponent(state + ' county property appraiser')}`;
+    }
+
+    return (
+        <div className="space-y-4">
+            {/* Owner Information (Always Visible) */}
+            <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+                <h4 className="text-sm font-semibold text-slate-400 mb-3">Owner Information</h4>
+                <p className="text-lg font-medium text-white">{property.ownerName || 'Unknown Owner'}</p>
+                <p className="text-sm text-slate-400">{property.ownerType || 'Individual'}</p>
+                {property.address && (
+                    <p className="text-sm text-slate-500 mt-1">{property.address}</p>
+                )}
+            </div>
+
+            {/* Revealed Contact Info OR Locked State */}
+            {isRevealed && contactData ? (
+                <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+                    <h4 className="text-sm font-semibold text-emerald-400 mb-3">✓ Contact Information Revealed</h4>
+
+                    {/* Phones */}
+                    {contactData.phones && contactData.phones.length > 0 && (
+                        <div className="mb-3">
+                            <p className="text-xs text-slate-500 mb-1">Phone Numbers</p>
+                            {contactData.phones.map((phone: string, idx: number) => (
+                                <a
+                                    key={idx}
+                                    href={`tel:${phone.replace(/\D/g, '')}`}
+                                    className="flex items-center gap-2 text-white hover:text-emerald-400 transition-colors"
+                                >
+                                    <Phone size={14} />
+                                    {phone}
+                                </a>
+                            ))}
+                        </div>
+                    )}
+
+                    {/* Emails */}
+                    {contactData.emails && contactData.emails.length > 0 && (
+                        <div className="mb-3">
+                            <p className="text-xs text-slate-500 mb-1">Email Addresses</p>
+                            {contactData.emails.map((email: string, idx: number) => (
+                                <a
+                                    key={idx}
+                                    href={`mailto:${email}`}
+                                    className="flex items-center gap-2 text-white hover:text-emerald-400 transition-colors"
+                                >
+                                    📧 {email}
+                                </a>
+                            ))}
+                        </div>
+                    )}
+
+                    {/* Source */}
+                    <p className="text-xs text-slate-600 mt-2">
+                        Source: {contactData.source || 'OSINT'}
+                    </p>
+                </div>
+            ) : (
+                <div className="relative p-4 rounded-xl bg-white/5 border border-white/10 overflow-hidden">
+                    <div className="absolute inset-0 backdrop-blur-md bg-slate-900/50 flex items-center justify-center">
+                        <div className="text-center">
+                            {isLoading ? (
+                                <>
+                                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
+                                    <p className="text-white">Searching records...</p>
+                                </>
+                            ) : error ? (
+                                <>
+                                    <p className="text-red-400 mb-2">{error}</p>
+                                    <button
+                                        onClick={handleReveal}
+                                        className="px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 text-white text-sm transition-colors"
+                                    >
+                                        Try Again
+                                    </button>
+                                </>
+                            ) : (
+                                <>
+                                    <p className="text-white font-semibold mb-2">🔒 Unlock Contact Info</p>
+                                    <button
+                                        onClick={handleReveal}
+                                        className="px-6 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 text-white font-medium transition-colors"
+                                    >
+                                        Reveal Contact (Free OSINT)
+                                    </button>
+                                    <p className="text-xs text-slate-500 mt-2">Premium skip trace coming soon</p>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                    <div className="opacity-30">
+                        <p className="text-white">📞 (XXX) XXX-XXXX</p>
+                        <p className="text-white">📧 owner@xxxxx.com</p>
+                    </div>
+                </div>
+            )}
+
+            {/* Enhanced OSINT Links */}
+            <div className="p-4 rounded-xl bg-slate-800/50">
+                <h4 className="text-sm font-semibold text-slate-400 mb-3">
+                    🔍 Public Records Lookup
+                </h4>
+                <div className="grid grid-cols-2 gap-2">
+                    {getPublicRecordLinks().map((link, idx) => (
+                        <a
+                            key={idx}
+                            href={link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex flex-col p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+                        >
+                            <span className="text-sm text-slate-300 flex items-center gap-1">
+                                <ExternalLink size={12} />
+                                {link.name}
+                            </span>
+                            <span className="text-xs text-slate-500">{link.description}</span>
+                        </a>
+                    ))}
+                </div>
+            </div>
+
+            {/* Legal / Removal Link */}
+            <div className="text-center pt-2">
+                <a
+                    href="/privacy#opt-out"
+                    className="text-[10px] text-slate-600 hover:text-slate-400 underline transition-colors"
+                >
+                    Request data removal or opt-out
+                </a>
             </div>
         </div>
     );

@@ -1,1 +1,8 @@
-{}
+{
+    "crons": [
+        {
+            "path": "/api/cron/daily-brief?bypass=force_gen_now",
+            "schedule": "0 11 * * *"
+        }
+    ]
+}

@@ -4,6 +4,7 @@ import { FeedContainerClient as FeedContainer } from '@/components/feed/FeedCont
 import { Globe, Activity } from 'lucide-react';
 import { PremiumGlobeClient as PremiumGlobe } from '@/components/ui/PremiumGlobeClient';
 import { NewsletterSignup } from '@/components/ui/NewsletterSignup';
+import { DailyBriefHero } from '@/components/dashboard/DailyBriefHero';
 
 export default function GlobalFeedPage() {
     return (
@@ -97,6 +98,11 @@ export default function GlobalFeedPage() {
                     </div>
                 </div>
             </div>
+
+            {/* Daily Intelligence Brief - NEW ADDITION */}
+            <Suspense fallback={<div className="h-48 bg-slate-100 rounded-2xl animate-pulse" />}>
+                <DailyBriefHero className="max-w-5xl mx-auto" />
+            </Suspense>
 
             {/* Feed */}
             <Suspense fallback={<div>Loading global feed...</div>}>

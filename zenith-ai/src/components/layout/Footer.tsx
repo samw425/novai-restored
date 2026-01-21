@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
-import { ZenithLogo } from "./Header";
 
 export default function Footer() {
     return (
@@ -61,8 +61,13 @@ export default function Footer() {
             <div className="footer-bottom">
                 <div className="flex items-center gap-4">
                     <Link href="/" className="flex items-center gap-2 text-gray-900 hover:opacity-80 transition-opacity">
-                        <ZenithLogo className="w-7 h-7" />
-                        <span className="font-bold tracking-tight">ZENITH</span>
+                        <Image
+                            src="/zenith-logo.png"
+                            alt="Zenith"
+                            width={100}
+                            height={28}
+                            className="h-7 w-auto object-contain"
+                        />
                     </Link>
                     <span className="footer-copyright">
                         © {new Date().getFullYear()} Zenith Real Estate Technologies, Inc.

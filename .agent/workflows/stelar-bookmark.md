@@ -2,69 +2,56 @@
 description: STELAR Project Bookmark - Resume when ready to continue music platform work
 ---
 
-# STELAR Project Status (Updated Jan 12, 2026)
+# STELAR Project Status (Updated Jan 21, 2026)
 
 ## Current State
-- ✅ **Live at https://stelarmusic.pages.dev**
+- ✅ **Live at https://stelarmusic.pages.dev** (Production)
+- ✅ **Phase 1 Monetization Built Locally** (Waiting for deployment)
+  - ✅ Auto-trigger email capture (20s delay)
+  - ✅ B2B "For Labels" landing page
+  - ✅ Artist profile discovery / claim forms
 - ✅ 3,660+ artists with Power Score™ algorithm
-- ✅ The Pulse (Global), The Radar (Up & Comers), HOT 500 (Songs)
-- ✅ Artist profiles with Top 50 Songs, social links, video embeds
-- ✅ Universal fuzzy search
-- ✅ Rankings restored to Jan 11 "good state" (The Weeknd #1)
-- ⚠️ Not yet monetized
+- ✅ Universal fuzzy search + ranking restoration
+- ⚠️ Monetization features **NOT YET DEPLOYED** to production
 
 ## Related Documents
 - **Monetization Strategy:** [stelar-monetization.md](./stelar-monetization.md)
+- **Phase 1 Walkthrough:** [walkthrough.md](file:///Users/sameeraziz/.gemini/antigravity/brain/769c10eb-b2cd-4076-8dd1-0c5a92c90b0e/walkthrough.md)
 - **Master Strategy:** [master-strategy.md](./master-strategy.md)
-- **Category Definitions:** [stelar-categories.md](./stelar-categories.md)
 
 ## Key Files
 ```
 stelar/
 ├── web/
-│   ├── src/App.tsx             # Main app (3,675 lines)
-│   ├── public/rankings.json    # Artist data (Jan 11 version)
-│   └── functions/
-│       ├── api/itunes.ts       # iTunes proxy for songs
-│       └── track/[[path]].js   # Track pages + video
-├── PLAN.md                     # Development roadmap
-└── STRATEGY.md                 # Strategic assessment
+│   ├── src/App.tsx                     # Main app + Modal logic
+│   ├── src/components/
+│   │   ├── ARLandingPage.tsx           # B2B Landing Page [NEW]
+│   │   └── ArtistClaimForm.tsx         # Claim form [NEW]
+│   └── functions/api/waitlist.ts       # Lead capture endpoint
 ```
 
 ## Quick Commands
 ```bash
-# Start dev server
+# Start local dev with monetization features
 cd "/Users/sameeraziz/Documents/novai-intelligence (2)/stelar/web"
 export PATH="/Users/sameeraziz/.nvm/versions/node/v20.19.6/bin:$PATH"
 npm run dev
 
-# Build and deploy
+# Deploy Phase 1 (NEEDS USER APPROVAL)
 npm run build
 npx wrangler pages deploy dist --project-name stelarmusic --branch main
 ```
 
-## Next Steps (Monetization Priority)
-1. [ ] Integrate Stripe for subscriptions
-2. [ ] Add user authentication (magic link)
-3. [ ] Build "STELAR for A&R" landing page
-4. [ ] Create email capture/waitlist modal
-5. [ ] Reach out to 10 indie labels for pilot
-6. [ ] Add affiliate links for concert tickets
-
-## Revenue Model
-- **STELAR Pro:** $49-399/month B2B subscriptions
-- **Affiliates:** Concert tickets, streaming, merch
-- **Promoted Artists:** $99-499/week featured placements
-- **API Access:** $500-5000/month for enterprises
+## Next Steps (Monetization Phase 2)
+1. [ ] **Stripe Integration**: Connect to production Stripe account
+2. [ ] **Artist Promo Checkout**: Self-serve "Get Featured" flow
+3. [ ] **User Auth**: Magic link or Supabase Auth for A&R users
+4. [ ] **B2B Pilot Outreach**: Cold outreach to 50 targeted indie labels
 
 ## Technical Priorities
-- [ ] Fix any remaining ranking issues
-- [ ] Add historical trend charts
-- [ ] Implement email alerts for tracked artists
-- [ ] Export functionality (CSV/PDF)
-
-## Why This Matters
-STELAR has the clearest path to revenue after Verity AI. The music industry spends billions on artist discovery, and we have a working product with real data. Focus is on converting the free tool into a paid B2B SaaS.
+- [ ] Connect waitlist form to real Postmark/SendGrid
+- [ ] Implement historical trend charts in Dossier
+- [ ] Add "Claimed" badge to verified profiles
 
 ---
 *See [stelar-monetization.md](./stelar-monetization.md) for detailed strategy.*

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
@@ -19,7 +19,7 @@ import {
 // Dynamic Import for MapEngine to avoid SSR issues
 const MapEngine = dynamic(() => import("@/components/map/MapEngine"), { ssr: false });
 
-export default function SearchPage() {
+function SearchPageContent() {
     const searchParams = useSearchParams();
     const initialQuery = searchParams.get("q") || searchParams.get("type") || "";
 
@@ -60,9 +60,18 @@ export default function SearchPage() {
                 // Use query param or default to Miami
                 const query = initialQuery || "Miami, FL";
                 const result = await queryZenithOracle(query);
-                setProperties(result.properties as ZenithProperty[]);
+                const results = result.properties as ZenithProperty[];
+                setProperties(results);
+
                 if (result.center) {
                     setCenterLocation({ ...result.center });
+                }
+
+                // Handle deep linking to property
+                const propertyId = searchParams.get("propertyId");
+                if (propertyId) {
+                    const match = results.find(p => p.id === propertyId);
+                    if (match) setSelectedProperty(match);
                 }
             } catch (e) {
                 console.error("Initial search failed:", e);
@@ -362,5 +371,17 @@ export default function SearchPage() {
                 />
             )}
         </main>
+    );
+}
+
+export default function SearchPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen bg-white flex items-center justify-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+            </div>
+        }>
+            <SearchPageContent />
+        </Suspense>
     );
 }

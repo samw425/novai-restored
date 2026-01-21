@@ -36,7 +36,15 @@ export class CreditService {
      * Get current credit balance for a user
      */
     static async getBalance(userId: string): Promise<number> {
+        // Fallback to localStorage if Supabase isn't configured or fails
+        const getLocalBalance = () => {
+            const raw = localStorage.getItem(`zenith_credits_${userId}`);
+            return raw ? parseInt(raw) : 3; // 3 free starter credits
+        };
+
         try {
+            if (!supabase) return getLocalBalance();
+
             const { data, error } = await supabase
                 .from('user_credits')
                 .select('balance')
@@ -44,14 +52,12 @@ export class CreditService {
                 .single();
 
             if (error || !data) {
-                // New users start with 3 free credits
-                return 3;
+                return getLocalBalance();
             }
 
             return data.balance || 0;
         } catch (error) {
-            console.warn('[CreditService] Failed to fetch balance:', error);
-            return 0;
+            return getLocalBalance();
         }
     }
 
@@ -59,41 +65,38 @@ export class CreditService {
      * Deduct credits from user balance
      */
     static async deduct(userId: string, amount: number, reason: string, propertyId?: string): Promise<boolean> {
+        const currentBalance = await this.getBalance(userId);
+        if (currentBalance < amount) return false;
+
+        const newBalance = currentBalance - amount;
+
+        // Local Update
+        localStorage.setItem(`zenith_credits_${userId}`, newBalance.toString());
+
+        // Log transaction locally
+        const txs = JSON.parse(localStorage.getItem(`zenith_txs_${userId}`) || '[]');
+        txs.unshift({
+            id: Math.random().toString(36).substr(2, 9),
+            userId,
+            amount: -amount,
+            type: 'USAGE',
+            description: reason,
+            propertyId,
+            createdAt: new Date().toISOString()
+        });
+        localStorage.setItem(`zenith_txs_${userId}`, JSON.stringify(txs.slice(0, 50)));
+
+        // Attempt Supabase Sync
         try {
-            const currentBalance = await this.getBalance(userId);
-
-            if (currentBalance < amount) {
-                throw new Error('INSUFFICIENT_CREDITS');
+            if (supabase) {
+                await supabase.from('user_credits').upsert({ user_id: userId, balance: newBalance, updated_at: new Date().toISOString() });
+                await supabase.from('credit_transactions').insert({ user_id: userId, amount: -amount, type: 'USAGE', description: reason, property_id: propertyId });
             }
-
-            // Update balance
-            const { error: updateError } = await supabase
-                .from('user_credits')
-                .upsert({
-                    user_id: userId,
-                    balance: currentBalance - amount,
-                    updated_at: new Date().toISOString()
-                });
-
-            if (updateError) throw updateError;
-
-            // Log transaction
-            await supabase
-                .from('credit_transactions')
-                .insert({
-                    user_id: userId,
-                    amount: -amount,
-                    type: 'USAGE',
-                    description: reason,
-                    property_id: propertyId,
-                    created_at: new Date().toISOString()
-                });
-
-            return true;
-        } catch (error) {
-            console.error('[CreditService] Deduction failed:', error);
-            return false;
+        } catch (e) {
+            console.warn('[CreditService] Supabase sync failed, kept local.');
         }
+
+        return true;
     }
 
     /**
