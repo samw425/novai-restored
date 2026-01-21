@@ -97,23 +97,23 @@ export function DailyBriefHero({ className = '' }: DailyBriefHeroProps) {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className={`bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-slate-700/50 rounded-2xl overflow-hidden shadow-2xl ${className}`}
+            className={`bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm ${className}`}
         >
             {/* Header */}
-            <div className="px-6 py-4 border-b border-slate-700/50 bg-slate-800/30 flex items-center justify-between">
+            <div className="px-6 py-4 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
                         <Sparkles className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                        <h2 className="text-lg font-bold text-white tracking-tight flex items-center gap-2">
+                        <h2 className="text-lg font-bold text-slate-900 tracking-tight flex items-center gap-2">
                             Daily Intelligence Brief
                             <span className="relative flex h-2 w-2">
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                             </span>
                         </h2>
-                        <p className="text-xs text-slate-400 font-mono">{brief.date}</p>
+                        <p className="text-xs text-slate-500 font-mono">{brief.date}</p>
                     </div>
                 </div>
 
@@ -139,11 +139,11 @@ export function DailyBriefHero({ className = '' }: DailyBriefHeroProps) {
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -10 }}
                                 transition={{ delay: idx * 0.1 }}
-                                className="group block bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700/50 hover:border-blue-500/50 rounded-xl p-4 transition-all duration-300"
+                                className="group block bg-slate-50 hover:bg-white border border-slate-200 hover:border-blue-300 rounded-xl p-4 transition-all duration-300 hover:shadow-md"
                             >
                                 {/* Category + Score */}
                                 <div className="flex items-center justify-between mb-2">
-                                    <span className="text-[10px] font-bold uppercase tracking-wider text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded">
+                                    <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-2 py-0.5 rounded">
                                         {item.category}
                                     </span>
                                     <div className="flex items-center gap-1">
@@ -155,19 +155,19 @@ export function DailyBriefHero({ className = '' }: DailyBriefHeroProps) {
                                 </div>
 
                                 {/* Title */}
-                                <h3 className="text-sm font-semibold text-white group-hover:text-blue-300 transition-colors line-clamp-2 mb-2">
+                                <h3 className="text-sm font-semibold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 mb-2">
                                     {item.title}
                                 </h3>
 
                                 {/* Bottom Line */}
-                                <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">
+                                <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
                                     {item.bottomLine}
                                 </p>
 
                                 {/* Source */}
                                 <div className="mt-3 flex items-center justify-between">
-                                    <span className="text-[10px] text-slate-500 font-mono uppercase">{item.source}</span>
-                                    <ChevronRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-blue-400 group-hover:translate-x-1 transition-all" />
+                                    <span className="text-[10px] text-slate-400 font-mono uppercase">{item.source}</span>
+                                    <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
                                 </div>
                             </motion.a>
                         ))}
@@ -178,7 +178,7 @@ export function DailyBriefHero({ className = '' }: DailyBriefHeroProps) {
                 {brief.briefingItems.length > 3 && (
                     <button
                         onClick={() => setExpanded(!expanded)}
-                        className="mt-4 w-full py-2 text-center text-xs font-bold text-slate-400 hover:text-white border border-slate-700/50 hover:border-slate-600 rounded-lg transition-all uppercase tracking-wider"
+                        className="mt-4 w-full py-2 text-center text-xs font-bold text-slate-500 hover:text-slate-900 border border-slate-200 hover:border-slate-300 bg-slate-50 hover:bg-white rounded-lg transition-all uppercase tracking-wider"
                     >
                         {expanded ? 'Show Less' : `View All ${brief.briefingItems.length} Signals`}
                     </button>
@@ -186,13 +186,13 @@ export function DailyBriefHero({ className = '' }: DailyBriefHeroProps) {
             </div>
 
             {/* Footer Stats */}
-            <div className="px-6 py-3 bg-slate-800/20 border-t border-slate-700/30 flex items-center justify-between">
-                <div className="flex items-center gap-2 text-xs text-slate-500">
+            <div className="px-6 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+                <div className="flex items-center gap-2 text-xs text-slate-400">
                     <Eye className="w-3.5 h-3.5" />
                     <span className="font-mono">Powered by Neural Sentinel</span>
                 </div>
-                <div className="text-xs text-slate-400">
-                    <span className="font-bold text-white">{brief.statOfTheDay.value}</span>
+                <div className="text-xs text-slate-500">
+                    <span className="font-bold text-slate-900">{brief.statOfTheDay.value}</span>
                     <span className="ml-1">{brief.statOfTheDay.label}</span>
                 </div>
             </div>
