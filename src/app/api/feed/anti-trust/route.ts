@@ -1,13 +1,10 @@
-// @ts-nocheck
 import { NextResponse } from 'next/server';
-import Parser from 'rss-parser';
+import { parseRSS } from '@/lib/rss-edge';
 import { RSS_FEEDS } from '@/config/rss-feeds';
-export const runtime = 'nodejs';
+export const runtime = 'edge';
 
 // Cache for 1 hour - antitrust news doesn't change frequently
 export const revalidate = 3600;
-
-const parser = new Parser();
 
 // Strong signals: If any of these appear, it's almost certainly relevant
 const STRONG_KEYWORDS = [
@@ -68,19 +65,11 @@ export async function GET(request: Request) {
         // Sequential fetching to prevent server hang/congestion
         for (const feedSource of prioritizedFeeds) {
             try {
-                // Timeout wrapper
-                const timeout = new Promise((_, reject) =>
-                    setTimeout(() => reject(new Error('Timeout')), 5000)
-                );
-
-                const feed: any = await Promise.race([
-                    parser.parseURL(feedSource.url),
-                    timeout
-                ]);
+                const feed = await parseRSS(feedSource.url, { timeout: 5000 });
 
                 const items = feed.items
-                    .map((item: any) => {
-                        const text = `${item.title} ${item.contentSnippet || ''}`.toLowerCase();
+                    .map((item) => {
+                        const text = `${item.title} ${item.contentSnippet || item.description || ''}`.toLowerCase();
 
                         // 1. Check for Strong Keywords (Automatic Pass)
                         const hasStrong = STRONG_KEYWORDS.some(k => text.includes(k));

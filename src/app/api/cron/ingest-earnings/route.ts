@@ -1,8 +1,9 @@
+export const runtime = 'edge';
+
 
 import { NextResponse } from 'next/server';
 import { SECEarningsWatcher } from '@/lib/ingestion/sec_watcher';
 
-export const dynamic = 'force-dynamic';
 export const maxDuration = 60; // Extend timeout for processing
 
 export async function GET(request: Request) {

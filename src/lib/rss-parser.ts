@@ -1,11 +1,5 @@
-import Parser from 'rss-parser';
+import { parseRSS } from './rss-edge';
 import { RSS_FEEDS, FeedSource } from '@/config/rss-feeds';
-
-const parser = new Parser({
-    customFields: {
-        item: ['pubDate', 'content:encoded']
-    }
-});
 
 export interface RSSArticle {
     title: string;
@@ -22,16 +16,16 @@ export interface RSSArticle {
  */
 export async function fetchRSSFeed(feedUrl: string): Promise<RSSArticle[]> {
     try {
-        const feed = await parser.parseURL(feedUrl);
+        const feed = await parseRSS(feedUrl);
 
         return feed.items.map(item => ({
             title: item.title || 'Untitled',
             link: item.link || '',
             pubDate: item.pubDate || new Date().toISOString(),
-            content: item['content:encoded'] || item.content,
+            content: item.content || item.description,
             contentSnippet: item.contentSnippet,
-            creator: item.creator,
-            categories: item.categories
+            creator: item.source, // Mapping source to creator as a fallback
+            categories: [] // Categories not explicitly extracted by lightweight parser yet
         }));
     } catch (error) {
         console.error(`Error fetching RSS feed ${feedUrl}:`, error);

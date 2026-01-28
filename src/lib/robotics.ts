@@ -1,5 +1,4 @@
-import Parser from 'rss-parser';
-const parser = new Parser();
+import { parseRSS } from './rss-edge';
 
 export interface RoboticsItem {
     id: string;
@@ -41,17 +40,17 @@ export async function fetchRoboticsFeed(): Promise<RoboticsItem[]> {
 
     const newsPromises = roboticsFeeds.map(async (feedSource) => {
         try {
-            const feed = await parser.parseURL(feedSource.url);
+            const feed = await parseRSS(feedSource.url);
             feed.items.forEach(item => {
                 if (item.title && item.link) {
                     items.push({
-                        id: item.guid || item.link,
+                        id: item.id || item.link,
                         title: item.title,
                         link: item.link,
                         pubDate: item.pubDate || new Date().toISOString(),
                         source: feedSource.name,
                         type: 'news',
-                        snippet: item.contentSnippet?.substring(0, 150) + '...'
+                        snippet: (item.contentSnippet || item.description || '').substring(0, 150) + '...'
                     });
                 }
             });
@@ -64,7 +63,7 @@ export async function fetchRoboticsFeed(): Promise<RoboticsItem[]> {
     // For now, we keep the hardcoded video feeds as they are specific YouTube channels not yet in RSS_FEEDS
     const videoPromises = VIDEO_FEEDS.map(async (feedSource) => {
         try {
-            const feed = await parser.parseURL(feedSource.url);
+            const feed = await parseRSS(feedSource.url);
             feed.items.forEach(item => {
                 // Basic filter for Tesla to only show Optimus/Bot stuff
                 if (feedSource.name === 'Tesla' && !item.title?.toLowerCase().includes('bot') && !item.title?.toLowerCase().includes('optimus')) {
@@ -73,7 +72,7 @@ export async function fetchRoboticsFeed(): Promise<RoboticsItem[]> {
 
                 if (item.title && item.link) {
                     items.push({
-                        id: item.guid || item.link,
+                        id: item.id || item.link,
                         title: item.title,
                         link: item.link,
                         pubDate: item.pubDate || new Date().toISOString(),

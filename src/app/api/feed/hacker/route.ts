@@ -1,17 +1,11 @@
-// @ts-nocheck
 import { NextResponse } from 'next/server';
-import Parser from 'rss-parser';
+import { parseRSS } from '@/lib/rss-edge';
 import { RSS_FEEDS, FeedSource } from '@/config/rss-feeds';
+
+export const runtime = 'edge';
 
 // Cache for 5 minutes to reduce function calls
 export const revalidate = 300;
-
-const parser = new Parser();
-
-// Cache configuration
-let cachedArticles: any[] = [];
-let lastFetchTime = 0;
-const CACHE_DURATION = 2 * 60 * 1000; // 2 minutes
 
 // Helper to clean text
 const cleanText = (text: string) => {
@@ -25,27 +19,14 @@ const cleanText = (text: string) => {
 
 export async function GET() {
     try {
-        const now = Date.now();
-        if (cachedArticles.length > 0 && (now - lastFetchTime < CACHE_DURATION)) {
-            return NextResponse.json({
-                articles: cachedArticles,
-                cached: true,
-                timestamp: new Date().toISOString()
-            }, {
-                headers: {
-                    'Cache-Control': 's-maxage=120, stale-while-revalidate=600',
-                },
-            });
-        }
-
         // 1. Fetch RSS Feeds (Security Category)
         const securityFeeds = RSS_FEEDS.filter(f => f.category === 'security');
 
         const rssPromises = securityFeeds.map(async (source) => {
             try {
-                const feed = await parser.parseURL(source.url);
-                return feed.items.map((item: any) => ({
-                    id: item.guid || item.link || Math.random().toString(36).substr(2, 9),
+                const feed = await parseRSS(source.url);
+                return feed.items.map((item) => ({
+                    id: item.id || item.link || Math.random().toString(36).substr(2, 9),
                     source: source.name,
                     title: item.title || 'Untitled',
                     summary: cleanText(item.contentSnippet || item.description || ''),
@@ -105,10 +86,6 @@ export async function GET() {
             ...rssResults.flat(),
             ...hnResults
         ].sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
-
-        // Update cache
-        cachedArticles = allArticles;
-        lastFetchTime = now;
 
         return NextResponse.json({
             articles: allArticles,

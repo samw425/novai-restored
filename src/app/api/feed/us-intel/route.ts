@@ -1,17 +1,9 @@
-// @ts-nocheck
 import { NextResponse } from 'next/server';
-import Parser from 'rss-parser';
+import { parseRSS } from '@/lib/rss-edge';
+export const runtime = 'edge';
 
 // Cache for 5 minutes to reduce function calls
 export const revalidate = 300;
-
-const parser = new Parser({
-    headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'application/rss+xml, application/xml, text/xml, */*'
-    },
-    timeout: 10000,
-});
 
 // OFFICIAL INTELLIGENCE SOURCES (Expanded for Direct Intel)
 // Using Google News 'site:' feeds for agencies that have deprecated their direct RSS
@@ -144,7 +136,7 @@ export async function GET(request: Request) {
         const limit = parseInt(searchParams.get('limit') || '20');
         const agencyFilter = searchParams.get('agency') || 'ALL';
 
-        const feedResults = [];
+        const feedResults: any[] = [];
 
         if (agencyFilter === 'DEFENSE_ANALYSIS') {
             // Fetch from RSS_FEEDS config for Defense Analysis
@@ -153,14 +145,8 @@ export async function GET(request: Request) {
 
             for (const feedConfig of analysisFeeds) {
                 try {
-                    const timeout = new Promise((_, reject) =>
-                        setTimeout(() => reject(new Error('Timeout')), 5000)
-                    );
-                    const feed: any = await Promise.race([
-                        parser.parseURL(`${feedConfig.url}${feedConfig.url.includes('?') ? '&' : '?'}?_t=${Date.now()}`),
-                        timeout
-                    ]);
-                    const items = feed.items.map((item: any) => ({
+                    const feed = await parseRSS(feedConfig.url, { timeout: 5000 });
+                    const items = feed.items.map((item) => ({
                         ...item,
                         agency: 'DEFENSE_ANALYSIS',
                         source: feedConfig.name,
@@ -184,15 +170,7 @@ export async function GET(request: Request) {
                 ) continue;
 
                 try {
-                    // Timeout promise to prevent hanging
-                    const timeout = new Promise((_, reject) =>
-                        setTimeout(() => reject(new Error('Timeout')), 5000)
-                    );
-
-                    const feed: any = await Promise.race([
-                        parser.parseURL(`${url}${url.includes('?') ? '&' : '?'}?_t=${Date.now()}`),
-                        timeout
-                    ]);
+                    const feed = await parseRSS(url, { timeout: 5000 });
 
                     const AGENCY_NAMES: Record<string, string> = {
                         FBI: 'Federal Bureau of Investigation',
@@ -208,7 +186,7 @@ export async function GET(request: Request) {
                         USDT: 'Department of the Treasury'
                     };
 
-                    const items = feed.items.map((item: any) => ({
+                    const items = feed.items.map((item) => ({
                         ...item,
                         agency: (agency === 'WHITE_HOUSE') ? 'White House' : (agency === 'STATE' ? 'State Dept' : (agency === 'USDT' ? 'Treasury' : agency)),
                         source: AGENCY_NAMES[agency] || 'Official Feed'
@@ -239,7 +217,7 @@ export async function GET(request: Request) {
         }
 
         // Process & Score
-        let processedItems = allFeedItems
+        let processedItems = (allFeedItems as any[])
             .map((item: any) => {
                 const text = (item.title + (item.contentSnippet || '')).toLowerCase();
                 let score = 0;

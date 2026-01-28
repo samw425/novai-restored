@@ -42,7 +42,15 @@
   "exclude": [
     "node_modules",
     "stelar",
+    "stelar-rehydrated",
+    "stelar-restored",
     "zenith-ai",
-    "verity-ai"
+    "verity-ai",
+    "chronos-engine",
+    "vue",
+    "backups",
+    "**/*_backup_*",
+    "**/*.bak",
+    "**/*.old"
   ]
 }

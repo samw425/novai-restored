@@ -1,18 +1,10 @@
-// @ts-nocheck
 import { NextResponse } from 'next/server';
-import Parser from 'rss-parser';
+import { parseRSS } from '@/lib/rss-edge';
 import { RSS_FEEDS, getCategoryFeeds } from '@/config/rss-feeds';
-export const runtime = 'nodejs';
+export const runtime = 'edge';
 
 // Cache for 5 minutes to reduce function calls
 export const revalidate = 300;
-
-const parser = new Parser({
-    timeout: 10000,
-    customFields: {
-        item: ['pubDate', 'content:encoded', 'description']
-    }
-});
 
 // In-memory cache (will be replaced with Supabase later)
 let articlesCache: any[] = [];
@@ -114,10 +106,10 @@ export async function GET(request: Request) {
             // Fetch all feeds in parallel
             const feedPromises = feedsToFetch.map(async (source, sourceIndex) => {
                 try {
-                    const feed = await parser.parseURL(source.url);
+                    const feed = await parseRSS(source.url);
                     // Limit to 30 items per source at ingestion level to support infinite scroll
                     return feed.items.slice(0, 30).map((item, itemIndex) => ({
-                        id: `${source.id}-${Date.now()}-${sourceIndex}-${itemIndex}-${item.guid || item.link || Math.random()}`,
+                        id: `${source.id}-${Date.now()}-${sourceIndex}-${itemIndex}-${item.id || item.link || Math.random()}`,
                         source: source.name,
                         title: item.title || 'Untitled',
                         summary: cleanText(item.contentSnippet || item.description || ''),

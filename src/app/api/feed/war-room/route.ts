@@ -1,22 +1,11 @@
-
-// @ts-nocheck
 import { NextResponse } from 'next/server';
 import { getWarRoomData } from '@/lib/osint';
-// @ts-ignore
-// Using the standard version suitable for Node.js
-import Parser from 'rss-parser';
+import { parseRSS } from '@/lib/rss-edge';
 import { RSS_FEEDS } from '@/config/rss-feeds';
-// export const runtime = 'edge';
-export const runtime = 'nodejs';
+export const runtime = 'edge';
 
 // Cache for 5 minutes to reduce function calls
 export const revalidate = 300;
-
-const parser = new Parser({
-    headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-    }
-});
 
 export async function GET(request: Request) {
     try {
@@ -38,11 +27,11 @@ export async function GET(request: Request) {
 
             const feedPromises = targetFeeds.map(async (feedSource) => {
                 try {
-                    const feed = await parser.parseURL(feedSource.url);
-                    return feed.items.map((item: any) => ({
-                        id: item.guid || item.link || Math.random().toString(),
+                    const feed = await parseRSS(feedSource.url);
+                    return feed.items.map((item) => ({
+                        id: item.id || item.link || Math.random().toString(),
                         title: item.title,
-                        description: item.contentSnippet || item.content,
+                        description: item.contentSnippet || item.description,
                         url: item.link,
                         source: feedSource.name,
                         publishedAt: item.pubDate,

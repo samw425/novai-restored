@@ -1,19 +1,10 @@
-// @ts-nocheck
 import { NextResponse } from 'next/server';
-// @ts-ignore
-import Parser from 'rss-parser/dist/rss-parser.min.js';
+import { parseRSS } from '@/lib/rss-edge';
 import { RSS_FEEDS } from '@/config/rss-feeds';
-// export const runtime = 'edge';
+export const runtime = 'edge';
 
 // Cache for 5 minutes to reduce function calls
 export const revalidate = 300;
-
-const parser = new Parser({
-    timeout: 15000,
-    customFields: {
-        item: ['pubDate', 'content:encoded', 'description']
-    }
-});
 
 // Helper to clean HTML
 function cleanText(html: string): string {
@@ -41,10 +32,10 @@ export async function GET(request: Request) {
         // 2. Fetch DEEPER history (20 items per source instead of 3)
         const feedPromises = feedsToFetch.map(async (source) => {
             try {
-                const feed = await parser.parseURL(source.url);
+                const feed = await parseRSS(source.url);
                 // Fetch up to 50 items to ensure we catch high-priority older items
                 return feed.items.slice(0, 50).map((item, index) => ({
-                    id: `${source.id}-${index}-${item.guid || item.link}`,
+                    id: `${source.id}-${index}-${item.id || item.link}`,
                     source: source.name,
                     title: item.title || 'Untitled',
                     summary: cleanText(item.contentSnippet || item.description || ''),

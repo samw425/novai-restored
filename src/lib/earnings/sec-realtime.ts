@@ -1,9 +1,4 @@
-// ============================================================================
-// SEC EDGAR REAL-TIME WATCHER
-// Polls SEC 8-K RSS feed every 60 seconds for earnings releases
-// ============================================================================
-
-import Parser from 'rss-parser';
+import { parseRSS } from '../rss-edge';
 import { getCompanyInfo, getTotalVerifiedTickers } from './real-data';
 import { REAL_COMPANIES } from './real-data';
 import { SP500_ADDITIONAL } from './sp500-data';
@@ -38,18 +33,9 @@ const ALL_TICKERS = new Set([
  * Parse SEC RSS feed and extract 8-K filings for our tracked companies
  */
 export async function fetchSECFilings(): Promise<SECFiling[]> {
-    const parser = new Parser({
-        customFields: {
-            item: [
-                ['updated', 'updated'],
-                ['link', 'link', { keepArray: false }],
-            ]
-        }
-    });
-
     try {
         console.log('[SEC] Fetching 8-K filings from SEC EDGAR...');
-        const feed = await parser.parseURL(SEC_8K_FEED);
+        const feed = await parseRSS(SEC_8K_FEED);
         const now = new Date();
 
         const filings: SECFiling[] = [];
@@ -105,7 +91,7 @@ export async function fetchSECFilings(): Promise<SECFiling[]> {
                 ticker,
                 companyName: info.name,
                 title: title.replace(/8-K\s*-\s*/, '').trim(),
-                link: typeof item.link === 'string' ? item.link : (item.link as any)?.href || '',
+                link: item.link || '#',
                 pubDate,
                 agoMs,
                 formType: '8-K',

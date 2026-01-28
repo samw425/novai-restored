@@ -1,13 +1,7 @@
 /* eslint-disable */
 // @ts-nocheck
 // @ts-ignore
-import Parser from 'rss-parser';
-
-const parser = new Parser({
-    headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-    }
-});
+import { parseRSS } from './rss-edge';
 
 export interface WarRoomIncident {
     id: string;
@@ -86,7 +80,7 @@ export async function fetchUSGSIncidents(): Promise<WarRoomIncident[]> {
         const response = await fetch(USGS_FEED_URL, { next: { revalidate: 300 } });
         const data = await response.json();
 
-        return data.features.slice(0, 10).map((feature: Record<string, unknown>) => ({
+        return (data as any).features.slice(0, 10).map((feature: any) => ({
             id: feature.id,
             type: 'earthquake',
             title: `M ${feature.properties.mag} Earthquake - ${feature.properties.place}`,
@@ -109,22 +103,22 @@ export async function fetchUSGSIncidents(): Promise<WarRoomIncident[]> {
 
 export async function fetchCISAIncidents(): Promise<WarRoomIncident[]> {
     try {
-        const feed = await parser.parseURL(CISA_RSS_URL);
+        const feed = await parseRSS(CISA_RSS_URL);
 
         // Filter for RECENT incidents (last 60 days to ensure population)
         const sixtyDaysAgo = new Date();
         sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
 
-        const recentIncidents = feed.items.filter((item: Record<string, unknown>) => {
-            const pubDate = item.pubDate ? new Date(item.pubDate as string) : new Date();
+        const recentIncidents = feed.items.filter((item) => {
+            const pubDate = item.pubDate ? new Date(item.pubDate) : new Date();
             return pubDate >= sixtyDaysAgo;
         });
 
-        return recentIncidents.slice(0, 8).map((item: Record<string, unknown>) => ({
-            id: item.guid || item.link,
+        return recentIncidents.slice(0, 8).map((item) => ({
+            id: item.id || item.link,
             type: 'cyber',
             title: item.title,
-            description: item.contentSnippet?.substring(0, 100) + '...',
+            description: (item.contentSnippet || item.description || '').substring(0, 100) + '...',
             severity: 'warning', // Default for cyber alerts
             location: {
                 lat: 38.9072, // Default to Washington DC for US Cyber alerts (visual proxy)
@@ -148,28 +142,19 @@ export async function fetchConflictIncidents(): Promise<WarRoomIncident[]> {
         // Helper to fetch with timeout
         const fetchFeed = async (url: string) => {
             try {
-                // Create a timeout promise
-                const timeout = new Promise((_, reject) =>
-                    setTimeout(() => reject(new Error('Timeout')), 8000) // Increased to 8s for reliability
-                );
-
-                // Race parser against timeout
-                const feed: Record<string, unknown> = await Promise.race([
-                    parser.parseURL(url),
-                    timeout
-                ] as const) as Record<string, unknown>;
+                const feed = await parseRSS(url, { timeout: 8000 });
 
                 // Filter for recent (last 14 days) - Relaxed from 7
                 // BUT for specific "Agency" feeds, we allow a longer lookback (30 days) to ensure we get "Intel" hits
-                const isAgencyFeed = url.includes('Mossad') || url.includes('CIA') || url.includes('FSB') || url.includes('IDF') || url.includes('Shin+Bet') || url.includes('MI6');
+                const isAgency = /Mossad|CIA|FSB|IDF|Shin\+Bet|MI6/i.test(url);
 
-                const lookbackDays = isAgencyFeed ? 30 : 14;
+                const lookbackDays = isAgency ? 30 : 14;
                 const cutoffDate = new Date();
                 cutoffDate.setDate(cutoffDate.getDate() - lookbackDays);
 
-                (feed.items as Record<string, unknown>[]).forEach((item: Record<string, unknown>) => {
+                feed.items.forEach((item) => {
                     const pubDate = item.pubDate ? new Date(item.pubDate) : new Date();
-                    const text = (item.title + ' ' + (item.contentSnippet || '')).toLowerCase();
+                    const text = (item.title + ' ' + (item.description || item.contentSnippet || '')).toLowerCase();
 
                     // Trust the feed source for relevance, but still filter out obvious noise if needed.
                     if (pubDate >= cutoffDate) {
@@ -283,34 +268,40 @@ export async function fetchConflictIncidents(): Promise<WarRoomIncident[]> {
 
                         // Determine source name for "Insider" styling
                         let sourceName = 'Defense News';
-                        if (url.includes('defense.gov')) sourceName = 'US DEPT OF DEFENSE';
-                        else if (url.includes('state.gov')) sourceName = 'US STATE DEPT';
-                        else if (url.includes('gov.uk')) sourceName = 'UK MINISTRY OF DEFENCE';
-                        else if (url.includes('nato.int')) sourceName = 'NATO COMMAND';
-                        else if (url.includes('understandingwar')) sourceName = 'ISW (WAR STUDY)';
-                        else if (url.includes('bellingcat')) sourceName = 'BELLINGCAT OSINT';
-                        else if (url.includes('csis')) sourceName = 'CSIS STRATEGY';
-                        else if (url.includes('rand.org')) sourceName = 'RAND CORP';
-                        else if (url.includes('Mossad')) sourceName = 'MOSSAD';
-                        else if (url.includes('CIA')) sourceName = 'CIA';
-                        else if (url.includes('NSA')) sourceName = 'NSA';
-                        else if (url.includes('FSB')) sourceName = 'FSB';
-                        else if (url.includes('SVR')) sourceName = 'SVR';
-                        else if (url.includes('GRU')) sourceName = 'GRU';
-                        else if (url.includes('IDF')) sourceName = 'IDF';
-                        else if (url.includes('Shin+Bet')) sourceName = 'SHIN BET';
-                        else if (url.includes('MI6')) sourceName = 'MI6';
-                        else if (url.includes('GCHQ')) sourceName = 'GCHQ';
-                        else if (url.includes('DGSE')) sourceName = 'DGSE';
-                        else if (url.includes('BND')) sourceName = 'BND';
-                        else if (url.includes('MSS')) sourceName = 'MSS';
-                        else if (url.includes('RAW')) sourceName = 'RAW';
-                        else if (url.includes('ISI')) sourceName = 'ISI';
-                        else if (url.includes('CSIS')) sourceName = 'CSIS';
-                        else if (url.includes('ASIS')) sourceName = 'ASIS';
-                        else if (url.includes('timesofisrael')) sourceName = 'Times of Israel';
-                        else if (url.includes('jpost')) sourceName = 'Jerusalem Post';
-                        else if (item.source?.title) sourceName = item.source.title; // Use RSS source if available
+
+                        // Lookup source name from RSS_FEEDS if possible
+                        const knownFeed = RSS_FEEDS.find(f => f.url === url);
+                        if (knownFeed) {
+                            sourceName = knownFeed.name.toUpperCase();
+                        } else {
+                            if (url.includes('defense.gov')) sourceName = 'US DEPT OF DEFENSE';
+                            else if (url.includes('state.gov')) sourceName = 'US STATE DEPT';
+                            else if (url.includes('gov.uk')) sourceName = 'UK MINISTRY OF DEFENCE';
+                            else if (url.includes('nato.int')) sourceName = 'NATO COMMAND';
+                            else if (url.includes('understandingwar')) sourceName = 'ISW (WAR STUDY)';
+                            else if (url.includes('bellingcat')) sourceName = 'BELLINGCAT OSINT';
+                            else if (url.includes('csis')) sourceName = 'CSIS STRATEGY';
+                            else if (url.includes('rand.org')) sourceName = 'RAND CORP';
+                            else if (url.includes('Mossad')) sourceName = 'MOSSAD';
+                            else if (url.includes('CIA')) sourceName = 'CIA';
+                            else if (url.includes('NSA')) sourceName = 'NSA';
+                            else if (url.includes('FSB')) sourceName = 'FSB';
+                            else if (url.includes('SVR')) sourceName = 'SVR';
+                            else if (url.includes('GRU')) sourceName = 'GRU';
+                            else if (url.includes('IDF')) sourceName = 'IDF';
+                            else if (url.includes('Shin+Bet')) sourceName = 'SHIN BET';
+                            else if (url.includes('MI6')) sourceName = 'MI6';
+                            else if (url.includes('GCHQ')) sourceName = 'GCHQ';
+                            else if (url.includes('DGSE')) sourceName = 'DGSE';
+                            else if (url.includes('BND')) sourceName = 'BND';
+                            else if (url.includes('MSS')) sourceName = 'MSS';
+                            else if (url.includes('RAW')) sourceName = 'RAW';
+                            else if (url.includes('ISI')) sourceName = 'ISI';
+                            else if (url.includes('CSIS')) sourceName = 'CSIS';
+                            else if (url.includes('ASIS')) sourceName = 'ASIS';
+                            else if (url.includes('timesofisrael')) sourceName = 'Times of Israel';
+                            else if (url.includes('jpost')) sourceName = 'Jerusalem Post';
+                        }
 
 
                         // ENHANCED NAVAL DETECTION
@@ -354,16 +345,6 @@ export async function fetchConflictIncidents(): Promise<WarRoomIncident[]> {
                         else if (type === 'naval') assetType = 'Naval Vessel';
                         else if (type === 'air') assetType = 'Military Aircraft';
 
-                        // Lookup source name from RSS_FEEDS if possible
-                        const knownFeed = RSS_FEEDS.find(f => f.url === url);
-                        if (knownFeed) {
-                            sourceName = knownFeed.name.toUpperCase();
-                        } else {
-                            if (url.includes('defense.gov')) sourceName = 'US DEPT OF DEFENSE';
-                            else if (url.includes('state.gov')) sourceName = 'US STATE DEPT';
-                            // ... existing source map as fallback
-                        }
-
                         const isTrustedSource =
                             sourceName.includes('DEPT') ||
                             sourceName.includes('MINISTRY') ||
@@ -379,10 +360,10 @@ export async function fetchConflictIncidents(): Promise<WarRoomIncident[]> {
                             url.includes('.int');
 
                         incidents.push({
-                            id: item.guid || item.link || `conflict-${Date.now()}-${Math.random()}`,
+                            id: item.id || item.link || `conflict-${Date.now()}-${Math.random()}`,
                             type: type as WarRoomIncident['type'],
                             title: item.title,
-                            description: item.contentSnippet?.substring(0, 150) + '...' || 'Defense and security update',
+                            description: (item.contentSnippet || item.description || '').substring(0, 150) + '...' || 'Defense and security update',
                             severity: text.includes('strike') || text.includes('attack') || text.includes('blast') || text.includes('nuclear') ? 'critical' : 'warning',
                             location: assignedLoc,
                             timestamp: item.pubDate || new Date().toISOString(),

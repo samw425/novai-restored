@@ -1,3 +1,6 @@
+export const runtime = 'edge';
+export const dynamic = 'force-dynamic';
+
 // API Route: /api/earnings/feed
 // Real-time earnings feed from SEC EDGAR 8-K filings
 // Polls every 60 seconds for new filings

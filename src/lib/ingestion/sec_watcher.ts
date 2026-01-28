@@ -1,5 +1,4 @@
-
-import Parser from 'rss-parser';
+import { parseRSS } from '../rss-edge';
 import { createClient } from '@supabase/supabase-js';
 
 // SEC RSS Feed definitions
@@ -9,11 +8,9 @@ const SEC_FEEDS = {
 };
 
 export class SECEarningsWatcher {
-    private parser: Parser;
     private supabase: any;
 
     constructor() {
-        this.parser = new Parser();
         this.supabase = createClient(
             process.env.NEXT_PUBLIC_SUPABASE_URL!,
             process.env.SUPABASE_SERVICE_ROLE_KEY!
@@ -23,7 +20,7 @@ export class SECEarningsWatcher {
     async checkFeed() {
         console.log("Checking SEC Feed...");
         // 1. Fetch RSS
-        const feed = await this.parser.parseURL(SEC_FEEDS.ALL);
+        const feed = await parseRSS(SEC_FEEDS.ALL);
 
         // 2. Filter for our Watchlist (NVDA, MSFT, etc)
         const relevantItems = feed.items.filter(item => this.isRelevant(item));

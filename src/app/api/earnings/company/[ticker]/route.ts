@@ -1,3 +1,6 @@
+export const runtime = 'edge';
+export const dynamic = 'force-dynamic';
+
 // API Route: /api/earnings/company/[ticker]
 // Full company earnings profile - past + future + links
 // Works for ANY ticker

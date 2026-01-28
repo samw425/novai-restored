@@ -1,10 +1,11 @@
+export const runtime = 'edge';
+
 import { NextRequest, NextResponse } from 'next/server';
 
 // Server-Sent Events endpoint for AIS vessel data
 // This proxies the aisstream.io WebSocket to avoid CORS issues
 
-export const dynamic = 'force-dynamic';
-export const runtime = 'nodejs';
+
 
 const AIS_API_KEY = process.env.AISSTREAM_API_KEY;
 

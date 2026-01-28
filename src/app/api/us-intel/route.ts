@@ -1,18 +1,9 @@
-// @ts-nocheck
 import { NextResponse } from 'next/server';
-import Parser from 'rss-parser';
-export const runtime = 'nodejs';
+import { parseRSS } from '@/lib/rss-edge';
+export const runtime = 'edge';
 
 // Cache for 5 minutes to reduce function calls
 export const revalidate = 300;
-
-const parser = new Parser({
-    headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'application/rss+xml, application/xml, text/xml, */*'
-    },
-    timeout: 10000,
-});
 
 // OFFICIAL INTELLIGENCE SOURCES (Expanded for Direct Intel)
 // Using Google News 'site:' feeds for agencies that have deprecated their direct RSS
@@ -144,7 +135,7 @@ export async function GET(request: Request) {
         const limit = parseInt(searchParams.get('limit') || '20');
         const agencyFilter = searchParams.get('agency') || 'ALL';
 
-        const feedResults = [];
+        const feedResults: any[] = [];
 
         // Fetch sequentially to avoid rate-limiting from Google/Agencies
         for (const [agency, url] of Object.entries(FEEDS)) {
@@ -152,17 +143,9 @@ export async function GET(request: Request) {
             if (agencyFilter !== 'ALL' && agency !== agencyFilter) continue;
 
             try {
-                // Timeout promise to prevent hanging
-                const timeout = new Promise((_, reject) =>
-                    setTimeout(() => reject(new Error('Timeout')), 5000)
-                );
+                const feed = await parseRSS(url, { timeout: 5000 });
 
-                const feed: any = await Promise.race([
-                    parser.parseURL(url),
-                    timeout
-                ]);
-
-                const items = feed.items.map((item: any) => ({
+                const items = feed.items.map((item) => ({
                     ...item,
                     agency,
                     source: 'Official Feed'
@@ -188,7 +171,7 @@ export async function GET(request: Request) {
         }
 
         // Process & Score
-        let processedItems = allFeedItems
+        let processedItems = (allFeedItems as any[])
             .map((item: any) => {
                 const text = (item.title + (item.contentSnippet || '')).toLowerCase();
                 let score = 0;

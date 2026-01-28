@@ -1,12 +1,7 @@
-// @ts-nocheck
 import { NextResponse } from 'next/server';
-// @ts-ignore
-import Parser from 'rss-parser/dist/rss-parser.min.js';
+import { parseRSS } from '@/lib/rss-edge';
 import { RSS_FEEDS } from '@/config/rss-feeds';
-// export const runtime = 'edge';
-
-
-const parser = new Parser();
+export const runtime = 'edge';
 
 // Keywords to categorize content
 const COMMERCIAL_KEYWORDS = ['data center', 'datacenter', 'hyperscale', 'server', 'grid', 'power', 'energy', 'infrastructure', 'commercial', 'office', 'industrial', 'logistics', 'warehouse', 'nvidia', 'gpu'];
@@ -20,17 +15,17 @@ export async function GET(request: Request) {
         const builtWorldFeeds = RSS_FEEDS.filter(f => f.category === 'built-world');
         const feedPromises = builtWorldFeeds.map(async (feedSource) => {
             try {
-                const feed = await parser.parseURL(feedSource.url);
-                return feed.items.map((item: any) => ({
-                    id: item.guid || item.link,
+                const feed = await parseRSS(feedSource.url);
+                return feed.items.map((item) => ({
+                    id: item.id || item.link,
                     title: item.title,
                     link: item.link,
                     pubDate: item.pubDate,
                     source: feedSource.name,
                     category: feedSource.category,
-                    snippet: item.contentSnippet,
+                    snippet: item.contentSnippet || item.description,
                     // Auto-tagging based on keywords
-                    subCategory: determineSubCategory(item.title + ' ' + item.contentSnippet)
+                    subCategory: determineSubCategory(item.title + ' ' + (item.contentSnippet || item.description || ''))
                 }));
             } catch (error) {
                 console.error(`Error fetching ${feedSource.name}:`, error);

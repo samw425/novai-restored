@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server';
-import Parser from 'rss-parser';
+import { parseRSS } from '@/lib/rss-edge';
 import { createClient } from '@supabase/supabase-js';
 import { RSS_FEEDS } from '@/config/rss-feeds';
+export const runtime = 'edge';
 
 // ----------------------------------------------------------------------------
 // CONFIG
 // ----------------------------------------------------------------------------
-export const dynamic = 'force-dynamic';
-export const runtime = 'nodejs';
+
 export const maxDuration = 60; // Allow 60s for ingestion
 
 // ----------------------------------------------------------------------------
@@ -58,7 +58,6 @@ export async function GET(request: Request) {
     }
 
     const supabase = createClient(supabaseUrl, supabaseKey);
-    const parser = new Parser();
 
     let newArticlesCount = 0;
     const errors: string[] = [];
@@ -66,7 +65,7 @@ export async function GET(request: Request) {
     // Parallel Fetch
     const feedPromises = RSS_FEEDS.map(async (source: any) => {
         try {
-            const feed = await parser.parseURL(source.url);
+            const feed = await parseRSS(source.url);
 
             // Process latest 5 items per feed
             const items = feed.items.slice(0, 5);

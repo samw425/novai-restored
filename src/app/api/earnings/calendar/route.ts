@@ -1,3 +1,6 @@
+export const runtime = 'edge';
+export const dynamic = 'force-dynamic';
+
 // API Route: /api/earnings/calendar
 // Fetches REAL earnings calendar data from Financial Modeling Prep (FMP)
 // Fallback to verified local data if API fails

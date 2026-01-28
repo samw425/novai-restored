@@ -1,16 +1,10 @@
-// @ts-nocheck
 import { NextResponse } from 'next/server';
-// @ts-ignore
-import Parser from 'rss-parser/dist/rss-parser.min.js';
+import { parseRSS } from '@/lib/rss-edge';
+import { RSS_FEEDS } from '@/config/rss-feeds';
+export const runtime = 'edge';
 
 // Cache for 5 minutes to reduce function calls
 export const revalidate = 0;
-
-const parser = new Parser({
-    headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-    },
-});
 
 const GENERAL_FEEDS = [
     'https://techcrunch.com/feed/',
@@ -61,10 +55,6 @@ const CASES_KEYWORDS = [
     'stock price', 'quarterly report', 'earnings call'
 ];
 
-import { RSS_FEEDS } from '@/config/rss-feeds';
-// export const runtime = 'edge';
-
-
 export async function GET(request: Request) {
     console.log("Future of Code API called");
     try {
@@ -76,7 +66,7 @@ export async function GET(request: Request) {
         console.log(`Fetching page ${page} with limit ${limit} for type ${type}`);
 
         // Select Feeds based on Type using Central Config
-        let targetFeeds = [];
+        let targetFeeds: typeof RSS_FEEDS = [];
         if (type === 'RESEARCH') {
             targetFeeds = RSS_FEEDS.filter(f => f.category === 'research' || f.category === 'ai');
         } else {
@@ -86,8 +76,8 @@ export async function GET(request: Request) {
 
         const feedPromises = targetFeeds.map(async (source) => {
             try {
-                const feed = await parser.parseURL(source.url);
-                return feed.items.map((item: any) => ({
+                const feed = await parseRSS(source.url);
+                return feed.items.map((item) => ({
                     ...item,
                     source: source.name,
                     category: source.category

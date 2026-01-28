@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 import { model } from '@/lib/gemini';
-import Parser from 'rss-parser';
+import { parseRSS } from '@/lib/rss-edge';
 import { RSS_FEEDS } from '@/config/rss-feeds';
+export const runtime = 'edge';
 
 // Must be NodeJS runtime to use RSS Parser efficiently
-export const runtime = 'nodejs';
-export const dynamic = 'force-dynamic';
+
 
 interface Theme {
     title: string;
@@ -52,22 +52,19 @@ export async function GET() {
         if (articles.length === 0) {
             console.log('Internal API failed/empty. Executing Direct RSS Fallback...');
             try {
-                const parser = new Parser({
-                    timeout: 5000,
-                    customFields: { item: ['pubDate', 'content:encoded', 'description'] }
-                });
-
                 // Fetch from a few reliable high-signal sources
                 const sources = RSS_FEEDS.slice(0, 8); // Top 8 sources from config
                 const feedPromises = sources.map(source =>
-                    parser.parseURL(source.url).then(feed => ({ source: source.name, items: feed.items })).catch(() => null)
+                    parseRSS(source.url, { timeout: 5000 })
+                        .then(feed => ({ source: source.name, items: feed.items }))
+                        .catch(() => null)
                 );
 
                 const results = await Promise.all(feedPromises);
 
-                articles = results
+                articles = (results as any[])
                     .filter(res => res !== null && res.items.length > 0)
-                    .flatMap(res => res!.items.slice(0, 3).map(item => ({
+                    .flatMap(res => (res!.items as any[]).slice(0, 3).map(item => ({
                         title: item.title || 'Untitled',
                         summary: item.contentSnippet || item.content || item.description || '',
                         url: item.link || '#',

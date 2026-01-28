@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 // API Route: /api/earnings/refresh
 // Manually trigger calendar refresh from FMP
 
@@ -5,7 +7,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { earningsCache } from '@/lib/earnings/cache';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 
-export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
 
 export async function POST(request: NextRequest) {

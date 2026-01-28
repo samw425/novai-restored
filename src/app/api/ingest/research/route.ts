@@ -1,13 +1,9 @@
-// @ts-nocheck
 import { createClient } from '@supabase/supabase-js';
-// @ts-ignore
-import Parser from 'rss-parser/dist/rss-parser.min.js';
+import { parseRSS } from '@/lib/rss-edge';
 import { NextResponse } from 'next/server';
 export const runtime = 'edge';
 
-
 export const dynamic = 'force-dynamic';
-const parser = new Parser();
 
 const ARXIV_FEEDS = [
     { name: 'arXiv AI', url: 'http://export.arxiv.org/rss/cs.AI' },
@@ -29,7 +25,7 @@ export async function GET() {
 
         for (const feed of ARXIV_FEEDS) {
             try {
-                const data = await parser.parseURL(feed.url);
+                const data = await parseRSS(feed.url);
 
                 for (const item of data.items.slice(0, 10)) {
                     const { error } = await supabase
