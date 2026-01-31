@@ -1,13 +1,8 @@
 import { NextResponse } from 'next/server';
-import { OpenAI } from 'openai';
+import { model } from '@/lib/gemini';
 export const runtime = 'edge';
 
-
 export const dynamic = 'force-dynamic';
-
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY || '',
-});
 
 // In-memory cache (for demo, use Redis in production)
 let synthesisCache: {
@@ -40,24 +35,17 @@ export async function GET(request: Request) {
             .map((a: any, i: number) => `${i + 1}. ${a.title}\nSource: ${a.source}\nSummary: ${a.summary}`)
             .join('\n\n');
 
-        // Call OpenAI API
-        const completion = await openai.chat.completions.create({
-            model: 'gpt-4-turbo-preview',
-            messages: [
-                {
-                    role: 'system',
-                    content: `You are The Oracle - an elite AI intelligence analyst. Your job is to synthesize AI and tech news into actionable insights.
-                    
+        // Call Gemini API
+        const prompt = `You are The Oracle - an elite AI intelligence analyst. Your job is to synthesize AI and tech news into actionable insights.
+
 Guidelines:
 - Be concise but insightful
 - Focus on WHY it matters, not just WHAT happened
 - Identify cross-story patterns and connections
 - Rate signal vs noise (1-10 scale)
-- Predict second-order effects`
-                },
-                {
-                    role: 'user',
-                    content: `Analyze these top 10 AI/tech stories from today and provide:
+- Predict second-order effects
+
+Analyze these top 10 AI/tech stories from today and provide:
 
 1. **Executive Summary** (3-bullet points - why these stories matter)
 2. **Key Themes** (what patterns do you see?)
@@ -68,14 +56,10 @@ Guidelines:
 Stories:
 ${storiesText}
 
-Format your response as JSON with keys: summary (array of 3 strings), themes (array of strings), signalRating (number), signalExplanation (string), connections (string), predictions (array of strings)`
-                }
-            ],
-            temperature: 0.7,
-            max_tokens: 1500,
-        });
+Format your response as JSON with keys: summary (array of 3 strings), themes (array of strings), signalRating (number), signalExplanation (string), connections (string), predictions (array of strings)`;
 
-        const aiResponse = completion.choices[0]?.message?.content;
+        const result = await model.generateContent(prompt);
+        const aiResponse = result.response.text();
 
         if (!aiResponse) {
             throw new Error('Empty AI response');
@@ -84,7 +68,12 @@ Format your response as JSON with keys: summary (array of 3 strings), themes (ar
         // Parse AI response
         let synthesis;
         try {
-            synthesis = JSON.parse(aiResponse);
+            // Clean up the response - remove markdown code blocks if present
+            const cleanedResponse = aiResponse
+                .replace(/```json\n?/g, '')
+                .replace(/```\n?/g, '')
+                .trim();
+            synthesis = JSON.parse(cleanedResponse);
         } catch (e) {
             // Fallback if AI doesn't return valid JSON
             synthesis = {
@@ -98,22 +87,22 @@ Format your response as JSON with keys: summary (array of 3 strings), themes (ar
         }
 
         // Enhance with metadata
-        const result = {
+        const responseData = {
             synthesis,
             articles: articles.slice(0, 10), // Include source articles
             generatedAt: new Date().toISOString(),
-            model: 'gpt-4-turbo-preview',
+            model: 'gemini-2.0-flash',
         };
 
         // Cache the result
         synthesisCache = {
-            data: result,
+            data: responseData,
             timestamp: Date.now(),
         };
 
         console.log('✅ AI synthesis generated and cached');
 
-        return NextResponse.json(result);
+        return NextResponse.json(responseData);
 
     } catch (error: any) {
         console.error('AI Synthesis Error:', error);

@@ -52,21 +52,13 @@ description: Complete NovAI to Cloudflare Migration Plan - All Issues Documented
 
 ## 🔴 CRITICAL BLOCKER DISCOVERED (Jan 28, 2026)
 
-### The `rss-parser` Problem
 
-**8 API routes** import `rss-parser`, which uses Node.js `stream` module. This is **NOT compatible with Cloudflare Edge runtime**.
+### The `rss-parser` Problem (RESOLVED)
 
-**Affected Routes:**
-```
-src/app/api/cron/ingest-feed/route.ts
-src/app/api/feed/war-room/route.ts
-src/app/api/feed/us-intel/route.ts
-src/app/api/feed/hacker/route.ts
-src/app/api/feed/anti-trust/route.ts
-src/app/api/feed/live/route.ts
-src/app/api/us-intel/route.ts
-src/app/api/intelligence/synthesize/route.ts
-```
+**Status:** ✅ FIXED
+- Replaced `rss-parser` with custom `rss-edge.ts` implementation.
+- `next.config.ts` updated.
+- All routes verified compliant.
 
 ### Solutions (Pick One)
 
@@ -130,17 +122,11 @@ These MUST be set in Cloudflare Pages dashboard:
 
 ### Fix #1: War Room OSINT (CRITICAL)
 
-**Problem:** `lib/osint.ts` breaks the build  
-**Options:**
-1. **Remove War Room temporarily** - Fastest, ship now, add back later
-2. **Refactor OSINT to fetch-only** - Medium effort, keeps feature
-3. **Move OSINT to external API** - Best long-term, most effort
 
-**Recommended:** Option 1 (remove temporarily) → Ship → Add back in Phase 2
-
-**Files to modify:**
-- `src/app/api/feed/war-room/route.ts` - Comment out OSINT calls
-- `src/lib/osint.ts` - Keep file but don't import
+**Status:** ✅ FIXED
+- `lib/osint.ts` refactored to use Edge-compatible `fetch` and custom RSS parser.
+- `src/app/api/feed/war-room/route.ts` restored and verified.
+- Build passes successfully.
 
 ### Fix #2: Bundle Size Audit
 

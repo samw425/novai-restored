@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
   reactStrictMode: true,
-  serverExternalPackages: ['rss-parser'],
+  serverExternalPackages: [],
   experimental: {
     optimizePackageImports: ['lucide-react', 'date-fns', 'framer-motion', '@supabase/supabase-js']
   },
