@@ -32,7 +32,7 @@ export default function IntelligenceBriefPage() {
                 const timestamp = Date.now();
                 const [briefResult, themesResult] = await Promise.allSettled([
                     fetch(`/api/brief?t=${timestamp}`, { cache: 'no-store' }),
-                    fetch(`/api/intelligence/synthesize?t=${timestamp}`, { cache: 'no-store' })
+                    fetch(`/api/ai/synthesize?t=${timestamp}`, { cache: 'no-store' })
                 ]);
 
                 // Handle Brief Result

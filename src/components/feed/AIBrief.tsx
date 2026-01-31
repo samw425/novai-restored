@@ -22,7 +22,7 @@ export function AIBrief({ className = '' }: AIBriefProps) {
     const [error, setError] = useState(false);
 
     useEffect(() => {
-        fetch('/api/synthesis')
+        fetch('/api/ai/synthesis')
             .then(res => res.json())
             .then(data => {
                 setSynthesis(data.synthesis);
